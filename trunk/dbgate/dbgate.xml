@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="dbgate" default="all">
+  
+  
+  <property file="dbgate.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm.jar"/>
+    <pathelement location="${javac2.home}/asm-commons.jar"/>
+  </path>
+  <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+  <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+    <include name="**/?*.xml"/>
+    <include name="**/?*.gif"/>
+    <include name="**/?*.png"/>
+    <include name="**/?*.jpeg"/>
+    <include name="**/?*.jpg"/>
+    <include name="**/?*.html"/>
+    <include name="**/?*.dtd"/>
+    <include name="**/?*.tld"/>
+    <include name="**/?*.ftl"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.6" value="${jdk.home.1.6}/bin"/>
+  <path id="jdk.classpath.1.6">
+    <fileset dir="${jdk.home.1.6}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.6}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.derby.10.6.1.0.classpath">
+    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derby.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derby.war"/>
+    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbyclient.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbynet.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbyrun.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbytools.jar"/>
+  </path>
+  
+  <path id="library.junit.4.0.classpath">
+    <pathelement location="Y:/dev/java/community/dbgate/lib/junit.4.0/junit-4.0.jar"/>
+  </path>
+  
+  <path id="library.ojdbc.1.4.classpath">
+    <pathelement location="Y:/dev/java/community/dbgate/lib/ojdbc.1.4/ojdbc14.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module dbgate -->
+  
+  <dirname property="module.dbgate.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.dbgate" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.dbgate" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.dbgate" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.dbgate" value="${compiler.args}"/>
+  
+  <property name="dbgate.output.dir" value="${module.dbgate.basedir}/out/production/dbgate"/>
+  <property name="dbgate.testoutput.dir" value="${module.dbgate.basedir}/out/test/dbgate"/>
+  
+  <path id="dbgate.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="dbgate.module.classpath">
+    <path refid="${module.jdk.classpath.dbgate}"/>
+    <path refid="library.ojdbc.1.4.classpath"/>
+    <path refid="library.derby.10.6.1.0.classpath"/>
+    <path refid="library.junit.4.0.classpath"/>
+  </path>
+  
+  <path id="dbgate.runtime.module.classpath">
+    <pathelement location="${dbgate.output.dir}"/>
+    <pathelement location="${dbgate.testoutput.dir}"/>
+    <path refid="library.ojdbc.1.4.classpath"/>
+    <path refid="library.derby.10.6.1.0.classpath"/>
+    <path refid="library.junit.4.0.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.dbgate">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.dbgate">
+    <patternset refid="excluded.from.module.dbgate"/>
+  </patternset>
+  
+  <path id="dbgate.module.sourcepath">
+    <dirset dir="${module.dbgate.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="dbgate.module.test.sourcepath">
+    <dirset dir="${module.dbgate.basedir}">
+      <include name="src-tests"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.dbgate" depends="compile.module.dbgate.production,compile.module.dbgate.tests" description="Compile module dbgate"/>
+  
+  <target name="compile.module.dbgate.production" description="Compile module dbgate; production classes">
+    <mkdir dir="${dbgate.output.dir}"/>
+    <javac2 destdir="${dbgate.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dbgate}/javac">
+      <compilerarg line="${compiler.args.dbgate}"/>
+      <bootclasspath refid="dbgate.module.bootclasspath"/>
+      <classpath refid="dbgate.module.classpath"/>
+      <src refid="dbgate.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dbgate"/>
+    </javac2>
+    
+    <copy todir="${dbgate.output.dir}">
+      <fileset dir="${module.dbgate.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.dbgate.tests" depends="compile.module.dbgate.production" description="compile module dbgate; test classes" unless="skip.tests">
+    <mkdir dir="${dbgate.testoutput.dir}"/>
+    <javac2 destdir="${dbgate.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dbgate}/javac">
+      <compilerarg line="${compiler.args.dbgate}"/>
+      <classpath refid="dbgate.module.classpath"/>
+      <classpath>
+        <path refid="dbgate.module.classpath"/>
+        <pathelement location="${dbgate.output.dir}"/>
+      </classpath>
+      <src refid="dbgate.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.dbgate"/>
+    </javac2>
+    
+    <copy todir="${dbgate.testoutput.dir}">
+      <fileset dir="${module.dbgate.basedir}/src-tests">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.dbgate" description="cleanup module">
+    <delete dir="${dbgate.output.dir}"/>
+    <delete dir="${dbgate.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.dbgate" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.dbgate" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>

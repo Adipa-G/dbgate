@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="derby.10.6.1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../lib/Derby.10.6.1.0/derbytools.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/Derby.10.6.1.0/derby.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/Derby.10.6.1.0/derbyrun.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/Derby.10.6.1.0/derbynet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/Derby.10.6.1.0/derbyclient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/Derby.10.6.1.0/derby.war!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
