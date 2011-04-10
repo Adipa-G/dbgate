@@ -166,7 +166,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteRootWithOneToOneChild_WithReverseRelationShip_shouldThrowException()
+    public void ERLayer_deleteRootWithOneToOneChild_WithReverseRelationShip_shouldNotDeleteChild()
     {
         try
         {
@@ -209,7 +209,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteRootWithOneToManyChild_WithReverseRelationShip_shouldThrowException()
+    public void ERLayer_deleteRootWithOneToManyChild_WithReverseRelationShip_shouldNotDeleteChild()
     {
         try
         {

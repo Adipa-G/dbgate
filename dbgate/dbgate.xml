@@ -89,20 +89,20 @@
   <!-- Project Libraries -->
   
   <path id="library.derby.10.6.1.0.classpath">
-    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derby.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derby.war"/>
-    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbyclient.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbynet.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbyrun.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/lib/Derby.10.6.1.0/derbytools.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derby.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derby.war"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbyclient.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbynet.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbyrun.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbytools.jar"/>
   </path>
   
   <path id="library.junit.4.0.classpath">
-    <pathelement location="Y:/dev/java/community/dbgate/lib/junit.4.0/junit-4.0.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/junit.4.0/junit-4.0.jar"/>
   </path>
   
   <path id="library.ojdbc.1.4.classpath">
-    <pathelement location="Y:/dev/java/community/dbgate/lib/ojdbc.1.4/ojdbc14.jar"/>
+    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/ojdbc.1.4/ojdbc14.jar"/>
   </path>
   
   <!-- Modules -->
