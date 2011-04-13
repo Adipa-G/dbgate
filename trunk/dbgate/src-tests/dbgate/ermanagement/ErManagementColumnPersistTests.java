@@ -92,7 +92,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityFields();
-            entity.setIdCol(id);
             createEntityWithNonNullValues(entity);
 
             entity.persist(connection);
@@ -126,7 +125,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityExts();
-            entity.setIdCol(id);
             createEntityWithNonNullValues(entity);
 
             entity.persist(connection);
@@ -156,7 +154,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityAnnotations();
-            entity.setIdCol(id);
             createEntityWithNonNullValues(entity);
 
             entity.persist(connection);
@@ -186,7 +183,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityFields();
-            entity.setIdCol(id);
             createEntityWithNullValues(entity);
 
             entity.persist(connection);
@@ -220,7 +216,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityExts();
-            entity.setIdCol(id);
             createEntityWithNullValues(entity);
 
             entity.persist(connection);
@@ -250,7 +245,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityAnnotations();
-            entity.setIdCol(id);
             createEntityWithNullValues(entity);
 
             entity.persist(connection);
@@ -280,7 +274,6 @@ public class ErManagementColumnPersistTests
 
             int id =(Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
-            newEntity.setIdCol(id);
             createEntityWithNonNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -326,7 +319,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
-            newEntity.setIdCol(id);
             createEntityWithNonNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -368,7 +360,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
-            newEntity.setIdCol(id);
             createEntityWithNonNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -410,7 +401,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
-            newEntity.setIdCol(id);
             createEntityWithNonNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -456,7 +446,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
-            newEntity.setIdCol(id);
             createEntityWithNonNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -498,7 +487,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
-            newEntity.setIdCol(id);
             createEntityWithNonNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -540,7 +528,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -586,7 +573,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -628,7 +614,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -670,7 +655,6 @@ public class ErManagementColumnPersistTests
 
             int id =(Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -716,7 +700,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -758,7 +741,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -800,7 +782,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -844,7 +825,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();
@@ -884,7 +864,6 @@ public class ErManagementColumnPersistTests
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
-            newEntity.setIdCol(id);
             createEntityWithNullValues(newEntity);
             newEntity.persist(connection);
             connection.commit();

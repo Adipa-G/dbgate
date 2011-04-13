@@ -138,7 +138,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
         else if (entity.getStatus() == DBClassStatus.NEW)
         {
-            insert(fieldValues,type,con);
+            insert(entity,fieldValues,type,con);
         }
         else if (entity.getStatus() == DBClassStatus.MODIFIED)
         {
@@ -204,8 +204,9 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private void insert(ITypeFieldValueList valueTypeList,Class type,Connection con) throws TableCacheMissException
-            , QueryBuildingException, FieldCacheMissException, SQLException
+    private void insert(ServerDBClass entity,ITypeFieldValueList valueTypeList,Class type,Connection con) throws TableCacheMissException
+            , QueryBuildingException, FieldCacheMissException, SQLException, NoSuchMethodException
+            , InvocationTargetException, IllegalAccessException
     {
         StringBuilder logSb = new StringBuilder();
         String query = CacheManager.queryCache.getInsertQuery(type);
@@ -226,6 +227,9 @@ public class ERDataPersistManager extends ERDataCommonManager
                     && dbColumn.getSequenceGenerator() != null)
             {
                 columnValue = dbColumn.getSequenceGenerator().getNextSequenceValue(con);
+
+                Method keySetter = CacheManager.methodCache.getSetter(entity,dbColumn);
+                keySetter.invoke(entity,columnValue);
             }
             else
             {
