@@ -520,6 +520,15 @@ public class ERDataPersistManager extends ERDataCommonManager
             {
                 continue;
             }
+            if (relationKeyValueList instanceof EntityRelationFieldValueList)
+            {
+                EntityRelationFieldValueList relationFieldValueList = (EntityRelationFieldValueList)relationKeyValueList;
+                if (relationFieldValueList.getRelation().isNonIdentifyingRelation()
+                        || relationFieldValueList.getRelation().isReverseRelationship())
+                {
+                    continue;
+                }
+            }
 
             boolean recordExists = false;
             PreparedStatement ps = createRetrievalPreparedStatement(relationKeyValueList,con);
