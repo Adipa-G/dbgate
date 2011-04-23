@@ -44,7 +44,8 @@ public class ERSessionUtils
     public static boolean existsInSession(ServerRODBClass roEntity, ITypeFieldValueList typeList)
     {
         if (roEntity.getContext() != null
-                && roEntity.getContext().getERSession() != null)
+                && roEntity.getContext().getERSession() != null
+                && typeList != null)
         {
             return roEntity.getContext().getERSession().isProcessed(typeList);
         }
@@ -54,7 +55,8 @@ public class ERSessionUtils
     public static void addToSession(ServerRODBClass roEntity, IEntityFieldValueList typeList)
     {
         if (roEntity.getContext() != null
-                && roEntity.getContext().getERSession() != null)
+                && roEntity.getContext().getERSession() != null
+                && typeList != null)
         {
             roEntity.getContext().getERSession().checkAndAddEntityList(typeList);
         }
@@ -63,7 +65,8 @@ public class ERSessionUtils
     public static ServerRODBClass getFromSession(ServerRODBClass roEntity, ITypeFieldValueList typeList)
     {
         if (roEntity.getContext() != null
-                && roEntity.getContext().getERSession() != null)
+                && roEntity.getContext().getERSession() != null
+                && typeList != null)
         {
             return roEntity.getContext().getERSession().getProcessed(typeList);
         }
