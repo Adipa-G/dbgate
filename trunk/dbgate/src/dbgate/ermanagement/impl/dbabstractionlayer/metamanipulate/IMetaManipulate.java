@@ -24,6 +24,8 @@ public interface IMetaManipulate
 
     String mapColumnTypeToTypeName(DBColumnType columnTypeId);
 
+    String getDefaultValueForType(DBColumnType columnTypeId);
+
     ReferentialRuleType mapReferentialRuleNameToType(String ruleTypeName);
 
     Collection<IMetaItem> getMetaData(Connection con) throws MetaDataException;

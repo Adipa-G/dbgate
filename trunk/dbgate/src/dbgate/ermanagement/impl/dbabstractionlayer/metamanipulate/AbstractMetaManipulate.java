@@ -127,6 +127,19 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     }
 
     @Override
+    public String getDefaultValueForType(DBColumnType columnTypeId)
+    {
+        for (ColumnTypeMapItem typeMapItem : columnTypeMapItems)
+        {
+            if (typeMapItem.getColumnType() == columnTypeId)
+            {
+                return typeMapItem.getDefaultNonNullValue();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public ReferentialRuleType mapReferentialRuleNameToType(String ruleTypeName)
     {
         for (ReferentialRuleTypeMapItem ruleTypeMapItem : referentialRuleTypeMapItems)

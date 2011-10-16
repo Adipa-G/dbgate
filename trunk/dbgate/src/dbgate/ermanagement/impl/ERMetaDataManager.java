@@ -97,6 +97,9 @@ public class ERMetaDataManager
 
             for (MetaQueryHolder holder : queryHolders)
             {
+                if (holder.getQueryString() == null)
+                    continue;
+
                 Logger.getLogger(config.getLoggerName()).info(holder.getQueryString());
 
                 PreparedStatement ps = con.prepareStatement(holder.getQueryString());
