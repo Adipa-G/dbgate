@@ -4,13 +4,12 @@ import dbgate.DateWrapper;
 import dbgate.ServerDBClass;
 import dbgate.TimeStampWrapper;
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.exceptions.MetaDataException;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
-import dbgate.ermanagement.support.metadata.LeafEntity;
-import dbgate.ermanagement.support.metadata.LeafEntitySubA;
-import dbgate.ermanagement.support.metadata.LeafEntitySubB;
-import dbgate.ermanagement.support.metadata.RootEntity;
+import dbgate.ermanagement.support.patch.patchempty.LeafEntity;
+import dbgate.ermanagement.support.patch.patchempty.LeafEntitySubA;
+import dbgate.ermanagement.support.patch.patchempty.LeafEntitySubB;
+import dbgate.ermanagement.support.patch.patchempty.RootEntity;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.AfterClass;
@@ -31,7 +30,7 @@ import java.util.logging.Logger;
  * Date: Aug 29, 2010
  * Time: 6:40:58 PM
  */
-public class ErManagementMetaDataTests
+public class ErManagementPatchEmptyDBTests
 {
     private static DBConnector connector;
 
@@ -40,7 +39,7 @@ public class ErManagementMetaDataTests
     {
         try
         {
-            Logger.getLogger(ErManagementMetaDataTests.class.getName()).info("Starting in-memory database for unit tests");
+            Logger.getLogger(ErManagementPatchEmptyDBTests.class.getName()).info("Starting in-memory database for unit tests");
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata;create=true");
 
@@ -52,7 +51,7 @@ public class ErManagementMetaDataTests
         catch (Exception ex)
         {
             ex.printStackTrace();
-            Logger.getLogger(ErManagementMetaDataTests.class.getName()).severe("Exception during database startup.");
+            Logger.getLogger(ErManagementPatchEmptyDBTests.class.getName()).severe("Exception during database startup.");
         }
     }
 
@@ -276,7 +275,7 @@ public class ErManagementMetaDataTests
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(ErManagementMetaDataTests.class.getName()).info("Stopping in-memory database.");
+        Logger.getLogger(ErManagementPatchEmptyDBTests.class.getName()).info("Stopping in-memory database.");
         try
         {
             DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata;shutdown=true").close();

@@ -60,7 +60,8 @@ public class MetaColumn extends AbstractMetaItem
 
         if (isNull != that.isNull) return false;
         if (columnType != that.columnType) return false;
-        if (!size.equals(that.size)) return false;
+        if ((columnType == DBColumnType.VARCHAR || columnType == DBColumnType.CHAR)
+                && !size.equals(that.size)) return false;
 
         return true;
     }

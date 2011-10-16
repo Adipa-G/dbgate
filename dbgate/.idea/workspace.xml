@@ -2,11 +2,36 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="deba5122-0dda-46ca-971c-4bc58543f01b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERSessionUtils.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERSessionUtils.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchempty/RootEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbgate.properties" afterPath="$PROJECT_DIR$/dbgate.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaColumn.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaColumn.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/FourColumnEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/mappings/ColumnTypeMapItem.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/mappings/ColumnTypeMapItem.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/DefaultMetaManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/DefaultMetaManipulate.java" />
+      <change type="DELETED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src-tests\dbgate\ermanagement\support\metadata\LeafEntitySubB.java" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch" />
+      <change type="DELETED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src-tests\dbgate\ermanagement\support\metadata\LeafEntity.java" afterPath="" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src-tests\dbgate\ermanagement\ErManagementMetaDataTests.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchempty/LeafEntitySubA.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnTypeDifferentEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/MySqlMetaManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/MySqlMetaManipulate.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchempty/LeafEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchempty/LeafEntitySubB.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchempty" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaTable.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaTable.java" />
+      <change type="DELETED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src-tests\dbgate\ermanagement\support\metadata\LeafEntitySubA.java" afterPath="" />
+      <change type="DELETED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src-tests\dbgate\ermanagement\support\metadata\RootEntity.java" afterPath="" />
     </list>
-    <ignored path="build/" />
     <ignored path="dbgate.iws" />
+    <ignored path="build/" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,19 +49,6 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementMetaDataTests.java" line="110" class="dbgate.ermanagement.ErManagementMetaDataTests" package="dbgate.ermanagement">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
       <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/AbstractDBRelation.java" line="67" class="dbgate.ermanagement.AbstractDBRelation" package="dbgate.ermanagement">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -92,91 +104,93 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ErManagementColumnPersistTests.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementColumnPersistTests.java">
+      <file leaf-file-name="ErManagementPatchTableDifferenceDBTests.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="111" column="25" selection-start="4034" selection-end="4034" vertical-scroll-proportion="0.0">
+            <state line="177" column="12" selection-start="6256" selection-end="6256" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FourColumnEntity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/FourColumnEntity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="50" selection-start="345" selection-end="369" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ERDataPersistManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java">
+      <file leaf-file-name="ThreeColumnTypeDifferentEntity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnTypeDifferentEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="173" column="29" selection-start="6889" selection-end="6889" vertical-scroll-proportion="0.0">
+            <state line="14" column="43" selection-start="385" selection-end="415" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ERSessionUtils.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERSessionUtils.java">
+      <file leaf-file-name="AbstractMetaManipulate.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="35" selection-start="1520" selection-end="1520" vertical-scroll-proportion="3.0088496">
+            <state line="98" column="0" selection-start="4150" selection-end="4150" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ERDataManagerUtils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERDataManagerUtils.java">
+      <file leaf-file-name="ErManagementPatchEmptyDBTests.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="54" selection-start="2127" selection-end="2127" vertical-scroll-proportion="0.0">
+            <state line="32" column="42" selection-start="979" selection-end="1008" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ITypeFieldValueList.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/ITypeFieldValueList.java">
+      <file leaf-file-name="MetaColumn.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaColumn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="0" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0">
+            <state line="65" column="16" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EntityRelationFieldValueList.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/EntityRelationFieldValueList.java">
+      <file leaf-file-name="ERMetaDataManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="41" selection-start="314" selection-end="342" vertical-scroll-proportion="0.0">
+            <state line="99" column="16" selection-start="4387" selection-end="4387" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DefaultServerDBClass.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/DefaultServerDBClass.java">
+      <file leaf-file-name="MetaTable.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaTable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="0" selection-start="909" selection-end="909" vertical-scroll-proportion="0.0">
+            <state line="122" column="21" selection-start="1364" selection-end="3405" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ERLayer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERLayer.java">
+      <file leaf-file-name="DefaultMetaManipulate.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/DefaultMetaManipulate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="0" selection-start="2115" selection-end="2115" vertical-scroll-proportion="0.0">
+            <state line="280" column="40" selection-start="11004" selection-end="11033" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ERDataManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataManager.java">
+      <file leaf-file-name="login.txt" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/login.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="0" selection-start="1958" selection-end="1958" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ERDataCommonManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="22" selection-start="1143" selection-end="1143" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="37" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -190,27 +204,28 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+    <option name="GIT_EXECUTABLE" value="Y:\tools\git\bin\git.exe" />
     <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/treetest/TreeTestRootEntityFields.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/GeneralLogger.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/dbutility/DBConnector.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/dbutility/DBMgmtUtility.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/caches/impl/FieldCache.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/caches/impl/MethodCache.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/caches/impl/QueryCache.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERDataManagerUtils.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataManager.java" />
+        <option value="$PROJECT_DIR$/login.txt" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/BeforeEntity.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/FourColumnEntity.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnEntity.java" />
+        <option value="$PROJECT_DIR$/build.xml" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaTable.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/mappings/ColumnTypeMapItem.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java" />
-        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementConstraintValidationTest.java" />
-        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementColumnPersistTests.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERSessionUtils.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/MySqlMetaManipulate.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaColumn.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/DefaultMetaManipulate.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnTypeDifferentEntity.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java" />
       </list>
     </option>
   </component>
@@ -249,6 +264,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Favorites" />
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -368,7 +385,75 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="columntest" />
+              <option name="myItemId" value="constraint" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src-tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ermanagement" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="support" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patch" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patchtabledifferences" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src-tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ermanagement" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="support" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patch" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="patchempty" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -408,7 +493,59 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="src-tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbutility" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src-tests" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbutility" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="support" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -425,15 +562,9 @@
               <option name="myItemId" value="build" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jar" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -454,78 +585,26 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.searchVisible" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="dbgate.ermanagement.support.patch.patchtabledifferences" />
       <recent name="dbgate.ermanagement" />
       <recent name="dbgate.ermanagement.support.persistant.version" />
       <recent name="dbgate.ermanagement.support.persistant.crossreference" />
       <recent name="dbgate.ermanagement.context" />
-      <recent name="dbgate.ermanagement.context.impl" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="dbgate.ermanagement.support.patch" />
+      <recent name="dbgate.ermanagement.support.metadata.patchempty" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ErManagementColumnPersistTests">
-    <configuration default="false" name="ERManagementFeatureIntegrationTest.ERLayer_persistAndRetrieve_WithComplexStructure_retrievedShouldBeSameAsPersisted" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
-      <module name="dbgate" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementFeatureIntegrationTest" />
-      <option name="METHOD_NAME" value="ERLayer_persistAndRetrieve_WithComplexStructure_retrievedShouldBeSameAsPersisted" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="8673" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ErManagementMetaDataTests" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
-      <module name="dbgate" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementMetaDataTests" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="23440" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.ErManagementPatchTableDifferenceDBTests">
     <configuration default="false" name="ErManagementTreePersistTests.ERLayer_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
@@ -598,6 +677,62 @@
       <envs />
       <RunnerSettings RunnerId="Debug">
         <option name="DEBUG_PORT" value="7913" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ErManagementPatchTableDifferenceDBTests.ERLayer_patchDB_withTableColumnAddedWithoutData_shouldAddColumn" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="snapshooter" />
+      <module name="dbgate" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementPatchTableDifferenceDBTests" />
+      <option name="METHOD_NAME" value="ERLayer_patchDB_withTableColumnAddedWithoutData_shouldAddColumn" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="16283" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ErManagementPatchTableDifferenceDBTests" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="snapshooter" />
+      <module name="dbgate" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementPatchTableDifferenceDBTests" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="18939" />
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
       </RunnerSettings>
@@ -714,11 +849,11 @@
       </method>
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ERManagementFeatureIntegrationTest.ERLayer_persistAndRetrieve_WithComplexStructure_retrievedShouldBeSameAsPersisted" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.ErManagementMetaDataTests" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.ErManagementTreePersistTests.ERLayer_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.ErManagementColumnPersistTests.ERLayer_insert_withFieldsDifferentTypesWithoutNull_shouldEqualWhenLoaded" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ErManagementColumnPersistTests" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.ErManagementTreePersistTests.ERLayer_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.ErManagementColumnPersistTests.ERLayer_insert_withFieldsDifferentTypesWithoutNull_shouldEqualWhenLoaded" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.ErManagementColumnPersistTests" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.ErManagementPatchTableDifferenceDBTests.ERLayer_patchDB_withTableColumnAddedWithoutData_shouldAddColumn" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.ErManagementPatchTableDifferenceDBTests" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -761,23 +896,23 @@
     </option>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1378" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1378" height="754" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295082" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32903227" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3292683" sideWeight="0.6622951" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32786885" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50163937" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3285061" sideWeight="0.65806454" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32419354" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5016129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33114755" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33064517" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3292683" sideWeight="0.6622951" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3285061" sideWeight="0.65806454" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3262295" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32419354" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Properties" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -797,7 +932,7 @@
     <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixing issue of not setting PK when insertion" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added adding,removing and altering columns when patching" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -815,6 +950,8 @@
     <MESSAGE value="Added cross reference checking" />
     <MESSAGE value="Version managenment" />
     <MESSAGE value="Fixing issue of not setting PK when insertion" />
+    <MESSAGE value="Fixed isseue of loading when used non DBClass objects" />
+    <MESSAGE value="Added adding,removing and altering columns when patching" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -832,88 +969,118 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/AbstractMetaItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="0" selection-start="702" selection-end="702" vertical-scroll-proportion="0.6197917">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/DBColumnType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="18" selection-start="130" selection-end="130" vertical-scroll-proportion="0.13333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/mappings/ColumnTypeMapItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="5" selection-start="1095" selection-end="1095" vertical-scroll-proportion="0.4627451">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="798" selection-end="798" vertical-scroll-proportion="0.310219">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="13" selection-start="385" selection-end="385" vertical-scroll-proportion="0.33333334">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/MySqlMetaManipulate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="888" selection-end="888" vertical-scroll-proportion="-0.039568346">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaColumn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="16" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="0" selection-start="4150" selection-end="4150" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="42" selection-start="979" selection-end="1008" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/FourColumnEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="50" selection-start="345" selection-end="369" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnTypeDifferentEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="43" selection-start="385" selection-end="415" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="177" column="12" selection-start="6256" selection-end="6256" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="200" column="104" selection-start="8786" selection-end="8786" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="13" selection-start="625" selection-end="625" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementConstraintValidationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="211" column="97" selection-start="7711" selection-end="7711" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementFeatureIntegrationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="13" selection-start="962" selection-end="962" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/columntest/PrimaryKeyGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="24" selection-start="255" selection-end="255" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/columntest/ColumnTestEntityAnnotations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="13" selection-start="497" selection-end="497" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementColumnPersistTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="111" column="25" selection-start="4034" selection-end="4034" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/ITypeFieldValueList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="0" selection-start="132" selection-end="132" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/EntityRelationFieldValueList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="41" selection-start="314" selection-end="342" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/DefaultServerDBClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="0" selection-start="909" selection-end="909" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERLayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="0" selection-start="2115" selection-end="2115" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="0" selection-start="1958" selection-end="1958" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="22" selection-start="1143" selection-end="1143" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERDataManagerUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="54" selection-start="2127" selection-end="2127" vertical-scroll-proportion="0.0">
+        <state line="99" column="16" selection-start="4387" selection-end="4387" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaTable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="173" column="29" selection-start="6889" selection-end="6889" vertical-scroll-proportion="0.0">
+        <state line="122" column="21" selection-start="1364" selection-end="3405" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERSessionUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/DefaultMetaManipulate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="35" selection-start="1520" selection-end="1520" vertical-scroll-proportion="3.0088496">
+        <state line="280" column="40" selection-start="11004" selection-end="11033" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/login.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="37" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>

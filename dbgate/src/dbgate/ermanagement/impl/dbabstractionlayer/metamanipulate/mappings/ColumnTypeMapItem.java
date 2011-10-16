@@ -14,6 +14,7 @@ public class ColumnTypeMapItem
 {
     private String name;
     private DBColumnType columnType;
+    private String defaultNonNullValue;
 
     public ColumnTypeMapItem()
     {
@@ -23,6 +24,12 @@ public class ColumnTypeMapItem
     {
         this.name = name;
         columnType = id;
+    }
+
+    public ColumnTypeMapItem(String name, DBColumnType columnType, String defaultNonNullValue)
+    {
+        this(name,columnType);
+        this.defaultNonNullValue = defaultNonNullValue;
     }
 
     public String getName()
@@ -43,6 +50,16 @@ public class ColumnTypeMapItem
     public void setColumnType(DBColumnType columnType)
     {
         this.columnType = columnType;
+    }
+
+    public String getDefaultNonNullValue()
+    {
+        return defaultNonNullValue;
+    }
+
+    public void setDefaultNonNullValue(String defaultNonNullValue)
+    {
+        this.defaultNonNullValue = defaultNonNullValue;
     }
 
     public void _setTypeFromSqlType(short type)

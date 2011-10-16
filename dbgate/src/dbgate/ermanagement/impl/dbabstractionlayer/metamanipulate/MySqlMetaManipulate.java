@@ -1,9 +1,10 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate;
 
+import dbgate.DBColumnType;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.IMetaItem;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.MetaItemType;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.MetaPrimaryKey;
+import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;
+import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonTableGroup;
+import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +18,52 @@ public class MySqlMetaManipulate extends DefaultMetaManipulate
     public MySqlMetaManipulate(IDBLayer dbLayer)
     {
         super(dbLayer);
+    }
+
+    @Override
+    protected String createAlterColumnQuery(MetaComparisonTableGroup tableGroup, MetaComparisonColumnGroup columnGroup)
+    {
+        MetaTable metaTable = tableGroup.getRequiredItem();
+        MetaColumn metaColumn = columnGroup.getRequiredItem();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("ALTER TABLE ");
+        sb.append(metaTable.getName());
+        sb.append(" MODIFY ");
+        sb.append(metaColumn.getName());
+        sb.append(" ");
+        if (metaColumn.getColumnType() == DBColumnType.CHAR
+                || metaColumn.getColumnType() == DBColumnType.VARCHAR)
+        {
+            sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
+            sb.append("(");
+            sb.append(metaColumn.getSize());
+            sb.append(")");
+        }
+        else
+        {
+            sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
+        }
+
+        sb.append(" DEFAULT ");
+        if (!metaColumn.isNull())
+        {
+            String defaultValue = getDefaultValueForType(metaColumn.getColumnType());
+            if (defaultValue != null)
+            {
+                sb.append(defaultValue);
+            }
+        }
+        else
+        {
+            sb.append("NULL");
+        }
+
+        sb.append(" ");
+        sb.append(metaColumn.isNull() ? "" : "NOT NULL");
+        sb.append(" ");
+
+        return sb.toString();
     }
 
     @Override

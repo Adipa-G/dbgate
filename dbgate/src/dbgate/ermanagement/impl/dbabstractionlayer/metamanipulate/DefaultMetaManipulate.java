@@ -36,15 +36,15 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     @Override
     protected void fillDataMappings(Connection con) throws MetaDataException
     {
-        columnTypeMapItems.add(new ColumnTypeMapItem("INTEGER",DBColumnType.INTEGER));
-        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR",DBColumnType.BOOLEAN));
-        columnTypeMapItems.add(new ColumnTypeMapItem("FLOAT",DBColumnType.FLOAT));
-        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR",DBColumnType.CHAR));
-        columnTypeMapItems.add(new ColumnTypeMapItem("DATE",DBColumnType.DATE));
-        columnTypeMapItems.add(new ColumnTypeMapItem("DOUBLE",DBColumnType.DOUBLE));
-        columnTypeMapItems.add(new ColumnTypeMapItem("BIGINT",DBColumnType.LONG));
-        columnTypeMapItems.add(new ColumnTypeMapItem("TIMESTAMP",DBColumnType.TIMESTAMP));
-        columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR",DBColumnType.VARCHAR));   
+        columnTypeMapItems.add(new ColumnTypeMapItem("INTEGER",DBColumnType.INTEGER,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR",DBColumnType.BOOLEAN,"true"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("FLOAT",DBColumnType.FLOAT,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR",DBColumnType.CHAR,"' '"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("DATE",DBColumnType.DATE,"1981/10/12"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("DOUBLE",DBColumnType.DOUBLE,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("BIGINT",DBColumnType.LONG,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("TIMESTAMP",DBColumnType.TIMESTAMP,"1981/10/12"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR",DBColumnType.VARCHAR,"''"));
     }
 
     @Override
@@ -203,7 +203,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     @Override
     protected String createAlterTableQuery(MetaComparisonTableGroup tableGroup)
     {
-        return "";
+        return null;
     }
 
     @Override
@@ -215,7 +215,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
         sb.append(metaTable.getName());
-        sb.append("ADD ");
+        sb.append(" ADD ");
         sb.append(metaColumn.getName());
         sb.append(" ");
         if (metaColumn.getColumnType() == DBColumnType.CHAR
@@ -230,6 +230,20 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
         {
             sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
         }
+        sb.append(" DEFAULT ");
+        if (!metaColumn.isNull())
+        {
+            String defaultValue = getDefaultValueForType(metaColumn.getColumnType());
+            if (defaultValue != null)
+            {
+                sb.append(defaultValue);
+            }
+        }
+        else
+        {
+            sb.append("NULL");
+        }
+
         sb.append(" ");
         sb.append(metaColumn.isNull() ? "" : "NOT NULL");
         sb.append(" ");
@@ -241,12 +255,12 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     protected String createDropColumnQuery(MetaComparisonTableGroup tableGroup, MetaComparisonColumnGroup columnGroup)
     {
         MetaTable metaTable = tableGroup.getRequiredItem();
-        MetaColumn metaColumn = columnGroup.getRequiredItem();
+        MetaColumn metaColumn = columnGroup.getExistingItem();
 
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
         sb.append(metaTable.getName());
-        sb.append("DROP COLUMN ");
+        sb.append(" DROP COLUMN ");
         sb.append(metaColumn.getName());
         sb.append(" ");
 
@@ -262,9 +276,9 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
         sb.append(metaTable.getName());
-        sb.append("MODIFY ");
+        sb.append(" ALTER ");
         sb.append(metaColumn.getName());
-        sb.append(" ");
+        sb.append(" SET DATA TYPE ");
         if (metaColumn.getColumnType() == DBColumnType.CHAR
                 || metaColumn.getColumnType() == DBColumnType.VARCHAR)
         {
@@ -277,9 +291,6 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
         {
             sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
         }
-        sb.append(" ");
-        sb.append(metaColumn.isNull() ? "" : "NOT NULL");
-        sb.append(" ");
 
         return sb.toString();
     }

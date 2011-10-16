@@ -98,7 +98,8 @@
 
           <test todir="${build.testreports}" name="dbgate.dbutility.DBUtilsTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.ermanagement.ErManagementColumnPersistTests" fork="yes"/>
-          <test todir="${build.testreports}" name="dbgate.ermanagement.ErManagementMetaDataTests" fork="yes"/>
+          <test todir="${build.testreports}" name="dbgate.ermanagement.ErManagementPatchEmptyDBTests" fork="yes"/>
+          <test todir="${build.testreports}" name="dbgate.ermanagement.ErManagementPatchTableDifferenceDBTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.ermanagement.ErManagementTreePersistTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.ermanagement.ErManagementInheritancePersistTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.ermanagement.ERManagementChangeTrackerTest" fork="yes"/>

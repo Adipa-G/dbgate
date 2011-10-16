@@ -1,4 +1,4 @@
-package dbgate.ermanagement.support.metadata;
+package dbgate.ermanagement.support.patch.patchempty;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.DefaultDBColumn;
