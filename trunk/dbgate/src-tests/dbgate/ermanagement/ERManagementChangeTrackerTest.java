@@ -113,6 +113,46 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
+    public void ERLayer_changeField_WithAutoTrackChangesOnAndClearTracker_shouldUpdateTheEntityInDb()
+    {
+        try
+        {
+            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            Connection connection = connector.getConnection();
+
+            int id = 45;
+            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            entity.setIdCol(id);
+            entity.setName("Org-Name");
+            entity.persist(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            loadEntityWithId(connection,loadedEntity,id);
+            loadedEntity.getContext().getChangeTracker().getFields().clear();
+            loadedEntity.context.getChangeTracker().getChildEntityKeys().clear();
+            loadedEntity.setName("Changed-Name");
+            loadedEntity.persist(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
+            loadEntityWithId(connection,reloadedEntity,id);
+            connection.close();
+
+            Assert.assertEquals(loadedEntity.getName(),reloadedEntity.getName());
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void ERLayer_changeField_WithAutoTrackChangesOff_shouldNotUpdateTheEntityInDb()
     {
         try

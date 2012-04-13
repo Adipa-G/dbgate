@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="deba5122-0dda-46ca-971c-4bc58543f01b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbgate.properties" afterPath="$PROJECT_DIR$/dbgate.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbgate.xml" afterPath="$PROJECT_DIR$/dbgate.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/context/IChangeTracker.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/context/IChangeTracker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ChangeTracker.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ChangeTracker.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java" />
     </list>
     <ignored path="dbgate.iws" />
     <ignored path="build/" />
@@ -84,73 +81,76 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AbstractMetaManipulate.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="0" selection-start="4150" selection-end="4150" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ErManagementPatchEmptyDBTests.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="42" selection-start="979" selection-end="1008" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ERDataPersistManager.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ERDataPersistManager.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="20" selection-start="3156" selection-end="3156" vertical-scroll-proportion="0.0">
+            <state line="533" column="54" selection-start="22789" selection-end="22789" vertical-scroll-proportion="0.27666667">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MetaColumn.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaColumn.java">
+      <file leaf-file-name="IFieldCache.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/caches/IFieldCache.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="16" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0">
+            <state line="26" column="28" selection-start="813" selection-end="813" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ERMetaDataManager.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java">
+      <file leaf-file-name="ERDataManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="99" column="16" selection-start="4387" selection-end="4387" vertical-scroll-proportion="0.0">
+            <state line="38" column="13" selection-start="1304" selection-end="1304" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MetaTable.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaTable.java">
+      <file leaf-file-name="ERDataCommonManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="122" column="21" selection-start="1364" selection-end="3405" vertical-scroll-proportion="0.0">
+            <state line="51" column="0" selection-start="1746" selection-end="1746" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#7409#7417#0" expanded="true" />
+                <element signature="e#9442#9459#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ERManagementChangeTrackerTest.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="115" column="34" selection-start="4185" selection-end="4185" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DefaultMetaManipulate.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/DefaultMetaManipulate.java">
+      <file leaf-file-name="ERDataManagerUtils.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERDataManagerUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="280" column="40" selection-start="11004" selection-end="11033" vertical-scroll-proportion="0.0">
+            <state line="28" column="44" selection-start="995" selection-end="995" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/login.txt">
+      <file leaf-file-name="ERDataRetrievalManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="24" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0">
+            <state line="39" column="50" selection-start="1409" selection-end="1409" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IEntityContext.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/IEntityContext.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="13" selection-start="180" selection-end="180" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -159,16 +159,7 @@
       <file leaf-file-name="IChangeTracker.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/IChangeTracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="12" selection-start="374" selection-end="374" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChangeTracker.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ChangeTracker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="12" selection-start="1343" selection-end="1343" vertical-scroll-proportion="1.372">
+            <state line="10" column="17" selection-start="180" selection-end="180" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -188,10 +179,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/FourColumnEntity.java" />
-        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnEntity.java" />
-        <option value="$PROJECT_DIR$/build.xml" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaTable.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/mappings/ColumnTypeMapItem.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java" />
@@ -201,9 +188,13 @@
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/DefaultMetaManipulate.java" />
         <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnTypeDifferentEntity.java" />
         <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/context/IChangeTracker.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ChangeTracker.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERDataManagerUtils.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java" />
       </list>
     </option>
   </component>
@@ -248,6 +239,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -599,7 +591,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Favorites" />
     </panes>
   </component>
@@ -617,16 +608,16 @@
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="dbgate" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.searchVisible" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -641,119 +632,7 @@
       <recent name="dbgate.ermanagement.support.metadata.patchempty" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ErManagementPatchTableDifferenceDBTests">
-    <configuration default="false" name="ErManagementTreePersistTests.ERLayer_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
-      <module name="dbgate" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementTreePersistTests" />
-      <option name="METHOD_NAME" value="ERLayer_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="23781" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ErManagementColumnPersistTests.ERLayer_insert_withFieldsDifferentTypesWithoutNull_shouldEqualWhenLoaded" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
-      <module name="dbgate" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementColumnPersistTests" />
-      <option name="METHOD_NAME" value="ERLayer_insert_withFieldsDifferentTypesWithoutNull_shouldEqualWhenLoaded" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="7788" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper RunnerId="Debug" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ErManagementColumnPersistTests" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
-      <module name="dbgate" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementColumnPersistTests" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="7913" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ErManagementPatchTableDifferenceDBTests.ERLayer_patchDB_withTableColumnAddedWithoutData_shouldAddColumn" type="JUnit" factoryName="JUnit" temporary="true">
-      <extension name="snapshooter" />
-      <module name="dbgate" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementPatchTableDifferenceDBTests" />
-      <option name="METHOD_NAME" value="ERLayer_patchDB_withTableColumnAddedWithoutData_shouldAddColumn" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="16283" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.ERManagementChangeTrackerTest.ERLayer_changeField_WithAutoTrackChangesOnAndClearTracker_shouldUpdateTheEntityInDb">
     <configuration default="false" name="ErManagementPatchTableDifferenceDBTests" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
@@ -783,6 +662,116 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
+    <configuration default="false" name="ErManagementTreePersistTests.ERLayer_insert_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="snapshooter" />
+      <module name="dbgate" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementTreePersistTests" />
+      <option name="METHOD_NAME" value="ERLayer_insert_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ErManagementTreePersistTests.ERLayer_update_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="snapshooter" />
+      <module name="dbgate" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementTreePersistTests" />
+      <option name="METHOD_NAME" value="ERLayer_update_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ERManagementChangeTrackerTest.ERLayer_changeField_WithAutoTrackChangesOn_shouldUpdateTheEntityInDb" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="snapshooter" />
+      <module name="dbgate" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementChangeTrackerTest" />
+      <option name="METHOD_NAME" value="ERLayer_changeField_WithAutoTrackChangesOn_shouldUpdateTheEntityInDb" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ERManagementChangeTrackerTest.ERLayer_changeField_WithAutoTrackChangesOnAndClearTracker_shouldUpdateTheEntityInDb" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="snapshooter" />
+      <module name="dbgate" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementChangeTrackerTest" />
+      <option name="METHOD_NAME" value="ERLayer_changeField_WithAutoTrackChangesOnAndClearTracker_shouldUpdateTheEntityInDb" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -792,24 +781,6 @@
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
@@ -839,6 +810,24 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -892,11 +881,11 @@
       </method>
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ErManagementTreePersistTests.ERLayer_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.ErManagementColumnPersistTests.ERLayer_insert_withFieldsDifferentTypesWithoutNull_shouldEqualWhenLoaded" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.ErManagementColumnPersistTests" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.ErManagementPatchTableDifferenceDBTests.ERLayer_patchDB_withTableColumnAddedWithoutData_shouldAddColumn" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ErManagementPatchTableDifferenceDBTests" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.ErManagementPatchTableDifferenceDBTests" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.ErManagementTreePersistTests.ERLayer_insert_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.ErManagementTreePersistTests.ERLayer_update_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.ERManagementChangeTrackerTest.ERLayer_changeField_WithAutoTrackChangesOn_shouldUpdateTheEntityInDb" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.ERManagementChangeTrackerTest.ERLayer_changeField_WithAutoTrackChangesOnAndClearTracker_shouldUpdateTheEntityInDb" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -953,24 +942,24 @@
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3277311" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3263158" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32801822" sideWeight="0.6722689" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5016129" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3226891" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32801822" sideWeight="0.67192984" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263158" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32807016" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32801822" sideWeight="0.6722689" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32419354" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32801822" sideWeight="0.67368424" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3226891" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Properties" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3226891" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32941177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1011,7 +1000,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change tracker fix when it's empty" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change tracker mod" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1032,6 +1021,7 @@
     <MESSAGE value="Fixed isseue of loading when used non DBClass objects" />
     <MESSAGE value="Added adding,removing and altering columns when patching" />
     <MESSAGE value="Change tracker fix when it's empty" />
+    <MESSAGE value="Change tracker mod" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1068,60 +1058,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="13" selection-start="385" selection-end="385" vertical-scroll-proportion="0.33333334" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/MySqlMetaManipulate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="888" selection-end="888" vertical-scroll-proportion="-0.039568346" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="177" column="12" selection-start="6256" selection-end="6256" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/FourColumnEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="50" selection-start="345" selection-end="369" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/patch/patchtabledifferences/ThreeColumnTypeDifferentEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="43" selection-start="385" selection-end="415" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.7.0/src.zip!/java/lang/Override.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="18" selection-start="971" selection-end="971" vertical-scroll-proportion="0.75091577">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="0" selection-start="4150" selection-end="4150" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="42" selection-start="979" selection-end="1008" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="20" selection-start="3156" selection-end="3156" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaColumn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="16" selection-start="1408" selection-end="1408" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="16" selection-start="4387" selection-end="4387" vertical-scroll-proportion="0.0" />
@@ -1137,23 +1073,96 @@
         <state line="280" column="40" selection-start="11004" selection-end="11033" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/login.txt">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ChangeTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="24" selection-start="37" selection-end="37" vertical-scroll-proportion="0.0">
+        <state line="45" column="9" selection-start="1169" selection-end="1169" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementTreePersistTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="184" column="36" selection-start="6378" selection-end="6378" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERSessionUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="0" selection-start="1995" selection-end="1995" vertical-scroll-proportion="1.8435115">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="13" selection-start="1304" selection-end="1304" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/IChangeTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="12" selection-start="374" selection-end="374" vertical-scroll-proportion="0.0">
+        <state line="10" column="17" selection-start="180" selection-end="180" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ChangeTracker.java">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/context/IEntityContext.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="12" selection-start="1343" selection-end="1343" vertical-scroll-proportion="1.372">
+        <state line="10" column="13" selection-start="180" selection-end="180" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/caches/IFieldCache.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="28" selection-start="813" selection-end="813" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERDataManagerUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="44" selection-start="995" selection-end="995" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="50" selection-start="1409" selection-end="1409" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="115" column="34" selection-start="4185" selection-end="4185" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataCommonManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="0" selection-start="1746" selection-end="1746" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#7409#7417#0" expanded="true" />
+            <element signature="e#9442#9459#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/login.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="22" selection-start="37" selection-end="37" vertical-scroll-proportion="0.035639413">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="533" column="54" selection-start="22789" selection-end="22789" vertical-scroll-proportion="0.27666667">
           <folding />
         </state>
       </provider>
