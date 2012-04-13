@@ -72,7 +72,8 @@ public class ERDataPersistManager extends ERDataCommonManager
             throws SequenceGeneratorInitializationException, InvocationTargetException
             , NoSuchMethodException, FieldCacheMissException, IllegalAccessException
             , IntegrityConstraintViolationException, NoFieldsFoundException, SQLException
-            , TableCacheMissException, QueryBuildingException
+            , TableCacheMissException, QueryBuildingException, NoMatchingColumnFoundException
+            , RetrievalException, InstantiationException
     {
         IEntityContext entityContext = serverDBClass.getContext();
         Collection<ITypeFieldValueList> originalChildren;
@@ -81,7 +82,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         {
             if (config.isAutoTrackChanges())
             {
-                if (checkForModification(serverDBClass,entityContext))
+                if (checkForModification(serverDBClass,con,entityContext))
                 {
                     MiscUtils.modify(serverDBClass);
                 }
@@ -479,13 +480,14 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private static boolean checkForModification(ServerDBClass serverDBClass, IEntityContext entityContext)
-            throws FieldCacheMissException, NoSuchMethodException
-            , InvocationTargetException, IllegalAccessException
+    private boolean checkForModification(ServerDBClass serverDBClass,Connection con, IEntityContext entityContext)
+            throws FieldCacheMissException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+            , SQLException, TableCacheMissException, QueryBuildingException, SequenceGeneratorInitializationException
+            , NoFieldsFoundException, NoMatchingColumnFoundException, RetrievalException, InstantiationException
     {
         if (!entityContext.getChangeTracker().isValid())
         {
-            return false;
+            FillChangeTrackerValues(serverDBClass, con, entityContext);
         }
 
         Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(serverDBClass.getClass(),new Class[]{ServerDBClass.class});
@@ -512,6 +514,49 @@ public class ERDataPersistManager extends ERDataCommonManager
             }
         }
         return false;
+    }
+
+    private void FillChangeTrackerValues(ServerDBClass serverDBClass, Connection con, IEntityContext entityContext)
+            throws InvocationTargetException, NoSuchMethodException, FieldCacheMissException
+            , IllegalAccessException, SQLException, TableCacheMissException, QueryBuildingException
+            , NoFieldsFoundException, SequenceGeneratorInitializationException, NoMatchingColumnFoundException
+            , RetrievalException, InstantiationException
+    {
+        if (serverDBClass.getStatus() == DBClassStatus.NEW
+                || serverDBClass.getStatus() == DBClassStatus.DELETED)
+        {
+            return;
+        }
+
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(serverDBClass.getClass(), new Class[]{ServerDBClass.class});
+        for (Class type : typeList)
+        {
+            String tableName = CacheManager.tableCache.getTableName(type);
+            if (tableName == null)
+            {
+                continue;
+            }
+
+            ITypeFieldValueList values = extractCurrentRowValues(serverDBClass,type,con);
+            for (EntityFieldValue fieldValue : values.getFieldValues())
+            {
+                entityContext.getChangeTracker().getFields().add(fieldValue);
+            }
+
+            Collection<IDBRelation> dbRelations = CacheManager.fieldCache.getRelations(type);
+            for (IDBRelation relation : dbRelations)
+            {
+                Collection<ServerRODBClass> children = readRelationChildrenFromDb(serverDBClass,type,con,relation);
+                for (ServerRODBClass childEntity : children)
+                {
+                    ITypeFieldValueList valueTypeList = ERDataManagerUtils.extractRelationKeyValues(childEntity,relation);
+                    if (valueTypeList != null)
+                    {
+                        entityContext.getChangeTracker().getChildEntityKeys().add(valueTypeList);
+                    }
+                }
+            }
+        }
     }
 
     private void deleteOrphanChildren(Connection con,Collection<ITypeFieldValueList> childrenToDelete)
