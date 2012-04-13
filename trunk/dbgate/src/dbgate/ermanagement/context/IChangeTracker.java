@@ -15,4 +15,6 @@ public interface IChangeTracker
     Collection<ITypeFieldValueList> getChildEntityKeys();
 
     EntityFieldValue getFieldValue(String attributeName);
+
+    boolean isValid();
 }

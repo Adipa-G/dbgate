@@ -483,6 +483,11 @@ public class ERDataPersistManager extends ERDataCommonManager
             throws FieldCacheMissException, NoSuchMethodException
             , InvocationTargetException, IllegalAccessException
     {
+        if (!entityContext.getChangeTracker().isValid())
+        {
+            return false;
+        }
+
         Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(serverDBClass.getClass(),new Class[]{ServerDBClass.class});
         for (Class type : typeList)
         {

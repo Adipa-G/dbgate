@@ -46,4 +46,11 @@ public class ChangeTracker implements IChangeTracker
         }
         return null;
     }
+
+    @Override
+    public boolean isValid()
+    {
+        return fields.size() > 0
+                || childEntityRelationKeys.size() > 0;
+    }
 }

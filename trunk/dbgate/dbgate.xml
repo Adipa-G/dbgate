@@ -7,15 +7,6 @@
   <!-- 
   <property name="skip.tests" value="true"/>
    -->
-  <property name="javac2.home" value="${idea.home}/lib"/>
-  <path id="javac2.classpath">
-    <pathelement location="${javac2.home}/javac2.jar"/>
-    <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm.jar"/>
-    <pathelement location="${javac2.home}/asm-commons.jar"/>
-  </path>
-  <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-  <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
   
   <!-- Compiler options -->
   
@@ -37,9 +28,16 @@
     <exclude name="**/.git/**"/>
     <exclude name="**/*.hprof/**"/>
     <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
   </patternset>
   <patternset id="library.patterns">
     <include name="*.zip"/>
+    <include name="*.apk"/>
     <include name="*.war"/>
     <include name="*.egg"/>
     <include name="*.ear"/>
@@ -61,9 +59,10 @@
   
   <!-- JDK definitions -->
   
-  <property name="jdk.bin.1.6" value="${jdk.home.1.6}/bin"/>
-  <path id="jdk.classpath.1.6">
-    <fileset dir="${jdk.home.1.6}">
+  <property name="jdk.bin.jdk" value="${jdk.home.jdk}/bin"/>
+  <path id="jdk.classpath.jdk">
+    <fileset dir="${jdk.home.jdk}">
+      <include name="jre/lib/alt-rt.jar"/>
       <include name="jre/lib/charsets.jar"/>
       <include name="jre/lib/deploy.jar"/>
       <include name="jre/lib/javaws.jar"/>
@@ -75,35 +74,49 @@
       <include name="jre/lib/rt.jar"/>
       <include name="jre/lib/ext/dnsns.jar"/>
       <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
       <include name="jre/lib/ext/sunjce_provider.jar"/>
       <include name="jre/lib/ext/sunmscapi.jar"/>
-      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
     </fileset>
   </path>
   
-  <property name="project.jdk.home" value="${jdk.home.1.6}"/>
-  <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
-  <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
+  <property name="project.jdk.home" value=""/>
+  <property name="project.jdk.bin" value=""/>
+  <property name="project.jdk.classpath" value=""/>
   
   
   <!-- Project Libraries -->
   
   <path id="library.derby.10.6.1.0.classpath">
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derby.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derby.war"/>
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbyclient.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbynet.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbyrun.jar"/>
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/Derby.10.6.1.0/derbytools.jar"/>
+    <pathelement location="${basedir}/../lib/Derby.10.6.1.0/derby.jar"/>
+    <pathelement location="${basedir}/../lib/Derby.10.6.1.0/derby.war"/>
+    <pathelement location="${basedir}/../lib/Derby.10.6.1.0/derbyclient.jar"/>
+    <pathelement location="${basedir}/../lib/Derby.10.6.1.0/derbynet.jar"/>
+    <pathelement location="${basedir}/../lib/Derby.10.6.1.0/derbyrun.jar"/>
+    <pathelement location="${basedir}/../lib/Derby.10.6.1.0/derbytools.jar"/>
   </path>
   
   <path id="library.junit.4.0.classpath">
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/junit.4.0/junit-4.0.jar"/>
+    <pathelement location="${basedir}/../lib/junit.4.0/junit-4.0.jar"/>
   </path>
   
   <path id="library.ojdbc.1.4.classpath">
-    <pathelement location="Y:/dev/java/community/dbgate/trunk/lib/ojdbc.1.4/ojdbc14.jar"/>
+    <pathelement location="${basedir}/../lib/ojdbc.1.4/ojdbc14.jar"/>
   </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm.jar"/>
+    <pathelement location="${javac2.home}/asm-commons.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
   
   <!-- Modules -->
   
@@ -113,9 +126,9 @@
   <dirname property="module.dbgate.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.dbgate" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.dbgate" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.dbgate" value="${project.jdk.classpath}"/>
+  <property name="module.jdk.home.dbgate" value="${jdk.home.jdk}"/>
+  <property name="module.jdk.bin.dbgate" value="${jdk.bin.jdk}"/>
+  <property name="module.jdk.classpath.dbgate" value="jdk.classpath.jdk"/>
   
   <property name="compiler.args.dbgate" value="${compiler.args}"/>
   
@@ -126,16 +139,31 @@
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
   
-  <path id="dbgate.module.classpath">
+  <path id="dbgate.module.production.classpath">
     <path refid="${module.jdk.classpath.dbgate}"/>
     <path refid="library.ojdbc.1.4.classpath"/>
     <path refid="library.derby.10.6.1.0.classpath"/>
     <path refid="library.junit.4.0.classpath"/>
   </path>
   
-  <path id="dbgate.runtime.module.classpath">
+  <path id="dbgate.runtime.production.module.classpath">
     <pathelement location="${dbgate.output.dir}"/>
+    <path refid="library.ojdbc.1.4.classpath"/>
+    <path refid="library.derby.10.6.1.0.classpath"/>
+    <path refid="library.junit.4.0.classpath"/>
+  </path>
+  
+  <path id="dbgate.module.classpath">
+    <path refid="${module.jdk.classpath.dbgate}"/>
+    <pathelement location="${dbgate.output.dir}"/>
+    <path refid="library.ojdbc.1.4.classpath"/>
+    <path refid="library.derby.10.6.1.0.classpath"/>
+    <path refid="library.junit.4.0.classpath"/>
+  </path>
+  
+  <path id="dbgate.runtime.module.classpath">
     <pathelement location="${dbgate.testoutput.dir}"/>
+    <pathelement location="${dbgate.output.dir}"/>
     <path refid="library.ojdbc.1.4.classpath"/>
     <path refid="library.derby.10.6.1.0.classpath"/>
     <path refid="library.junit.4.0.classpath"/>
@@ -165,12 +193,12 @@
   
   <target name="compile.module.dbgate" depends="compile.module.dbgate.production,compile.module.dbgate.tests" description="Compile module dbgate"/>
   
-  <target name="compile.module.dbgate.production" description="Compile module dbgate; production classes">
+  <target name="compile.module.dbgate.production" depends="register.custom.compilers" description="Compile module dbgate; production classes">
     <mkdir dir="${dbgate.output.dir}"/>
     <javac2 destdir="${dbgate.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dbgate}/javac">
       <compilerarg line="${compiler.args.dbgate}"/>
       <bootclasspath refid="dbgate.module.bootclasspath"/>
-      <classpath refid="dbgate.module.classpath"/>
+      <classpath refid="dbgate.module.production.classpath"/>
       <src refid="dbgate.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.dbgate"/>
     </javac2>
@@ -183,15 +211,12 @@
     </copy>
   </target>
   
-  <target name="compile.module.dbgate.tests" depends="compile.module.dbgate.production" description="compile module dbgate; test classes" unless="skip.tests">
+  <target name="compile.module.dbgate.tests" depends="register.custom.compilers,compile.module.dbgate.production" description="compile module dbgate; test classes" unless="skip.tests">
     <mkdir dir="${dbgate.testoutput.dir}"/>
     <javac2 destdir="${dbgate.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.dbgate}/javac">
       <compilerarg line="${compiler.args.dbgate}"/>
+      <bootclasspath refid="dbgate.module.bootclasspath"/>
       <classpath refid="dbgate.module.classpath"/>
-      <classpath>
-        <path refid="dbgate.module.classpath"/>
-        <pathelement location="${dbgate.output.dir}"/>
-      </classpath>
       <src refid="dbgate.module.test.sourcepath"/>
       <patternset refid="excluded.from.compilation.dbgate"/>
     </javac2>
