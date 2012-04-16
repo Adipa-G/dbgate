@@ -178,7 +178,7 @@ public class DBClassAttributeExtractionUtils
         IDBRelation relation = new DefaultDBRelation(dbClassField.getName(),foreignKeyInfo.name()
                 ,foreignKeyInfo.relatedObjectType(),objectMappings,foreignKeyInfo.updateRule()
                 ,foreignKeyInfo.deleteRule(),foreignKeyInfo.reverseRelation()
-                ,foreignKeyInfo.nonIdentifyingRelation());
+                ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.lazy());
 
         return relation;
     }

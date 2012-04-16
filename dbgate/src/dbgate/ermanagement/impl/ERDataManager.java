@@ -41,10 +41,10 @@ public class ERDataManager implements IERDataManager
     private ERDataRetrievalManager erDataRetrievalManager;
     private ERDataPersistManager erDataPersistManager;
 
-    public ERDataManager(IDBLayer dbLayer,IERLayerConfig config)
+    public ERDataManager(IDBLayer dbLayer,IERLayerStatistics statistics,IERLayerConfig config)
     {
-        this.erDataRetrievalManager = new ERDataRetrievalManager(dbLayer,config);
-        this.erDataPersistManager = new ERDataPersistManager(dbLayer,config);
+        this.erDataRetrievalManager = new ERDataRetrievalManager(dbLayer,statistics,config);
+        this.erDataPersistManager = new ERDataPersistManager(dbLayer,statistics,config);
     }
 
     public void load(ServerRODBClass roEntity, ResultSet rs, Connection con) throws RetrievalException

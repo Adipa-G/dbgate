@@ -16,19 +16,20 @@ public abstract class AbstractDBRelation implements IDBRelation
     private ReferentialRuleType deleteRule;
     private boolean reverseRelationship;
     private boolean nonIdentifyingRelation;
+    private boolean lazy;
 
     protected AbstractDBRelation(String attributeName,String relationshipName
             , Class relatedObjectType, DBRelationColumnMapping[] tableColumnMappings)
     {
         this(attributeName,relationshipName,relatedObjectType
                 ,tableColumnMappings,ReferentialRuleType.RESTRICT
-                ,ReferentialRuleType.CASCADE,false,false);
+                ,ReferentialRuleType.CASCADE,false,false,false);
     }
 
     protected AbstractDBRelation(String attributeName,String relationshipName
             , Class relatedObjectType, DBRelationColumnMapping[] tableColumnMappings
             , ReferentialRuleType updateRule, ReferentialRuleType deleteRule
-            ,boolean reverseRelationship,boolean nonIdentifyingRelation)
+            ,boolean reverseRelationship,boolean nonIdentifyingRelation,boolean lazy)
     {
         this.attributeName = attributeName;
         this.relationshipName = relationshipName;
@@ -38,6 +39,7 @@ public abstract class AbstractDBRelation implements IDBRelation
         this.deleteRule = deleteRule;
         this.reverseRelationship = reverseRelationship;
         this.nonIdentifyingRelation = nonIdentifyingRelation;
+        this.lazy = lazy;
     }
 
     @Override
@@ -134,5 +136,17 @@ public abstract class AbstractDBRelation implements IDBRelation
     public void setNonIdentifyingRelation(boolean nonIdentifying)
     {
         this.nonIdentifyingRelation = nonIdentifying;
+    }
+
+    @Override
+    public boolean isLazy()
+    {
+        return lazy;
+    }
+
+    @Override
+    public void setLazy(boolean lazy)
+    {
+        this.lazy = lazy;
     }
 }

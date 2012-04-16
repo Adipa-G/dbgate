@@ -21,4 +21,5 @@ public @interface ForeignKeyInfo
     Class relatedObjectType() default Object.class;
     boolean reverseRelation() default false;
     boolean nonIdentifyingRelation() default false;
+    boolean lazy() default false;
 }
