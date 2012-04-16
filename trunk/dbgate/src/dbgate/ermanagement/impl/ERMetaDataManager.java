@@ -35,11 +35,13 @@ import java.util.logging.Logger;
 public class ERMetaDataManager
 {
     private IDBLayer dbLayer;
+    private IERLayerStatistics statistics;
     private IERLayerConfig config;
 
-    public ERMetaDataManager(IDBLayer dbLayer,IERLayerConfig config)
+    public ERMetaDataManager(IDBLayer dbLayer,IERLayerStatistics statistics,IERLayerConfig config)
     {
         this.dbLayer = dbLayer;
+        this.statistics = statistics;
         this.config = config;
     }
 
@@ -105,6 +107,8 @@ public class ERMetaDataManager
                 PreparedStatement ps = con.prepareStatement(holder.getQueryString());
                 ps.execute();
                 DBMgmtUtility.close(ps);
+
+                if (config.isEnableStatistics()) statistics.registerPatch();
             }
         }
         catch (Exception e)

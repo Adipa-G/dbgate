@@ -15,6 +15,7 @@ import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.impl.utils.ERSessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
+import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -35,11 +36,13 @@ import java.util.logging.Logger;
 public abstract class ERDataCommonManager
 {
     protected IDBLayer dbLayer;
+    protected IERLayerStatistics statistics;
     protected IERLayerConfig config;
 
-    public ERDataCommonManager(IDBLayer dbLayer, IERLayerConfig config)
+    public ERDataCommonManager(IDBLayer dbLayer,IERLayerStatistics statistics, IERLayerConfig config)
     {
         this.dbLayer = dbLayer;
+        this.statistics = statistics;
         this.config = config;
     }
 
@@ -72,6 +75,11 @@ public abstract class ERDataCommonManager
         {
             Logger.getLogger(config.getLoggerName()).info(logSb.toString());
         }
+        if (config.isEnableStatistics())
+        {
+            statistics.registerSelect(targetType);
+        }
+
         return ps;
     }
 
@@ -128,6 +136,11 @@ public abstract class ERDataCommonManager
                     continue;
                 }
 
+                if (isProxyObject(parentEntity,typeRelation))
+                {
+                    continue;
+                }
+
                 Collection<ServerDBClass> childEntities = ERDataManagerUtils.getRelationEntities(parentEntity,typeRelation);
                 for (ServerDBClass childEntity : childEntities)
                 {
@@ -151,6 +164,27 @@ public abstract class ERDataCommonManager
             }
         }
         return existingEntityChildRelations;
+    }
+
+    protected static boolean isProxyObject(ServerDBClass entity, IDBRelation relation) throws NoSuchMethodException
+            , IllegalAccessException, InvocationTargetException
+    {
+        if (relation.isLazy())
+        {
+            Method getter = CacheManager.methodCache.getGetter(entity,relation.getAttributeName());
+            Object value = getter.invoke(entity);
+
+            if (value == null)
+            {
+                return false;
+            }
+
+            if (Enhancer.isEnhanced(value.getClass()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected Collection<ServerRODBClass> readRelationChildrenFromDb(ServerRODBClass entity,Class type
@@ -205,6 +239,10 @@ public abstract class ERDataCommonManager
         {
             Logger.getLogger(config.getLoggerName()).info(logSb.toString());
         }
+        if (config.isEnableStatistics())
+        {
+            statistics.registerSelect(childType);
+        }
         return readFromPreparedStatement(entity, con, ps, childType);
     }
 
@@ -242,6 +280,7 @@ public abstract class ERDataCommonManager
         }
         DBMgmtUtility.close(rs);
         DBMgmtUtility.close(ps);
+
         return data;
     }
 }

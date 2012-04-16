@@ -19,6 +19,7 @@ import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.impl.utils.ERSessionUtils;
 import dbgate.ermanagement.impl.utils.MiscUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
+import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,9 +40,9 @@ import java.util.logging.Logger;
  */
 public class ERDataPersistManager extends ERDataCommonManager
 {
-    public ERDataPersistManager(IDBLayer dbLayer, IERLayerConfig config)
+    public ERDataPersistManager(IDBLayer dbLayer,IERLayerStatistics statistics, IERLayerConfig config)
     {
-        super(dbLayer,config);
+        super(dbLayer,statistics,config);
     }
 
     public void save(ServerDBClass entity, Connection con ) throws PersistException
@@ -119,6 +120,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             {
                 continue;
             }
+            if (isProxyObject(entity, relation)) continue;
             Collection<ServerDBClass> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
             if (childObjects != null)
             {
@@ -182,6 +184,9 @@ public class ERDataPersistManager extends ERDataCommonManager
             {
                 continue;
             }
+
+            if (isProxyObject(entity, relation)) continue;
+
             Collection<ServerDBClass> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
             if (childObjects != null)
             {
@@ -247,6 +252,10 @@ public class ERDataPersistManager extends ERDataCommonManager
         {
             Logger.getLogger(config.getLoggerName()).info(logSb.toString());
         }
+        if (config.isEnableStatistics())
+        {
+            statistics.registerInsert(type);
+        }
         ps.execute();
         DBMgmtUtility.close(ps);
     }
@@ -300,6 +309,10 @@ public class ERDataPersistManager extends ERDataCommonManager
         {
             Logger.getLogger(config.getLoggerName()).info(logSb.toString());
         }
+        if (config.isEnableStatistics())
+        {
+            statistics.registerUpdate(type);
+        }
         ps.execute();
         DBMgmtUtility.close(ps);
     }
@@ -338,6 +351,10 @@ public class ERDataPersistManager extends ERDataCommonManager
         if (showQuery)
         {
             Logger.getLogger(config.getLoggerName()).info(logSb.toString());
+        }
+        if (config.isEnableStatistics())
+        {
+            statistics.registerDelete(type);
         }
         ps.execute();
         DBMgmtUtility.close(ps);

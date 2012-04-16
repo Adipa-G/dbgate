@@ -11,6 +11,7 @@ public class ERLayerConfig implements IERLayerConfig
     private boolean autoTrackChanges;
     private boolean showQueries;
     private boolean checkVersion;
+    private boolean enableStatistics;
     private String loggerName;
 
     public ERLayerConfig()
@@ -18,6 +19,7 @@ public class ERLayerConfig implements IERLayerConfig
         autoTrackChanges = true;
         showQueries = true;
         checkVersion = true;
+        enableStatistics = false;
     }
 
     @Override
@@ -66,5 +68,17 @@ public class ERLayerConfig implements IERLayerConfig
     public void setCheckVersion(boolean checkVersion)
     {
         this.checkVersion = checkVersion;
+    }
+
+    @Override
+    public boolean isEnableStatistics()
+    {
+        return enableStatistics;
+    }
+
+    @Override
+    public void setEnableStatistics(boolean enableStatistics)
+    {
+        this.enableStatistics = enableStatistics;
     }
 }

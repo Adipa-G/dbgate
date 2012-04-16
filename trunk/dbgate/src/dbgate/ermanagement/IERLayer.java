@@ -31,4 +31,6 @@ public interface IERLayer
     void registerFields(Class type,Collection<IField> fields);
 
     IERLayerConfig getConfig();
+
+    IERLayerStatistics getStatistics();
 }

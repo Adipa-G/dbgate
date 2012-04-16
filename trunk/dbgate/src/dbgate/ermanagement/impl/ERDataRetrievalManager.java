@@ -4,10 +4,7 @@ import dbgate.DBClassStatus;
 import dbgate.ServerDBClass;
 import dbgate.ServerRODBClass;
 import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.DBRelationColumnMapping;
-import dbgate.ermanagement.IDBColumn;
-import dbgate.ermanagement.IDBRelation;
-import dbgate.ermanagement.IERLayerConfig;
+import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.context.EntityFieldValue;
 import dbgate.ermanagement.context.IEntityContext;
@@ -19,6 +16,8 @@ import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.impl.utils.ERSessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
+import dbgate.ermanagement.lazy.ChildLoadInterceptor;
+import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,9 +38,9 @@ import java.util.logging.Logger;
  */
 public class ERDataRetrievalManager extends ERDataCommonManager
 {
-    public ERDataRetrievalManager(IDBLayer dbLayer, IERLayerConfig config)
+    public ERDataRetrievalManager(IDBLayer dbLayer,IERLayerStatistics statistics, IERLayerConfig config)
     {
-        super(dbLayer,config);
+        super(dbLayer,statistics,config);
     }
 
     public void load(ServerRODBClass roEntity, ResultSet rs, Connection con) throws RetrievalException
@@ -126,19 +125,35 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         Collection<IDBRelation> dbRelations = CacheManager.fieldCache.getRelations(type);
         for (IDBRelation relation : dbRelations)
         {
-            loadChildrenFromRelation(entity, type, con,relation);
+            loadChildrenFromRelation(entity, type, con,relation,false);
         }
     }
 
-    private void loadChildrenFromRelation(ServerRODBClass parentRoEntity, Class type, Connection con, IDBRelation relation)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, TableCacheMissException
-            , QueryBuildingException, SQLException, FieldCacheMissException, InstantiationException
-            , NoSetterFoundToSetChildObjectListException, RetrievalException, NoMatchingColumnFoundException
-            , NoFieldsFoundException, SequenceGeneratorInitializationException
+    public void loadChildrenFromRelation(ServerRODBClass parentRoEntity, Class type
+            , Connection con, IDBRelation relation,boolean lazy) throws NoSuchMethodException, IllegalAccessException
+            , InvocationTargetException, TableCacheMissException, QueryBuildingException, SQLException
+            , FieldCacheMissException, InstantiationException, NoSetterFoundToSetChildObjectListException
+            , RetrievalException, NoMatchingColumnFoundException, NoFieldsFoundException
+            , SequenceGeneratorInitializationException
     {
-        IEntityContext entityContext = parentRoEntity.getContext();
-
         Method getter = CacheManager.methodCache.getGetter(parentRoEntity,relation.getAttributeName());
+        Method setter = CacheManager.methodCache.getSetter(parentRoEntity,relation.getAttributeName(),new Class[]{getter.getReturnType()});
+
+        if (!lazy && relation.isLazy())
+        {
+            Class proxyType = getter.getReturnType();
+            if (getter.getReturnType().isInterface())
+            {
+                proxyType = ArrayList.class;
+            }
+            
+            Object proxy = Enhancer.create(proxyType, new ChildLoadInterceptor(this, parentRoEntity, type, con,
+                                                                               relation));
+            setter.invoke(parentRoEntity,proxy);
+            return;
+        }
+
+        IEntityContext entityContext = parentRoEntity.getContext();
         Object value = getter.invoke(parentRoEntity);
 
         Collection<ServerRODBClass> children = readRelationChildrenFromDb(parentRoEntity,type,con,relation);
@@ -155,11 +170,10 @@ public class ERDataRetrievalManager extends ERDataCommonManager
             }
         }
 
-        if (value == null
+        if (value == null || Enhancer.isEnhanced(value.getClass())
                 && ReflectionUtils.isImplementInterface(getter.getReturnType(),Collection.class))
         {
-            Method method = CacheManager.methodCache.getSetter(parentRoEntity,relation.getAttributeName(),new Class[]{getter.getReturnType()});
-            method.invoke(parentRoEntity,children);
+            setter.invoke(parentRoEntity, children);
         }
         else if (value != null
                 && ReflectionUtils.isImplementInterface(getter.getReturnType(),Collection.class))
@@ -173,8 +187,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                 ServerRODBClass singleRODBClass = children.iterator().next();
                 if (getter.getReturnType().isAssignableFrom(singleRODBClass.getClass()))
                 {
-                    Method method = CacheManager.methodCache.getSetter(parentRoEntity,relation.getAttributeName(),new Class[]{getter.getReturnType()});
-                    method.invoke(parentRoEntity,singleRODBClass);
+                    setter.invoke(parentRoEntity,singleRODBClass);
                 }
                 else
                 {
@@ -185,6 +198,4 @@ public class ERDataRetrievalManager extends ERDataCommonManager
             }
         }
     }
-
-
 }

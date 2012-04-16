@@ -35,4 +35,8 @@ public interface IDBRelation extends IField
     boolean isNonIdentifyingRelation();
 
     void setNonIdentifyingRelation(boolean nonIdentifying);
+
+    boolean isLazy();
+
+    void setLazy(boolean lazy);
 }

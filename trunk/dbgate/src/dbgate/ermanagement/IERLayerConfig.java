@@ -21,4 +21,8 @@ public interface IERLayerConfig
     boolean isCheckVersion();
 
     void setCheckVersion(boolean checkVersion);
+
+    boolean isEnableStatistics();
+
+    void setEnableStatistics(boolean enableStatistics);
 }

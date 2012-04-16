@@ -3,10 +3,7 @@ package dbgate.ermanagement.impl;
 import dbgate.ServerDBClass;
 import dbgate.ServerRODBClass;
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.IERDataManager;
-import dbgate.ermanagement.IERLayer;
-import dbgate.ermanagement.IERLayerConfig;
-import dbgate.ermanagement.IField;
+import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.DBConnectorNotInitializedException;
 import dbgate.ermanagement.exceptions.DBPatchingException;
@@ -32,6 +29,7 @@ public class ERLayer implements IERLayer
     private IERDataManager erDataManager;
     private ERMetaDataManager erMetaDataManager;
     private IERLayerConfig config;
+    private IERLayerStatistics statistics;
 
     private ERLayer() throws DBConnectorNotInitializedException
     {
@@ -41,12 +39,13 @@ public class ERLayer implements IERLayer
         }
         int dbType = DBConnector.getSharedInstance().getDbType();
         this.config = new ERLayerConfig();
+        this.statistics = new ERLayerStatistics();
         initializeDefaults();
 
         IDBLayer dbLayer = LayerFactory.createLayer(dbType);
         CacheManager.init(dbLayer);
-        erDataManager = new ERDataManager(dbLayer,config);
-        erMetaDataManager = new ERMetaDataManager(dbLayer,config);
+        erDataManager = new ERDataManager(dbLayer,statistics,config);
+        erMetaDataManager = new ERMetaDataManager(dbLayer,statistics,config);
     }
 
     private void initializeDefaults()
@@ -88,6 +87,12 @@ public class ERLayer implements IERLayer
     public IERLayerConfig getConfig()
     {
         return config;
+    }
+
+    @Override
+    public IERLayerStatistics getStatistics()
+    {
+        return statistics;
     }
 
     public static IERLayer getSharedInstance()
