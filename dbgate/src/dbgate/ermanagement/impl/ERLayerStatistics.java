@@ -130,7 +130,7 @@ public class ERLayerStatistics implements IERLayerStatistics
     public void registerDelete(Class type)
     {
         globalDeleteCount++;
-        registerCount(type,updateCount);
+        registerCount(type,deleteCount);
     }
 
     private void registerCount(Class type,HashMap<Class,Integer> typeCountMap)
@@ -140,6 +140,10 @@ public class ERLayerStatistics implements IERLayerStatistics
             int currentCount = typeCountMap.get(type);
             currentCount ++;
             typeCountMap.put(type,currentCount);
+        }
+        else
+        {
+            typeCountMap.put(type,1);
         }
     }
 

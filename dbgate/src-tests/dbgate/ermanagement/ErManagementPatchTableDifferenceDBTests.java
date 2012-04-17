@@ -44,9 +44,9 @@ public class ErManagementPatchTableDifferenceDBTests
         {
             Logger.getLogger(ErManagementPatchTableDifferenceDBTests.class.getName()).info("Starting in-memory database for unit tests");
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata;create=true");
+            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-table-difference;create=true");
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-table-difference;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
             ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
             ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
@@ -251,7 +251,7 @@ public class ErManagementPatchTableDifferenceDBTests
         Logger.getLogger(ErManagementPatchTableDifferenceDBTests.class.getName()).info("Stopping in-memory database.");
         try
         {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata;shutdown=true").close();
+            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-table-difference;shutdown=true").close();
         }
         catch (SQLException ex)
         {
@@ -262,7 +262,7 @@ public class ErManagementPatchTableDifferenceDBTests
         }
         try
         {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-metadata").getCanonicalPath());
+            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-metadata-table-difference").getCanonicalPath());
         }
         catch (IOException iox)
         {
