@@ -13,7 +13,7 @@ import java.util.Collection;
  * Time: 11:47:59 AM
  */
 @DBTableInfo(tableName = "lazy_test_root")
-public class LazyColumnTestRootEntity extends DefaultServerDBClass
+public class LazyRootEntity extends DefaultServerDBClass
 {
     @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
     private int idCol;
@@ -21,24 +21,24 @@ public class LazyColumnTestRootEntity extends DefaultServerDBClass
     private String name;
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = LazyColumnTestOne2ManyEntity.class
+            ,relatedObjectType = LazyOne2ManyEntity.class
             ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE
             ,lazy = true)
-    private Collection<LazyColumnTestOne2ManyEntity> one2ManyEntities;
+    private Collection<LazyOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = LazyColumnTestOne2OneEntity.class
+            ,relatedObjectType = LazyOne2OneEntity.class
             ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE
             ,lazy = true)
-    private LazyColumnTestOne2OneEntity one2OneEntity;
+    private LazyOne2OneEntity one2OneEntity;
 
-    public LazyColumnTestRootEntity()
+    public LazyRootEntity()
     {
-        one2ManyEntities = new ArrayList<LazyColumnTestOne2ManyEntity>();
+        one2ManyEntities = new ArrayList<LazyOne2ManyEntity>();
     }
 
     public int getIdCol()
@@ -61,22 +61,22 @@ public class LazyColumnTestRootEntity extends DefaultServerDBClass
         this.name = name;
     }
 
-    public Collection<LazyColumnTestOne2ManyEntity> getOne2ManyEntities()
+    public Collection<LazyOne2ManyEntity> getOne2ManyEntities()
     {
         return one2ManyEntities;
     }
 
-    public void setOne2ManyEntities(Collection<LazyColumnTestOne2ManyEntity> one2ManyEntities)
+    public void setOne2ManyEntities(Collection<LazyOne2ManyEntity> one2ManyEntities)
     {
         this.one2ManyEntities = one2ManyEntities;
     }
 
-    public LazyColumnTestOne2OneEntity getOne2OneEntity()
+    public LazyOne2OneEntity getOne2OneEntity()
     {
         return one2OneEntity;
     }
 
-    public void setOne2OneEntity(LazyColumnTestOne2OneEntity one2OneEntity)
+    public void setOne2OneEntity(LazyOne2OneEntity one2OneEntity)
     {
         this.one2OneEntity = one2OneEntity;
     }

@@ -38,21 +38,6 @@ public class ChildLoadInterceptor implements MethodInterceptor
         this.relation = relation;
     }
 
-    public ServerRODBClass getParentRoEntity()
-    {
-        return parentRoEntity;
-    }
-
-    public Class getApplicableParentType()
-    {
-        return applicableParentType;
-    }
-
-    public IDBRelation getRelation()
-    {
-        return relation;
-    }
-
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable
     {
