@@ -1,14 +1,11 @@
 package dbgate.ermanagement;
 
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
-import dbgate.ermanagement.support.persistant.lazy.LazyColumnTestOne2ManyEntity;
-import dbgate.ermanagement.support.persistant.lazy.LazyColumnTestOne2OneEntity;
-import dbgate.ermanagement.support.persistant.lazy.LazyColumnTestRootEntity;
-import dbgate.ermanagement.support.persistant.version.*;
+import dbgate.ermanagement.support.persistant.lazy.LazyOne2ManyEntity;
+import dbgate.ermanagement.support.persistant.lazy.LazyOne2OneEntity;
+import dbgate.ermanagement.support.persistant.lazy.LazyRootEntity;
 import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.Proxy;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
@@ -90,7 +87,7 @@ public class ERManagementLazyTest
             ERLayer.getSharedInstance().getStatistics().reset();
 
             int id = 35;
-            LazyColumnTestRootEntity entity = new LazyColumnTestRootEntity();
+            LazyRootEntity entity = new LazyRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
             entity.persist(connection);
@@ -98,7 +95,7 @@ public class ERManagementLazyTest
             connection.close();
 
             connection = connector.getConnection();
-            LazyColumnTestRootEntity entityReloaded = new LazyColumnTestRootEntity();
+            LazyRootEntity entityReloaded = new LazyRootEntity();
             loadWithColumnEntityWithId(connection,entityReloaded,id);
             connection.commit();
             connection.close();
@@ -126,20 +123,20 @@ public class ERManagementLazyTest
             ERLayer.getSharedInstance().getStatistics().reset();
 
             int id = 35;
-            LazyColumnTestRootEntity entity = new LazyColumnTestRootEntity();
+            LazyRootEntity entity = new LazyRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
 
-            LazyColumnTestOne2ManyEntity one2Many1 = new LazyColumnTestOne2ManyEntity();
+            LazyOne2ManyEntity one2Many1 = new LazyOne2ManyEntity();
             one2Many1.setIndexNo(1);
             one2Many1.setName("One2Many1");
-            LazyColumnTestOne2ManyEntity one2Many2 = new LazyColumnTestOne2ManyEntity();
+            LazyOne2ManyEntity one2Many2 = new LazyOne2ManyEntity();
             one2Many2.setIndexNo(2);
             one2Many2.setName("One2Many2");
             entity.getOne2ManyEntities().add(one2Many1);
             entity.getOne2ManyEntities().add(one2Many2);
 
-            LazyColumnTestOne2OneEntity one2One = new LazyColumnTestOne2OneEntity();
+            LazyOne2OneEntity one2One = new LazyOne2OneEntity();
             one2One.setName("One2One");
             entity.setOne2OneEntity(one2One);
 
@@ -148,11 +145,11 @@ public class ERManagementLazyTest
             connection.close();
 
             connection = connector.getConnection();
-            LazyColumnTestRootEntity entityReloaded = new LazyColumnTestRootEntity();
+            LazyRootEntity entityReloaded = new LazyRootEntity();
             loadWithColumnEntityWithId(connection,entityReloaded,id);
 
             Assert.assertTrue(entityReloaded.getOne2ManyEntities().size() == 2);
-            Iterator<LazyColumnTestOne2ManyEntity> iterator = entityReloaded.getOne2ManyEntities().iterator();
+            Iterator<LazyOne2ManyEntity> iterator = entityReloaded.getOne2ManyEntities().iterator();
             Assert.assertTrue(iterator.next().getName().equals(one2Many1.getName()));
             Assert.assertTrue(iterator.next().getName().equals(one2Many2.getName()));
             Assert.assertTrue(entityReloaded.getOne2OneEntity() != null);
@@ -179,20 +176,20 @@ public class ERManagementLazyTest
             ERLayer.getSharedInstance().getStatistics().reset();
 
             int id = 35;
-            LazyColumnTestRootEntity entity = new LazyColumnTestRootEntity();
+            LazyRootEntity entity = new LazyRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
 
-            LazyColumnTestOne2ManyEntity one2Many1 = new LazyColumnTestOne2ManyEntity();
+            LazyOne2ManyEntity one2Many1 = new LazyOne2ManyEntity();
             one2Many1.setIndexNo(1);
             one2Many1.setName("One2Many1");
-            LazyColumnTestOne2ManyEntity one2Many2 = new LazyColumnTestOne2ManyEntity();
+            LazyOne2ManyEntity one2Many2 = new LazyOne2ManyEntity();
             one2Many2.setIndexNo(2);
             one2Many2.setName("One2Many2");
             entity.getOne2ManyEntities().add(one2Many1);
             entity.getOne2ManyEntities().add(one2Many2);
 
-            LazyColumnTestOne2OneEntity one2One = new LazyColumnTestOne2OneEntity();
+            LazyOne2OneEntity one2One = new LazyOne2OneEntity();
             one2One.setName("One2One");
             entity.setOne2OneEntity(one2One);
 
@@ -201,13 +198,13 @@ public class ERManagementLazyTest
             connection.close();
 
             connection = connector.getConnection();
-            LazyColumnTestRootEntity entityReloaded = new LazyColumnTestRootEntity();
+            LazyRootEntity entityReloaded = new LazyRootEntity();
             loadWithColumnEntityWithId(connection,entityReloaded,id);
             connection.commit();
             connection.close();
 
             Assert.assertTrue(entityReloaded.getOne2ManyEntities().size() == 2);
-            Iterator<LazyColumnTestOne2ManyEntity> iterator = entityReloaded.getOne2ManyEntities().iterator();
+            Iterator<LazyOne2ManyEntity> iterator = entityReloaded.getOne2ManyEntities().iterator();
             Assert.assertTrue(iterator.next().getName().equals(one2Many1.getName()));
             Assert.assertTrue(iterator.next().getName().equals(one2Many2.getName()));
             Assert.assertTrue(entityReloaded.getOne2OneEntity() != null);
@@ -231,20 +228,20 @@ public class ERManagementLazyTest
             ERLayer.getSharedInstance().getStatistics().reset();
 
             int id = 35;
-            LazyColumnTestRootEntity entity = new LazyColumnTestRootEntity();
+            LazyRootEntity entity = new LazyRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
 
-            LazyColumnTestOne2ManyEntity one2Many1 = new LazyColumnTestOne2ManyEntity();
+            LazyOne2ManyEntity one2Many1 = new LazyOne2ManyEntity();
             one2Many1.setIndexNo(1);
             one2Many1.setName("One2Many1");
-            LazyColumnTestOne2ManyEntity one2Many2 = new LazyColumnTestOne2ManyEntity();
+            LazyOne2ManyEntity one2Many2 = new LazyOne2ManyEntity();
             one2Many2.setIndexNo(2);
             one2Many2.setName("One2Many2");
             entity.getOne2ManyEntities().add(one2Many1);
             entity.getOne2ManyEntities().add(one2Many2);
 
-            LazyColumnTestOne2OneEntity one2One = new LazyColumnTestOne2OneEntity();
+            LazyOne2OneEntity one2One = new LazyOne2OneEntity();
             one2One.setName("One2One");
             entity.setOne2OneEntity(one2One);
 
@@ -253,7 +250,7 @@ public class ERManagementLazyTest
             connection.close();
 
             connection = connector.getConnection();
-            LazyColumnTestRootEntity entityReloaded = new LazyColumnTestRootEntity();
+            LazyRootEntity entityReloaded = new LazyRootEntity();
             loadWithColumnEntityWithId(connection,entityReloaded,id);
             connection.commit();
             connection.close();
@@ -273,7 +270,7 @@ public class ERManagementLazyTest
     }
 
 
-    private boolean loadWithColumnEntityWithId(Connection connection, LazyColumnTestRootEntity loadEntity,int id) throws Exception
+    private boolean loadWithColumnEntityWithId(Connection connection, LazyRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 

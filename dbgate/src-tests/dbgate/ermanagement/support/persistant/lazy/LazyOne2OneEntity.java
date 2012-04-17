@@ -12,14 +12,14 @@ import dbgate.ermanagement.DefaultServerDBClass;
  * Time: 12:23:11 PM
  */
 @DBTableInfo(tableName = "lazy_test_one2one")
-public class LazyColumnTestOne2OneEntity extends DefaultServerDBClass
+public class LazyOne2OneEntity extends DefaultServerDBClass
 {
     @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
     private int idCol;
     @DBColumnInfo(columnType = DBColumnType.VARCHAR)
     private String name;
 
-    public LazyColumnTestOne2OneEntity()
+    public LazyOne2OneEntity()
     {
     }
 
