@@ -41,9 +41,9 @@ public class ErManagementPatchEmptyDBTests
         {
             Logger.getLogger(ErManagementPatchEmptyDBTests.class.getName()).info("Starting in-memory database for unit tests");
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata;create=true");
+            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-empty;create=true");
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-empty;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
             ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
             ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
@@ -278,7 +278,7 @@ public class ErManagementPatchEmptyDBTests
         Logger.getLogger(ErManagementPatchEmptyDBTests.class.getName()).info("Stopping in-memory database.");
         try
         {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata;shutdown=true").close();
+            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-empty;shutdown=true").close();
         }
         catch (SQLException ex)
         {
@@ -289,7 +289,7 @@ public class ErManagementPatchEmptyDBTests
         }
         try
         {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-metadata").getCanonicalPath());
+            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-metadata-empty").getCanonicalPath());
         }
         catch (IOException iox)
         {
