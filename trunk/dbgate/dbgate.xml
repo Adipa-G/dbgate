@@ -81,12 +81,16 @@
     </fileset>
   </path>
   
-  <property name="project.jdk.home" value=""/>
-  <property name="project.jdk.bin" value=""/>
-  <property name="project.jdk.classpath" value=""/>
+  <property name="project.jdk.home" value="${jdk.home.jdk}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.jdk}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.jdk"/>
   
   
   <!-- Project Libraries -->
+  
+  <path id="library.cglib-nodep-2.2.2.classpath">
+    <pathelement location="${basedir}/../lib/cglib.2.2.2/cglib-nodep-2.2.2.jar"/>
+  </path>
   
   <path id="library.derby.10.6.1.0.classpath">
     <pathelement location="${basedir}/../lib/Derby.10.6.1.0/derby.jar"/>
@@ -126,9 +130,9 @@
   <dirname property="module.dbgate.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.dbgate" value="${jdk.home.jdk}"/>
-  <property name="module.jdk.bin.dbgate" value="${jdk.bin.jdk}"/>
-  <property name="module.jdk.classpath.dbgate" value="jdk.classpath.jdk"/>
+  <property name="module.jdk.home.dbgate" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.dbgate" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.dbgate" value="${project.jdk.classpath}"/>
   
   <property name="compiler.args.dbgate" value="${compiler.args}"/>
   
@@ -144,6 +148,7 @@
     <path refid="library.ojdbc.1.4.classpath"/>
     <path refid="library.derby.10.6.1.0.classpath"/>
     <path refid="library.junit.4.0.classpath"/>
+    <path refid="library.cglib-nodep-2.2.2.classpath"/>
   </path>
   
   <path id="dbgate.runtime.production.module.classpath">
@@ -151,6 +156,7 @@
     <path refid="library.ojdbc.1.4.classpath"/>
     <path refid="library.derby.10.6.1.0.classpath"/>
     <path refid="library.junit.4.0.classpath"/>
+    <path refid="library.cglib-nodep-2.2.2.classpath"/>
   </path>
   
   <path id="dbgate.module.classpath">
@@ -159,6 +165,7 @@
     <path refid="library.ojdbc.1.4.classpath"/>
     <path refid="library.derby.10.6.1.0.classpath"/>
     <path refid="library.junit.4.0.classpath"/>
+    <path refid="library.cglib-nodep-2.2.2.classpath"/>
   </path>
   
   <path id="dbgate.runtime.module.classpath">
@@ -167,6 +174,7 @@
     <path refid="library.ojdbc.1.4.classpath"/>
     <path refid="library.derby.10.6.1.0.classpath"/>
     <path refid="library.junit.4.0.classpath"/>
+    <path refid="library.cglib-nodep-2.2.2.classpath"/>
   </path>
   
   

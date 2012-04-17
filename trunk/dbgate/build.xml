@@ -92,6 +92,7 @@
             <pathelement path="${tests.jar.file}"/>
             <path refid = "library.derby.10.6.1.0.classpath"/>
             <path refid = "library.junit.4.0.classpath"/>
+            <path refid = "library.cglib-nodep-2.2.2.classpath"/>
           </classpath>
 
           <formatter type="plain"/>
@@ -107,6 +108,7 @@
           <test todir="${build.testreports}" name="dbgate.ermanagement.ERManagementCrossReferenceTest" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.ermanagement.ERManagementVersionTest" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.ermanagement.ERManagementFeatureIntegrationTest" fork="yes"/>
+          <test todir="${build.testreports}" name="dbgate.ermanagement.ERManagementLazyTest" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.utility.StatusUtilityTests" fork="yes"/>
         </junit>
     </target>

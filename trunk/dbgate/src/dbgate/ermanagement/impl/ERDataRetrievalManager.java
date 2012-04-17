@@ -170,7 +170,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
             }
         }
 
-        if (value == null || Enhancer.isEnhanced(value.getClass())
+        if ((value == null || Enhancer.isEnhanced(value.getClass()))
                 && ReflectionUtils.isImplementInterface(getter.getReturnType(),Collection.class))
         {
             setter.invoke(parentRoEntity, children);
