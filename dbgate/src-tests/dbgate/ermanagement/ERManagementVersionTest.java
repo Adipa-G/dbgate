@@ -61,7 +61,6 @@ public class ERManagementVersionTest
 
             ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
             ERLayer.getSharedInstance().getConfig().setCheckVersion(true);
-            ERLayer.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(false);
         }
         catch (Exception ex)
         {
@@ -77,6 +76,7 @@ public class ERManagementVersionTest
         {
             ERLayer.getSharedInstance().clearCache();
         }
+        ERLayer.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(false);
     }
 
     @Test
@@ -138,7 +138,7 @@ public class ERManagementVersionTest
     {
         Connection connection = connector.getConnection();
 
-        int id = 45;
+        int id = 85;
         VersionGeneralTestRootEntity entity = new VersionGeneralTestRootEntity();
         entity.setIdCol(id);
         entity.setName("Org-Name");
@@ -171,7 +171,7 @@ public class ERManagementVersionTest
             ERLayer.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(true);
             Connection connection = connector.getConnection();
 
-            int id = 45;
+            int id = 95;
             VersionGeneralTestRootEntity entity = new VersionGeneralTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
