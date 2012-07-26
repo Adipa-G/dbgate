@@ -266,6 +266,9 @@ public class ERDataPersistManager extends ERDataCommonManager
         if (config.isUpdateChangedColumnsOnly())
         {
             values = getModifiedFieldValues(entity, type);
+            if (values.size() == 0)
+                return;
+
             keys = ERDataManagerUtils.extractEntityKeyValues(entity).getFieldValues();
             Collection<IDBColumn> keysAndModified = new ArrayList<IDBColumn>();
             for (EntityFieldValue fieldValue : values)
@@ -665,7 +668,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             EntityFieldValue classFieldValue = fieldValueList.getFieldValue(typeColumn.getAttributeName());
             EntityFieldValue originalFieldValue = entity.getContext() != null ? entity.getContext().getChangeTracker().getFieldValue(typeColumn.getAttributeName()) : null;
             boolean matches = originalFieldValue != null && classFieldValue != null && classFieldValue.getValue() == originalFieldValue.getValue()
-                        || (originalFieldValue != null && classFieldValue != null && classFieldValue.getValue().equals(originalFieldValue.getValue()));
+                        || (originalFieldValue != null && classFieldValue != null && classFieldValue.getValue() != null && classFieldValue.getValue().equals(originalFieldValue.getValue()));
             if (!matches)
             {
                 return false;
@@ -689,7 +692,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             EntityFieldValue classFieldValue = currentValues.getFieldValue(typeColumn.getAttributeName());
             EntityFieldValue originalFieldValue = entity.getContext() != null ? entity.getContext().getChangeTracker().getFieldValue(typeColumn.getAttributeName()) : null;
             boolean matches = originalFieldValue != null && classFieldValue != null && classFieldValue.getValue() == originalFieldValue.getValue()
-                    || (originalFieldValue != null && classFieldValue != null && classFieldValue.getValue().equals(originalFieldValue.getValue()));
+                    || (originalFieldValue != null && classFieldValue != null && classFieldValue.getValue() != null && classFieldValue.getValue().equals(originalFieldValue.getValue()));
             if (!matches)
             {
                 modifiedColumns.add(classFieldValue);
