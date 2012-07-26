@@ -7,19 +7,14 @@ import dbgate.ServerRODBClass;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.context.EntityFieldValue;
-import dbgate.ermanagement.context.IEntityContext;
-import dbgate.ermanagement.context.IEntityFieldValueList;
-import dbgate.ermanagement.context.ITypeFieldValueList;
+import dbgate.ermanagement.context.*;
 import dbgate.ermanagement.context.impl.EntityRelationFieldValueList;
-import dbgate.ermanagement.context.impl.EntityTypeFieldValueList;
 import dbgate.ermanagement.exceptions.*;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.impl.utils.ERSessionUtils;
 import dbgate.ermanagement.impl.utils.MiscUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
-import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -154,7 +149,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                 ERDataManagerUtils.incrementVersion(fieldValues);
                 setValues(entity,fieldValues);
             }
-            update(fieldValues,type,con);
+            update(entity,fieldValues,type,con);
         }
         else if (entity.getStatus() == DBClassStatus.DELETED)
         {
@@ -260,23 +255,42 @@ public class ERDataPersistManager extends ERDataCommonManager
         DBMgmtUtility.close(ps);
     }
 
-    private void update(ITypeFieldValueList valueTypeList,Class type,Connection con) throws TableCacheMissException
-            , QueryBuildingException, FieldCacheMissException, SQLException
+    private void update(ServerDBClass entity,ITypeFieldValueList valueTypeList,Class type,Connection con) throws TableCacheMissException
+            , QueryBuildingException, FieldCacheMissException, SQLException, InvocationTargetException,NoSuchMethodException, IllegalAccessException
     {
+        Collection<EntityFieldValue> keys = new ArrayList<EntityFieldValue>();
+        Collection<EntityFieldValue> values = new ArrayList<EntityFieldValue>();
+        String query;
         StringBuilder logSb = new StringBuilder();
-        String query = CacheManager.queryCache.getUpdateQuery(type);
 
-        ArrayList<EntityFieldValue> keys = new ArrayList<EntityFieldValue>();
-        ArrayList<EntityFieldValue> values = new ArrayList<EntityFieldValue>();
-        for (EntityFieldValue fieldValue : valueTypeList.getFieldValues())
+        if (config.isUpdateChangedColumnsOnly())
         {
-            if (fieldValue.getDbColumn().isKey())
+            values = getModifiedFieldValues(entity, type);
+            keys = ERDataManagerUtils.extractEntityKeyValues(entity).getFieldValues();
+            Collection<IDBColumn> keysAndModified = new ArrayList<IDBColumn>();
+            for (EntityFieldValue fieldValue : values)
             {
-                keys.add(fieldValue);
+                keysAndModified.add(fieldValue.getDbColumn());
             }
-            else
+            for (EntityFieldValue fieldValue : keys)
             {
-                values.add(fieldValue);
+                keysAndModified.add(fieldValue.getDbColumn());
+            }
+            query = dbLayer.getDataManipulate().createUpdateQuery(CacheManager.tableCache.getTableName(type),keysAndModified);
+        }
+        else
+        {
+            query = CacheManager.queryCache.getUpdateQuery(type);
+            for (EntityFieldValue fieldValue : valueTypeList.getFieldValues())
+            {
+                if (fieldValue.getDbColumn().isKey())
+                {
+                    keys.add(fieldValue);
+                }
+                else
+                {
+                    values.add(fieldValue);
+                }
             }
         }
 
@@ -504,7 +518,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     {
         if (!entityContext.getChangeTracker().isValid())
         {
-            FillChangeTrackerValues(serverDBClass, con, entityContext);
+            fillChangeTrackerValues(serverDBClass, con, entityContext);
         }
 
         Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(serverDBClass.getClass(),new Class[]{ServerDBClass.class});
@@ -533,7 +547,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         return false;
     }
 
-    private void FillChangeTrackerValues(ServerDBClass serverDBClass, Connection con, IEntityContext entityContext)
+    private void fillChangeTrackerValues(ServerDBClass serverDBClass, Connection con, IEntityContext entityContext)
             throws InvocationTargetException, NoSuchMethodException, FieldCacheMissException
             , IllegalAccessException, SQLException, TableCacheMissException, QueryBuildingException
             , NoFieldsFoundException, SequenceGeneratorInitializationException, NoMatchingColumnFoundException
@@ -631,6 +645,16 @@ public class ERDataPersistManager extends ERDataCommonManager
             }
         }
 
+        if (config.isUpdateChangedColumnsOnly())
+        {
+            Collection<EntityFieldValue> modified = getModifiedFieldValues(entity, type);
+            typeColumns = new ArrayList<IDBColumn>();
+            for (EntityFieldValue fieldValue : modified)
+            {
+                typeColumns.add(fieldValue.getDbColumn());
+            }
+        }
+
         ITypeFieldValueList fieldValueList = extractCurrentRowValues(entity,type,con);
         if (fieldValueList == null)
         {
@@ -648,6 +672,30 @@ public class ERDataPersistManager extends ERDataCommonManager
             }
         }
         return true;
+    }
+
+    private Collection<EntityFieldValue> getModifiedFieldValues(ServerRODBClass entity, Class type) throws InvocationTargetException
+            , NoSuchMethodException, FieldCacheMissException, IllegalAccessException
+    {
+        Collection<IDBColumn> typeColumns = CacheManager.fieldCache.getColumns(type);
+        ITypeFieldValueList currentValues = ERDataManagerUtils.extractTypeFieldValues(entity,type);
+        Collection<EntityFieldValue> modifiedColumns = new ArrayList<EntityFieldValue>();
+
+        for (IDBColumn typeColumn : typeColumns)
+        {
+            if (typeColumn.isKey())
+                continue;
+
+            EntityFieldValue classFieldValue = currentValues.getFieldValue(typeColumn.getAttributeName());
+            EntityFieldValue originalFieldValue = entity.getContext() != null ? entity.getContext().getChangeTracker().getFieldValue(typeColumn.getAttributeName()) : null;
+            boolean matches = originalFieldValue != null && classFieldValue != null && classFieldValue.getValue() == originalFieldValue.getValue()
+                    || (originalFieldValue != null && classFieldValue != null && classFieldValue.getValue().equals(originalFieldValue.getValue()));
+            if (!matches)
+            {
+                modifiedColumns.add(classFieldValue);
+            }
+        }
+        return modifiedColumns;
     }
 
     private Object extractCurrentVersionValue(ServerRODBClass entity,IDBColumn versionColumn,Class type,Connection con)

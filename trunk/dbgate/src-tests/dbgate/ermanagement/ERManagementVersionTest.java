@@ -61,6 +61,7 @@ public class ERManagementVersionTest
 
             ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
             ERLayer.getSharedInstance().getConfig().setCheckVersion(true);
+            ERLayer.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(false);
         }
         catch (Exception ex)
         {
@@ -133,6 +134,75 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
+    public void ERLayer_persistWithTwoChanges_WithoutUpdateChangedColumnsOnly_shouldThrowException() throws Exception
+    {
+        Connection connection = connector.getConnection();
+
+        int id = 45;
+        VersionGeneralTestRootEntity entity = new VersionGeneralTestRootEntity();
+        entity.setIdCol(id);
+        entity.setName("Org-Name");
+        entity.setVersion(1);
+        entity.persist(connection);
+        connection.commit();
+        connection.close();
+
+        connection = connector.getConnection();
+        VersionGeneralTestRootEntity loadedEntityA = new VersionGeneralTestRootEntity();
+        VersionGeneralTestRootEntity loadedEntityB = new VersionGeneralTestRootEntity();
+        loadWithoutVersionColumnEntityWithId(connection,loadedEntityA, entity.getIdCol());
+        loadWithoutVersionColumnEntityWithId(connection,loadedEntityB, entity.getIdCol());
+        connection.close();
+
+        connection = connector.getConnection();
+        loadedEntityA.setName("Mod Name");
+        loadedEntityA.persist(connection);
+        loadedEntityB.setVersion(loadedEntityB.getVersion() + 1);
+        loadedEntityB.persist(connection);
+        connection.commit();
+        connection.close();
+    }
+
+    @Test
+    public void ERLayer_persistWithTwoChanges_WithUpdateChangedColumnsOnly_shouldNotThrowException() throws Exception
+    {
+        try
+        {
+            ERLayer.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(true);
+            Connection connection = connector.getConnection();
+
+            int id = 45;
+            VersionGeneralTestRootEntity entity = new VersionGeneralTestRootEntity();
+            entity.setIdCol(id);
+            entity.setName("Org-Name");
+            entity.setVersion(1);
+            entity.persist(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            VersionGeneralTestRootEntity loadedEntityA = new VersionGeneralTestRootEntity();
+            VersionGeneralTestRootEntity loadedEntityB = new VersionGeneralTestRootEntity();
+            loadWithoutVersionColumnEntityWithId(connection,loadedEntityA, entity.getIdCol());
+            loadWithoutVersionColumnEntityWithId(connection,loadedEntityB, entity.getIdCol());
+            connection.close();
+
+            connection = connector.getConnection();
+            loadedEntityA.setName("Mod Name");
+            loadedEntityA.persist(connection);
+            loadedEntityB.setVersion(loadedEntityB.getVersion() + 1);
+            loadedEntityB.persist(connection);
+            connection.commit();
+            connection.close();
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test(expected = PersistException.class)
     public void ERLayer_rootUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
     {
         Connection connection = null;
@@ -150,7 +220,7 @@ public class ERManagementVersionTest
 
             connection = connector.getConnection();
             VersionColumnTestRootEntity loadedEntity = new VersionColumnTestRootEntity();
-            loadWithColumnEntityWithId(connection,loadedEntity,id);
+            loadWithVersionColumnEntityWithId(connection, loadedEntity, id);
             loadedEntity.setName("New Name");
             loadedEntity.persist(connection);
             connection.commit();
@@ -188,7 +258,7 @@ public class ERManagementVersionTest
 
             connection = connector.getConnection();
             VersionGeneralTestRootEntity loadedEntity = new VersionGeneralTestRootEntity();
-            loadWithoutColumnEntityWithId(connection,loadedEntity,id);
+            loadWithoutVersionColumnEntityWithId(connection, loadedEntity, id);
             loadedEntity.setName("New Name");
             loadedEntity.persist(connection);
             connection.commit();
@@ -231,7 +301,7 @@ public class ERManagementVersionTest
 
             connection = connector.getConnection();
             VersionColumnTestRootEntity loadedEntity = new VersionColumnTestRootEntity();
-            loadWithColumnEntityWithId(connection,loadedEntity,id);
+            loadWithVersionColumnEntityWithId(connection, loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Modified One2One");
             loadedEntity.persist(connection);
             connection.commit();
@@ -274,7 +344,7 @@ public class ERManagementVersionTest
 
             connection = connector.getConnection();
             VersionGeneralTestRootEntity loadedEntity = new VersionGeneralTestRootEntity();
-            loadWithoutColumnEntityWithId(connection,loadedEntity,id);
+            loadWithoutVersionColumnEntityWithId(connection, loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Modified One2One");
             loadedEntity.persist(connection);
             connection.commit();
@@ -318,7 +388,7 @@ public class ERManagementVersionTest
 
             connection = connector.getConnection();
             VersionColumnTestRootEntity loadedEntity = new VersionColumnTestRootEntity();
-            loadWithColumnEntityWithId(connection,loadedEntity,id);
+            loadWithVersionColumnEntityWithId(connection, loadedEntity, id);
             VersionColumnTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Modified One2Many");
             loadedEntity.persist(connection);
@@ -364,7 +434,7 @@ public class ERManagementVersionTest
 
             connection = connector.getConnection();
             VersionGeneralTestRootEntity loadedEntity = new VersionGeneralTestRootEntity();
-            loadWithoutColumnEntityWithId(connection,loadedEntity,id);
+            loadWithoutVersionColumnEntityWithId(connection, loadedEntity, id);
             VersionGeneralTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Modified One2Many");
             loadedEntity.persist(connection);
@@ -385,7 +455,8 @@ public class ERManagementVersionTest
         connection.close();
     }
 
-    private boolean loadWithColumnEntityWithId(Connection connection, VersionColumnTestRootEntity loadEntity,int id) throws Exception
+    private boolean loadWithVersionColumnEntityWithId(Connection connection, VersionColumnTestRootEntity loadEntity,
+                                                      int id) throws Exception
     {
         boolean loaded = false;
 
@@ -403,7 +474,8 @@ public class ERManagementVersionTest
         return loaded;
     }
 
-    private boolean loadWithoutColumnEntityWithId(Connection connection, VersionGeneralTestRootEntity loadEntity,int id) throws Exception
+    private boolean loadWithoutVersionColumnEntityWithId(Connection connection, VersionGeneralTestRootEntity loadEntity,
+                                                         int id) throws Exception
     {
         boolean loaded = false;
 
