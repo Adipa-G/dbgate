@@ -12,6 +12,7 @@ public class ERLayerConfig implements IERLayerConfig
     private boolean showQueries;
     private boolean checkVersion;
     private boolean enableStatistics;
+    private boolean updateChangedColumnsOnly;
     private String loggerName;
 
     public ERLayerConfig()
@@ -20,6 +21,7 @@ public class ERLayerConfig implements IERLayerConfig
         showQueries = true;
         checkVersion = true;
         enableStatistics = false;
+        updateChangedColumnsOnly = false;
     }
 
     @Override
@@ -80,5 +82,15 @@ public class ERLayerConfig implements IERLayerConfig
     public void setEnableStatistics(boolean enableStatistics)
     {
         this.enableStatistics = enableStatistics;
+    }
+
+    public boolean isUpdateChangedColumnsOnly()
+    {
+        return updateChangedColumnsOnly;
+    }
+
+    public void setUpdateChangedColumnsOnly(boolean updateChangedColumnsOnly)
+    {
+        this.updateChangedColumnsOnly = updateChangedColumnsOnly;
     }
 }

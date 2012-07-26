@@ -25,4 +25,8 @@ public interface IERLayerConfig
     boolean isEnableStatistics();
 
     void setEnableStatistics(boolean enableStatistics);
+
+    boolean isUpdateChangedColumnsOnly();
+
+    void setUpdateChangedColumnsOnly(boolean updateChangedColumnsOnly);
 }
