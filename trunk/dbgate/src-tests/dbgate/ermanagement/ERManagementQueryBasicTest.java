@@ -1,10 +1,9 @@
 package dbgate.ermanagement;
 
 import dbgate.dbutility.DBConnector;
+import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
-import dbgate.ermanagement.query.QueryFrom;
-import dbgate.ermanagement.query.QuerySelection;
-import dbgate.ermanagement.query.SelectionQuery;
+import dbgate.ermanagement.query.*;
 import dbgate.ermanagement.support.query.basic.QueryBasicEntity;
 import net.sf.cglib.proxy.Enhancer;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -70,27 +69,68 @@ public class ERManagementQueryBasicTest
         try
         {
             Connection connection = connector.getConnection();
-
-            int id = 35;
-            QueryBasicEntity entity = new QueryBasicEntity();
-            entity.setIdCol(id);
-            entity.setName("Org-NameA");
-            entity.persist(connection);
-
-            id = 65;
-            entity = new QueryBasicEntity();
-            entity.setIdCol(id);
-            entity.setName("Org-NameB");
-            entity.persist(connection);
-
+            createTestData(connection);
             connection.commit();
             connection.close();
 
             connection = connector.getConnection();
-
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.RawSql("query_basic qb1"))
+                    .select(QuerySelection.RawSql("id_col"))
+                    .select(QuerySelection.RawSql("name"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_loadWithCondition_WithBasicSqlQuery_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.RawSql("query_basic qb1"))
+                    .where(QueryCondition.RawSql("id_col = 35"))
+                    .where(QueryCondition.RawSql("name like 'Org-NameA'"))
                     .select(QuerySelection.RawSql("id_col,name"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_loadWithGroup_WithBasicSqlQuery_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.RawSql("query_basic qb1"))
+                    .groupBy(QueryGroup.RawSql("name"))
+                    .select(QuerySelection.RawSql("name"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 2);
@@ -100,6 +140,33 @@ public class ERManagementQueryBasicTest
             Assert.fail(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void createTestData(Connection connection) throws PersistException
+    {
+        int id = 35;
+        QueryBasicEntity entity = new QueryBasicEntity();
+        entity.setIdCol(id);
+        entity.setName("Org-NameA");
+        entity.persist(connection);
+
+        id = 45;
+        entity = new QueryBasicEntity();
+        entity.setIdCol(id);
+        entity.setName("Org-NameA");
+        entity.persist(connection);
+
+        id = 55;
+        entity = new QueryBasicEntity();
+        entity.setIdCol(id);
+        entity.setName("Org-NameA");
+        entity.persist(connection);
+
+        id = 65;
+        entity = new QueryBasicEntity();
+        entity.setIdCol(id);
+        entity.setName("Org-NameB");
+        entity.persist(connection);
     }
 
     @After
