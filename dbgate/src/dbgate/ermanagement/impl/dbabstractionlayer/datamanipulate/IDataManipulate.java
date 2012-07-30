@@ -2,6 +2,8 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.IQuery;
+import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 
@@ -33,5 +35,7 @@ public interface IDataManipulate
 
     void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IDBColumn dbColumn) throws SQLException;
 
-    ResultSet createResultSet(Connection con, final String sql, final int[] types, final Object[] values) throws SQLException;
+    ResultSet createResultSet(Connection con, QueryExecInfo execInfo) throws SQLException;
+
+    QueryExecInfo createExecInfo(Connection con, ISelectionQuery query) throws SQLException;
 }

@@ -21,6 +21,8 @@ public interface IERDataManager
 
     void save(ServerDBClass serverDBClass,Connection con ) throws PersistException;
 
+    Collection select(ISelectionQuery query,Connection con ) throws RetrievalException;
+
     void clearCache();
 
     void registerTable(Class type,String tableName);

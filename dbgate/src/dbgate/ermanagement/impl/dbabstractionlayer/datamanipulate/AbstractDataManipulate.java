@@ -2,19 +2,18 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
-import dbgate.ermanagement.DBRelationColumnMapping;
-import dbgate.ermanagement.IDBColumn;
-import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
+import dbgate.ermanagement.query.QueryStructure;
+import dbgate.ermanagement.query.segments.from.SqlQueryFrom;
+import dbgate.ermanagement.query.segments.selection.SqlQuerySelection;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -438,23 +437,33 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public ResultSet createResultSet(Connection con, final String sql, final int[] types, final Object[] values) throws SQLException
+    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo) throws SQLException
     {
-        boolean storedProcedure = isStoredProcedure(sql);
+        boolean storedProcedure = isStoredProcedure(execInfo.getSql());
 
         PreparedStatement ps;
         ResultSet rs;
 
         if (storedProcedure)
         {
-            ps = con.prepareCall(sql);
+            ps = con.prepareCall(execInfo.getSql());
         }
         else
         {
-            ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(execInfo.getSql());
         }
 
-        for (int i = 0; i < (storedProcedure ? types.length + 1 : types.length); i++)
+        List<QueryParam> params = execInfo.getParams();
+        Collections.sort(params,new Comparator<QueryParam>()
+        {
+            @Override
+            public int compare(QueryParam o1, QueryParam o2)
+            {
+                return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
+            }
+        });
+
+        for (int i = 0; i < (storedProcedure ? params.size() + 1 : params.size()); i++)
         {
             int count = i + 1;
             if (i == 0 && storedProcedure)
@@ -463,8 +472,10 @@ public class AbstractDataManipulate implements IDataManipulate
                 ((CallableStatement) ps).registerOutParameter(count, Types.REF);
                 continue;
             }
-            int type = storedProcedure ? types[i - 1] : types[i];
-            Object value = storedProcedure ? values[i - 1] : values[i];
+
+            QueryParam param = storedProcedure ? params.get(i - 1) : params.get(i);
+            int type = param.getType();
+            Object value = param.getValue();
 
             if (value == null)
             {
@@ -521,5 +532,83 @@ public class AbstractDataManipulate implements IDataManipulate
     private static  boolean isStoredProcedure(String sql)
     {
         return sql.replaceAll(" ", "").contains("begin?:=");
+    }
+
+    @Override
+    public QueryExecInfo createExecInfo(Connection con, ISelectionQuery query) throws SQLException
+    {
+        QueryStructure structure = query.getStructure();
+        return processQuery(null,structure);
+    }
+
+    protected QueryExecInfo processQuery(QueryExecInfo execInfo,QueryStructure structure)
+    {
+        if (execInfo == null)
+        {
+            execInfo = new QueryExecInfo();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        processSelection(sb, execInfo, structure);
+        processFrom(sb, execInfo, structure);
+        //sb.append("WHERE ");
+        //sb.append("GROUP BY ");
+        //sb.append("HAVING ");
+        //sb.append("ORDER BY ");
+
+        execInfo.setSql(sb.toString());
+        return execInfo;
+    }
+
+    private void processSelection(StringBuilder sb,QueryExecInfo execInfo,QueryStructure structure)
+    {
+        sb.append("SELECT ");
+
+        Collection<IQuerySelection> selections = structure.getSelectList();
+        boolean initial = true;
+        for (IQuerySelection selection : selections)
+        {
+            if (!initial)
+            {
+                sb.append(",");
+            }
+            sb.append(CreateSelectionSql(selection));
+            initial = false;
+        }
+    }
+
+    protected String CreateSelectionSql(IQuerySelection selection)
+    {
+        if (selection instanceof SqlQuerySelection)
+        {
+            return ((SqlQuerySelection) selection).getSql();
+        }
+        return "/*Incorrect Selection*/";
+    }
+
+    private void processFrom(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    {
+        sb.append(" FROM ");
+
+        Collection<IQueryFrom> fromList = structure.getFromList();
+        boolean initial = true;
+        for (IQueryFrom from : fromList)
+        {
+            if (!initial)
+            {
+                sb.append(",");
+            }
+            sb.append(CreateFromSql(from));
+            initial = false;
+        }
+    }
+
+    protected String CreateFromSql(IQueryFrom from)
+    {
+        if (from instanceof SqlQueryFrom)
+        {
+            return ((SqlQueryFrom) from).getSql();
+        }
+        return "/*Incorrect From*/";
     }
 }

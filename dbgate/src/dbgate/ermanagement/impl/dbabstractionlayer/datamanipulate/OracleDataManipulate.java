@@ -7,6 +7,9 @@ import oracle.jdbc.driver.OracleCallableStatement;
 import oracle.jdbc.driver.OracleTypes;
 
 import java.sql.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,23 +25,33 @@ public class OracleDataManipulate extends AbstractDataManipulate
     }
 
     @Override
-    public ResultSet createResultSet(Connection con, String sql, int[] types, Object[] values) throws SQLException
+    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo) throws SQLException
     {
-        boolean storedProcedure = isStoredProcedure(sql);
+        boolean storedProcedure = isStoredProcedure(execInfo.getSql());
 
         PreparedStatement ps;
         ResultSet rs;
 
         if (storedProcedure)
         {
-            ps = con.prepareCall(sql);
+            ps = con.prepareCall(execInfo.getSql());
         }
         else
         {
-            ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(execInfo.getSql());
         }
 
-        for (int i = 0; i < (storedProcedure ? types.length + 1 : types.length); i++)
+        List<QueryParam> params = execInfo.getParams();
+        Collections.sort(params, new Comparator<QueryParam>()
+        {
+            @Override
+            public int compare(QueryParam o1, QueryParam o2)
+            {
+                return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
+            }
+        });
+
+        for (int i = 0; i < (storedProcedure ? params.size() + 1 : params.size()); i++)
         {
             int count = i + 1;
             if (i == 0 && storedProcedure)
@@ -46,8 +59,10 @@ public class OracleDataManipulate extends AbstractDataManipulate
                 ((CallableStatement) ps).registerOutParameter(count, OracleTypes.CURSOR);
                 continue;
             }
-            int type = storedProcedure ? types[i - 1] : types[i];
-            Object value = storedProcedure ? values[i - 1] : values[i];
+
+            QueryParam param = storedProcedure ? params.get(i - 1) : params.get(i);
+            int type = param.getType();
+            Object value = param.getValue();
 
             if (value == null)
             {
