@@ -64,6 +64,12 @@ public class ERLayer implements IERLayer
         erDataManager.save(serverDBClass, con);
     }
 
+    @Override
+    public Collection select(ISelectionQuery query,Connection con ) throws RetrievalException
+    {
+        return erDataManager.select(query,con);
+    }
+
     public void patchDataBase(Connection con, Collection<ServerDBClass> dbClasses, boolean dropAll) throws DBPatchingException
     {
         erMetaDataManager.patchDataBase(con, dbClasses, dropAll);

@@ -22,6 +22,8 @@ public interface IERLayer
 
     void save(ServerDBClass serverDBClass, Connection con) throws PersistException;
 
+    Collection select(ISelectionQuery query,Connection con ) throws RetrievalException;
+
     void patchDataBase(Connection con, Collection<ServerDBClass> dbClasses, boolean dropAll) throws DBPatchingException;
 
     void clearCache();
