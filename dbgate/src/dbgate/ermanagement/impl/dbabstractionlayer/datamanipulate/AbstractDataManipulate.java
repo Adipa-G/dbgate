@@ -9,7 +9,9 @@ import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.query.QueryStructure;
+import dbgate.ermanagement.query.segments.condition.SqlQueryCondition;
 import dbgate.ermanagement.query.segments.from.SqlQueryFrom;
+import dbgate.ermanagement.query.segments.group.SqlQueryGroup;
 import dbgate.ermanagement.query.segments.selection.SqlQuerySelection;
 
 import java.sql.*;
@@ -551,8 +553,8 @@ public class AbstractDataManipulate implements IDataManipulate
         StringBuilder sb = new StringBuilder();
         processSelection(sb, execInfo, structure);
         processFrom(sb, execInfo, structure);
-        //sb.append("WHERE ");
-        //sb.append("GROUP BY ");
+        processWhere(sb, execInfo, structure);
+        processGroup(sb, execInfo, structure);
         //sb.append("HAVING ");
         //sb.append("ORDER BY ");
 
@@ -610,5 +612,63 @@ public class AbstractDataManipulate implements IDataManipulate
             return ((SqlQueryFrom) from).getSql();
         }
         return "/*Incorrect From*/";
+    }
+
+    private void processWhere(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    {
+        Collection<IQueryCondition> conditionList = structure.getConditionList();
+        if (conditionList.size() == 0)
+            return;
+
+        sb.append(" WHERE ");
+
+        boolean initial = true;
+        for (IQueryCondition condition : conditionList)
+        {
+            if (!initial)
+            {
+                sb.append(" AND ");
+            }
+            sb.append(CreateWhereSql(condition));
+            initial = false;
+        }
+    }
+
+    protected String CreateWhereSql(IQueryCondition condition)
+    {
+        if (condition instanceof SqlQueryCondition)
+        {
+            return ((SqlQueryCondition) condition).getSql();
+        }
+        return "/*Incorrect Where*/";
+    }
+
+    private void processGroup(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    {
+        Collection<IQueryGroup> groupList = structure.getGroupList();
+        if (groupList.size() == 0)
+            return;
+
+        sb.append(" GROUP BY ");
+
+        boolean initial = true;
+        for (IQueryGroup group : groupList)
+        {
+            if (!initial)
+            {
+                sb.append(",");
+            }
+            sb.append(CreateGroupSql(group));
+            initial = false;
+        }
+    }
+
+    protected String CreateGroupSql(IQueryGroup group)
+    {
+        if (group instanceof SqlQueryGroup)
+        {
+            return ((SqlQueryGroup) group).getSql();
+        }
+        return "/*Incorrect Group*/";
     }
 }

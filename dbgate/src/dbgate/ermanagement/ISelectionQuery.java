@@ -18,7 +18,16 @@ import java.util.Collection;
 public interface ISelectionQuery extends IQuery
 {
     Collection toList(Connection con) throws RetrievalException;
-    
+
+    @Override
+    ISelectionQuery from(IQueryFrom queryFrom);
+
+    @Override
+    ISelectionQuery join(IQueryJoin queryJoin);
+
+    @Override
+    ISelectionQuery where(IQueryCondition queryCondition);
+
     ISelectionQuery select(IQuerySelection querySelection);
 
     ISelectionQuery groupBy(IQueryGroup queryGroup);

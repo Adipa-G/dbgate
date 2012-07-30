@@ -2,6 +2,7 @@ package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryFrom;
 import dbgate.ermanagement.IQueryGroup;
+import dbgate.ermanagement.query.segments.group.SqlQueryGroup;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,8 +13,8 @@ import dbgate.ermanagement.IQueryGroup;
  */
 public class QueryGroup
 {
-    public static IQueryGroup RawSql(String sql)
+    public static SqlQueryGroup RawSql(String sql)
     {
-        return null;
+        return new SqlQueryGroup(sql);
     }
 }
