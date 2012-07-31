@@ -1,9 +1,17 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
+import dbgate.IRODBClass;
+import dbgate.ServerRODBClass;
 import dbgate.ermanagement.IQuerySelection;
+import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.exceptions.NoFieldsFoundException;
 import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
+import dbgate.ermanagement.exceptions.TableCacheMissException;
+import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
+import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 import java.sql.Connection;
@@ -20,55 +28,40 @@ import java.util.List;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSqlQuerySelection implements IAbstractQuerySelection
+public class AbstractTypeQuerySelection implements IAbstractQuerySelection
 {
-    protected String sql;
+    private Class type;
 
-
-    public String getSql()
+    public Class getType()
     {
-        return sql;
+        return type;
     }
 
-    public void setSql(String sql)
+    public void setType(Class type)
     {
-        this.sql = sql;
+        this.type = type;
     }
 
     @Override
     public QuerySelectionExpressionType getSelectionType()
     {
-        return QuerySelectionExpressionType.RAW_SQL;
+        return QuerySelectionExpressionType.TYPE;
     }
 
     @Override
     public String createSql(QueryExecInfo execInfo)
     {
-        return sql;
+        return "*";
     }
 
-    public Object retrieve(ResultSet rs,Connection con) throws RetrievalException
+    @Override
+    public Object retrieve(ResultSet rs, Connection con) throws RetrievalException
     {
         try
         {
-            List<String> columns = Arrays.asList(sql.split("\\s*,\\s*"));
-            while (columns.remove(""));
-
-            Object[] readObjects = new Object[columns.size()];
-            for (int i = 0, columnsLength = columns.size(); i < columnsLength; i++)
-            {
-                String column = columns.get(i).toLowerCase();
-                if (column.contains(" as "))
-                {
-                    column = column.split("as")[1].trim();
-                }
-                Object obj = rs.getObject(column);
-                readObjects[i] = obj;
-            }
-
-            if (readObjects.length == 0)
-                return readObjects[0];
-            return readObjects;
+            ServerRODBClass instance = (ServerRODBClass)type.newInstance();
+            instance.retrieve(rs,con);
+            return instance;
         }
         catch (Exception ex)
         {

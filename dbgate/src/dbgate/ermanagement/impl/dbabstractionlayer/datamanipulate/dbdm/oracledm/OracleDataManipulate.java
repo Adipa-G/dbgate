@@ -1,5 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.oracledm;
 
+import dbgate.DBColumnType;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
@@ -64,47 +65,10 @@ public class OracleDataManipulate extends AbstractDataManipulate
             }
 
             QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
-            int type = param.getType();
+            DBColumnType type = param.getType();
             Object value = param.getValue();
 
-            if (value == null)
-            {
-                ps.setNull(count, type);
-            }
-            else
-            {
-                switch (type)
-                {
-                    case Types.BIGINT:
-                    case Types.NUMERIC:
-                        ps.setLong(count, (Long) value);
-                        break;
-                    case Types.BOOLEAN:
-                        ps.setBoolean(count, (Boolean) value);
-                        break;
-                    case Types.CHAR:
-                        ps.setInt(count, (Character) value);
-                        break;
-                    case Types.INTEGER:
-                        ps.setInt(count, (Integer) value);
-                        break;
-                    case Types.DATE:
-                        ps.setDate(count, ((DateWrapper) value)._getSQLDate());
-                        break;
-                    case Types.DOUBLE:
-                        ps.setDouble(count, (Double) value);
-                        break;
-                    case Types.FLOAT:
-                        ps.setFloat(count, (Float) value);
-                        break;
-                    case Types.TIMESTAMP:
-                        ps.setTimestamp(count, ((TimeStampWrapper) value)._getSQLTimeStamp());
-                        break;
-                    case Types.VARCHAR:
-                        ps.setString(count, (String) value);
-                        break;
-                }
-            }
+            setToPreparedStatement(ps,value,count,value == null,type);
         }
 
         if (storedProcedure)

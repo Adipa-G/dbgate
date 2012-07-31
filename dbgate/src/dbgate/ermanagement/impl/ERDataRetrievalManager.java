@@ -75,7 +75,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                 Object[]  rowObjects = new Object[selections.size()];
                 for (IQuerySelection selection : selections)
                 {
-                    Object loaded = ((IAbstractQuerySelection)selection).retrieve(rs);
+                    Object loaded = ((IAbstractQuerySelection)selection).retrieve(rs,con);
                     rowObjects[count++] = loaded;
                 }
                 retList.add(rowObjects);

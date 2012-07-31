@@ -1,12 +1,10 @@
 package dbgate.ermanagement.query;
 
-import dbgate.IRODBClass;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.ERLayer;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -26,6 +24,27 @@ public class SelectionQuery extends Query implements ISelectionQuery
     public Collection toList(Connection con) throws RetrievalException
     {
         return ERLayer.getSharedInstance().select(this,con);
+    }
+
+    @Override
+    public ISelectionQuery distinct()
+    {
+        structure.setDistinct(true);
+        return this;
+    }
+
+    @Override
+    public ISelectionQuery fetch(long records)
+    {
+        structure.setFetch(records);
+        return this;
+    }
+
+    @Override
+    public ISelectionQuery skip(long records)
+    {
+        structure.setSkip(records);
+        return this;
     }
 
     @Override

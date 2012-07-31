@@ -1,5 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
+import dbgate.DBColumnType;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.*;
@@ -364,10 +365,15 @@ public class AbstractDataManipulate implements IDataManipulate
     @Override
     public void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IDBColumn dbColumn) throws SQLException
     {
-        switch (dbColumn.getColumnType())
+        setToPreparedStatement(ps,obj,parameterIndex,dbColumn.isNullable(),dbColumn.getColumnType());
+    }
+    
+    protected void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex,boolean nullable, DBColumnType dbColumnType) throws SQLException
+    {
+        switch (dbColumnType)
         {
             case BOOLEAN:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex, Types.BOOLEAN);
                 }
@@ -377,7 +383,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
                 break;
             case CHAR:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.VARCHAR);
                 }
@@ -387,7 +393,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
                 break;
             case DATE:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.DATE);
                 }
@@ -397,7 +403,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
                 break;
             case DOUBLE:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.DOUBLE);
                 }
@@ -407,7 +413,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
                 break;
             case FLOAT:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.FLOAT);
                 }
@@ -418,7 +424,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 break;
             case INTEGER:
             case VERSION:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.INTEGER);
                 }
@@ -428,7 +434,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
                 break;
             case LONG:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.BIGINT);
                 }
@@ -438,7 +444,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
                 break;
             case TIMESTAMP:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.TIMESTAMP);
                 }
@@ -448,7 +454,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
                 break;
             case VARCHAR:
-                if (dbColumn.isNullable() && obj == null)
+                if (nullable && obj == null)
                 {
                     ps.setNull(parameterIndex,Types.VARCHAR);
                 }
@@ -498,47 +504,10 @@ public class AbstractDataManipulate implements IDataManipulate
             }
 
             QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
-            int type = param.getType();
+            DBColumnType type = param.getType();
             Object value = param.getValue();
 
-            if (value == null)
-            {
-                ps.setNull(count, type);
-            }
-            else
-            {
-                switch (type)
-                {
-                    case Types.BIGINT:
-                    case Types.NUMERIC:
-                        ps.setLong(count, (Long) value);
-                        break;
-                    case Types.BOOLEAN:
-                        ps.setBoolean(count, (Boolean) value);
-                        break;
-                    case Types.CHAR:
-                        ps.setInt(count, (Character) value);
-                        break;
-                    case Types.INTEGER:
-                        ps.setInt(count, (Integer) value);
-                        break;
-                    case Types.DATE:
-                        ps.setDate(count, ((DateWrapper) value)._getSQLDate());
-                        break;
-                    case Types.DOUBLE:
-                        ps.setDouble(count, (Double) value);
-                        break;
-                    case Types.FLOAT:
-                        ps.setFloat(count, (Float) value);
-                        break;
-                    case Types.TIMESTAMP:
-                        ps.setTimestamp(count, ((TimeStampWrapper) value)._getSQLTimeStamp());
-                        break;
-                    case Types.VARCHAR:
-                        ps.setString(count, (String) value);
-                        break;
-                }
-            }
+            setToPreparedStatement(ps,value,count,value == null,type);
         }
 
         if (storedProcedure)
@@ -581,13 +550,43 @@ public class AbstractDataManipulate implements IDataManipulate
         processGroupCondition(sb, execInfo, structure);
         processOrderBy(sb, execInfo, structure);
 
+        addPagingClause(sb,execInfo,structure);
+
         execInfo.setSql(sb.toString());
         return execInfo;
+    }
+
+    protected void addPagingClause(StringBuilder sb,QueryExecInfo execInfo,QueryStructure structure)
+    {
+        if (structure.getSkip() > 0)
+        {
+            sb.append(" OFFSET ? ROWS ");
+
+            QueryExecParam param = new QueryExecParam();
+            param.setIndex(execInfo.getParams().size());
+            param.setType(DBColumnType.LONG);
+            param.setValue(structure.getSkip());
+            execInfo.getParams().add(param);
+        }
+
+        if (structure.getFetch() > 0)
+        {
+            sb.append(" FETCH NEXT ? ROWS ONLY ");
+
+            QueryExecParam param = new QueryExecParam();
+            param.setIndex(execInfo.getParams().size());
+            param.setType(DBColumnType.LONG);
+            param.setValue(structure.getFetch());
+            execInfo.getParams().add(param);
+        }
     }
 
     private void processSelection(StringBuilder sb,QueryExecInfo execInfo,QueryStructure structure)
     {
         sb.append("SELECT ");
+
+        if (structure.isDistinct())
+            sb.append(" DISTINCT ");
 
         Collection<IQuerySelection> selections = structure.getSelectList();
         boolean initial = true;
@@ -597,16 +596,16 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(",");
             }
-            sb.append(CreateSelectionSql(selection));
+            sb.append(CreateSelectionSql(selection,execInfo));
             initial = false;
         }
     }
 
-    protected String CreateSelectionSql(IQuerySelection selection)
+    protected String CreateSelectionSql(IQuerySelection selection,QueryExecInfo execInfo)
     {
         if (selection != null)
         {
-            return ((IAbstractQuerySelection)selection).createSql();
+            return ((IAbstractQuerySelection)selection).createSql(execInfo);
         }
         return "/*Incorrect Selection*/";
     }
@@ -662,6 +661,7 @@ public class AbstractDataManipulate implements IDataManipulate
     private void processWhere(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
     {
         Collection<IQueryCondition> conditionList = structure.getConditionList();
+
         if (conditionList.size() == 0)
             return;
 

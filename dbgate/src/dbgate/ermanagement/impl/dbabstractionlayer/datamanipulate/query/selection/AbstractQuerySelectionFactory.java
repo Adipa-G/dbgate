@@ -17,6 +17,8 @@ public class AbstractQuerySelectionFactory
         {
             case RAW_SQL:
                 return new AbstractSqlQuerySelection();
+            case TYPE:
+                return new AbstractTypeQuerySelection();
             default:
                 return null;
         }

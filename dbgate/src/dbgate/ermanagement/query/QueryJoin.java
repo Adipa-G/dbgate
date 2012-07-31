@@ -20,7 +20,7 @@ public class QueryJoin
         factory = f;
     }
 
-    public static IQueryJoin RawSql(String sql)
+    public static IQueryJoin rawSql(String sql)
     {
         AbstractSqlQueryJoin queryJoin = (AbstractSqlQueryJoin) factory.createOrderBy(QueryJoinExpressionType.RAW_SQL);
         queryJoin.setSql(sql);

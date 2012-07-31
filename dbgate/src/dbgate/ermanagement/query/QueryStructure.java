@@ -14,6 +14,10 @@ import java.util.Collection;
  */
 public class QueryStructure
 {
+    private boolean distinct;
+    private long skip;
+    private long fetch;
+
     private Collection<IQueryFrom> fromList;
     private Collection<IQueryJoin> joinList;
     private Collection<IQueryCondition> conditionList;
@@ -31,6 +35,36 @@ public class QueryStructure
         groupList = new ArrayList<IQueryGroup>();
         orderList = new ArrayList<IQueryOrderBy>();
         groupConditionList = new ArrayList<IQueryGroupCondition>();
+    }
+
+    public boolean isDistinct()
+    {
+        return distinct;
+    }
+
+    public void setDistinct(boolean distinct)
+    {
+        this.distinct = distinct;
+    }
+
+    public long getFetch()
+    {
+        return fetch;
+    }
+
+    public void setFetch(long fetch)
+    {
+        this.fetch = fetch;
+    }
+
+    public long getSkip()
+    {
+        return skip;
+    }
+
+    public void setSkip(long skip)
+    {
+        this.skip = skip;
     }
 
     public Collection<IQueryFrom> getFromList()
