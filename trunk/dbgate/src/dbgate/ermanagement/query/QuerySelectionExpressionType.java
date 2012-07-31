@@ -9,5 +9,6 @@ package dbgate.ermanagement.query;
  */
 public enum QuerySelectionExpressionType
 {
-    RAW_SQL
+    RAW_SQL,
+    TYPE
 }

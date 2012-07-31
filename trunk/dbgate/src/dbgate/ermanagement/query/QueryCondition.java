@@ -20,7 +20,7 @@ public class QueryCondition
         factory = f;
     }
 
-    public static IQueryCondition RawSql(String sql)
+    public static IQueryCondition rawSql(String sql)
     {
         AbstractSqlQueryCondition queryCondition = (AbstractSqlQueryCondition) factory.createCondition(
                 QueryConditionExpressionType.RAW_SQL);

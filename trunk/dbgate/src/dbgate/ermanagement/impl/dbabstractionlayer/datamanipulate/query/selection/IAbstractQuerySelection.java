@@ -1,7 +1,10 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
 import dbgate.ermanagement.IQuerySelection;
+import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -14,7 +17,7 @@ import java.sql.SQLException;
  */
 public interface IAbstractQuerySelection extends IQuerySelection
 {
-    String createSql();
+    String createSql(QueryExecInfo execInfo);
 
-    Object retrieve(ResultSet rs) throws SQLException;
+    Object retrieve(ResultSet rs,Connection con) throws RetrievalException;
 }

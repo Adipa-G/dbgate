@@ -1,5 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
+import dbgate.DBColumnType;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -10,7 +12,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 public class QueryExecParam
 {
     private int index;
-    private int type;
+    private DBColumnType type;
     private Object value;
 
     public int getIndex()
@@ -23,12 +25,12 @@ public class QueryExecParam
         this.index = index;
     }
 
-    public int getType()
+    public DBColumnType getType()
     {
         return type;
     }
 
-    public void setType(int type)
+    public void setType(DBColumnType type)
     {
         this.type = type;
     }

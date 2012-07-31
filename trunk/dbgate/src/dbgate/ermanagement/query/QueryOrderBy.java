@@ -21,7 +21,7 @@ public class QueryOrderBy
         factory = f;
     }
 
-    public static IQueryOrderBy RawSql(String sql)
+    public static IQueryOrderBy rawSql(String sql)
     {
         AbstractSqlQueryOrderBy queryOrderBy = (AbstractSqlQueryOrderBy) factory.createOrderBy(QueryOrderByExpressionType.RAW_SQL);
         queryOrderBy.setSql(sql);

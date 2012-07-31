@@ -25,6 +25,12 @@ public interface ISelectionQuery extends IQuery
     @Override
     ISelectionQuery join(IQueryJoin queryJoin);
 
+    ISelectionQuery distinct();
+
+    ISelectionQuery skip(long records);
+
+    ISelectionQuery fetch(long records);
+
     @Override
     ISelectionQuery where(IQueryCondition queryCondition);
 

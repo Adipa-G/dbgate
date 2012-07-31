@@ -6,7 +6,6 @@ import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.query.*;
 import dbgate.ermanagement.support.query.basic.QueryBasicDetailsEntity;
 import dbgate.ermanagement.support.query.basic.QueryBasicEntity;
-import net.sf.cglib.proxy.Enhancer;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
@@ -14,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 /**
@@ -82,9 +80,163 @@ public class ERManagementQueryBasicTest
 
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.RawSql("query_basic qb1"))
-                    .select(QuerySelection.RawSql("id_col"))
-                    .select(QuerySelection.RawSql("name as name_col"));
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .select(QuerySelection.rawSql("id_col"))
+                    .select(QuerySelection.rawSql("name as name_col"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithDistinctSqlQuery_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .select(QuerySelection.rawSql("name as name_col"))
+                    .distinct();
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithRowSkipSqlQuery_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .select(QuerySelection.rawSql("name as name_col"))
+                    .skip(1);
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .select(QuerySelection.rawSql("name as name_col"))
+                    .fetch(2);
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithRowSkipAndFetchSqlQuery_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .select(QuerySelection.rawSql("name as name_col"))
+                    .skip(1).fetch(2);
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithTypeSelection_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithTypeFrom_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
@@ -108,10 +260,10 @@ public class ERManagementQueryBasicTest
 
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.RawSql("query_basic qb1"))
-                    .where(QueryCondition.RawSql("id_col = 35"))
-                    .where(QueryCondition.RawSql("name like 'Org-NameA'"))
-                    .select(QuerySelection.RawSql("id_col,name"));
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .where(QueryCondition.rawSql("id_col = 35"))
+                    .where(QueryCondition.rawSql("name like 'Org-NameA'"))
+                    .select(QuerySelection.rawSql("id_col,name"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 1);
@@ -135,9 +287,9 @@ public class ERManagementQueryBasicTest
 
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.RawSql("query_basic qb1"))
-                    .groupBy(QueryGroup.RawSql("name"))
-                    .select(QuerySelection.RawSql("name"));
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .groupBy(QueryGroup.rawSql("name"))
+                    .select(QuerySelection.rawSql("name"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 2);
@@ -161,10 +313,10 @@ public class ERManagementQueryBasicTest
 
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.RawSql("query_basic qb1"))
-                    .groupBy(QueryGroup.RawSql("name"))
-                    .having(QueryGroupCondition.RawSql("count(id_col)>1"))
-                    .select(QuerySelection.RawSql("name"));
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .groupBy(QueryGroup.rawSql("name"))
+                    .having(QueryGroupCondition.rawSql("count(id_col)>1"))
+                    .select(QuerySelection.rawSql("name"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 1);
@@ -188,9 +340,9 @@ public class ERManagementQueryBasicTest
 
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.RawSql("query_basic qb1"))
-                    .orderBy(QueryOrderBy.RawSql("name"))
-                    .select(QuerySelection.RawSql("name"));
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .orderBy(QueryOrderBy.rawSql("name"))
+                    .select(QuerySelection.rawSql("name"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
@@ -214,11 +366,11 @@ public class ERManagementQueryBasicTest
 
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.RawSql("query_basic qb1"))
-                    .join(QueryJoin.RawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
-                    .orderBy(QueryOrderBy.RawSql("qb1.name"))
-                    .select(QuerySelection.RawSql("qb1.name as name"))
-                    .select(QuerySelection.RawSql("description"));
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .join(QueryJoin.rawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
+                    .orderBy(QueryOrderBy.rawSql("qb1.name"))
+                    .select(QuerySelection.rawSql("qb1.name as name"))
+                    .select(QuerySelection.rawSql("description"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);

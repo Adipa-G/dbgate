@@ -21,7 +21,7 @@ public class QueryGroupCondition
         factory = f;
     }
 
-    public static IQueryGroupCondition RawSql(String sql)
+    public static IQueryGroupCondition rawSql(String sql)
     {
         AbstractSqlQueryGroupCondition queryGroup = (AbstractSqlQueryGroupCondition) factory.createGroupCondition(QueryGroupConditionExpressionType.RAW_SQL);
         queryGroup.setSql(sql);
