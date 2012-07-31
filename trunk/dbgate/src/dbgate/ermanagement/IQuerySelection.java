@@ -1,9 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ermanagement.exceptions.RetrievalException;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import dbgate.ermanagement.query.QuerySelectionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,5 +11,5 @@ import java.sql.SQLException;
  */
 public interface IQuerySelection
 {
-    Object retrieve(ResultSet rs) throws SQLException;
+    QuerySelectionType getSelectionType();
 }

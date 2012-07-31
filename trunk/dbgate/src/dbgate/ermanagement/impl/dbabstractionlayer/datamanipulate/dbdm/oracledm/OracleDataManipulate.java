@@ -1,8 +1,11 @@
-package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
+package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.oracledm;
 
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
 import oracle.jdbc.driver.OracleCallableStatement;
 import oracle.jdbc.driver.OracleTypes;
 
@@ -41,11 +44,11 @@ public class OracleDataManipulate extends AbstractDataManipulate
             ps = con.prepareStatement(execInfo.getSql());
         }
 
-        List<QueryParam> params = execInfo.getParams();
-        Collections.sort(params, new Comparator<QueryParam>()
+        List<QueryExecParam> params = execInfo.getParams();
+        Collections.sort(params, new Comparator<QueryExecParam>()
         {
             @Override
-            public int compare(QueryParam o1, QueryParam o2)
+            public int compare(QueryExecParam o1, QueryExecParam o2)
             {
                 return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
             }
@@ -60,7 +63,7 @@ public class OracleDataManipulate extends AbstractDataManipulate
                 continue;
             }
 
-            QueryParam param = storedProcedure ? params.get(i - 1) : params.get(i);
+            QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
             int type = param.getType();
             Object value = param.getValue();
 

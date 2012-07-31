@@ -1,8 +1,9 @@
-package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
+package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.accessdm;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

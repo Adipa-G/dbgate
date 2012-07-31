@@ -1,10 +1,11 @@
-package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate;
+package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.mysqlmm;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonTableGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.*;
+import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultmm.DefaultMetaManipulate;
 
 /**
  * Created by IntelliJ IDEA.

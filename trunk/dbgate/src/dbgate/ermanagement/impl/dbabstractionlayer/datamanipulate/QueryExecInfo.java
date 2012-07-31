@@ -1,7 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,7 +13,7 @@ import java.util.List;
 public class QueryExecInfo
 {
     private String sql;
-    private List<QueryParam> params;
+    private List<QueryExecParam> params;
 
     public QueryExecInfo()
     {
@@ -31,7 +30,7 @@ public class QueryExecInfo
         this.sql = sql;
     }
 
-    public List<QueryParam> getParams()
+    public List<QueryExecParam> getParams()
     {
         return params;
     }

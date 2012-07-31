@@ -1,6 +1,7 @@
-package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
+package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.defaultdm;
 
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
 
 /**
  * Created by IntelliJ IDEA.

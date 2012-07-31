@@ -1,7 +1,8 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQuerySelection;
-import dbgate.ermanagement.query.segments.selection.SqlQuerySelection;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSqlQuerySelection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,8 +13,18 @@ import dbgate.ermanagement.query.segments.selection.SqlQuerySelection;
  */
 public class QuerySelection
 {
-    public static SqlQuerySelection RawSql(String sql)
+    private static AbstractQuerySelectionFactory factory;
+
+    public static void setFactory(AbstractQuerySelectionFactory f)
     {
-        return new SqlQuerySelection(sql);
+        factory = f;
+    }
+
+    public static IQuerySelection RawSql(String sql)
+    {
+        AbstractSqlQuerySelection querySelection = (AbstractSqlQuerySelection) factory.createSelection(
+                QuerySelectionType.RAW_SQL);
+        querySelection.setSql(sql);
+        return querySelection;
     }
 }

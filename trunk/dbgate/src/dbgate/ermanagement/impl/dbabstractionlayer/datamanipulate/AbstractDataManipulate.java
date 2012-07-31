@@ -7,12 +7,16 @@ import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractQueryConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.IAbstractQueryCondition;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractQueryFromFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.IAbstractQueryFrom;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractQueryGroupFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.IAbstractQueryGroup;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractQuerySelection;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
-import dbgate.ermanagement.query.QueryStructure;
-import dbgate.ermanagement.query.segments.condition.SqlQueryCondition;
-import dbgate.ermanagement.query.segments.from.SqlQueryFrom;
-import dbgate.ermanagement.query.segments.group.SqlQueryGroup;
-import dbgate.ermanagement.query.segments.selection.SqlQuerySelection;
+import dbgate.ermanagement.query.*;
 
 import java.sql.*;
 import java.util.*;
@@ -30,6 +34,15 @@ public class AbstractDataManipulate implements IDataManipulate
     public AbstractDataManipulate(IDBLayer dbLayer)
     {
         this.dbLayer = dbLayer;
+        initialize();
+    }
+
+    protected void initialize()
+    {
+        QuerySelection.setFactory(new AbstractQuerySelectionFactory());
+        QueryFrom.setFactory(new AbstractQueryFromFactory());
+        QueryCondition.setFactory(new AbstractQueryConditionFactory());
+        QueryGroup.setFactory(new AbstractQueryGroupFactory());
     }
 
     @Override
@@ -455,11 +468,11 @@ public class AbstractDataManipulate implements IDataManipulate
             ps = con.prepareStatement(execInfo.getSql());
         }
 
-        List<QueryParam> params = execInfo.getParams();
-        Collections.sort(params,new Comparator<QueryParam>()
+        List<QueryExecParam> params = execInfo.getParams();
+        Collections.sort(params,new Comparator<QueryExecParam>()
         {
             @Override
-            public int compare(QueryParam o1, QueryParam o2)
+            public int compare(QueryExecParam o1, QueryExecParam o2)
             {
                 return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
             }
@@ -475,7 +488,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 continue;
             }
 
-            QueryParam param = storedProcedure ? params.get(i - 1) : params.get(i);
+            QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
             int type = param.getType();
             Object value = param.getValue();
 
@@ -581,9 +594,9 @@ public class AbstractDataManipulate implements IDataManipulate
 
     protected String CreateSelectionSql(IQuerySelection selection)
     {
-        if (selection instanceof SqlQuerySelection)
+        if (selection != null)
         {
-            return ((SqlQuerySelection) selection).getSql();
+            return ((IAbstractQuerySelection)selection).createSql();
         }
         return "/*Incorrect Selection*/";
     }
@@ -607,9 +620,9 @@ public class AbstractDataManipulate implements IDataManipulate
 
     protected String CreateFromSql(IQueryFrom from)
     {
-        if (from instanceof SqlQueryFrom)
+        if (from != null)
         {
-            return ((SqlQueryFrom) from).getSql();
+            return ((IAbstractQueryFrom)from).createSql();
         }
         return "/*Incorrect From*/";
     }
@@ -636,9 +649,9 @@ public class AbstractDataManipulate implements IDataManipulate
 
     protected String CreateWhereSql(IQueryCondition condition)
     {
-        if (condition instanceof SqlQueryCondition)
+        if (condition != null)
         {
-            return ((SqlQueryCondition) condition).getSql();
+            return ((IAbstractQueryCondition)condition).createSql();
         }
         return "/*Incorrect Where*/";
     }
@@ -665,9 +678,9 @@ public class AbstractDataManipulate implements IDataManipulate
 
     protected String CreateGroupSql(IQueryGroup group)
     {
-        if (group instanceof SqlQueryGroup)
+        if (group != null)
         {
-            return ((SqlQueryGroup) group).getSql();
+            return ((IAbstractQueryGroup)group).createSql();
         }
         return "/*Incorrect Group*/";
     }
