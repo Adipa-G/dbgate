@@ -7,7 +7,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
  * Time: 8:22 PM
  * To change this template use File | Settings | File Templates.
  */
-public class QueryParam
+public class QueryExecParam
 {
     private int index;
     private int type;

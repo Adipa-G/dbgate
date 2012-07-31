@@ -1,5 +1,7 @@
 package dbgate.ermanagement;
 
+import dbgate.ermanagement.query.QueryGroupType;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -9,5 +11,5 @@ package dbgate.ermanagement;
  */
 public interface IQueryGroup
 {
-
+    QueryGroupType getGroupType();
 }

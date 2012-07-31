@@ -1,7 +1,8 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryFrom;
-import dbgate.ermanagement.query.segments.from.SqlQueryFrom;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractQueryFromFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractSqlQueryFrom;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,8 +13,17 @@ import dbgate.ermanagement.query.segments.from.SqlQueryFrom;
  */
 public class QueryFrom
 {
-    public static SqlQueryFrom RawSql(String sql)
+    private static AbstractQueryFromFactory factory;
+
+    public static void setFactory(AbstractQueryFromFactory f)
     {
-        return new SqlQueryFrom(sql);
+        factory = f;
+    }
+
+    public static IQueryFrom RawSql(String sql)
+    {
+        AbstractSqlQueryFrom queryFrom = (AbstractSqlQueryFrom) factory.createFrom(QueryFromType.RAW_SQL);
+        queryFrom.setSql(sql);
+        return queryFrom;
     }
 }

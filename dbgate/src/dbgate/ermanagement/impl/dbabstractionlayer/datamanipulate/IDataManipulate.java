@@ -6,6 +6,7 @@ import dbgate.ermanagement.IQuery;
 import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

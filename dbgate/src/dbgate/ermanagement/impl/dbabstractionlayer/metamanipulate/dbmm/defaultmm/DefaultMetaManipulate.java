@@ -1,9 +1,10 @@
-package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate;
+package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultmm;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.exceptions.MetaDataException;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.AbstractMetaManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonForeignKeyGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonPrimaryKeyGroup;
