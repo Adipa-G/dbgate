@@ -4,6 +4,7 @@ import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.query.*;
+import dbgate.ermanagement.support.query.basic.QueryBasicDetailsEntity;
 import dbgate.ermanagement.support.query.basic.QueryBasicEntity;
 import net.sf.cglib.proxy.Enhancer;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -40,6 +41,12 @@ public class ERManagementQueryBasicTest
             PreparedStatement ps = con.prepareStatement(sql);
             ps.execute();
 
+            sql = "Create table query_basic_details (\n" +
+                    "\tname Varchar(20) NOT NULL,\n" +
+                    "\tdescription Varchar(50) NOT NULL )";
+            ps = con.prepareStatement(sql);
+            ps.execute();
+
             con.commit();
             con.close();
 
@@ -64,7 +71,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_loadAll_WithBasicSqlQuery_shouldLoadAll()
+    public void ERQuery_ExecuteToRetrieveAll_WithBasicSqlQuery_shouldLoadAll()
     {
         try
         {
@@ -77,7 +84,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.RawSql("query_basic qb1"))
                     .select(QuerySelection.RawSql("id_col"))
-                    .select(QuerySelection.RawSql("name"));
+                    .select(QuerySelection.RawSql("name as name_col"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
@@ -90,7 +97,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_loadWithCondition_WithBasicSqlQuery_shouldLoadTarget()
+    public void ERQuery_ExecuteWithCondition_WithBasicSqlQuery_shouldLoadTarget()
     {
         try
         {
@@ -117,7 +124,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_loadWithGroup_WithBasicSqlQuery_shouldLoadTarget()
+    public void ERQuery_ExecuteWithGroup_WithBasicSqlQuery_shouldLoadTarget()
     {
         try
         {
@@ -142,6 +149,87 @@ public class ERManagementQueryBasicTest
         }
     }
 
+    @Test
+    public void ERQuery_ExecuteWithGroupCondition_WithBasicSqlQuery_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.RawSql("query_basic qb1"))
+                    .groupBy(QueryGroup.RawSql("name"))
+                    .having(QueryGroupCondition.RawSql("count(id_col)>1"))
+                    .select(QuerySelection.RawSql("name"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithOrderBy_WithBasicSqlQuery_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.RawSql("query_basic qb1"))
+                    .orderBy(QueryOrderBy.RawSql("name"))
+                    .select(QuerySelection.RawSql("name"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithJoin_WithBasicSqlQuery_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.RawSql("query_basic qb1"))
+                    .join(QueryJoin.RawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
+                    .orderBy(QueryOrderBy.RawSql("qb1.name"))
+                    .select(QuerySelection.RawSql("qb1.name as name"))
+                    .select(QuerySelection.RawSql("description"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void createTestData(Connection connection) throws PersistException
     {
         int id = 35;
@@ -149,6 +237,11 @@ public class ERManagementQueryBasicTest
         entity.setIdCol(id);
         entity.setName("Org-NameA");
         entity.persist(connection);
+
+        QueryBasicDetailsEntity detailsEntity = new QueryBasicDetailsEntity();
+        detailsEntity.setName(entity.getName());
+        detailsEntity.setDescription(entity.getName() + "Details");
+        detailsEntity.persist(connection);
 
         id = 45;
         entity = new QueryBasicEntity();
@@ -167,6 +260,11 @@ public class ERManagementQueryBasicTest
         entity.setIdCol(id);
         entity.setName("Org-NameB");
         entity.persist(connection);
+
+        detailsEntity = new QueryBasicDetailsEntity();
+        detailsEntity.setName(entity.getName());
+        detailsEntity.setDescription(entity.getName() + "Details");
+        detailsEntity.persist(connection);
     }
 
     @After
@@ -177,6 +275,9 @@ public class ERManagementQueryBasicTest
             Connection con = DriverManager.getConnection("jdbc:derby:memory:init-testing-query-basic;create=true");
 
             PreparedStatement ps = con.prepareStatement("DELETE FROM query_basic");
+            ps.execute();
+
+            ps = con.prepareStatement("DELETE FROM query_basic_details");
             ps.execute();
 
             con.commit();

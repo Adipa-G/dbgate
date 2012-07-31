@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ermanagement.query.QueryConditionType;
+import dbgate.ermanagement.query.QueryConditionExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,5 +11,5 @@ import dbgate.ermanagement.query.QueryConditionType;
  */
 public interface IQueryCondition
 {
-    QueryConditionType getConditionType();
+    QueryConditionExpressionType getConditionExpressionType();
 }

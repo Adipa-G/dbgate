@@ -2,6 +2,8 @@ package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryGroup;
 import dbgate.ermanagement.IQueryGroupCondition;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractQueryGroupConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractSqlQueryGroupCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,8 +14,17 @@ import dbgate.ermanagement.IQueryGroupCondition;
  */
 public class QueryGroupCondition
 {
+    private static AbstractQueryGroupConditionFactory factory;
+
+    public static void setFactory(AbstractQueryGroupConditionFactory f)
+    {
+        factory = f;
+    }
+
     public static IQueryGroupCondition RawSql(String sql)
     {
-        return null;
+        AbstractSqlQueryGroupCondition queryGroup = (AbstractSqlQueryGroupCondition) factory.createGroupCondition(QueryGroupConditionExpressionType.RAW_SQL);
+        queryGroup.setSql(sql);
+        return queryGroup;
     }
 }

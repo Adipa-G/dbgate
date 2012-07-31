@@ -23,7 +23,7 @@ public class QuerySelection
     public static IQuerySelection RawSql(String sql)
     {
         AbstractSqlQuerySelection querySelection = (AbstractSqlQuerySelection) factory.createSelection(
-                QuerySelectionType.RAW_SQL);
+                QuerySelectionExpressionType.RAW_SQL);
         querySelection.setSql(sql);
         return querySelection;
     }

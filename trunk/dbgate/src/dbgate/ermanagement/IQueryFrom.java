@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ermanagement.query.QueryFromType;
+import dbgate.ermanagement.query.QueryFromExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,5 +11,5 @@ import dbgate.ermanagement.query.QueryFromType;
  */
 public interface IQueryFrom
 {
-    QueryFromType getFromType();
+    QueryFromExpressionType getFromExpressionType();
 }

@@ -22,7 +22,7 @@ public class QueryFrom
 
     public static IQueryFrom RawSql(String sql)
     {
-        AbstractSqlQueryFrom queryFrom = (AbstractSqlQueryFrom) factory.createFrom(QueryFromType.RAW_SQL);
+        AbstractSqlQueryFrom queryFrom = (AbstractSqlQueryFrom) factory.createFrom(QueryFromExpressionType.RAW_SQL);
         queryFrom.setSql(sql);
         return queryFrom;
     }

@@ -7,7 +7,7 @@ package dbgate.ermanagement.query;
  * Time: 1:21 PM
  * To change this template use File | Settings | File Templates.
  */
-public enum QueryConditionType
+public enum QueryConditionExpressionType
 {
     RAW_SQL
 }

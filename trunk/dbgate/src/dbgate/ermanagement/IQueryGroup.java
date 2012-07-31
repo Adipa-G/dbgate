@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ermanagement.query.QueryGroupType;
+import dbgate.ermanagement.query.QueryGroupExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,5 +11,5 @@ import dbgate.ermanagement.query.QueryGroupType;
  */
 public interface IQueryGroup
 {
-    QueryGroupType getGroupType();
+    QueryGroupExpressionType getGroupExpressionType();
 }

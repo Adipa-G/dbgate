@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group;
 
-import dbgate.ermanagement.query.QueryGroupType;
+import dbgate.ermanagement.query.QueryGroupExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,9 +11,9 @@ import dbgate.ermanagement.query.QueryGroupType;
  */
 public class AbstractQueryGroupFactory
 {
-    public IAbstractQueryGroup createGroup(QueryGroupType groupType)
+    public IAbstractQueryGroup createGroup(QueryGroupExpressionType groupExpressionType)
     {
-        switch (groupType)
+        switch (groupExpressionType)
         {
             case RAW_SQL:
                 return new AbstractSqlQueryGroup();
