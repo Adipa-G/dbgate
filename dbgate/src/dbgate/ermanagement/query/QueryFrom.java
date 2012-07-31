@@ -1,9 +1,8 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryFrom;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractQueryFromFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractSqlQueryFrom;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractTypeQueryFrom;
+import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,8 +29,41 @@ public class QueryFrom
 
     public static IQueryFrom type(Class type)
     {
+        return type(type,null);
+    }
+
+    public static IQueryFrom type(Class type,String alias)
+    {
         AbstractTypeQueryFrom queryFrom = (AbstractTypeQueryFrom) factory.createFrom(QueryFromExpressionType.TYPE);
         queryFrom.setType(type);
+        if (alias != null && alias.length() > 0)
+        {
+            queryFrom.setAlias(alias);
+        }
+        return queryFrom;
+    }
+
+    public static IQueryFrom query(ISelectionQuery query)
+    {
+        return query(query, null);
+    }
+
+    public static IQueryFrom query(ISelectionQuery query,String alias)
+    {
+        AbstractQueryQueryFrom queryFrom = (AbstractQueryQueryFrom) factory.createFrom(QueryFromExpressionType.QUERY);
+        queryFrom.setQuery(query);
+        if (alias != null && alias.length() > 0)
+        {
+            queryFrom.setAlias(alias);
+        }
+        return queryFrom;
+    }
+
+    public static IQueryFrom queryUnion(boolean all,ISelectionQuery... queries)
+    {
+        AbstractQueryUnionQueryFrom queryFrom = (AbstractQueryUnionQueryFrom) factory.createFrom(QueryFromExpressionType.QUERY_UNION);
+        queryFrom.setQueries(queries);
+        queryFrom.setAll(all);
         return queryFrom;
     }
 }

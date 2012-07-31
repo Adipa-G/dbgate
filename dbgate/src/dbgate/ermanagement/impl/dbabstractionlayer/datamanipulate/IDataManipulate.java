@@ -6,7 +6,9 @@ import dbgate.ermanagement.IQuery;
 import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
+import dbgate.ermanagement.query.QueryStructure;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,4 +41,6 @@ public interface IDataManipulate
     ResultSet createResultSet(Connection con, QueryExecInfo execInfo) throws SQLException;
 
     QueryExecInfo createExecInfo(Connection con, ISelectionQuery query) throws SQLException;
+
+    QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure);
 }

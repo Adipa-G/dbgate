@@ -235,11 +235,74 @@ public class ERManagementQueryBasicTest
 
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithQueryFrom_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery from = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class));
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.query(from,"qb1"))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithQueryUnionFrom_shouldLoadUnion()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery fromBasic = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .select(QuerySelection.rawSql("name as name1"));
+
+            ISelectionQuery fromDetails = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicDetailsEntity.class))
+                    .select(QuerySelection.rawSql("name as name1"));
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.queryUnion(true,fromBasic,fromDetails))
+                    .select(QuerySelection.rawSql("name1"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 6);
         }
         catch (Exception e)
         {

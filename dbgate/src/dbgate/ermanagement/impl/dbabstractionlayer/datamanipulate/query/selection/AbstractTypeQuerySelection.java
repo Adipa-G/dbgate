@@ -11,6 +11,7 @@ import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
@@ -49,7 +50,7 @@ public class AbstractTypeQuerySelection implements IAbstractQuerySelection
     }
 
     @Override
-    public String createSql(QueryExecInfo execInfo)
+    public String createSql(QueryBuildInfo buildInfo)
     {
         return "*";
     }

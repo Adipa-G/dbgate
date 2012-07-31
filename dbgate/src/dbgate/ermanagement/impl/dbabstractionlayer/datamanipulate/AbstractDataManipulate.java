@@ -8,6 +8,7 @@ import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractQueryConditionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.IAbstractQueryCondition;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractQueryFromFactory;
@@ -531,42 +532,42 @@ public class AbstractDataManipulate implements IDataManipulate
     public QueryExecInfo createExecInfo(Connection con, ISelectionQuery query) throws SQLException
     {
         QueryStructure structure = query.getStructure();
-        return processQuery(null,structure);
+        return processQuery(null,structure).getExecInfo();
     }
 
-    protected QueryExecInfo processQuery(QueryExecInfo execInfo,QueryStructure structure)
+    public QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure)
     {
-        if (execInfo == null)
+        if (buildInfo == null)
         {
-            execInfo = new QueryExecInfo();
+            buildInfo = new QueryBuildInfo();
         }
 
         StringBuilder sb = new StringBuilder();
-        processSelection(sb, execInfo, structure);
-        processFrom(sb, execInfo, structure);
-        processJoin(sb, execInfo, structure);
-        processWhere(sb, execInfo, structure);
-        processGroup(sb, execInfo, structure);
-        processGroupCondition(sb, execInfo, structure);
-        processOrderBy(sb, execInfo, structure);
+        processSelection(sb, buildInfo, structure);
+        processFrom(sb, buildInfo, structure);
+        processJoin(sb, buildInfo, structure);
+        processWhere(sb, buildInfo, structure);
+        processGroup(sb, buildInfo, structure);
+        processGroupCondition(sb, buildInfo, structure);
+        processOrderBy(sb, buildInfo, structure);
 
-        addPagingClause(sb,execInfo,structure);
+        addPagingClause(sb,buildInfo, structure);
 
-        execInfo.setSql(sb.toString());
-        return execInfo;
+        buildInfo.getExecInfo().setSql(sb.toString());
+        return buildInfo;
     }
 
-    protected void addPagingClause(StringBuilder sb,QueryExecInfo execInfo,QueryStructure structure)
+    protected void addPagingClause(StringBuilder sb,QueryBuildInfo buildInfo,QueryStructure structure)
     {
         if (structure.getSkip() > 0)
         {
             sb.append(" OFFSET ? ROWS ");
 
             QueryExecParam param = new QueryExecParam();
-            param.setIndex(execInfo.getParams().size());
+            param.setIndex(buildInfo.getExecInfo().getParams().size());
             param.setType(DBColumnType.LONG);
             param.setValue(structure.getSkip());
-            execInfo.getParams().add(param);
+            buildInfo.getExecInfo().getParams().add(param);
         }
 
         if (structure.getFetch() > 0)
@@ -574,16 +575,19 @@ public class AbstractDataManipulate implements IDataManipulate
             sb.append(" FETCH NEXT ? ROWS ONLY ");
 
             QueryExecParam param = new QueryExecParam();
-            param.setIndex(execInfo.getParams().size());
+            param.setIndex(buildInfo.getExecInfo().getParams().size());
             param.setType(DBColumnType.LONG);
             param.setValue(structure.getFetch());
-            execInfo.getParams().add(param);
+            buildInfo.getExecInfo().getParams().add(param);
         }
     }
 
-    private void processSelection(StringBuilder sb,QueryExecInfo execInfo,QueryStructure structure)
+    private void processSelection(StringBuilder sb,QueryBuildInfo buildInfo,QueryStructure structure)
     {
         sb.append("SELECT ");
+
+        if (structure.getSelectList().size() == 0)
+            sb.append(" * ");
 
         if (structure.isDistinct())
             sb.append(" DISTINCT ");
@@ -596,21 +600,21 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(",");
             }
-            sb.append(CreateSelectionSql(selection,execInfo));
+            sb.append(CreateSelectionSql(selection,buildInfo));
             initial = false;
         }
     }
 
-    protected String CreateSelectionSql(IQuerySelection selection,QueryExecInfo execInfo)
+    protected String CreateSelectionSql(IQuerySelection selection,QueryBuildInfo buildInfo)
     {
         if (selection != null)
         {
-            return ((IAbstractQuerySelection)selection).createSql(execInfo);
+            return ((IAbstractQuerySelection)selection).createSql(buildInfo);
         }
         return "/*Incorrect Selection*/";
     }
 
-    private void processFrom(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    private void processFrom(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
     {
         sb.append(" FROM ");
 
@@ -622,21 +626,21 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(",");
             }
-            sb.append(CreateFromSql(from));
+            sb.append(CreateFromSql(from,buildInfo));
             initial = false;
         }
     }
 
-    protected String CreateFromSql(IQueryFrom from)
+    protected String CreateFromSql(IQueryFrom from,QueryBuildInfo buildInfo)
     {
         if (from != null)
         {
-            return ((IAbstractQueryFrom)from).createSql();
+            return ((IAbstractQueryFrom)from).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect From*/";
     }
 
-    private void processJoin(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    private void processJoin(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
     {
         Collection<IQueryJoin> joinList = structure.getJoinList();
         if (joinList.size() == 0)
@@ -658,7 +662,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect Join*/";
     }
 
-    private void processWhere(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    private void processWhere(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
     {
         Collection<IQueryCondition> conditionList = structure.getConditionList();
 
@@ -688,7 +692,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect Where*/";
     }
 
-    private void processGroup(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    private void processGroup(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
     {
         Collection<IQueryGroup> groupList = structure.getGroupList();
         if (groupList.size() == 0)
@@ -717,7 +721,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect Group*/";
     }
 
-    private void processGroupCondition(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    private void processGroupCondition(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
     {
         Collection<IQueryGroupCondition> groupConditionList = structure.getGroupConditionList();
         if (groupConditionList.size() == 0)
@@ -746,7 +750,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect Group Condition*/";
     }
 
-    private void processOrderBy(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    private void processOrderBy(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
     {
         Collection<IQueryOrderBy> orderByCollection = structure.getOrderList();
         if (orderByCollection.size() == 0)

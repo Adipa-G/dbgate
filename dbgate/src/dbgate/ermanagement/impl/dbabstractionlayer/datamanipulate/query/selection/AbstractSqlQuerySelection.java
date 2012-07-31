@@ -4,6 +4,7 @@ import dbgate.ermanagement.IQuerySelection;
 import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 import java.sql.Connection;
@@ -42,7 +43,7 @@ public class AbstractSqlQuerySelection implements IAbstractQuerySelection
     }
 
     @Override
-    public String createSql(QueryExecInfo execInfo)
+    public String createSql(QueryBuildInfo buildInfo)
     {
         return sql;
     }

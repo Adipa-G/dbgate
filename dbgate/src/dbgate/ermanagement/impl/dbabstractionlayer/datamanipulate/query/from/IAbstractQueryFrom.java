@@ -1,6 +1,9 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
 import dbgate.ermanagement.IQueryFrom;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,5 +14,5 @@ import dbgate.ermanagement.IQueryFrom;
  */
 public interface IAbstractQueryFrom extends IQueryFrom
 {
-    String createSql();
+    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo);
 }
