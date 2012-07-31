@@ -10,5 +10,7 @@ package dbgate.ermanagement.query;
 public enum QueryFromExpressionType
 {
     RAW_SQL,
-    TYPE
+    TYPE,
+    QUERY,
+    QUERY_UNION
 }

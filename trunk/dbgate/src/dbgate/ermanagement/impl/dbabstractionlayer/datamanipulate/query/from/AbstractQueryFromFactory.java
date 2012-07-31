@@ -19,6 +19,10 @@ public class AbstractQueryFromFactory
                 return new AbstractSqlQueryFrom();
             case TYPE:
                 return new AbstractTypeQueryFrom();
+            case QUERY:
+                return new AbstractQueryQueryFrom();
+            case QUERY_UNION:
+                return new AbstractQueryUnionQueryFrom();
             default:
                 return null;
         }

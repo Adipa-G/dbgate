@@ -1,5 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryFromExpressionType;
 
 /**
@@ -30,7 +33,7 @@ public class AbstractSqlQueryFrom implements IAbstractQueryFrom
     }
 
     @Override
-    public String createSql()
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
         return sql;
     }
