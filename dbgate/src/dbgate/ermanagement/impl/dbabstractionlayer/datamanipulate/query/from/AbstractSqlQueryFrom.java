@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
-import dbgate.ermanagement.query.QueryFromType;
+import dbgate.ermanagement.query.QueryFromExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,9 +24,9 @@ public class AbstractSqlQueryFrom implements IAbstractQueryFrom
     }
 
     @Override
-    public QueryFromType getFromType()
+    public QueryFromExpressionType getFromExpressionType()
     {
-        return QueryFromType.RAW_SQL;
+        return QueryFromExpressionType.RAW_SQL;
     }
 
     @Override

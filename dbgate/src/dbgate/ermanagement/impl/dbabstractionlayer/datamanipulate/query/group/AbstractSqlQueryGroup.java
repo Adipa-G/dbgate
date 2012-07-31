@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group;
 
-import dbgate.ermanagement.query.QueryGroupType;
+import dbgate.ermanagement.query.QueryGroupExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,9 +24,9 @@ public class AbstractSqlQueryGroup implements IAbstractQueryGroup
     }
 
     @Override
-    public QueryGroupType getGroupType()
+    public QueryGroupExpressionType getGroupExpressionType()
     {
-        return QueryGroupType.RAW_SQL;
+        return QueryGroupExpressionType.RAW_SQL;
     }
 
     @Override

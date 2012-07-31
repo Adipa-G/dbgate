@@ -13,6 +13,12 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.Abs
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.IAbstractQueryFrom;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractQueryGroupFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.IAbstractQueryGroup;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractQueryGroupConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.IAbstractQueryGroupCondition;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractQueryJoinFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.IAbstractQueryJoin;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractQueryOrderByFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.IAbstractQueryOrderBy;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractQuerySelection;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
@@ -41,8 +47,11 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         QuerySelection.setFactory(new AbstractQuerySelectionFactory());
         QueryFrom.setFactory(new AbstractQueryFromFactory());
+        QueryJoin.setFactory(new AbstractQueryJoinFactory());
         QueryCondition.setFactory(new AbstractQueryConditionFactory());
         QueryGroup.setFactory(new AbstractQueryGroupFactory());
+        QueryGroupCondition.setFactory(new AbstractQueryGroupConditionFactory());
+        QueryOrderBy.setFactory(new AbstractQueryOrderByFactory());
     }
 
     @Override
@@ -566,10 +575,11 @@ public class AbstractDataManipulate implements IDataManipulate
         StringBuilder sb = new StringBuilder();
         processSelection(sb, execInfo, structure);
         processFrom(sb, execInfo, structure);
+        processJoin(sb, execInfo, structure);
         processWhere(sb, execInfo, structure);
         processGroup(sb, execInfo, structure);
-        //sb.append("HAVING ");
-        //sb.append("ORDER BY ");
+        processGroupCondition(sb, execInfo, structure);
+        processOrderBy(sb, execInfo, structure);
 
         execInfo.setSql(sb.toString());
         return execInfo;
@@ -625,6 +635,28 @@ public class AbstractDataManipulate implements IDataManipulate
             return ((IAbstractQueryFrom)from).createSql();
         }
         return "/*Incorrect From*/";
+    }
+
+    private void processJoin(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    {
+        Collection<IQueryJoin> joinList = structure.getJoinList();
+        if (joinList.size() == 0)
+            return;
+
+        for (IQueryJoin join : joinList)
+        {
+            sb.append(" ");
+            sb.append(CreateJoinSql(join));
+        }
+    }
+
+    protected String CreateJoinSql(IQueryJoin join)
+    {
+        if (join != null)
+        {
+            return ((IAbstractQueryJoin)join).createSql();
+        }
+        return "/*Incorrect Join*/";
     }
 
     private void processWhere(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
@@ -683,5 +715,63 @@ public class AbstractDataManipulate implements IDataManipulate
             return ((IAbstractQueryGroup)group).createSql();
         }
         return "/*Incorrect Group*/";
+    }
+
+    private void processGroupCondition(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    {
+        Collection<IQueryGroupCondition> groupConditionList = structure.getGroupConditionList();
+        if (groupConditionList.size() == 0)
+            return;
+
+        sb.append(" HAVING ");
+
+        boolean initial = true;
+        for (IQueryGroupCondition groupCondition : groupConditionList)
+        {
+            if (!initial)
+            {
+                sb.append(" AND ");
+            }
+            sb.append(CreateGroupConditionSql(groupCondition));
+            initial = false;
+        }
+    }
+
+    protected String CreateGroupConditionSql(IQueryGroupCondition groupCondition)
+    {
+        if (groupCondition != null)
+        {
+            return ((IAbstractQueryGroupCondition)groupCondition).createSql();
+        }
+        return "/*Incorrect Group Condition*/";
+    }
+
+    private void processOrderBy(StringBuilder sb, QueryExecInfo execInfo, QueryStructure structure)
+    {
+        Collection<IQueryOrderBy> orderByCollection = structure.getOrderList();
+        if (orderByCollection.size() == 0)
+            return;
+
+        sb.append(" ORDER BY ");
+
+        boolean initial = true;
+        for (IQueryOrderBy orderBy : orderByCollection)
+        {
+            if (!initial)
+            {
+                sb.append(",");
+            }
+            sb.append(CreateOrderBySql(orderBy));
+            initial = false;
+        }
+    }
+
+    protected String CreateOrderBySql(IQueryOrderBy orderBy)
+    {
+        if (orderBy != null)
+        {
+            return ((IAbstractQueryOrderBy)orderBy).createSql();
+        }
+        return "/*Incorrect Order*/";
     }
 }

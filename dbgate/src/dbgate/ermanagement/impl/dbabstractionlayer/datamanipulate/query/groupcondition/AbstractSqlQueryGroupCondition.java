@@ -1,6 +1,8 @@
-package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition;
+package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition;
 
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.IAbstractQueryCondition;
 import dbgate.ermanagement.query.QueryConditionExpressionType;
+import dbgate.ermanagement.query.QueryGroupConditionExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +11,7 @@ import dbgate.ermanagement.query.QueryConditionExpressionType;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSqlQueryCondition implements IAbstractQueryCondition
+public class AbstractSqlQueryGroupCondition implements IAbstractQueryGroupCondition
 {
     protected String sql;
 
@@ -24,9 +26,9 @@ public class AbstractSqlQueryCondition implements IAbstractQueryCondition
     }
 
     @Override
-    public QueryConditionExpressionType getConditionExpressionType()
+    public QueryGroupConditionExpressionType getGroupConditionExpressionType()
     {
-        return QueryConditionExpressionType.RAW_SQL;
+        return QueryGroupConditionExpressionType.RAW_SQL;
     }
 
     @Override

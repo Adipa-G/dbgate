@@ -1,6 +1,8 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryJoin;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractQueryJoinFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractSqlQueryJoin;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,8 +13,17 @@ import dbgate.ermanagement.IQueryJoin;
  */
 public class QueryJoin
 {
+    private static AbstractQueryJoinFactory factory;
+
+    public static void setFactory(AbstractQueryJoinFactory f)
+    {
+        factory = f;
+    }
+
     public static IQueryJoin RawSql(String sql)
     {
-        return null;
+        AbstractSqlQueryJoin queryJoin = (AbstractSqlQueryJoin) factory.createOrderBy(QueryJoinExpressionType.RAW_SQL);
+        queryJoin.setSql(sql);
+        return queryJoin;
     }
 }

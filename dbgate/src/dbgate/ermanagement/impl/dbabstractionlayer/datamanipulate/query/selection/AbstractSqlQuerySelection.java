@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
-import dbgate.ermanagement.query.QuerySelectionType;
+import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,9 +29,9 @@ public class AbstractSqlQuerySelection implements IAbstractQuerySelection
     }
 
     @Override
-    public QuerySelectionType getSelectionType()
+    public QuerySelectionExpressionType getSelectionType()
     {
-        return QuerySelectionType.RAW_SQL;
+        return QuerySelectionExpressionType.RAW_SQL;
     }
 
     @Override

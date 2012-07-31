@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
-import dbgate.ermanagement.query.QuerySelectionType;
+import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,9 +11,9 @@ import dbgate.ermanagement.query.QuerySelectionType;
  */
 public class AbstractQuerySelectionFactory
 {
-    public IAbstractQuerySelection createSelection(QuerySelectionType selectionType)
+    public IAbstractQuerySelection createSelection(QuerySelectionExpressionType selectionExpressionType)
     {
-        switch (selectionType)
+        switch (selectionExpressionType)
         {
             case RAW_SQL:
                 return new AbstractSqlQuerySelection();

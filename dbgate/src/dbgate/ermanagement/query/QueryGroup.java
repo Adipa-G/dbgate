@@ -22,7 +22,7 @@ public class QueryGroup
 
     public static IQueryGroup RawSql(String sql)
     {
-        AbstractSqlQueryGroup queryGroup = (AbstractSqlQueryGroup) factory.createGroup(QueryGroupType.RAW_SQL);
+        AbstractSqlQueryGroup queryGroup = (AbstractSqlQueryGroup) factory.createGroup(QueryGroupExpressionType.RAW_SQL);
         queryGroup.setSql(sql);
         return queryGroup;
     }

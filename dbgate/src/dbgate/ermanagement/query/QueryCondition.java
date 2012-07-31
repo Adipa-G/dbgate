@@ -23,7 +23,7 @@ public class QueryCondition
     public static IQueryCondition RawSql(String sql)
     {
         AbstractSqlQueryCondition queryCondition = (AbstractSqlQueryCondition) factory.createCondition(
-                QueryConditionType.RAW_SQL);
+                QueryConditionExpressionType.RAW_SQL);
         queryCondition.setSql(sql);
         return queryCondition;
     }

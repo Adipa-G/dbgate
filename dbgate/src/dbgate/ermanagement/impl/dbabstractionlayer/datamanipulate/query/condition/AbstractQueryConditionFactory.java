@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition;
 
-import dbgate.ermanagement.query.QueryConditionType;
+import dbgate.ermanagement.query.QueryConditionExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,9 +11,9 @@ import dbgate.ermanagement.query.QueryConditionType;
  */
 public class AbstractQueryConditionFactory
 {
-    public IAbstractQueryCondition createCondition(QueryConditionType conditionType)
+    public IAbstractQueryCondition createCondition(QueryConditionExpressionType conditionExpressionType)
     {
-        switch (conditionType)
+        switch (conditionExpressionType)
         {
             case RAW_SQL:
                 return new AbstractSqlQueryCondition();

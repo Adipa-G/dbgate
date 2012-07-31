@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ermanagement.query.QuerySelectionType;
+import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,5 +11,5 @@ import dbgate.ermanagement.query.QuerySelectionType;
  */
 public interface IQuerySelection
 {
-    QuerySelectionType getSelectionType();
+    QuerySelectionExpressionType getSelectionType();
 }
