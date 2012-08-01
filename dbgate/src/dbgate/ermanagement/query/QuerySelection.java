@@ -2,10 +2,7 @@ package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQuerySelection;
 import dbgate.ermanagement.ISelectionQuery;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSelectionFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSqlQuerySelection;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSubQuerySelection;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractTypeSelection;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,6 +49,40 @@ public class QuerySelection
         {
             selection.setAlias(alias);
         }
+        return selection;
+    }
+
+    private static IQuerySelection columnOperation(QuerySelectionExpressionType expressionType, Class type,String field,String alias)
+    {
+        BaseColumnOperation selection = (BaseColumnOperation) factory.createSelection(expressionType);
+        selection.setType(type);
+        selection.setField(field);
+        if (alias != null && alias.length() > 0)
+        {
+            selection.setAlias(alias);
+        }
+        return selection;
+    }
+
+    public static IQuerySelection column(Class type,String field,String alias)
+    {
+        return columnOperation(QuerySelectionExpressionType.COLUMN,type,field,alias);
+    }
+
+    public static IQuerySelection sum(Class type,String field,String alias)
+    {
+        return columnOperation(QuerySelectionExpressionType.SUM,type,field,alias);
+    }
+
+    public static IQuerySelection count(Class type,String field,String alias)
+    {
+        return columnOperation(QuerySelectionExpressionType.COUNT,type,field,alias);
+    }
+
+    public static IQuerySelection custFunction(String sqlFunction,Class type,String field,String alias)
+    {
+        AbstractCustFuncSelection selection = (AbstractCustFuncSelection)columnOperation(QuerySelectionExpressionType.CUST_FUNC,type,field,alias);
+        selection.setFunction(sqlFunction);
         return selection;
     }
 }

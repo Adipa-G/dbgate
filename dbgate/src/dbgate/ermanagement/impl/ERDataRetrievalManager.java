@@ -12,6 +12,7 @@ import dbgate.ermanagement.exceptions.*;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.impl.utils.ERSessionUtils;
@@ -50,7 +51,8 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         {
             StringBuilder logSb = new StringBuilder();
             boolean showQuery = config.isShowQueries();
-            QueryExecInfo execInfo = dbLayer.getDataManipulate().createExecInfo(con, query);
+            QueryBuildInfo buildInfo = dbLayer.getDataManipulate().processQuery(null, query.getStructure());
+            QueryExecInfo execInfo = buildInfo.getExecInfo();
             if (showQuery)
             {
                 logSb.append(execInfo.getSql());
@@ -72,7 +74,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                 Object[]  rowObjects = new Object[selections.size()];
                 for (IQuerySelection selection : selections)
                 {
-                    Object loaded = ((IAbstractSelection)selection).retrieve(rs,con);
+                    Object loaded = ((IAbstractSelection)selection).retrieve(rs,con,buildInfo);
                     rowObjects[count++] = loaded;
                 }
                 retList.add(rowObjects);

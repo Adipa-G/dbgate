@@ -51,7 +51,7 @@ public class AbstractTypeSelection implements IAbstractSelection
     }
 
     @Override
-    public Object retrieve(ResultSet rs, Connection con) throws RetrievalException
+    public Object retrieve(ResultSet rs, Connection con,QueryBuildInfo buildInfo) throws RetrievalException
     {
         try
         {

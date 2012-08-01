@@ -38,7 +38,5 @@ public interface IDataManipulate
 
     ResultSet createResultSet(Connection con, QueryExecInfo execInfo) throws SQLException;
 
-    QueryExecInfo createExecInfo(Connection con, ISelectionQuery query) throws SQLException;
-
     QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure);
 }

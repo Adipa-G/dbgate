@@ -12,6 +12,7 @@ import org.junit.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -22,6 +23,8 @@ import java.util.logging.Logger;
 public class ERManagementQueryBasicTest
 {
     private static DBConnector connector;
+    private Collection<QueryBasicEntity> basicEntities;
+    private Collection<QueryBasicDetailsEntity> detailsEntities;
 
     @BeforeClass
     public static void before()
@@ -86,6 +89,15 @@ public class ERManagementQueryBasicTest
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                int id = (Integer) resultArray[0];
+                String name = (String) resultArray[1];
+
+                QueryBasicEntity entity = getById(id);
+                Assert.assertEquals(entity.getName(),name);
+            }
         }
         catch (Exception e)
         {
@@ -112,6 +124,20 @@ public class ERManagementQueryBasicTest
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 2);
+
+            int count = 0;
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                String name = (String) resultArray[0];
+
+                for (QueryBasicEntity basicEntity : basicEntities)
+                {
+                    if (basicEntity.getName().equals(name))
+                        count++;
+                }
+            }
+            Assert.assertTrue(count == 4);
         }
         catch (Exception e)
         {
@@ -215,6 +241,14 @@ public class ERManagementQueryBasicTest
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                QueryBasicEntity loadedEntity = (QueryBasicEntity) resultArray[0];
+
+                QueryBasicEntity orgEntity = getById(loadedEntity.getIdCol());
+                Assert.assertEquals(loadedEntity.getName(),orgEntity.getName());
+            }
         }
         catch (Exception e)
         {
@@ -238,7 +272,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery descriptionQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
                     .where(QueryCondition.rawSql("qbd1.name = qb1.name"))
-                    .select(QuerySelection.rawSql("qbd1.name")).fetch(1);
+                    .select(QuerySelection.rawSql("qbd1.description")).fetch(1);
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
@@ -247,6 +281,145 @@ public class ERManagementQueryBasicTest
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                QueryBasicEntity entity = (QueryBasicEntity) resultArray[0];
+                String description = (String) resultArray[1];
+
+                QueryBasicDetailsEntity detailsEntity = getDescriptionForName(entity.getName());
+                Assert.assertEquals(detailsEntity.getDescription(),description);
+            }
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithColumnSelection_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
+                    .select(QuerySelection.column(QueryBasicEntity.class,"name","name1"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithSumSelection_shouldGetSum()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .select(QuerySelection.sum(QueryBasicEntity.class, "idCol", "id_sum"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+            int sum = 0;
+            for (QueryBasicEntity entity : basicEntities)
+            {
+                sum += entity.getIdCol();
+            }
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                int resultSum = (Integer) resultArray[0];
+
+                Assert.assertTrue(sum == resultSum);
+            }
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithCountSelection_shouldGetCount()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .select(QuerySelection.count(QueryBasicEntity.class, "idCol", "id_count"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                int resultCount = (Integer) resultArray[0];
+
+                Assert.assertTrue(resultCount == 4);
+            }
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithCustomFunctionSelectionWithCount_shouldGetCount()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .select(QuerySelection.custFunction("Count",QueryBasicEntity.class, "idCol", "id_count"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                int resultCount = (Integer) resultArray[0];
+
+                Assert.assertTrue(resultCount == 4);
+            }
         }
         catch (Exception e)
         {
@@ -477,41 +650,70 @@ public class ERManagementQueryBasicTest
         }
     }
 
+    private QueryBasicEntity getById(int id)
+    {
+        for (QueryBasicEntity basicEntity : basicEntities)
+        {
+            if (basicEntity.getIdCol() == id)
+                return basicEntity;
+        }
+        return null;
+    }
+
+    private QueryBasicDetailsEntity getDescriptionForName(String name)
+    {
+        for (QueryBasicDetailsEntity detailsEntity : detailsEntities)
+        {
+            if (detailsEntity.getName().equals(name))
+                return detailsEntity;
+        }
+        return null;
+    }
+
     private void createTestData(Connection connection) throws PersistException
     {
+        basicEntities = new ArrayList<>();
+        detailsEntities = new ArrayList<>();
+
         int id = 35;
         QueryBasicEntity entity = new QueryBasicEntity();
         entity.setIdCol(id);
         entity.setName("Org-NameA");
         entity.persist(connection);
+        basicEntities.add(entity);
 
         QueryBasicDetailsEntity detailsEntity = new QueryBasicDetailsEntity();
         detailsEntity.setName(entity.getName());
         detailsEntity.setDescription(entity.getName() + "Details");
         detailsEntity.persist(connection);
+        detailsEntities.add(detailsEntity);
 
         id = 45;
         entity = new QueryBasicEntity();
         entity.setIdCol(id);
         entity.setName("Org-NameA");
         entity.persist(connection);
+        basicEntities.add(entity);
 
         id = 55;
         entity = new QueryBasicEntity();
         entity.setIdCol(id);
         entity.setName("Org-NameA");
         entity.persist(connection);
+        basicEntities.add(entity);
 
         id = 65;
         entity = new QueryBasicEntity();
         entity.setIdCol(id);
         entity.setName("Org-NameB");
         entity.persist(connection);
+        basicEntities.add(entity);
 
         detailsEntity = new QueryBasicDetailsEntity();
         detailsEntity.setName(entity.getName());
         detailsEntity.setDescription(entity.getName() + "Details");
         detailsEntity.persist(connection);
+        detailsEntities.add(detailsEntity);
     }
 
     @After

@@ -528,13 +528,6 @@ public class AbstractDataManipulate implements IDataManipulate
         return sql.replaceAll(" ", "").contains("begin?:=");
     }
 
-    @Override
-    public QueryExecInfo createExecInfo(Connection con, ISelectionQuery query) throws SQLException
-    {
-        QueryStructure structure = query.getStructure();
-        return processQuery(null,structure).getExecInfo();
-    }
-
     public QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure)
     {
         if (buildInfo == null)
