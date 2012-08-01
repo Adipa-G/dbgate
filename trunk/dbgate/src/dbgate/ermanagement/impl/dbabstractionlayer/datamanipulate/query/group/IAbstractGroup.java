@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAbstractQueryGroup extends IQueryGroup
+public interface IAbstractGroup extends IQueryGroup
 {
     String createSql();
 }

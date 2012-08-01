@@ -9,20 +9,20 @@ import dbgate.ermanagement.query.QueryFromExpressionType;
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractQueryFromFactory
+public class AbstractFromFactory
 {
-    public IAbstractQueryFrom createFrom(QueryFromExpressionType fromExpressionType)
+    public IAbstractFrom createFrom(QueryFromExpressionType fromExpressionType)
     {
         switch (fromExpressionType)
         {
             case RAW_SQL:
                 return new AbstractSqlQueryFrom();
             case TYPE:
-                return new AbstractTypeQueryFrom();
+                return new AbstractTypeFrom();
             case QUERY:
-                return new AbstractQueryQueryFrom();
+                return new AbstractSubQueryFrom();
             case QUERY_UNION:
-                return new AbstractQueryUnionQueryFrom();
+                return new AbstractUnionFrom();
             default:
                 return null;
         }

@@ -9,20 +9,20 @@ import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractQueryConditionFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.IAbstractQueryCondition;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractQueryFromFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.IAbstractQueryFrom;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractQueryGroupFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.IAbstractQueryGroup;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractQueryGroupConditionFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.IAbstractQueryGroupCondition;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractQueryJoinFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.IAbstractQueryJoin;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractQueryOrderByFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.IAbstractQueryOrderBy;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractQuerySelection;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.IAbstractCondition;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.AbstractFromFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.IAbstractFrom;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractGroupFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.IAbstractGroup;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractGroupConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.IAbstractGroupCondition;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractJoinFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.IAbstractJoin;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractOrderByFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.IAbstractOrderBy;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSelectionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.query.*;
 
@@ -47,13 +47,13 @@ public class AbstractDataManipulate implements IDataManipulate
 
     protected void initialize()
     {
-        QuerySelection.setFactory(new AbstractQuerySelectionFactory());
-        QueryFrom.setFactory(new AbstractQueryFromFactory());
-        QueryJoin.setFactory(new AbstractQueryJoinFactory());
-        QueryCondition.setFactory(new AbstractQueryConditionFactory());
-        QueryGroup.setFactory(new AbstractQueryGroupFactory());
-        QueryGroupCondition.setFactory(new AbstractQueryGroupConditionFactory());
-        QueryOrderBy.setFactory(new AbstractQueryOrderByFactory());
+        QuerySelection.setFactory(new AbstractSelectionFactory());
+        QueryFrom.setFactory(new AbstractFromFactory());
+        QueryJoin.setFactory(new AbstractJoinFactory());
+        QueryCondition.setFactory(new AbstractConditionFactory());
+        QueryGroup.setFactory(new AbstractGroupFactory());
+        QueryGroupCondition.setFactory(new AbstractGroupConditionFactory());
+        QueryOrderBy.setFactory(new AbstractOrderByFactory());
     }
 
     @Override
@@ -543,7 +543,6 @@ public class AbstractDataManipulate implements IDataManipulate
         }
 
         StringBuilder sb = new StringBuilder();
-        processSelection(sb, buildInfo, structure);
         processFrom(sb, buildInfo, structure);
         processJoin(sb, buildInfo, structure);
         processWhere(sb, buildInfo, structure);
@@ -552,6 +551,7 @@ public class AbstractDataManipulate implements IDataManipulate
         processOrderBy(sb, buildInfo, structure);
 
         addPagingClause(sb,buildInfo, structure);
+        processSelection(sb, buildInfo, structure);
 
         buildInfo.getExecInfo().setSql(sb.toString());
         return buildInfo;
@@ -582,15 +582,16 @@ public class AbstractDataManipulate implements IDataManipulate
         }
     }
 
-    private void processSelection(StringBuilder sb,QueryBuildInfo buildInfo,QueryStructure structure)
+    private void processSelection(StringBuilder querySb,QueryBuildInfo buildInfo,QueryStructure structure)
     {
-        sb.append("SELECT ");
+        StringBuilder selectSb = new StringBuilder();
+        selectSb.append("SELECT ");
 
         if (structure.getSelectList().size() == 0)
-            sb.append(" * ");
+            selectSb.append(" * ");
 
         if (structure.isDistinct())
-            sb.append(" DISTINCT ");
+            selectSb.append(" DISTINCT ");
 
         Collection<IQuerySelection> selections = structure.getSelectList();
         boolean initial = true;
@@ -598,18 +599,19 @@ public class AbstractDataManipulate implements IDataManipulate
         {
             if (!initial)
             {
-                sb.append(",");
+                selectSb.append(",");
             }
-            sb.append(CreateSelectionSql(selection,buildInfo));
+            selectSb.append(CreateSelectionSql(selection, buildInfo));
             initial = false;
         }
+        querySb.insert(0,selectSb.toString());
     }
 
     protected String CreateSelectionSql(IQuerySelection selection,QueryBuildInfo buildInfo)
     {
         if (selection != null)
         {
-            return ((IAbstractQuerySelection)selection).createSql(buildInfo);
+            return ((IAbstractSelection)selection).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect Selection*/";
     }
@@ -635,7 +637,7 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         if (from != null)
         {
-            return ((IAbstractQueryFrom)from).createSql(dbLayer,buildInfo);
+            return ((IAbstractFrom)from).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect From*/";
     }
@@ -657,7 +659,7 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         if (join != null)
         {
-            return ((IAbstractQueryJoin)join).createSql();
+            return ((IAbstractJoin)join).createSql();
         }
         return "/*Incorrect Join*/";
     }
@@ -687,7 +689,7 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         if (condition != null)
         {
-            return ((IAbstractQueryCondition)condition).createSql();
+            return ((IAbstractCondition)condition).createSql();
         }
         return "/*Incorrect Where*/";
     }
@@ -716,7 +718,7 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         if (group != null)
         {
-            return ((IAbstractQueryGroup)group).createSql();
+            return ((IAbstractGroup)group).createSql();
         }
         return "/*Incorrect Group*/";
     }
@@ -745,7 +747,7 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         if (groupCondition != null)
         {
-            return ((IAbstractQueryGroupCondition)groupCondition).createSql();
+            return ((IAbstractGroupCondition)groupCondition).createSql();
         }
         return "/*Incorrect Group Condition*/";
     }
@@ -774,7 +776,7 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         if (orderBy != null)
         {
-            return ((IAbstractQueryOrderBy)orderBy).createSql();
+            return ((IAbstractOrderBy)orderBy).createSql();
         }
         return "/*Incorrect Order*/";
     }

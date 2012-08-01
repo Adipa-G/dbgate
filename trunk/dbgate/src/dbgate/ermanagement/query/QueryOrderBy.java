@@ -1,8 +1,7 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQueryJoin;
 import dbgate.ermanagement.IQueryOrderBy;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractQueryOrderByFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractOrderByFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractSqlQueryOrderBy;
 
 /**
@@ -14,9 +13,9 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.
  */
 public class QueryOrderBy
 {
-    private static AbstractQueryOrderByFactory factory;
+    private static AbstractOrderByFactory factory;
 
-    public static void setFactory(AbstractQueryOrderByFactory f)
+    public static void setFactory(AbstractOrderByFactory f)
     {
         factory = f;
     }

@@ -9,9 +9,9 @@ import dbgate.ermanagement.query.QueryGroupExpressionType;
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractQueryGroupFactory
+public class AbstractGroupFactory
 {
-    public IAbstractQueryGroup createGroup(QueryGroupExpressionType groupExpressionType)
+    public IAbstractGroup createGroup(QueryGroupExpressionType groupExpressionType)
     {
         switch (groupExpressionType)
         {

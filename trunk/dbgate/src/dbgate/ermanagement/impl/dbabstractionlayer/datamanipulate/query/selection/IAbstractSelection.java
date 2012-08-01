@@ -2,6 +2,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selecti
 
 import dbgate.ermanagement.IQuerySelection;
 import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
@@ -16,9 +17,9 @@ import java.sql.SQLException;
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAbstractQuerySelection extends IQuerySelection
+public interface IAbstractSelection extends IQuerySelection
 {
-    String createSql(QueryBuildInfo buildInfo);
+    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo);
 
     Object retrieve(ResultSet rs,Connection con) throws RetrievalException;
 }

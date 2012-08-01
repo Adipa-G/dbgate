@@ -1,7 +1,7 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryJoin;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractQueryJoinFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractJoinFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractSqlQueryJoin;
 
 /**
@@ -13,9 +13,9 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.Abs
  */
 public class QueryJoin
 {
-    private static AbstractQueryJoinFactory factory;
+    private static AbstractJoinFactory factory;
 
-    public static void setFactory(AbstractQueryJoinFactory f)
+    public static void setFactory(AbstractJoinFactory f)
     {
         factory = f;
     }

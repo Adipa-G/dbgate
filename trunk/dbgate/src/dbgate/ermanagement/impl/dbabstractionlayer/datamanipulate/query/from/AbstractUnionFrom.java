@@ -4,6 +4,9 @@ import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryFromExpressionType;
+import dbgate.ermanagement.query.SelectionQuery;
+
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +15,7 @@ import dbgate.ermanagement.query.QueryFromExpressionType;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractQueryUnionQueryFrom implements IAbstractQueryFrom
+public class AbstractUnionFrom implements IAbstractFrom
 {
     private ISelectionQuery[] queries;
     private boolean all;
@@ -46,6 +49,8 @@ public class AbstractQueryUnionQueryFrom implements IAbstractQueryFrom
     @Override
     public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
+        String alias = "union_src_" + UUID.randomUUID().toString().substring(0,5);
+
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("(");
         for (int i = 0, queriesLength = queries.length; i < queriesLength; i++)
@@ -60,9 +65,11 @@ public class AbstractQueryUnionQueryFrom implements IAbstractQueryFrom
                     sqlBuilder.append(" ALL ");
                 }
             }
-            sqlBuilder.append( result.getExecInfo().getSql() + " u_"+i );
+            sqlBuilder.append( result.getExecInfo().getSql() + " union_src_"+i );
         }
-        sqlBuilder.append(") src_tbl");
+        sqlBuilder.append(") ").append(alias);
+        buildInfo.addUnionAlias(alias);
+
         return sqlBuilder.toString();
     }
 }

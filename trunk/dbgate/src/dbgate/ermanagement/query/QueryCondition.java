@@ -1,7 +1,7 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryCondition;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractQueryConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractConditionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractSqlQueryCondition;
 
 /**
@@ -13,9 +13,9 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.conditio
  */
 public class QueryCondition
 {
-    private static AbstractQueryConditionFactory factory;
+    private static AbstractConditionFactory factory;
 
-    public static void setFactory(AbstractQueryConditionFactory f)
+    public static void setFactory(AbstractConditionFactory f)
     {
         factory = f;
     }

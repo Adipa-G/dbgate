@@ -1,8 +1,7 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQueryGroup;
 import dbgate.ermanagement.IQueryGroupCondition;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractQueryGroupConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractGroupConditionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractSqlQueryGroupCondition;
 
 /**
@@ -14,9 +13,9 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcon
  */
 public class QueryGroupCondition
 {
-    private static AbstractQueryGroupConditionFactory factory;
+    private static AbstractGroupConditionFactory factory;
 
-    public static void setFactory(AbstractQueryGroupConditionFactory f)
+    public static void setFactory(AbstractGroupConditionFactory f)
     {
         factory = f;
     }

@@ -1,7 +1,7 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryGroup;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractQueryGroupFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractGroupFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractSqlQueryGroup;
 
 /**
@@ -13,9 +13,9 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.Ab
  */
 public class QueryGroup
 {
-    private static AbstractQueryGroupFactory factory;
+    private static AbstractGroupFactory factory;
 
-    public static void setFactory(AbstractQueryGroupFactory f)
+    public static void setFactory(AbstractGroupFactory f)
     {
         factory = f;
     }

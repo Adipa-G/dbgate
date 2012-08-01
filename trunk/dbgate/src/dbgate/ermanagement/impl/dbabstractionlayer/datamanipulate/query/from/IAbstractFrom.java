@@ -12,7 +12,7 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBui
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAbstractQueryFrom extends IQueryFrom
+public interface IAbstractFrom extends IQueryFrom
 {
     String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo);
 }

@@ -9,7 +9,7 @@ import dbgate.ermanagement.IQueryOrderBy;
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAbstractQueryOrderBy extends IQueryOrderBy
+public interface IAbstractOrderBy extends IQueryOrderBy
 {
     String createSql();
 }

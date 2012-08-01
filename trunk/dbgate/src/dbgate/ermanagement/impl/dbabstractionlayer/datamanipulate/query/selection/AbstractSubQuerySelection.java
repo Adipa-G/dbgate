@@ -1,5 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
+import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -9,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,30 +19,48 @@ import java.util.List;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSqlQuerySelection implements IAbstractSelection
+public class AbstractSubQuerySelection implements IAbstractSelection
 {
-    protected String sql;
+    private ISelectionQuery query;
+    private String alias;
 
-
-    public String getSql()
+    public ISelectionQuery getQuery()
     {
-        return sql;
+        return query;
     }
 
-    public void setSql(String sql)
+    public void setQuery(ISelectionQuery query)
     {
-        this.sql = sql;
+        this.query = query;
+    }
+
+    public String getAlias()
+    {
+        return alias;
+    }
+
+    public void setAlias(String alias)
+    {
+        this.alias = alias;
     }
 
     @Override
     public QuerySelectionExpressionType getSelectionType()
     {
-        return QuerySelectionExpressionType.RAW_SQL;
+        return QuerySelectionExpressionType.QUERY;
     }
 
     @Override
     public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo)
     {
+        QueryBuildInfo result = dbLayer.getDataManipulate().processQuery(buildInfo,query.getStructure());
+        String sql = "(" + result.getExecInfo().getSql() + ")";
+        if (alias == null || alias.length() == 0)
+        {
+            alias = "col_" + UUID.randomUUID().toString().substring(0,5);
+        }
+        sql = sql + " as " + alias;
+        buildInfo.addQueryAlias(alias,query);
         return sql;
     }
 
@@ -48,24 +68,8 @@ public class AbstractSqlQuerySelection implements IAbstractSelection
     {
         try
         {
-            List<String> columns = Arrays.asList(sql.split("\\s*,\\s*"));
-            while (columns.remove(""));
-
-            Object[] readObjects = new Object[columns.size()];
-            for (int i = 0, columnsLength = columns.size(); i < columnsLength; i++)
-            {
-                String column = columns.get(i).toLowerCase();
-                if (column.contains(" as "))
-                {
-                    column = column.split("as")[1].trim();
-                }
-                Object obj = rs.getObject(column);
-                readObjects[i] = obj;
-            }
-
-            if (readObjects.length == 0)
-                return readObjects[0];
-            return readObjects;
+            Object obj = rs.getObject(alias);
+            return obj;
         }
         catch (Exception ex)
         {

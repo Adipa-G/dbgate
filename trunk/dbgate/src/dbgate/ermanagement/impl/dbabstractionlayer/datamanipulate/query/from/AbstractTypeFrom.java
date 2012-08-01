@@ -1,11 +1,9 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
 import dbgate.ServerRODBClass;
-import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.query.QueryFromExpressionType;
@@ -17,19 +15,19 @@ import dbgate.ermanagement.query.QueryFromExpressionType;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractQueryQueryFrom implements IAbstractQueryFrom
+public class AbstractTypeFrom implements IAbstractFrom
 {
-    private ISelectionQuery query;
+    private Class type;
     private String alias;
 
-    public ISelectionQuery getQuery()
+    public Class getType()
     {
-        return query;
+        return type;
     }
 
-    public void setQuery(ISelectionQuery query)
+    public void setType(Class type)
     {
-        this.query = query;
+        this.type = type;
     }
 
     public String getAlias()
@@ -45,18 +43,34 @@ public class AbstractQueryQueryFrom implements IAbstractQueryFrom
     @Override
     public QueryFromExpressionType getFromExpressionType()
     {
-        return QueryFromExpressionType.QUERY;
+        return QueryFromExpressionType.TYPE;
     }
 
     @Override
     public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
-        QueryBuildInfo result = dbLayer.getDataManipulate().processQuery(buildInfo,query.getStructure());
-        String sql = "(" + result.getExecInfo().getSql() + ")";
+        String sql = null;
+        try
+        {
+            sql = CacheManager.tableCache.getTableName(type);
+        }
+        catch (TableCacheMissException e)
+        {
+            try
+            {
+                ERDataManagerUtils.registerTypes((ServerRODBClass)type.newInstance());
+                sql = CacheManager.tableCache.getTableName(type);
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
+            return "<unknown " + type.getCanonicalName() + ">";
+        }
         if (alias != null && alias.length() > 0)
         {
             sql = sql + " as " + alias;
-            buildInfo.addQueryAlias(alias,query);
+            buildInfo.addTypeAlias(alias,type);
         }
         return sql;
     }
