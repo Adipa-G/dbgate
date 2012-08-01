@@ -44,7 +44,7 @@ public class AbstractSqlQuerySelection implements IAbstractSelection
         return sql;
     }
 
-    public Object retrieve(ResultSet rs,Connection con) throws RetrievalException
+    public Object retrieve(ResultSet rs,Connection con,QueryBuildInfo buildInfo) throws RetrievalException
     {
         try
         {
@@ -63,7 +63,7 @@ public class AbstractSqlQuerySelection implements IAbstractSelection
                 readObjects[i] = obj;
             }
 
-            if (readObjects.length == 0)
+            if (readObjects.length == 1)
                 return readObjects[0];
             return readObjects;
         }

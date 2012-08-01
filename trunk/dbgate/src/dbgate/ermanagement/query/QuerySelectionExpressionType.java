@@ -11,5 +11,9 @@ public enum QuerySelectionExpressionType
 {
     RAW_SQL,
     TYPE,
-    QUERY
+    QUERY,
+    COLUMN,
+    COUNT,
+    SUM,
+    CUST_FUNC
 }

@@ -64,7 +64,7 @@ public class AbstractSubQuerySelection implements IAbstractSelection
         return sql;
     }
 
-    public Object retrieve(ResultSet rs,Connection con) throws RetrievalException
+    public Object retrieve(ResultSet rs,Connection con,QueryBuildInfo buildInfo) throws RetrievalException
     {
         try
         {
