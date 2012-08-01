@@ -1,8 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join;
 
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.IAbstractQueryOrderBy;
 import dbgate.ermanagement.query.QueryJoinExpressionType;
-import dbgate.ermanagement.query.QueryOrderByExpressionType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +9,7 @@ import dbgate.ermanagement.query.QueryOrderByExpressionType;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSqlQueryJoin implements IAbstractQueryJoin
+public class AbstractSqlQueryJoin implements IAbstractJoin
 {
     protected String sql;
 

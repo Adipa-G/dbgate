@@ -1,6 +1,7 @@
-package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition;
+package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition;
 
 import dbgate.ermanagement.IQueryCondition;
+import dbgate.ermanagement.IQueryGroupCondition;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +10,7 @@ import dbgate.ermanagement.IQueryCondition;
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAbstractQueryCondition extends IQueryCondition
+public interface IAbstractGroupCondition extends IQueryGroupCondition
 {
     String createSql();
 }

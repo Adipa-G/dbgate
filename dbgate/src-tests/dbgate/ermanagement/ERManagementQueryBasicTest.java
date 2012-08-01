@@ -224,6 +224,38 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
+    public void ERQuery_ExecuteToRetrieveAll_WithSubQuerySelection_shouldLoadAll()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery descriptionQuery = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
+                    .where(QueryCondition.rawSql("qbd1.name = qb1.name"))
+                    .select(QuerySelection.rawSql("qbd1.name")).fetch(1);
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .select(QuerySelection.type(QueryBasicEntity.class))
+                    .select(QuerySelection.query(descriptionQuery));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void ERQuery_ExecuteToRetrieveAll_WithTypeFrom_shouldLoadAll()
     {
         try

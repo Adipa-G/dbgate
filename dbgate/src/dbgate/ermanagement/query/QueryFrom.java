@@ -13,9 +13,9 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.*;
  */
 public class QueryFrom
 {
-    private static AbstractQueryFromFactory factory;
+    private static AbstractFromFactory factory;
 
-    public static void setFactory(AbstractQueryFromFactory f)
+    public static void setFactory(AbstractFromFactory f)
     {
         factory = f;
     }
@@ -34,13 +34,13 @@ public class QueryFrom
 
     public static IQueryFrom type(Class type,String alias)
     {
-        AbstractTypeQueryFrom queryFrom = (AbstractTypeQueryFrom) factory.createFrom(QueryFromExpressionType.TYPE);
-        queryFrom.setType(type);
+        AbstractTypeFrom from = (AbstractTypeFrom) factory.createFrom(QueryFromExpressionType.TYPE);
+        from.setType(type);
         if (alias != null && alias.length() > 0)
         {
-            queryFrom.setAlias(alias);
+            from.setAlias(alias);
         }
-        return queryFrom;
+        return from;
     }
 
     public static IQueryFrom query(ISelectionQuery query)
@@ -50,20 +50,20 @@ public class QueryFrom
 
     public static IQueryFrom query(ISelectionQuery query,String alias)
     {
-        AbstractQueryQueryFrom queryFrom = (AbstractQueryQueryFrom) factory.createFrom(QueryFromExpressionType.QUERY);
-        queryFrom.setQuery(query);
+        AbstractSubQueryFrom queryFromSub = (AbstractSubQueryFrom) factory.createFrom(QueryFromExpressionType.QUERY);
+        queryFromSub.setQuery(query);
         if (alias != null && alias.length() > 0)
         {
-            queryFrom.setAlias(alias);
+            queryFromSub.setAlias(alias);
         }
-        return queryFrom;
+        return queryFromSub;
     }
 
     public static IQueryFrom queryUnion(boolean all,ISelectionQuery... queries)
     {
-        AbstractQueryUnionQueryFrom queryFrom = (AbstractQueryUnionQueryFrom) factory.createFrom(QueryFromExpressionType.QUERY_UNION);
-        queryFrom.setQueries(queries);
-        queryFrom.setAll(all);
-        return queryFrom;
+        AbstractUnionFrom from = (AbstractUnionFrom) factory.createFrom(QueryFromExpressionType.QUERY_UNION);
+        from.setQueries(queries);
+        from.setAll(all);
+        return from;
     }
 }

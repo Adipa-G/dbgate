@@ -10,7 +10,7 @@ import dbgate.ermanagement.IQueryOrderBy;
  * Time: 12:36 PM
  * To change this template use File | Settings | File Templates.
  */
-public interface IAbstractQueryJoin extends IQueryJoin
+public interface IAbstractJoin extends IQueryJoin
 {
     String createSql();
 }

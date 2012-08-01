@@ -1,9 +1,11 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQuerySelection;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
+import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSelectionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSqlQuerySelection;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractTypeQuerySelection;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSubQuerySelection;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractTypeSelection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,9 +16,9 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selectio
  */
 public class QuerySelection
 {
-    private static AbstractQuerySelectionFactory factory;
+    private static AbstractSelectionFactory factory;
 
-    public static void setFactory(AbstractQuerySelectionFactory f)
+    public static void setFactory(AbstractSelectionFactory f)
     {
         factory = f;
     }
@@ -31,9 +33,25 @@ public class QuerySelection
 
     public static IQuerySelection type(Class type)
     {
-        AbstractTypeQuerySelection querySelection = (AbstractTypeQuerySelection) factory.createSelection(
+        AbstractTypeSelection selection = (AbstractTypeSelection) factory.createSelection(
                 QuerySelectionExpressionType.TYPE);
-        querySelection.setType(type);
-        return querySelection;
+        selection.setType(type);
+        return selection;
+    }
+
+    public static IQuerySelection query(ISelectionQuery query)
+    {
+        return query(query,null);
+    }
+
+    public static IQuerySelection query(ISelectionQuery query,String alias)
+    {
+        AbstractSubQuerySelection selection = (AbstractSubQuerySelection) factory.createSelection(QuerySelectionExpressionType.QUERY);
+        selection.setQuery(query);
+        if (alias != null && alias.length() > 0)
+        {
+            selection.setAlias(alias);
+        }
+        return selection;
     }
 }

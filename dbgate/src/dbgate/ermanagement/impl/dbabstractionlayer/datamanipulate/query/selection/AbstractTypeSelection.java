@@ -1,26 +1,16 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
-import dbgate.IRODBClass;
 import dbgate.ServerRODBClass;
-import dbgate.ermanagement.IQuerySelection;
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.exceptions.NoFieldsFoundException;
 import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
-import dbgate.ermanagement.exceptions.TableCacheMissException;
-import dbgate.ermanagement.impl.ERLayer;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,7 +19,7 @@ import java.util.List;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractTypeQuerySelection implements IAbstractQuerySelection
+public class AbstractTypeSelection implements IAbstractSelection
 {
     private Class type;
 
@@ -50,8 +40,20 @@ public class AbstractTypeQuerySelection implements IAbstractQuerySelection
     }
 
     @Override
-    public String createSql(QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo)
     {
+        Hashtable<String,Object> aliases = buildInfo.getAliases();
+        if (aliases.containsValue(type))
+        {
+            Set<String> keys = aliases.keySet();
+            for (String key : keys)
+            {
+                if (aliases.get(key) == type)
+                {
+                    return key + ".*";
+                }
+            }
+        }
         return "*";
     }
 

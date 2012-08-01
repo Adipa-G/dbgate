@@ -6,16 +6,13 @@ import dbgate.ServerRODBClass;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.context.EntityFieldValue;
 import dbgate.ermanagement.context.IEntityContext;
-import dbgate.ermanagement.context.IEntityFieldValueList;
 import dbgate.ermanagement.context.ITypeFieldValueList;
-import dbgate.ermanagement.context.impl.EntityTypeFieldValueList;
 import dbgate.ermanagement.exceptions.*;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractQuerySelection;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.impl.utils.ERSessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
@@ -75,7 +72,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                 Object[]  rowObjects = new Object[selections.size()];
                 for (IQuerySelection selection : selections)
                 {
-                    Object loaded = ((IAbstractQuerySelection)selection).retrieve(rs,con);
+                    Object loaded = ((IAbstractSelection)selection).retrieve(rs,con);
                     rowObjects[count++] = loaded;
                 }
                 retList.add(rowObjects);

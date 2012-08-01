@@ -9,7 +9,7 @@ import dbgate.ermanagement.query.QueryOrderByExpressionType;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSqlQueryOrderBy implements IAbstractQueryOrderBy
+public class AbstractSqlQueryOrderBy implements IAbstractOrderBy
 {
     protected String sql;
 

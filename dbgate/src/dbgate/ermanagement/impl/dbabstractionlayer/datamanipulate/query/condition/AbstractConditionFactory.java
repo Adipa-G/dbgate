@@ -9,9 +9,9 @@ import dbgate.ermanagement.query.QueryConditionExpressionType;
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractQueryConditionFactory
+public class AbstractConditionFactory
 {
-    public IAbstractQueryCondition createCondition(QueryConditionExpressionType conditionExpressionType)
+    public IAbstractCondition createCondition(QueryConditionExpressionType conditionExpressionType)
     {
         switch (conditionExpressionType)
         {

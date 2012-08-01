@@ -38,4 +38,14 @@ public class QueryBuildInfo
     {
         aliases.put(alias,query);
     }
+
+    public void addUnionAlias(String alias)
+    {
+        aliases.put(alias,"UNION_" + alias);
+    }
+
+    public Hashtable<String, Object> getAliases()
+    {
+        return aliases;
+    }
 }

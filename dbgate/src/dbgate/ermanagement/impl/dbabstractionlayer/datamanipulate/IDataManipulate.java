@@ -2,12 +2,10 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.IDBRelation;
-import dbgate.ermanagement.IQuery;
 import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractQuerySelectionFactory;
 import dbgate.ermanagement.query.QueryStructure;
 
 import java.sql.Connection;

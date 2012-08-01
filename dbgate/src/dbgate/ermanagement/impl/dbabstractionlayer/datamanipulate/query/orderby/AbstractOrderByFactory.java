@@ -1,8 +1,5 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby;
 
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractSqlQueryGroup;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.IAbstractQueryGroup;
-import dbgate.ermanagement.query.QueryGroupExpressionType;
 import dbgate.ermanagement.query.QueryOrderByExpressionType;
 
 /**
@@ -12,9 +9,9 @@ import dbgate.ermanagement.query.QueryOrderByExpressionType;
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractQueryOrderByFactory
+public class AbstractOrderByFactory
 {
-    public IAbstractQueryOrderBy createOrderBy(QueryOrderByExpressionType orderByExpressionType)
+    public IAbstractOrderBy createOrderBy(QueryOrderByExpressionType orderByExpressionType)
     {
         switch (orderByExpressionType)
         {

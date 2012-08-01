@@ -1,8 +1,5 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition;
 
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractSqlQueryCondition;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.IAbstractQueryCondition;
-import dbgate.ermanagement.query.QueryConditionExpressionType;
 import dbgate.ermanagement.query.QueryGroupConditionExpressionType;
 
 /**
@@ -12,9 +9,9 @@ import dbgate.ermanagement.query.QueryGroupConditionExpressionType;
  * Time: 12:34 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractQueryGroupConditionFactory
+public class AbstractGroupConditionFactory
 {
-    public IAbstractQueryGroupCondition createGroupCondition(QueryGroupConditionExpressionType groupConditionExpressionType)
+    public IAbstractGroupCondition createGroupCondition(QueryGroupConditionExpressionType groupConditionExpressionType)
     {
         switch (groupConditionExpressionType)
         {

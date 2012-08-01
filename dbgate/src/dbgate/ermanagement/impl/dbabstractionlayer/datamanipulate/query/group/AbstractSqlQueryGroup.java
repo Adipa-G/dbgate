@@ -9,7 +9,7 @@ import dbgate.ermanagement.query.QueryGroupExpressionType;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSqlQueryGroup implements IAbstractQueryGroup
+public class AbstractSqlQueryGroup implements IAbstractGroup
 {
     protected String sql;
 

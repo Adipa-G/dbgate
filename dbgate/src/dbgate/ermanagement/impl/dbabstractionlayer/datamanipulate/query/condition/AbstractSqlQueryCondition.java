@@ -9,7 +9,7 @@ import dbgate.ermanagement.query.QueryConditionExpressionType;
  * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSqlQueryCondition implements IAbstractQueryCondition
+public class AbstractSqlQueryCondition implements IAbstractCondition
 {
     protected String sql;
 
