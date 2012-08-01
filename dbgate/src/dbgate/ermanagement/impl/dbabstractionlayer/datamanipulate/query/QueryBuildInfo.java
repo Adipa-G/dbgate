@@ -16,6 +16,7 @@ import java.util.Hashtable;
 public class QueryBuildInfo
 {
     private QueryExecInfo execInfo;
+    private String currentQueryId;
     private Hashtable<String,Object> aliases;
 
     public QueryBuildInfo()
@@ -29,23 +30,36 @@ public class QueryBuildInfo
         return execInfo;
     }
 
+    public void setCurrentQueryId(String currentQueryId)
+    {
+        this.currentQueryId = currentQueryId;
+    }
+
     public void addTypeAlias(String alias,Class type)
     {
-        aliases.put(alias,type);
+        aliases.put(currentQueryId + alias,type);
     }
 
     public void addQueryAlias(String alias,ISelectionQuery query)
     {
-        aliases.put(alias,query);
+        aliases.put(currentQueryId + alias,query);
     }
 
     public void addUnionAlias(String alias)
     {
-        aliases.put(alias,"UNION_" + alias);
+        aliases.put(currentQueryId + alias,"UNION");
     }
 
-    public Hashtable<String, Object> getAliases()
+    public String getAlias(Object value)
     {
-        return aliases;
+        for (String key : aliases.keySet())
+        {
+            if (aliases.get(key) == value
+                    && key.startsWith(currentQueryId))
+            {
+                return key.replace(currentQueryId,"");
+            }
+        }
+        return null;
     }
 }

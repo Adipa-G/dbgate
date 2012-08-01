@@ -5,6 +5,7 @@ import dbgate.ermanagement.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.

@@ -541,6 +541,7 @@ public class AbstractDataManipulate implements IDataManipulate
         {
             buildInfo = new QueryBuildInfo();
         }
+        buildInfo.setCurrentQueryId(structure.getQueryId());
 
         StringBuilder sb = new StringBuilder();
         processFrom(sb, buildInfo, structure);

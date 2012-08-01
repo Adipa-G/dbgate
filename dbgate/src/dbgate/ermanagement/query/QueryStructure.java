@@ -4,6 +4,7 @@ import dbgate.ermanagement.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +18,7 @@ public class QueryStructure
     private boolean distinct;
     private long skip;
     private long fetch;
+    private String queryId;
 
     private Collection<IQueryFrom> fromList;
     private Collection<IQueryJoin> joinList;
@@ -28,6 +30,7 @@ public class QueryStructure
 
     public QueryStructure()
     {
+        queryId = UUID.randomUUID().toString();
         fromList = new ArrayList<IQueryFrom>();
         joinList = new ArrayList<IQueryJoin>();
         conditionList = new ArrayList<IQueryCondition>();
@@ -35,6 +38,16 @@ public class QueryStructure
         groupList = new ArrayList<IQueryGroup>();
         orderList = new ArrayList<IQueryOrderBy>();
         groupConditionList = new ArrayList<IQueryGroupCondition>();
+    }
+
+    public String getQueryId()
+    {
+        return queryId;
+    }
+
+    public void setQueryId(String queryId)
+    {
+        this.queryId = queryId;
     }
 
     public boolean isDistinct()
