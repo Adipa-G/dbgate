@@ -42,17 +42,10 @@ public class AbstractTypeSelection implements IAbstractSelection
     @Override
     public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo)
     {
-        Hashtable<String,Object> aliases = buildInfo.getAliases();
-        if (aliases.containsValue(type))
+        String alias = buildInfo.getAlias(type);
+        if (alias != null)
         {
-            Set<String> keys = aliases.keySet();
-            for (String key : keys)
-            {
-                if (aliases.get(key) == type)
-                {
-                    return key + ".*";
-                }
-            }
+            return alias + ".*";
         }
         return "*";
     }
