@@ -11,11 +11,11 @@ public class CompareSegment implements ISegment
 {
     private ISegment left;
     private ISegment right;
-    private CompareSegmentType mode;
+    private CompareSegmentMode mode;
 
-    public CompareSegment(CompareSegmentType type)
+    public CompareSegment(CompareSegmentMode mode)
     {
-        this.mode = type;
+        this.mode = mode;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CompareSegment implements ISegment
         this.right = right;
     }
 
-    public CompareSegmentType getMode()
+    public CompareSegmentMode getMode()
     {
         return mode;
     }

@@ -574,6 +574,329 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderNEq_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .neq().value(DBColumnType.INTEGER,35)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderGt_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .gt().value(DBColumnType.INTEGER,45)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderGe_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .ge().value(DBColumnType.INTEGER,45)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderLt_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .lt().value(DBColumnType.INTEGER,45)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderLe_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .le().value(DBColumnType.INTEGER,45)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderLike_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"name")
+                                                             .like().value(DBColumnType.VARCHAR,"Org-NameA")))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderBetween_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .between().values(DBColumnType.INTEGER,35,55)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderIn_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,35,55)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,35,55)
+                                                             .and()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,45,55)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,35,55)
+                                                             .or()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,55)
+                                                             .or()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,45,55)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderOrAnd_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,35,55)
+                                                             .or()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,55)
+                                                             .and()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .in().values(DBColumnType.INTEGER,45,55)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void ERQuery_ExecuteWithGroup_WithBasicSqlQuery_shouldLoadTarget()
     {
         try

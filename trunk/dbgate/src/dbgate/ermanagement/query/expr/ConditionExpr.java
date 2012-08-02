@@ -29,8 +29,74 @@ public class ConditionExpr extends BaseExpr
     }
 
     @Override
+    public ConditionExpr values(DBColumnType type, Object... values)
+    {
+        return (ConditionExpr)super.value(type, values);
+    }
+
+    @Override
     public ConditionExpr eq()
     {
         return (ConditionExpr)super.eq();
+    }
+
+    @Override
+    public ConditionExpr ge()
+    {
+        return (ConditionExpr)super.ge();
+    }
+
+    @Override
+    public ConditionExpr gt()
+    {
+        return (ConditionExpr)super.gt();
+    }
+
+    @Override
+    public ConditionExpr le()
+    {
+        return (ConditionExpr)super.le();
+    }
+
+    @Override
+    public ConditionExpr lt()
+    {
+        return (ConditionExpr)super.lt();
+    }
+
+    @Override
+    public ConditionExpr neq()
+    {
+        return (ConditionExpr)super.neq();
+    }
+
+    @Override
+    public ConditionExpr like()
+    {
+        return (ConditionExpr)super.like();
+    }
+
+    @Override
+    public ConditionExpr between()
+    {
+        return (ConditionExpr)super.between();
+    }
+
+    @Override
+    public ConditionExpr in()
+    {
+        return (ConditionExpr)super.in();
+    }
+
+    @Override
+    public ConditionExpr and()
+    {
+        return (ConditionExpr)super.and();
+    }
+
+    @Override
+    public ConditionExpr or()
+    {
+        return (ConditionExpr)super.or();
     }
 }
