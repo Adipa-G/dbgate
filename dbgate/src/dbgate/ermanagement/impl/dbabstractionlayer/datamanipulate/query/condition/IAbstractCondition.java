@@ -1,6 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition;
 
 import dbgate.ermanagement.IQueryCondition;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,5 +13,5 @@ import dbgate.ermanagement.IQueryCondition;
  */
 public interface IAbstractCondition extends IQueryCondition
 {
-    String createSql();
+    String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo);
 }

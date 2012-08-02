@@ -674,16 +674,16 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(" AND ");
             }
-            sb.append(CreateWhereSql(condition));
+            sb.append(CreateWhereSql(condition,buildInfo));
             initial = false;
         }
     }
 
-    protected String CreateWhereSql(IQueryCondition condition)
+    protected String CreateWhereSql(IQueryCondition condition,QueryBuildInfo buildInfo)
     {
         if (condition != null)
         {
-            return ((IAbstractCondition)condition).createSql();
+            return ((IAbstractCondition)condition).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect Where*/";
     }

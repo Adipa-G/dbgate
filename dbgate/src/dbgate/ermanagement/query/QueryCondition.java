@@ -2,7 +2,9 @@ package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryCondition;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractConditionFactory;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractExpressionCondition;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractSqlQueryCondition;
+import dbgate.ermanagement.query.expr.ConditionExpr;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,6 +27,14 @@ public class QueryCondition
         AbstractSqlQueryCondition queryCondition = (AbstractSqlQueryCondition) factory.createCondition(
                 QueryConditionExpressionType.RAW_SQL);
         queryCondition.setSql(sql);
+        return queryCondition;
+    }
+
+    public static IQueryCondition expression(ConditionExpr expr)
+    {
+        AbstractExpressionCondition queryCondition = (AbstractExpressionCondition) factory.createCondition(
+                QueryConditionExpressionType.EXPRESSION);
+        queryCondition.setExpr(expr);
         return queryCondition;
     }
 }

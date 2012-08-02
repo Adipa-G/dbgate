@@ -1,9 +1,11 @@
 package dbgate.ermanagement;
 
+import dbgate.DBColumnType;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.query.*;
+import dbgate.ermanagement.query.expr.ConditionExpr;
 import dbgate.ermanagement.support.query.basic.QueryBasicDetailsEntity;
 import dbgate.ermanagement.support.query.basic.QueryBasicEntity;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -532,6 +534,34 @@ public class ERManagementQueryBasicTest
                     .where(QueryCondition.rawSql("id_col = 35"))
                     .where(QueryCondition.rawSql("name like 'Org-NameA'"))
                     .select(QuerySelection.rawSql("id_col,name"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderEq_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .eq().value(DBColumnType.INTEGER,35)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 1);

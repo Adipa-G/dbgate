@@ -1,11 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
-import dbgate.ServerRODBClass;
-import dbgate.ermanagement.IDBColumn;
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
 import dbgate.ermanagement.query.expr.SelectExpr;
@@ -13,7 +10,6 @@ import dbgate.ermanagement.query.expr.segments.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,11 +21,12 @@ import java.util.Collection;
 public class AbstractExpressionSelection implements IAbstractSelection
 {
     private SelectExpr expr;
-
-    private Class type;
-    private String field;
-    private String alias;
-    private String function;
+    private AbstractExpressionProcessor processor;
+    
+    public AbstractExpressionSelection()
+    {
+        processor = new AbstractExpressionProcessor();
+    }
 
     public SelectExpr getExpr()
     {
@@ -47,107 +44,17 @@ public class AbstractExpressionSelection implements IAbstractSelection
         return QuerySelectionExpressionType.EXPRESSION;
     }
 
-    private void processExpr()
-    {
-        if (type != null)
-            return;
-        
-        ISegment rootSegment = expr.getRootSegment();
-        GroupFunctionSegment groupSegment = null;
-        FieldSegment fieldSegment = null;
-
-        if (rootSegment.getSegmentType() == SegmentType.GROUP)
-        {
-            groupSegment = (GroupFunctionSegment) rootSegment;
-            fieldSegment = (FieldSegment) groupSegment.getSegmentToGroup();
-        }
-        if (rootSegment.getSegmentType() == SegmentType.FIELD)
-        {
-            fieldSegment = (FieldSegment) rootSegment;
-        }
-
-        if (fieldSegment != null)
-        {
-            this.type = fieldSegment.getType();
-            this.field = fieldSegment.getField();
-            this.alias = fieldSegment.getAlias();
-        }
-
-        if (groupSegment != null)
-        {
-            switch (groupSegment.getGroupFunctionType())
-            {
-                case COUNT:
-                    function = "COUNT";
-                    break;
-                case SUM:
-                    function = "SUM";
-                    break;
-                case CUST_FUNC:
-                    function = groupSegment.getCustFunction();
-                    break;
-            }
-        }
-    }
-
-    private IDBColumn getColumn(QueryBuildInfo buildInfo)
-    {
-        Collection<IDBColumn> columns = null;
-        try
-        {
-            columns = CacheManager.fieldCache.getColumns(type);
-        }
-        catch (FieldCacheMissException e)
-        {
-            try
-            {
-                CacheManager.fieldCache.register(type,(ServerRODBClass) type.newInstance());
-                columns = CacheManager.fieldCache.getColumns(type);
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-        }
-
-        for (IDBColumn column : columns)
-        {
-            if (column.getAttributeName().equals(field))
-            {
-                return column;
-            }
-        }
-        return null;
-    }
-
     @Override
     public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
-        processExpr();
-        String tableAlias = buildInfo.getAlias(type);
-        tableAlias = (tableAlias == null)?"" : tableAlias + ".";
-        IDBColumn column = getColumn(buildInfo);
-
-        if (column != null)
+        ISegment rootSegment = expr.getRootSegment();
+        if (rootSegment.getSegmentType() == SegmentType.GROUP)
         {
-            String sql = "";
-            if (function != null && function.length() > 0)
-            {
-                sql = function + "(" +tableAlias + column.getColumnName()+ ")";
-            }
-            else
-            {
-                sql = tableAlias + column.getColumnName();
-            }
-            if (alias != null && alias.length() > 0)
-            {
-                sql = sql + " AS " + alias;
-            }
-            return sql;
+            return processor.getGroupFunction((GroupFunctionSegment) rootSegment, true, buildInfo);
         }
         else
         {
-            return "<incorrect column for " + field + ">";
+            return processor.getFieldName((FieldSegment) rootSegment, true, buildInfo);
         }
     }
 
@@ -156,8 +63,19 @@ public class AbstractExpressionSelection implements IAbstractSelection
     {
         try
         {
-            processExpr();
-            String columnName = alias != null && alias.length() > 0? alias : getColumn(buildInfo).getColumnName();
+            FieldSegment fieldSegment = null;
+            ISegment rootSegment = expr.getRootSegment();
+            if (rootSegment.getSegmentType() == SegmentType.GROUP)
+            {
+                fieldSegment = ((GroupFunctionSegment)rootSegment).getSegmentToGroup();
+            }
+            else
+            {
+                fieldSegment = (FieldSegment)rootSegment;
+            }
+
+            String alias = fieldSegment.getAlias();
+            String columnName = alias != null && alias.length() > 0? alias : processor.getColumn(fieldSegment).getColumnName();
             Object obj = rs.getObject(columnName);
             return obj;
         }

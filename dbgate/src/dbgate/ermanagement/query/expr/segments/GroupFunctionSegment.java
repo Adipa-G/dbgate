@@ -9,7 +9,7 @@ package dbgate.ermanagement.query.expr.segments;
  */
 public class GroupFunctionSegment implements ISegment
 {
-    private ISegment segmentToGroup;
+    private FieldSegment segmentToGroup;
     private GroupFunctionSegmentType groupFunctionType;
     private String custFunction;
 
@@ -25,12 +25,12 @@ public class GroupFunctionSegment implements ISegment
         this.custFunction = custFunction;
     }
 
-    public ISegment getSegmentToGroup()
+    public FieldSegment getSegmentToGroup()
     {
         return segmentToGroup;
     }
 
-    public void setSegmentToGroup(ISegment segmentToGroup)
+    public void setSegmentToGroup(FieldSegment segmentToGroup)
     {
         this.segmentToGroup = segmentToGroup;
     }
