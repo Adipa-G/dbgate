@@ -10,18 +10,18 @@ package dbgate.ermanagement.query.expr.segments;
 public class GroupFunctionSegment implements ISegment
 {
     private FieldSegment segmentToGroup;
-    private GroupFunctionSegmentType groupFunctionType;
+    private GroupFunctionSegmentMode groupFunctionMode;
     private String custFunction;
 
-    public GroupFunctionSegment(GroupFunctionSegmentType groupFunctionType)
+    public GroupFunctionSegment(GroupFunctionSegmentMode groupFunctionMode)
     {
-        this.groupFunctionType = groupFunctionType;
+        this.groupFunctionMode = groupFunctionMode;
         this.custFunction = null;
     }
 
     public GroupFunctionSegment(String custFunction)
     {
-        this.groupFunctionType = GroupFunctionSegmentType.CUST_FUNC;
+        this.groupFunctionMode = GroupFunctionSegmentMode.CUST_FUNC;
         this.custFunction = custFunction;
     }
 
@@ -41,9 +41,9 @@ public class GroupFunctionSegment implements ISegment
         return SegmentType.GROUP;
     }
 
-    public GroupFunctionSegmentType getGroupFunctionType()
+    public GroupFunctionSegmentMode getGroupFunctionMode()
     {
-        return groupFunctionType;
+        return groupFunctionMode;
     }
 
     public String getCustFunction()

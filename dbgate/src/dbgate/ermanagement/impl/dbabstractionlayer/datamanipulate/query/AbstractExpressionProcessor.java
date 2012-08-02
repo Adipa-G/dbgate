@@ -85,7 +85,7 @@ public class AbstractExpressionProcessor
     {
         FieldSegment fieldSegment = (FieldSegment) groupSegment.getSegmentToGroup();
         String sql = getFieldName(fieldSegment, false, buildInfo);
-        switch (groupSegment.getGroupFunctionType())
+        switch (groupSegment.getGroupFunctionMode())
         {
             case COUNT:
                 sql = " COUNT(" + sql + ") ";
@@ -121,6 +121,9 @@ public class AbstractExpressionProcessor
             case COMPARE:
                 processCompare(sb,(CompareSegment) segment,buildInfo);
                 break;
+            case MERGE:
+                processMerge(sb,(MergeSegment)segment,buildInfo);
+                break;
         }
         return sb.toString();
     }
@@ -151,6 +154,20 @@ public class AbstractExpressionProcessor
     private void processCompare(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo)
     {
         process(sb,segment.getLeft(),buildInfo);
+        if (segment.getMode() == CompareSegmentMode.BETWEEN)
+        {
+            processBetween(sb,segment,buildInfo);
+            return;
+        }
+        if (segment.getMode() == CompareSegmentMode.IN)
+        {
+            if (segment.getRight().getSegmentType() == SegmentType.VALUE)
+            {
+                processInValues(sb, segment, buildInfo);
+            }
+            return;
+        }
+
         switch (segment.getMode())
         {
             case EQ:
@@ -171,5 +188,64 @@ public class AbstractExpressionProcessor
                 break;
         }
         process(sb,segment.getRight(),buildInfo);
+    }
+
+    private void processBetween(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo)
+    {
+        sb.append(" BETWEEN ? AND ? ");
+        ValueSegment valueSegment = (ValueSegment) segment.getRight();
+        Object[] values = (Object[]) valueSegment.getValue();
+        for (int i = 0, valuesLength = 2; i < valuesLength; i++)
+        {
+            Object value = values[i];
+            QueryExecParam param = new QueryExecParam();
+            param.setIndex(buildInfo.getExecInfo().getParams().size());
+            param.setType(valueSegment.getType());
+            param.setValue(value);
+            buildInfo.getExecInfo().getParams().add(param);
+        }
+    }
+
+    private void processInValues(StringBuilder sb, CompareSegment segment, QueryBuildInfo buildInfo)
+    {
+        sb.append(" IN (");
+        ValueSegment valueSegment = (ValueSegment) segment.getRight();
+        Object[] values = (Object[]) valueSegment.getValue();
+        for (int i = 0, valuesLength = values.length; i < valuesLength; i++)
+        {
+            Object value = values[i];
+            if (i > 0)
+            {
+                sb.append(",");
+            }
+            sb.append("?");
+
+            QueryExecParam param = new QueryExecParam();
+            param.setIndex(buildInfo.getExecInfo().getParams().size());
+            param.setType(valueSegment.getType());
+            param.setValue(value);
+            buildInfo.getExecInfo().getParams().add(param);
+        }
+        sb.append(") ");
+    }
+
+    private void processMerge(StringBuilder sb,MergeSegment segment,QueryBuildInfo buildInfo)
+    {
+        int count = 0;
+        for (ISegment subSegment : segment.getSegments())
+        {
+            if (count > 0)
+            {
+                switch (segment.getMode())
+                {
+                    case AND:
+                        sb.append(" AND "); break;
+                    case OR:
+                        sb.append(" OR "); break;
+                }
+            }
+            process(sb,subSegment,buildInfo);
+            count++;
+        }
     }
 }

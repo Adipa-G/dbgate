@@ -7,7 +7,7 @@ package dbgate.ermanagement.query.expr.segments;
  * Time: 3:05 PM
  * To change this template use File | Settings | File Templates.
  */
-public enum GroupFunctionSegmentType
+public enum GroupFunctionSegmentMode
 {
     SUM,
     COUNT,

@@ -7,13 +7,8 @@ package dbgate.ermanagement.query.expr.segments;
  * Time: 3:05 PM
  * To change this template use File | Settings | File Templates.
  */
-public enum CompareSegmentType
+public enum MergeSegmentMode
 {
-    EQ,
-    NEQ,
-    GT,
-    GE,
-    LT,
-    LE,
-    LIKE
+    AND,
+    OR
 }

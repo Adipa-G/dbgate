@@ -2,7 +2,6 @@ package dbgate.ermanagement.query.expr;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.query.expr.segments.*;
-import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,6 +13,7 @@ import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 class BaseExpr
 {
     protected ISegment rootSegment;
+    protected ISegment mergeSegment;
 
     protected BaseExpr()
     {
@@ -21,7 +21,9 @@ class BaseExpr
 
     public ISegment getRootSegment()
     {
-        return rootSegment;
+        if (mergeSegment != null)
+            return mergeSegment;
+        return  rootSegment;
     }
     
     protected BaseExpr field(Class type,String field)
@@ -42,15 +44,21 @@ class BaseExpr
         return addValue(segment);
     }
 
+    protected BaseExpr values(DBColumnType type,Object... values)
+    {
+        ValueSegment segment = new ValueSegment(type,values);
+        return addValue(segment);
+    }
+
     protected BaseExpr sum()
     {
-        GroupFunctionSegment segment = new GroupFunctionSegment(GroupFunctionSegmentType.SUM);
+        GroupFunctionSegment segment = new GroupFunctionSegment(GroupFunctionSegmentMode.SUM);
         return addGroup(segment);
     }
 
     protected BaseExpr count()
     {
-        GroupFunctionSegment segment = new GroupFunctionSegment(GroupFunctionSegmentType.COUNT);
+        GroupFunctionSegment segment = new GroupFunctionSegment(GroupFunctionSegmentMode.COUNT);
         return addGroup(segment);
     }
 
@@ -62,8 +70,68 @@ class BaseExpr
 
     protected BaseExpr eq()
     {
-        CompareSegment segment = new CompareSegment(CompareSegmentType.EQ);
-        return addCondition(segment);
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.EQ);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr ge()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.GE);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr gt()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.GT);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr le()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.LE);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr lt()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.LT);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr neq()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.NEQ);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr like()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.LIKE);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr between()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.BETWEEN);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr in()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.IN);
+        return addCompare(segment);
+    }
+
+    protected BaseExpr and()
+    {
+        MergeSegment mergeSegment = new MergeSegment(MergeSegmentMode.AND);
+        return addMerge(mergeSegment);
+    }
+
+    protected BaseExpr or()
+    {
+        MergeSegment mergeSegment = new MergeSegment(MergeSegmentMode.OR);
+        return addMerge(mergeSegment);
     }
 
     private BaseExpr addField(FieldSegment fieldSegment)
@@ -77,14 +145,22 @@ class BaseExpr
         switch (rootSegment.getSegmentType())
         {
             case FIELD:
-                throw new ExpressionParsingError("Cannot add field segment to field segment");
-            case GROUP:
-                ((GroupFunctionSegment)rootSegment).setSegmentToGroup(fieldSegment);
-                break;
             case VALUE:
-                throw new ExpressionParsingError("Cannot add field segment to value segment");
+                throw new ExpressionParsingError("Cannot add field segment to field/value segment");
+            case GROUP:
+                ((GroupFunctionSegment) rootSegment).setSegmentToGroup(fieldSegment);
+                break;
             case COMPARE:
                 ((CompareSegment) rootSegment).setRight(fieldSegment);
+                if (mergeSegment != null)
+                {
+                    ((MergeSegment)mergeSegment).addSegment(rootSegment);
+                    rootSegment = null;
+                }
+                break;
+            case MERGE:
+                mergeSegment = rootSegment;
+                rootSegment = fieldSegment;
                 break;
         }
         return this;
@@ -102,11 +178,19 @@ class BaseExpr
         {
             case FIELD:
             case GROUP:
-                throw new ExpressionParsingError("Cannot add value segment to field or group segment");
             case VALUE:
-                throw new ExpressionParsingError("Cannot add value segment to value segment");
+                throw new ExpressionParsingError("Cannot add value segment to field/group/value segment");
             case COMPARE:
                 ((CompareSegment) rootSegment).setRight(valueSegment);
+                if (mergeSegment != null)
+                {
+                    ((MergeSegment)mergeSegment).addSegment(rootSegment);
+                    rootSegment = null;
+                }
+                break;
+            case MERGE:
+                mergeSegment = rootSegment;
+                rootSegment = valueSegment;
                 break;
         }
         return this;
@@ -126,18 +210,26 @@ class BaseExpr
                 groupFunctionSegment.setSegmentToGroup((FieldSegment) rootSegment);
                 rootSegment = groupFunctionSegment;
                 break;
-            case GROUP:
-                throw new ExpressionParsingError("Cannot add group segment to group segment");
-            case VALUE:
-                throw new ExpressionParsingError("Cannot add group segment to value segment");
             case COMPARE:
                 ((CompareSegment) rootSegment).setRight(groupFunctionSegment);
+                if (mergeSegment != null)
+                {
+                    ((MergeSegment)mergeSegment).addSegment(rootSegment);
+                    rootSegment = null;
+                }
+                break;
+            case GROUP:
+            case VALUE:
+                throw new ExpressionParsingError("Cannot add group segment to value/group segment");
+            case MERGE:
+                mergeSegment = rootSegment;
+                rootSegment = groupFunctionSegment;
                 break;
         }
         return this;
     }
 
-    private BaseExpr addCondition(CompareSegment compareSegment)
+    private BaseExpr addCompare(CompareSegment compareSegment)
     {
         if (rootSegment == null)
         {
@@ -154,6 +246,41 @@ class BaseExpr
                 break;
             case COMPARE:
                 throw new ExpressionParsingError("Cannot add compare segment to compare segment");
+            case MERGE:
+                mergeSegment = rootSegment;
+                rootSegment = compareSegment;
+                break;
+        }
+        return this;
+    }
+
+    private BaseExpr addMerge(MergeSegment mergeSegment)
+    {
+        if (this.mergeSegment == null)
+        {
+            this.mergeSegment = mergeSegment;
+        }
+        else
+        {
+            mergeSegment.addSegment(this.mergeSegment);
+            this.mergeSegment = mergeSegment;
+        }
+
+        if (rootSegment == null)
+            return this;
+
+        switch (rootSegment.getSegmentType())
+        {
+            case FIELD:
+            case GROUP:
+            case VALUE:
+            case MERGE:
+                throw new ExpressionParsingError("Cannot add merge segment to field/group/value/merge segment");
+            case COMPARE:
+                this.mergeSegment = mergeSegment;
+                mergeSegment.addSegment(rootSegment);
+                rootSegment = null;
+                break;
         }
         return this;
     }
