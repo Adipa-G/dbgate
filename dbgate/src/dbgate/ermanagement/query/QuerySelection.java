@@ -3,6 +3,7 @@ package dbgate.ermanagement.query;
 import dbgate.ermanagement.IQuerySelection;
 import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.*;
+import dbgate.ermanagement.query.expr.SelectExpr;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,37 +53,30 @@ public class QuerySelection
         return selection;
     }
 
-    private static IQuerySelection columnOperation(QuerySelectionExpressionType expressionType, Class type,String field,String alias)
+    private static IQuerySelection expression(SelectExpr expr)
     {
-        BaseColumnOperation selection = (BaseColumnOperation) factory.createSelection(expressionType);
-        selection.setType(type);
-        selection.setField(field);
-        if (alias != null && alias.length() > 0)
-        {
-            selection.setAlias(alias);
-        }
-        return selection;
+        AbstractExpressionSelection expressionSelection = (AbstractExpressionSelection) factory.createSelection(QuerySelectionExpressionType.EXPRESSION);
+        expressionSelection.setExpr(expr);
+        return expressionSelection;
     }
 
     public static IQuerySelection column(Class type,String field,String alias)
     {
-        return columnOperation(QuerySelectionExpressionType.COLUMN,type,field,alias);
+        return expression(SelectExpr.build().field(type,field,alias));
     }
 
     public static IQuerySelection sum(Class type,String field,String alias)
     {
-        return columnOperation(QuerySelectionExpressionType.SUM,type,field,alias);
+        return expression(SelectExpr.build().field(type,field,alias).sum());
     }
 
     public static IQuerySelection count(Class type,String field,String alias)
     {
-        return columnOperation(QuerySelectionExpressionType.COUNT,type,field,alias);
+        return expression(SelectExpr.build().field(type,field,alias).count());
     }
 
     public static IQuerySelection custFunction(String sqlFunction,Class type,String field,String alias)
     {
-        AbstractCustFuncSelection selection = (AbstractCustFuncSelection)columnOperation(QuerySelectionExpressionType.CUST_FUNC,type,field,alias);
-        selection.setFunction(sqlFunction);
-        return selection;
+        return expression(SelectExpr.build().field(type,field,alias).custFunc(sqlFunction));
     }
 }
