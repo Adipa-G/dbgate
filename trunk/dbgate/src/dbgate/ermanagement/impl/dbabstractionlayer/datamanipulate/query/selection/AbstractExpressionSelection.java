@@ -8,6 +8,8 @@ import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
+import dbgate.ermanagement.query.expr.SelectExpr;
+import dbgate.ermanagement.query.expr.segments.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,54 +18,81 @@ import java.util.Collection;
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
- * Date: 8/1/12
- * Time: 6:08 PM
+ * Date: 7/31/12
+ * Time: 12:32 PM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class BaseColumnOperation implements IAbstractSelection
+public class AbstractExpressionSelection implements IAbstractSelection
 {
-    protected String field;
-    protected String alias;
-    protected Class type;
-    protected String function;
+    private SelectExpr expr;
 
-    public Class getType()
+    private Class type;
+    private String field;
+    private String alias;
+    private String function;
+
+    public SelectExpr getExpr()
     {
-        return type;
+        return expr;
     }
 
-    public void setType(Class type)
+    public void setExpr(SelectExpr expr)
     {
-        this.type = type;
-    }
-
-    public String getField()
-    {
-        return field;
-    }
-
-    public void setField(String field)
-    {
-        this.field = field;
-    }
-
-    public String getAlias()
-    {
-        return alias;
-    }
-
-    public void setAlias(String alias)
-    {
-        this.alias = alias;
+        this.expr = expr;
     }
 
     @Override
-    public abstract QuerySelectionExpressionType getSelectionType();
+    public QuerySelectionExpressionType getSelectionType()
+    {
+        return QuerySelectionExpressionType.EXPRESSION;
+    }
 
-    protected IDBColumn getColumn(QueryBuildInfo buildInfo)
+    private void processExpr()
+    {
+        if (type != null)
+            return;
+        
+        ISegment rootSegment = expr.getRootSegment();
+        GroupFunctionSegment groupSegment = null;
+        FieldSegment fieldSegment = null;
+
+        if (rootSegment.getSegmentType() == SegmentType.GROUP)
+        {
+            groupSegment = (GroupFunctionSegment) rootSegment;
+            fieldSegment = (FieldSegment) groupSegment.getSegmentToGroup();
+        }
+        if (rootSegment.getSegmentType() == SegmentType.FIELD)
+        {
+            fieldSegment = (FieldSegment) rootSegment;
+        }
+
+        if (fieldSegment != null)
+        {
+            this.type = fieldSegment.getType();
+            this.field = fieldSegment.getField();
+            this.alias = fieldSegment.getAlias();
+        }
+
+        if (groupSegment != null)
+        {
+            switch (groupSegment.getGroupFunctionType())
+            {
+                case COUNT:
+                    function = "COUNT";
+                    break;
+                case SUM:
+                    function = "SUM";
+                    break;
+                case CUST_FUNC:
+                    function = groupSegment.getCustFunction();
+                    break;
+            }
+        }
+    }
+
+    private IDBColumn getColumn(QueryBuildInfo buildInfo)
     {
         Collection<IDBColumn> columns = null;
-
         try
         {
             columns = CacheManager.fieldCache.getColumns(type);
@@ -92,8 +121,9 @@ public abstract class BaseColumnOperation implements IAbstractSelection
     }
 
     @Override
-    public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
+        processExpr();
         String tableAlias = buildInfo.getAlias(type);
         tableAlias = (tableAlias == null)?"" : tableAlias + ".";
         IDBColumn column = getColumn(buildInfo);
@@ -122,10 +152,11 @@ public abstract class BaseColumnOperation implements IAbstractSelection
     }
 
     @Override
-    public Object retrieve(ResultSet rs, Connection con,QueryBuildInfo buildInfo) throws RetrievalException
+    public Object retrieve(ResultSet rs, Connection con, QueryBuildInfo buildInfo) throws RetrievalException
     {
         try
         {
+            processExpr();
             String columnName = alias != null && alias.length() > 0? alias : getColumn(buildInfo).getColumnName();
             Object obj = rs.getObject(columnName);
             return obj;

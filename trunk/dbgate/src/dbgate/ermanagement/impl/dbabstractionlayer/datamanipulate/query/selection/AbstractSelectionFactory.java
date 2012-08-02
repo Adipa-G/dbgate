@@ -21,14 +21,8 @@ public class AbstractSelectionFactory
                 return new AbstractTypeSelection();
             case QUERY:
                 return new AbstractSubQuerySelection();
-            case COLUMN:
-                return new AbstractColumnSelection();
-            case COUNT:
-                return new AbstractCountSelection();
-            case SUM:
-                return new AbstractSumSelection();
-            case CUST_FUNC:
-                return new AbstractCustFuncSelection();
+            case EXPRESSION:
+                return new AbstractExpressionSelection();
             default:
                 return null;
         }
