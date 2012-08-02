@@ -9,6 +9,23 @@ package dbgate.ermanagement.query.expr;
  */
 public class SelectExpr extends BaseExpr
 {
+    public static SelectExpr build()
+    {
+        return new SelectExpr();
+    }
+
+    @Override
+    public SelectExpr field(Class type, String field)
+    {
+        return (SelectExpr)super.field(type, field);
+    }
+
+    @Override
+    public SelectExpr field(Class type, String field, String alias)
+    {
+        return (SelectExpr)super.field(type, field,alias);
+    }
+
     @Override
     public SelectExpr sum()
     {
@@ -25,22 +42,5 @@ public class SelectExpr extends BaseExpr
     public SelectExpr custFunc(String func)
     {
         return (SelectExpr)super.custFunc(func);
-    }
-
-    @Override
-    public SelectExpr field(Class type, String field)
-    {
-        return (SelectExpr)super.field(type, field);
-    }
-
-    @Override
-    public SelectExpr field(Class type, String field, String alias)
-    {
-        return (SelectExpr)super.field(type, field,alias);
-    }
-
-    public static SelectExpr build()
-    {
-        return new SelectExpr();
     }
 }
