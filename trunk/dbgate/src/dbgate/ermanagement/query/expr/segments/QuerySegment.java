@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr.segments;
 
-import dbgate.DBColumnType;
+import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.query.expr.ExpressionParsingError;
 
 /**
@@ -10,31 +10,24 @@ import dbgate.ermanagement.query.expr.ExpressionParsingError;
  * Time: 2:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ValueSegment extends BaseSegment
+public class QuerySegment implements ISegment
 {
-    private DBColumnType type;
-    private Object value;
+    private ISelectionQuery query;
 
-    public ValueSegment(DBColumnType type, Object value)
+    public QuerySegment(ISelectionQuery query)
     {
-        this.type = type;
-        this.value = value;
+        this.query = query;
     }
 
     @Override
     public SegmentType getSegmentType()
     {
-        return SegmentType.VALUE;
+        return SegmentType.QUERY;
     }
 
-    public DBColumnType getType()
+    public ISelectionQuery getQuery()
     {
-        return type;
-    }
-
-    public Object getValue()
-    {
-        return value;
+        return query;
     }
 
     @Override
@@ -46,7 +39,7 @@ public class ValueSegment extends BaseSegment
             case VALUE:
             case QUERY:
             case GROUP:
-                throw new ExpressionParsingError("Cannot add field/value/query/merge/group segments to field segment");
+                throw new ExpressionParsingError("Cannot add field/value/query/group segments to field segment");
             case MERGE:
                 MergeSegment mergeSegment = (MergeSegment)segment;
                 mergeSegment.setActive(this);
@@ -57,7 +50,6 @@ public class ValueSegment extends BaseSegment
                 {   compareSegment.setLeft(this);   }
                 else
                 {   compareSegment.setRight(this);  }
-                parent = compareSegment;
                 return compareSegment;
             default:
                 return this;

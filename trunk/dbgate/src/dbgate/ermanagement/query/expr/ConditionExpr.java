@@ -99,4 +99,14 @@ public class ConditionExpr extends BaseExpr
     {
         return (ConditionExpr)super.or();
     }
+
+    public ConditionExpr and(ConditionExpr... expressions)
+    {
+        return (ConditionExpr)super.and(expressions);
+    }
+
+    public ConditionExpr or(ConditionExpr... expressions)
+    {
+        return (ConditionExpr)super.or(expressions);
+    }
 }

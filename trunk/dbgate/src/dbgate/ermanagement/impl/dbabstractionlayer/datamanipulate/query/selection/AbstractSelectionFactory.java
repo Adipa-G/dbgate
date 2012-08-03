@@ -1,5 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 /**
@@ -11,6 +12,13 @@ import dbgate.ermanagement.query.QuerySelectionExpressionType;
  */
 public class AbstractSelectionFactory
 {
+    private IDBLayer dbLayer;
+
+    public AbstractSelectionFactory(IDBLayer dbLayer)
+    {
+        this.dbLayer = dbLayer;
+    }
+
     public IAbstractSelection createSelection(QuerySelectionExpressionType selectionExpressionType)
     {
         switch (selectionExpressionType)
@@ -22,7 +30,7 @@ public class AbstractSelectionFactory
             case QUERY:
                 return new AbstractSubQuerySelection();
             case EXPRESSION:
-                return new AbstractExpressionSelection();
+                return new AbstractExpressionSelection(dbLayer);
             default:
                 return null;
         }

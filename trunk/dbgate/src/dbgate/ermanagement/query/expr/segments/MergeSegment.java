@@ -1,5 +1,7 @@
 package dbgate.ermanagement.query.expr.segments;
 
+import dbgate.ermanagement.query.expr.ExpressionParsingError;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -10,7 +12,7 @@ import java.util.Collection;
  * Time: 3:04 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MergeSegment implements ISegment
+public class MergeSegment extends BaseSegment
 {
     private Collection<ISegment> segments;
     private MergeSegmentMode mode;
@@ -32,7 +34,7 @@ public class MergeSegment implements ISegment
         return mode;
     }
 
-    public void addSegment(ISegment segment)
+    public void addSub(ISegment segment)
     {
         segments.add(segment);
     }
@@ -40,5 +42,46 @@ public class MergeSegment implements ISegment
     public Collection<ISegment> getSegments()
     {
         return segments;
+    }
+
+    @Override
+    public ISegment add(ISegment segment)
+    {
+        switch (segment.getSegmentType())
+        {
+
+            case FIELD:
+            case VALUE:
+            case QUERY:
+            case GROUP:
+            case COMPARE:
+                if (active != null)
+                {
+                    ISegment result = active.add(segment);
+                    if (result.getSegmentType() == SegmentType.COMPARE
+                            && ((CompareSegment)result).getRight() != null)
+                    {
+                        addSub(result);
+                        ((CompareSegment) result).setParent(this);
+                        active = null;
+                    }
+                    else
+                    {
+                        active = result;
+                    }
+                }
+                else
+                {
+                    active = segment;
+                }
+                return this;
+            case MERGE:
+                MergeSegment mergeSegment = (MergeSegment)segment;
+                mergeSegment.addSub(this);
+                parent = mergeSegment;
+                return mergeSegment;
+            default:
+                return this;
+        }
     }
 }

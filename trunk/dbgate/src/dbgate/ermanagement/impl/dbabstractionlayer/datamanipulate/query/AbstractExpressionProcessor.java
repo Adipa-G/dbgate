@@ -4,6 +4,7 @@ import dbgate.ServerRODBClass;
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
 import dbgate.ermanagement.query.expr.segments.*;
 
@@ -18,6 +19,13 @@ import java.util.Collection;
  */
 public class AbstractExpressionProcessor
 {
+    private IDBLayer dbLayer;
+
+    public AbstractExpressionProcessor(IDBLayer dbLayer)
+    {
+        this.dbLayer = dbLayer;
+    }
+
     private String appendAlias(String sql,FieldSegment fieldSegment)
     {
         if (fieldSegment.getAlias() != null && fieldSegment.getAlias().length() > 0)
@@ -124,6 +132,9 @@ public class AbstractExpressionProcessor
             case MERGE:
                 processMerge(sb,(MergeSegment)segment,buildInfo);
                 break;
+            case QUERY:
+                processQuery(sb, (QuerySegment) segment, buildInfo);
+                break;
         }
         return sb.toString();
     }
@@ -149,6 +160,12 @@ public class AbstractExpressionProcessor
         param.setType(segment.getType());
         param.setValue(segment.getValue());
         buildInfo.getExecInfo().getParams().add(param);
+    }
+
+    private void processQuery(StringBuilder sb,QuerySegment segment,QueryBuildInfo buildInfo)
+    {
+        buildInfo = dbLayer.getDataManipulate().processQuery(buildInfo,segment.getQuery().getStructure());
+        sb.append(buildInfo.getExecInfo().getSql());
     }
     
     private void processCompare(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo)
@@ -232,6 +249,11 @@ public class AbstractExpressionProcessor
     private void processMerge(StringBuilder sb,MergeSegment segment,QueryBuildInfo buildInfo)
     {
         int count = 0;
+        if (segment.getMode() == MergeSegmentMode.PARA_AND
+                || segment.getMode() ==MergeSegmentMode.PARA_OR)
+        {
+            sb.append("(");
+        }
         for (ISegment subSegment : segment.getSegments())
         {
             if (count > 0)
@@ -239,13 +261,20 @@ public class AbstractExpressionProcessor
                 switch (segment.getMode())
                 {
                     case AND:
+                    case PARA_AND:
                         sb.append(" AND "); break;
+                    case PARA_OR:
                     case OR:
                         sb.append(" OR "); break;
                 }
             }
             process(sb,subSegment,buildInfo);
             count++;
+        }
+        if (segment.getMode() == MergeSegmentMode.PARA_AND
+                || segment.getMode() ==MergeSegmentMode.PARA_OR)
+        {
+            sb.append(")");
         }
     }
 }

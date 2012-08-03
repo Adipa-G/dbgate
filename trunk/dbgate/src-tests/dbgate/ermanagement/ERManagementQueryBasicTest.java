@@ -897,6 +897,78 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationAnd_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                     .and(ConditionExpr.build()
+                                                                  .field(QueryBasicEntity.class,"idCol")
+                                                                  .in().values(DBColumnType.INTEGER,35,55),
+                                                          ConditionExpr.build()
+                                                                  .field(QueryBasicEntity.class,"idCol")
+                                                                  .eq().value(DBColumnType.INTEGER,55)
+                                                        )
+                                                      .or()
+                                                      .field(QueryBasicEntity.class,"idCol")
+                                                      .eq().value(DBColumnType.INTEGER,45)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationOr_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                                                             .or(ConditionExpr.build()
+                                                                          .field(QueryBasicEntity.class,"idCol")
+                                                                          .in().values(DBColumnType.INTEGER,35,55),
+                                                                  ConditionExpr.build()
+                                                                          .field(QueryBasicEntity.class,"idCol")
+                                                                          .eq().value(DBColumnType.INTEGER,55)
+                                                                 )
+                                                             .or()
+                                                             .field(QueryBasicEntity.class,"idCol")
+                                                             .eq().value(DBColumnType.INTEGER,45)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void ERQuery_ExecuteWithGroup_WithBasicSqlQuery_shouldLoadTarget()
     {
         try

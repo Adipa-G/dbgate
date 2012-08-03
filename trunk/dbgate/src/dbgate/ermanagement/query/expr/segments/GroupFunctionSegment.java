@@ -1,5 +1,7 @@
 package dbgate.ermanagement.query.expr.segments;
 
+import dbgate.ermanagement.query.expr.ExpressionParsingError;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -49,5 +51,28 @@ public class GroupFunctionSegment implements ISegment
     public String getCustFunction()
     {
         return custFunction;
+    }
+
+    @Override
+    public ISegment add(ISegment segment)
+    {
+        switch (segment.getSegmentType())
+        {
+            case FIELD:
+            case VALUE:
+            case QUERY:
+            case MERGE:
+            case GROUP:
+                throw new ExpressionParsingError("Cannot add field/value/query/merge/group segments to field segment");
+            case COMPARE:
+                CompareSegment compareSegment = (CompareSegment) segment;
+                if (compareSegment.getLeft() == null)
+                {   compareSegment.setLeft(this);   }
+                else
+                {   compareSegment.setRight(this);  }
+                return compareSegment;
+            default:
+                return this;
+        }
     }
 }
