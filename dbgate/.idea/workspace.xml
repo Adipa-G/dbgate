@@ -2,19 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="deba5122-0dda-46ca-971c-4bc58543f01b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegmentMode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/BaseSegment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/QuerySegment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractConditionFactory.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractConditionFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractExpressionCondition.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractExpressionCondition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractExpressionSelection.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractExpressionSelection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractSelectionFactory.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractSelectionFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/ConditionExpr.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/ConditionExpr.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegment.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/FieldSegment.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/FieldSegment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegment.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ISegment.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ISegment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegment.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegmentMode.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegmentMode.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/SegmentType.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/SegmentType.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\query\expr\segments\CompareSegmentType.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegmentMode.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\query\expr\segments\GroupFunctionSegmentType.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegmentMode.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ValueSegment.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ValueSegment.java" />
     </list>
     <ignored path="dbgate.iws" />
     <ignored path="build/" />
@@ -53,6 +60,32 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
       <breakpoint url="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementVersionTest.java" line="331" class="dbgate.ermanagement.ERManagementVersionTest" package="dbgate.ermanagement">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" line="90" class="dbgate.ermanagement.query.expr.BaseExpr" package="dbgate.ermanagement.query.expr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" line="0" class="dbgate.ermanagement.query.expr.BaseExpr" package="dbgate.ermanagement.query.expr">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -106,37 +139,79 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="QuerySegment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/QuerySegment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="16" selection-start="596" selection-end="596" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="ERManagementQueryBasicTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="29" selection-start="734" selection-end="734" vertical-scroll-proportion="0.0">
+            <state line="24" column="13" selection-start="718" selection-end="718" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CompareSegmentMode.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegmentMode.java">
+      <file leaf-file-name="AbstractDataManipulate.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="6" selection-start="311" selection-end="311" vertical-scroll-proportion="0.0">
+            <state line="52" column="70" selection-start="2675" selection-end="2675" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BaseExpr.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java">
+      <file leaf-file-name="AbstractExpressionSelection.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractExpressionSelection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="127" column="0" selection-start="3249" selection-end="3249" vertical-scroll-proportion="0.83908045">
+            <state line="27" column="0" selection-start="982" selection-end="982" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConditionExpr.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/ConditionExpr.java">
+      <file leaf-file-name="AbstractSelectionFactory.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractSelectionFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="93" column="37" selection-start="1790" selection-end="1790" vertical-scroll-proportion="0.0">
+            <state line="32" column="62" selection-start="1017" selection-end="1017" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractConditionFactory.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractConditionFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="28" column="62" selection-start="862" selection-end="862" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractExpressionCondition.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractExpressionCondition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="24" selection-start="848" selection-end="848" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractSqlQueryCondition.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractSqlQueryCondition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="13" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -145,43 +220,16 @@
       <file leaf-file-name="AbstractExpressionProcessor.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="247" column="20" selection-start="8100" selection-end="8100" vertical-scroll-proportion="0.0">
+            <state line="173" column="56" selection-start="5679" selection-end="5679" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ValueSegment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ValueSegment.java">
+      <file leaf-file-name="CompareSegmentMode.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegmentMode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="13" selection-start="242" selection-end="242" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GroupFunctionSegmentMode.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegmentMode.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="36" selection-start="236" selection-end="236" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MergeSegmentMode.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegmentMode.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="6" selection-start="237" selection-end="237" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GroupFunctionSegment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="23" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0">
+            <state line="19" column="6" selection-start="311" selection-end="311" vertical-scroll-proportion="1.0125391">
               <folding />
             </state>
           </provider>
@@ -201,22 +249,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractExpressionSelection.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractExpressionCondition.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractConditionFactory.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryCondition.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ISegment.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegment.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/FieldSegment.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ValueSegment.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegmentType.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegmentType.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegmentType.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegmentMode.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/SegmentType.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegmentMode.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/ConditionExpr.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/BaseSegment.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/QuerySegment.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegment.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegment.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java" />
         <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" />
-        <option value="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractSelectionFactory.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractConditionFactory.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractExpressionCondition.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractExpressionSelection.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegmentMode.java" />
       </list>
     </option>
   </component>
@@ -264,8 +312,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -554,7 +600,71 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ermanagement" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="dbabstractionlayer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ermanagement" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbabstractionlayer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="metamanipulate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -627,95 +737,13 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="query" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbgate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbgate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbgate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ermanagement" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbabstractionlayer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="datamanipulate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="query" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="selection" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbgate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbgate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbgate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ermanagement" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dbabstractionlayer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="datamanipulate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="query" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="condition" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="Favorites" />
     </panes>
   </component>
@@ -791,14 +819,14 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.ERManagementQueryBasicTest">
-    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderIn_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationOr_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
       <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementQueryBasicTest" />
-      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderIn_shouldLoadTarget" />
+      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationOr_shouldLoadTarget" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -814,14 +842,14 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationAnd_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
       <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementQueryBasicTest" />
-      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget" />
+      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationAnd_shouldLoadTarget" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -838,19 +866,17 @@
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
       </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
       <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementQueryBasicTest" />
-      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget" />
+      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -895,14 +921,14 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderOrAnd_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
       <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementQueryBasicTest" />
-      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderOrAnd_shouldLoadTarget" />
+      <option name="METHOD_NAME" value="ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
       <option name="PARAMETERS" />
@@ -914,7 +940,13 @@
       </option>
       <envs />
       <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -1051,11 +1083,11 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderIn_shouldLoadTarget" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationOr_shouldLoadTarget" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationAnd_shouldLoadTarget" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget" />
       <item index="4" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderOrAnd_shouldLoadTarget" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1109,13 +1141,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="3" y="1" width="1363" height="736" extended-state="0" />
+    <frame x="3" y="1" width="1363" height="736" extended-state="1" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32582322" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32409012" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31715772" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20570108" sideWeight="0.67417675" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20570108" sideWeight="0.6828423" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4540728" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1125,8 +1157,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39939255" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32973805" sideWeight="0.67417675" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31715772" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32973805" sideWeight="0.6759099" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31542462" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Properties" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1170,7 +1202,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Expressions for conditions, now we are going somewhere" />
+    <option name="LAST_COMMIT_MESSAGE" value="Expressions for conditions" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1198,6 +1230,7 @@
     <MESSAGE value="Different selection mechanisms for selection criteria" />
     <MESSAGE value="Selections criteria to use expressions" />
     <MESSAGE value="Expressions for conditions, now we are going somewhere" />
+    <MESSAGE value="Expressions for conditions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1234,108 +1267,120 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractSqlQueryCondition.java">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/Query.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="19" selection-start="940" selection-end="940" vertical-scroll-proportion="0.0" />
+        <state line="46" column="29" selection-start="952" selection-end="952" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryStructure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="13" selection-start="312" selection-end="312" vertical-scroll-proportion="0.33126935">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/IDBLayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="12" selection-start="442" selection-end="442" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="73" selection-start="2043" selection-end="2043" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/IDataManipulate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="0" selection-start="1484" selection-end="1484" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/QuerySelection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="28" selection-start="523" selection-end="523" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractConditionFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="57" selection-start="666" selection-end="666" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractSelectionFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="314" selection-end="314" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/SegmentType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="9" selection-start="281" selection-end="281" vertical-scroll-proportion="0.50395256">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryCondition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="34" selection-start="1390" selection-end="1390" vertical-scroll-proportion="0.69762844">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="20" selection-start="846" selection-end="846" vertical-scroll-proportion="0.71900827">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/ValueSegment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="242" selection-end="242" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="0" selection-start="349" selection-end="349" vertical-scroll-proportion="0.2312253">
+        <state line="28" column="62" selection-start="862" selection-end="862" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractSelectionFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="62" selection-start="1017" selection-end="1017" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractSqlQueryCondition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="13" selection-start="463" selection-end="463" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/AbstractExpressionCondition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="24" selection-start="848" selection-end="848" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/AbstractExpressionSelection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="0" selection-start="982" selection-end="982" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/QuerySegment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="16" selection-start="596" selection-end="596" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="13" selection-start="718" selection-end="718" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="70" selection-start="2675" selection-end="2675" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="247" column="20" selection-start="8100" selection-end="8100" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/MergeSegmentMode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="6" selection-start="237" selection-end="237" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegmentMode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="36" selection-start="236" selection-end="236" vertical-scroll-proportion="0.0">
+        <state line="173" column="56" selection-start="5679" selection-end="5679" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/CompareSegmentMode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="6" selection-start="311" selection-end="311" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="29" selection-start="734" selection-end="734" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/GroupFunctionSegment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="23" selection-start="762" selection-end="762" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/ConditionExpr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="37" selection-start="1790" selection-end="1790" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="127" column="0" selection-start="3249" selection-end="3249" vertical-scroll-proportion="0.83908045">
+        <state line="19" column="6" selection-start="311" selection-end="311" vertical-scroll-proportion="1.0125391">
           <folding />
         </state>
       </provider>

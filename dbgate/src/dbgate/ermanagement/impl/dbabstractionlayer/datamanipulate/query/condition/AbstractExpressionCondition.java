@@ -18,9 +18,9 @@ public class AbstractExpressionCondition implements IAbstractCondition
     private ConditionExpr expr;
     private AbstractExpressionProcessor processor;
 
-    public AbstractExpressionCondition()
+    public AbstractExpressionCondition(IDBLayer dbLayer)
     {
-        processor = new AbstractExpressionProcessor();
+        processor = new AbstractExpressionProcessor(dbLayer);
     }
 
     public ConditionExpr getExpr()

@@ -1,5 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition;
 
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.query.QueryConditionExpressionType;
 
 /**
@@ -11,6 +12,13 @@ import dbgate.ermanagement.query.QueryConditionExpressionType;
  */
 public class AbstractConditionFactory
 {
+    private IDBLayer dbLayer;
+
+    public AbstractConditionFactory(IDBLayer dbLayer)
+    {
+        this.dbLayer = dbLayer;
+    }
+
     public IAbstractCondition createCondition(QueryConditionExpressionType conditionExpressionType)
     {
         switch (conditionExpressionType)
@@ -18,7 +26,7 @@ public class AbstractConditionFactory
             case RAW_SQL:
                 return new AbstractSqlQueryCondition();
             case EXPRESSION:
-                return new AbstractExpressionCondition();
+                return new AbstractExpressionCondition(dbLayer);
             default:
                 return null;
         }

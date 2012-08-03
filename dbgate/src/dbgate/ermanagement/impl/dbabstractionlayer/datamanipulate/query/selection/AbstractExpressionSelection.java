@@ -22,10 +22,10 @@ public class AbstractExpressionSelection implements IAbstractSelection
 {
     private SelectExpr expr;
     private AbstractExpressionProcessor processor;
-    
-    public AbstractExpressionSelection()
+
+    public AbstractExpressionSelection(IDBLayer dbLayer)
     {
-        processor = new AbstractExpressionProcessor();
+        processor = new AbstractExpressionProcessor(dbLayer);
     }
 
     public SelectExpr getExpr()

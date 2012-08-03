@@ -10,5 +10,7 @@ package dbgate.ermanagement.query.expr.segments;
 public enum MergeSegmentMode
 {
     AND,
-    OR
+    OR,
+    PARA_AND,
+    PARA_OR
 }

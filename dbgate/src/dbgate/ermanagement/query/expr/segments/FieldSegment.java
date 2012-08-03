@@ -1,5 +1,7 @@
 package dbgate.ermanagement.query.expr.segments;
 
+import dbgate.ermanagement.query.expr.ExpressionParsingError;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -7,7 +9,7 @@ package dbgate.ermanagement.query.expr.segments;
  * Time: 2:58 PM
  * To change this template use File | Settings | File Templates.
  */
-public class FieldSegment implements ISegment
+public class FieldSegment extends BaseSegment
 {
     private Class type;
     private String field;
@@ -45,5 +47,35 @@ public class FieldSegment implements ISegment
     public String getAlias()
     {
         return alias;
+    }
+
+    @Override
+    public ISegment add(ISegment segment)
+    {
+        switch (segment.getSegmentType())
+        {
+            case FIELD:
+            case VALUE:
+            case QUERY:
+                throw new ExpressionParsingError("Cannot add field/value/query segments to field segment");
+            case MERGE:
+                MergeSegment mergeSegment = (MergeSegment)segment;
+                mergeSegment.setActive(this);
+                return mergeSegment;
+            case GROUP:
+                ((GroupFunctionSegment)segment).setSegmentToGroup(this);
+                parent = segment;
+                return segment;
+            case COMPARE:
+                CompareSegment compareSegment = (CompareSegment) segment;
+                if (compareSegment.getLeft() == null)
+                {   compareSegment.setLeft(this);   }
+                else
+                {   compareSegment.setRight(this);  }
+                parent = compareSegment;
+                return compareSegment;
+            default:
+                return this;
+        }
     }
 }

@@ -13,5 +13,6 @@ public enum SegmentType
     GROUP,
     VALUE,
     COMPARE,
-    MERGE
+    MERGE,
+    QUERY
 }

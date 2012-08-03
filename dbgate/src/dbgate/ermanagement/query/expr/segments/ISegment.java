@@ -10,4 +10,6 @@ package dbgate.ermanagement.query.expr.segments;
 public interface ISegment
 {
     SegmentType getSegmentType();
+
+    ISegment add(ISegment segment);
 }

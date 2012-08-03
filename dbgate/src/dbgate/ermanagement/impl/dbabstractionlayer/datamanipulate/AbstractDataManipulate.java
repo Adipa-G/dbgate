@@ -47,10 +47,10 @@ public class AbstractDataManipulate implements IDataManipulate
 
     protected void initialize()
     {
-        QuerySelection.setFactory(new AbstractSelectionFactory());
+        QuerySelection.setFactory(new AbstractSelectionFactory(dbLayer));
         QueryFrom.setFactory(new AbstractFromFactory());
         QueryJoin.setFactory(new AbstractJoinFactory());
-        QueryCondition.setFactory(new AbstractConditionFactory());
+        QueryCondition.setFactory(new AbstractConditionFactory(dbLayer));
         QueryGroup.setFactory(new AbstractGroupFactory());
         QueryGroupCondition.setFactory(new AbstractGroupConditionFactory());
         QueryOrderBy.setFactory(new AbstractOrderByFactory());
