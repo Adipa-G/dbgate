@@ -59,18 +59,16 @@ public class GroupFunctionSegment implements ISegment
         switch (segment.getSegmentType())
         {
             case FIELD:
+                segmentToGroup = (FieldSegment)segment;
+                return this;
             case VALUE:
             case QUERY:
             case MERGE:
             case GROUP:
-                throw new ExpressionParsingError("Cannot add field/value/query/merge/group segments to field segment");
+                throw new ExpressionParsingError("Cannot add value/query/merge/group segments to field segment");
             case COMPARE:
-                CompareSegment compareSegment = (CompareSegment) segment;
-                if (compareSegment.getLeft() == null)
-                {   compareSegment.setLeft(this);   }
-                else
-                {   compareSegment.setRight(this);  }
-                return compareSegment;
+                segment.add(this);
+                return segment;
             default:
                 return this;
         }

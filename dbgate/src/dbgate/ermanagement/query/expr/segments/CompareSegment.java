@@ -59,22 +59,36 @@ public class CompareSegment extends BaseSegment
             case FIELD:
             case VALUE:
             case QUERY:
-            case GROUP:
-                if (left == null)
-                {   left = segment; }
+                if (left == null
+                    && !(mode == CompareSegmentMode.EXISTS || mode == CompareSegmentMode.NOT_EXISTS))
+                {
+                    left = segment;
+                }
                 else
                 {
                     right = segment;
                 }
                 return this;
+            case GROUP:
+                GroupFunctionSegment groupFunctionSegment = (GroupFunctionSegment) segment;
+                if (groupFunctionSegment.getSegmentToGroup() == null)
+                {
+                    if (right != null && right.getSegmentType() == SegmentType.FIELD)
+                    {
+                        groupFunctionSegment.setSegmentToGroup((FieldSegment) right);
+                        right = groupFunctionSegment;
+                    }
+                    else if (left != null && left.getSegmentType() == SegmentType.FIELD)
+                    {
+                        groupFunctionSegment.setSegmentToGroup((FieldSegment) left);
+                        left = groupFunctionSegment;
+                    }
+                }
+                return this;
             case MERGE:
-                MergeSegment mergeSegment = (MergeSegment)segment;
-                if (right != null)
-                {   mergeSegment.addSub(this);  }
-                else
-                {   mergeSegment.setActive(this);   }
-                parent = mergeSegment;
-                return mergeSegment;
+                segment.add(this);
+                parent = segment;
+                return segment;
             case COMPARE:
                 throw new ExpressionParsingError("Cannot add compare segment to compare segment");
             default:

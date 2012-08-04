@@ -12,17 +12,24 @@ import dbgate.ermanagement.query.expr.ExpressionParsingError;
  */
 public class QuerySegment implements ISegment
 {
+    private String alias;
     private ISelectionQuery query;
 
-    public QuerySegment(ISelectionQuery query)
+    public QuerySegment(ISelectionQuery query, String alias)
     {
         this.query = query;
+        this.alias = alias;
     }
 
     @Override
     public SegmentType getSegmentType()
     {
         return SegmentType.QUERY;
+    }
+
+    public String getAlias()
+    {
+        return alias;
     }
 
     public ISelectionQuery getQuery()
@@ -41,16 +48,11 @@ public class QuerySegment implements ISegment
             case GROUP:
                 throw new ExpressionParsingError("Cannot add field/value/query/group segments to field segment");
             case MERGE:
-                MergeSegment mergeSegment = (MergeSegment)segment;
-                mergeSegment.setActive(this);
-                return mergeSegment;
+                segment.add(this);
+                return segment;
             case COMPARE:
-                CompareSegment compareSegment = (CompareSegment) segment;
-                if (compareSegment.getLeft() == null)
-                {   compareSegment.setLeft(this);   }
-                else
-                {   compareSegment.setRight(this);  }
-                return compareSegment;
+                segment.add(this);
+                return segment;
             default:
                 return this;
         }

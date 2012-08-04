@@ -279,7 +279,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class))
-                    .select(QuerySelection.query(descriptionQuery));
+                    .select(QuerySelection.query(descriptionQuery,"description"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
@@ -559,8 +559,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .eq().value(DBColumnType.INTEGER,35)))
+                        .field(QueryBasicEntity.class, "idCol").eq().value(DBColumnType.INTEGER,35)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -587,8 +586,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .neq().value(DBColumnType.INTEGER,35)))
+                        .field(QueryBasicEntity.class, "idCol").neq().value(DBColumnType.INTEGER,35)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -615,8 +613,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .gt().value(DBColumnType.INTEGER,45)))
+                        .field(QueryBasicEntity.class, "idCol").gt().value(DBColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -643,8 +640,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .ge().value(DBColumnType.INTEGER,45)))
+                        .field(QueryBasicEntity.class, "idCol").ge().value(DBColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -671,8 +667,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .lt().value(DBColumnType.INTEGER,45)))
+                        .field(QueryBasicEntity.class, "idCol").lt().value(DBColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -699,8 +694,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .le().value(DBColumnType.INTEGER,45)))
+                        .field(QueryBasicEntity.class, "idCol").le().value(DBColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -727,8 +721,67 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"name")
-                                                             .like().value(DBColumnType.VARCHAR,"Org-NameA")))
+                        .field(QueryBasicEntity.class, "name").like().value(DBColumnType.VARCHAR,"Org-NameA")))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 3);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderNEqWithField_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicDetailsEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .field(QueryBasicDetailsEntity.class, "name").neq().field(QueryBasicDetailsEntity.class, "description")))
+                    .select(QuerySelection.type(QueryBasicDetailsEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderGtWithQuery_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery subQuery = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class, "qbd1"))
+                    .orderBy(QueryOrderBy.rawSql("id_col"))
+                    .select(QuerySelection.column(QueryBasicEntity.class, "idCol", "id_col")).fetch(1);
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .field(QueryBasicEntity.class, "idCol").gt().query(subQuery)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -755,8 +808,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .between().values(DBColumnType.INTEGER,35,55)))
+                        .field(QueryBasicEntity.class, "idCol").between().values(DBColumnType.INTEGER,35,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -770,7 +822,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderIn_shouldLoadTarget()
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderInWithValues_shouldLoadTarget()
     {
         try
         {
@@ -783,12 +835,111 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,35,55)))
+                        .field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,35,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderInWithQuery_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery subQuery = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .select(QuerySelection.column(QueryBasicEntity.class,"idCol",null));
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .field(QueryBasicEntity.class,"idCol").in().query(subQuery)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderExists_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery subQuery = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .field(QueryBasicDetailsEntity.class,"qbd1","name").eq().field(QueryBasicEntity.class,"qb1","name")))
+                    .select(QuerySelection.type(QueryBasicDetailsEntity.class));
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .query(subQuery).exists()))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderNotExists_shouldLoadTarget()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery subQuery = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .field(QueryBasicDetailsEntity.class,"qbd1","name").eq().field(QueryBasicEntity.class,"qb1","name")))
+                    .select(QuerySelection.type(QueryBasicDetailsEntity.class));
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .query(subQuery).notExists()))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 0);
         }
         catch (Exception e)
         {
@@ -811,11 +962,8 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,35,55)
-                                                             .and()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,45,55)))
+                        .field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,35,55)
+                        .and().field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,45,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -842,14 +990,9 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,35,55)
-                                                             .or()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,55)
-                                                             .or()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,45,55)))
+                        .field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,35,55)
+                        .or().field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,55)
+                        .or().field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,45,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -876,14 +1019,9 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,35,55)
-                                                             .or()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,55)
-                                                             .and()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .in().values(DBColumnType.INTEGER,45,55)))
+                        .field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,35,55)
+                        .or().field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,55)
+                        .and().field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER,45,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -910,16 +1048,11 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                     .and(ConditionExpr.build()
-                                                                  .field(QueryBasicEntity.class,"idCol")
-                                                                  .in().values(DBColumnType.INTEGER,35,55),
-                                                          ConditionExpr.build()
-                                                                  .field(QueryBasicEntity.class,"idCol")
-                                                                  .eq().value(DBColumnType.INTEGER,55)
-                                                        )
-                                                      .or()
-                                                      .field(QueryBasicEntity.class,"idCol")
-                                                      .eq().value(DBColumnType.INTEGER,45)))
+                        .and(ConditionExpr.build()
+                                     .field(QueryBasicEntity.class, "idCol").in().values(DBColumnType.INTEGER, 35, 55)
+                                , ConditionExpr.build()
+                                .field(QueryBasicEntity.class, "idCol").eq().value(DBColumnType.INTEGER, 55))
+                        .or().field(QueryBasicEntity.class, "idCol").eq().value(DBColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -946,16 +1079,11 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                                                             .or(ConditionExpr.build()
-                                                                          .field(QueryBasicEntity.class,"idCol")
-                                                                          .in().values(DBColumnType.INTEGER,35,55),
-                                                                  ConditionExpr.build()
-                                                                          .field(QueryBasicEntity.class,"idCol")
-                                                                          .eq().value(DBColumnType.INTEGER,55)
-                                                                 )
-                                                             .or()
-                                                             .field(QueryBasicEntity.class,"idCol")
-                                                             .eq().value(DBColumnType.INTEGER,45)))
+                        .or(ConditionExpr.build()
+                            .field(QueryBasicEntity.class,"idCol").in().values(DBColumnType.INTEGER,35,55)
+                            ,ConditionExpr.build()
+                            .field(QueryBasicEntity.class,"idCol").eq().value(DBColumnType.INTEGER,55))
+                        .or().field(QueryBasicEntity.class,"idCol").eq().value(DBColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);

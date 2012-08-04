@@ -18,9 +18,9 @@ public class AbstractExpressionCondition implements IAbstractCondition
     private ConditionExpr expr;
     private AbstractExpressionProcessor processor;
 
-    public AbstractExpressionCondition(IDBLayer dbLayer)
+    public AbstractExpressionCondition()
     {
-        processor = new AbstractExpressionProcessor(dbLayer);
+        processor = new AbstractExpressionProcessor();
     }
 
     public ConditionExpr getExpr()
@@ -42,6 +42,6 @@ public class AbstractExpressionCondition implements IAbstractCondition
     @Override
     public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
-        return processor.process(null,expr.getRootSegment(),buildInfo);
+        return processor.process(null,expr.getRootSegment(),buildInfo,dbLayer);
     }
 }

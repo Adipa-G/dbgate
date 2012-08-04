@@ -1,6 +1,7 @@
 package dbgate.ermanagement.query.expr;
 
 import dbgate.DBColumnType;
+import dbgate.ermanagement.ISelectionQuery;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,6 +24,12 @@ public class ConditionExpr extends BaseExpr
     }
 
     @Override
+    public ConditionExpr field(Class type, String typeAlias, String field)
+    {
+        return (ConditionExpr)super.field(type, typeAlias, field,null);
+    }
+
+    @Override
     public ConditionExpr value(DBColumnType type, Object value)
     {
         return (ConditionExpr)super.value(type, value);
@@ -32,6 +39,12 @@ public class ConditionExpr extends BaseExpr
     public ConditionExpr values(DBColumnType type, Object... values)
     {
         return (ConditionExpr)super.value(type, values);
+    }
+
+    @Override
+    public ConditionExpr query(ISelectionQuery query)
+    {
+        return (ConditionExpr)super.query(query);
     }
 
     @Override
@@ -86,6 +99,18 @@ public class ConditionExpr extends BaseExpr
     public ConditionExpr in()
     {
         return (ConditionExpr)super.in();
+    }
+
+    @Override
+    public ConditionExpr exists()
+    {
+        return (ConditionExpr)super.exists();
+    }
+
+    @Override
+    public ConditionExpr notExists()
+    {
+        return (ConditionExpr)super.notExists();
     }
 
     @Override

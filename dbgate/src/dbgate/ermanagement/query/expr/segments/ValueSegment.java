@@ -48,17 +48,12 @@ public class ValueSegment extends BaseSegment
             case GROUP:
                 throw new ExpressionParsingError("Cannot add field/value/query/merge/group segments to field segment");
             case MERGE:
-                MergeSegment mergeSegment = (MergeSegment)segment;
-                mergeSegment.setActive(this);
-                return mergeSegment;
+                segment.add(this);
+                return segment;
             case COMPARE:
-                CompareSegment compareSegment = (CompareSegment) segment;
-                if (compareSegment.getLeft() == null)
-                {   compareSegment.setLeft(this);   }
-                else
-                {   compareSegment.setRight(this);  }
-                parent = compareSegment;
-                return compareSegment;
+                segment.add(this);
+                parent = segment;
+                return segment;
             default:
                 return this;
         }

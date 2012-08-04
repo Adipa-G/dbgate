@@ -15,14 +15,22 @@ import java.util.Hashtable;
  */
 public class QueryBuildInfo
 {
-    private QueryExecInfo execInfo;
+    protected QueryExecInfo execInfo;
     private String currentQueryId;
-    private Hashtable<String,Object> aliases;
+    protected Hashtable<String,Object> aliases;
 
-    public QueryBuildInfo()
+    public QueryBuildInfo(QueryBuildInfo buildInfo)
     {
-        execInfo = new QueryExecInfo();
-        aliases = new Hashtable<>();
+        if (buildInfo != null)
+        {
+            execInfo = buildInfo.execInfo;
+            aliases = buildInfo.aliases;
+        }
+        else
+        {
+            execInfo = new QueryExecInfo();
+            aliases = new Hashtable<>();
+        }
     }
 
     public QueryExecInfo getExecInfo()

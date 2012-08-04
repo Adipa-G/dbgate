@@ -37,20 +37,11 @@ public class QuerySelection
         return selection;
     }
 
-    public static IQuerySelection query(ISelectionQuery query)
-    {
-        return query(query,null);
-    }
-
     public static IQuerySelection query(ISelectionQuery query,String alias)
     {
-        AbstractSubQuerySelection selection = (AbstractSubQuerySelection) factory.createSelection(QuerySelectionExpressionType.QUERY);
-        selection.setQuery(query);
-        if (alias != null && alias.length() > 0)
-        {
-            selection.setAlias(alias);
-        }
-        return selection;
+        AbstractExpressionSelection expressionSelection = (AbstractExpressionSelection) factory.createSelection(QuerySelectionExpressionType.EXPRESSION);
+        expressionSelection.setExpr(SelectExpr.build().query(query,alias));
+        return expressionSelection;
     }
 
     private static IQuerySelection expression(SelectExpr expr)
