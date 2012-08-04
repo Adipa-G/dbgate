@@ -12,11 +12,8 @@ import dbgate.ermanagement.query.QuerySelectionExpressionType;
  */
 public class AbstractSelectionFactory
 {
-    private IDBLayer dbLayer;
-
-    public AbstractSelectionFactory(IDBLayer dbLayer)
+    public AbstractSelectionFactory()
     {
-        this.dbLayer = dbLayer;
     }
 
     public IAbstractSelection createSelection(QuerySelectionExpressionType selectionExpressionType)
@@ -27,10 +24,8 @@ public class AbstractSelectionFactory
                 return new AbstractSqlQuerySelection();
             case TYPE:
                 return new AbstractTypeSelection();
-            case QUERY:
-                return new AbstractSubQuerySelection();
             case EXPRESSION:
-                return new AbstractExpressionSelection(dbLayer);
+                return new AbstractExpressionSelection();
             default:
                 return null;
         }

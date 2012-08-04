@@ -1,6 +1,7 @@
 package dbgate.ermanagement.query.expr;
 
 import dbgate.DBColumnType;
+import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.query.expr.segments.*;
 
 /**
@@ -35,6 +36,12 @@ class BaseExpr
         return addSegment(segment);
     }
 
+    protected BaseExpr field(Class type,String typeAlias,String field,String alias)
+    {
+        FieldSegment segment = new FieldSegment(type,typeAlias,field,alias);
+        return addSegment(segment);
+    }
+
     protected BaseExpr value(DBColumnType type,Object value)
     {
         ValueSegment segment = new ValueSegment(type,value);
@@ -44,6 +51,17 @@ class BaseExpr
     protected BaseExpr values(DBColumnType type,Object... values)
     {
         ValueSegment segment = new ValueSegment(type,values);
+        return addSegment(segment);
+    }
+
+    protected BaseExpr query(ISelectionQuery query)
+    {
+        return query(query,null);
+    }
+
+    protected BaseExpr query(ISelectionQuery query,String alias)
+    {
+        QuerySegment segment = new QuerySegment(query,alias);
         return addSegment(segment);
     }
 
@@ -116,6 +134,18 @@ class BaseExpr
     protected BaseExpr in()
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.IN);
+        return addSegment(segment);
+    }
+
+    protected BaseExpr exists()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.EXISTS);
+        return addSegment(segment);
+    }
+
+    protected BaseExpr notExists()
+    {
+        CompareSegment segment = new CompareSegment(CompareSegmentMode.NOT_EXISTS);
         return addSegment(segment);
     }
 

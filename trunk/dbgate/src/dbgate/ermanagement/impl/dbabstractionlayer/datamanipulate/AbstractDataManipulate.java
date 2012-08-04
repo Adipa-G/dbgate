@@ -47,10 +47,10 @@ public class AbstractDataManipulate implements IDataManipulate
 
     protected void initialize()
     {
-        QuerySelection.setFactory(new AbstractSelectionFactory(dbLayer));
+        QuerySelection.setFactory(new AbstractSelectionFactory());
         QueryFrom.setFactory(new AbstractFromFactory());
         QueryJoin.setFactory(new AbstractJoinFactory());
-        QueryCondition.setFactory(new AbstractConditionFactory(dbLayer));
+        QueryCondition.setFactory(new AbstractConditionFactory());
         QueryGroup.setFactory(new AbstractGroupFactory());
         QueryGroupCondition.setFactory(new AbstractGroupConditionFactory());
         QueryOrderBy.setFactory(new AbstractOrderByFactory());
@@ -530,10 +530,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
     public QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure)
     {
-        if (buildInfo == null)
-        {
-            buildInfo = new QueryBuildInfo();
-        }
+        buildInfo = new QueryBuildInfo(buildInfo);
         buildInfo.setCurrentQueryId(structure.getQueryId());
 
         StringBuilder sb = new StringBuilder();

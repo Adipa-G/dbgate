@@ -19,11 +19,8 @@ import java.util.Collection;
  */
 public class AbstractExpressionProcessor
 {
-    private IDBLayer dbLayer;
-
-    public AbstractExpressionProcessor(IDBLayer dbLayer)
+    public AbstractExpressionProcessor()
     {
-        this.dbLayer = dbLayer;
     }
 
     private String appendAlias(String sql,FieldSegment fieldSegment)
@@ -71,6 +68,11 @@ public class AbstractExpressionProcessor
     public String getFieldName(FieldSegment fieldSegment, boolean withAlias, QueryBuildInfo buildInfo)
     {
         String tableAlias = buildInfo.getAlias(fieldSegment.getType());
+        if (fieldSegment.getTypeAlias() != null
+                && !fieldSegment.getTypeAlias().isEmpty())
+        {
+            tableAlias = fieldSegment.getTypeAlias();
+        }
         tableAlias = (tableAlias == null)?"" : tableAlias + ".";
         IDBColumn column = getColumn(fieldSegment);
 
@@ -91,7 +93,7 @@ public class AbstractExpressionProcessor
 
     public String getGroupFunction(GroupFunctionSegment groupSegment, boolean withAlias, QueryBuildInfo buildInfo)
     {
-        FieldSegment fieldSegment = (FieldSegment) groupSegment.getSegmentToGroup();
+        FieldSegment fieldSegment = groupSegment.getSegmentToGroup();
         String sql = getFieldName(fieldSegment, false, buildInfo);
         switch (groupSegment.getGroupFunctionMode())
         {
@@ -112,46 +114,46 @@ public class AbstractExpressionProcessor
         return sql;
     }
 
-    public String process(StringBuilder sb,ISegment segment,QueryBuildInfo buildInfo)
+    public String process(StringBuilder sb,ISegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
         if (sb == null) sb = new StringBuilder();
         switch (segment.getSegmentType())
         {
             case FIELD:
-                processField(sb,(FieldSegment) segment,buildInfo);
+                processField(sb,(FieldSegment) segment,buildInfo,dbLayer);
                 break;
             case GROUP:
-                processGroup(sb,(GroupFunctionSegment) segment,buildInfo);
+                processGroup(sb,(GroupFunctionSegment) segment,buildInfo,dbLayer);
                 break;
             case VALUE:
-                processValue(sb,(ValueSegment) segment,buildInfo);
+                processValue(sb,(ValueSegment) segment,buildInfo,dbLayer);
                 break;
             case COMPARE:
-                processCompare(sb,(CompareSegment) segment,buildInfo);
+                processCompare(sb,(CompareSegment) segment,buildInfo,dbLayer);
                 break;
             case MERGE:
-                processMerge(sb,(MergeSegment)segment,buildInfo);
+                processMerge(sb,(MergeSegment)segment,buildInfo,dbLayer);
                 break;
             case QUERY:
-                processQuery(sb, (QuerySegment) segment, buildInfo);
+                processQuery(sb, (QuerySegment) segment, buildInfo,dbLayer);
                 break;
         }
         return sb.toString();
     }
 
-    private void processField(StringBuilder sb,FieldSegment segment,QueryBuildInfo buildInfo)
+    private void processField(StringBuilder sb,FieldSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
         String fieldName = getFieldName(segment,false,buildInfo);
         sb.append(fieldName);
     }
 
-    private void processGroup(StringBuilder sb,GroupFunctionSegment segment,QueryBuildInfo buildInfo)
+    private void processGroup(StringBuilder sb,GroupFunctionSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
         String groupFunction = getGroupFunction(segment, false, buildInfo);
         sb.append(groupFunction);
     }
 
-    private void processValue(StringBuilder sb,ValueSegment segment,QueryBuildInfo buildInfo)
+    private void processValue(StringBuilder sb,ValueSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
         sb.append("?");
         
@@ -162,31 +164,41 @@ public class AbstractExpressionProcessor
         buildInfo.getExecInfo().getParams().add(param);
     }
 
-    private void processQuery(StringBuilder sb,QuerySegment segment,QueryBuildInfo buildInfo)
+    private void processQuery(StringBuilder sb,QuerySegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
         buildInfo = dbLayer.getDataManipulate().processQuery(buildInfo,segment.getQuery().getStructure());
+        sb.append(" ( ");
         sb.append(buildInfo.getExecInfo().getSql());
+        sb.append(" ) ");
     }
     
-    private void processCompare(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo)
+    private void processCompare(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
-        process(sb,segment.getLeft(),buildInfo);
-        if (segment.getMode() == CompareSegmentMode.BETWEEN)
+        if (segment.getLeft() != null)
         {
-            processBetween(sb,segment,buildInfo);
-            return;
-        }
-        if (segment.getMode() == CompareSegmentMode.IN)
-        {
-            if (segment.getRight().getSegmentType() == SegmentType.VALUE)
-            {
-                processInValues(sb, segment, buildInfo);
-            }
-            return;
+            process(sb,segment.getLeft(),buildInfo,dbLayer);
         }
 
         switch (segment.getMode())
         {
+            case BETWEEN:
+                processBetween(sb,segment,buildInfo,dbLayer);
+                return;
+            case IN:
+                switch (segment.getRight().getSegmentType())
+                {
+                    case VALUE:
+                        processInValues(sb, segment, buildInfo);
+                        break;
+                    case QUERY:
+                        processQueryValues(sb, segment, buildInfo,dbLayer);
+                        break;
+                }
+                return;
+            case EXISTS:
+                sb.append(" EXISTS "); break;
+            case NOT_EXISTS:
+                sb.append(" NOT EXISTS "); break;
             case EQ:
                 sb.append(" = ");break;
             case GE:
@@ -198,16 +210,16 @@ public class AbstractExpressionProcessor
             case LT:
                 sb.append(" < ");break;
             case LIKE:
-                sb.append(" like ");break;
+                sb.append(" LIKE ");break;
             case NEQ:
                 sb.append(" <> ");break;
             default:
                 break;
         }
-        process(sb,segment.getRight(),buildInfo);
+        process(sb,segment.getRight(),buildInfo,dbLayer);
     }
 
-    private void processBetween(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo)
+    private void processBetween(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
         sb.append(" BETWEEN ? AND ? ");
         ValueSegment valueSegment = (ValueSegment) segment.getRight();
@@ -246,7 +258,14 @@ public class AbstractExpressionProcessor
         sb.append(") ");
     }
 
-    private void processMerge(StringBuilder sb,MergeSegment segment,QueryBuildInfo buildInfo)
+    private void processQueryValues(StringBuilder sb, CompareSegment segment, QueryBuildInfo buildInfo,IDBLayer dbLayer)
+    {
+        sb.append(" IN ");
+        QuerySegment querySegment = (QuerySegment) segment.getRight();
+        processQuery(sb,querySegment,buildInfo,dbLayer);
+    }
+
+    private void processMerge(StringBuilder sb,MergeSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
         int count = 0;
         if (segment.getMode() == MergeSegmentMode.PARA_AND
@@ -268,7 +287,7 @@ public class AbstractExpressionProcessor
                         sb.append(" OR "); break;
                 }
             }
-            process(sb,subSegment,buildInfo);
+            process(sb,subSegment,buildInfo,dbLayer);
             count++;
         }
         if (segment.getMode() == MergeSegmentMode.PARA_AND

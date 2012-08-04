@@ -23,9 +23,9 @@ public class AbstractExpressionSelection implements IAbstractSelection
     private SelectExpr expr;
     private AbstractExpressionProcessor processor;
 
-    public AbstractExpressionSelection(IDBLayer dbLayer)
+    public AbstractExpressionSelection()
     {
-        processor = new AbstractExpressionProcessor(dbLayer);
+        processor = new AbstractExpressionProcessor();
     }
 
     public SelectExpr getExpr()
@@ -48,14 +48,18 @@ public class AbstractExpressionSelection implements IAbstractSelection
     public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
         ISegment rootSegment = expr.getRootSegment();
-        if (rootSegment.getSegmentType() == SegmentType.GROUP)
+        switch (rootSegment.getSegmentType())
         {
-            return processor.getGroupFunction((GroupFunctionSegment) rootSegment, true, buildInfo);
+            case GROUP:
+                return processor.getGroupFunction((GroupFunctionSegment) rootSegment, true, buildInfo);
+            case FIELD:
+                return processor.getFieldName((FieldSegment) rootSegment, true, buildInfo);
+            case QUERY:
+                QuerySegment querySegment = (QuerySegment) rootSegment;
+                buildInfo = dbLayer.getDataManipulate().processQuery(buildInfo,querySegment.getQuery().getStructure());
+                return "(" + buildInfo.getExecInfo().getSql() + ") as " + querySegment.getAlias();
         }
-        else
-        {
-            return processor.getFieldName((FieldSegment) rootSegment, true, buildInfo);
-        }
+        return null;
     }
 
     @Override
@@ -63,20 +67,30 @@ public class AbstractExpressionSelection implements IAbstractSelection
     {
         try
         {
-            FieldSegment fieldSegment = null;
+            String column = null;
             ISegment rootSegment = expr.getRootSegment();
-            if (rootSegment.getSegmentType() == SegmentType.GROUP)
+
+            FieldSegment fieldSegment = null;
+            switch (rootSegment.getSegmentType())
             {
-                fieldSegment = ((GroupFunctionSegment)rootSegment).getSegmentToGroup();
-            }
-            else
-            {
-                fieldSegment = (FieldSegment)rootSegment;
+                case GROUP:
+                    fieldSegment = ((GroupFunctionSegment)rootSegment).getSegmentToGroup();
+                    //no break here as processing continues to field segment
+                case FIELD:
+                    if (fieldSegment == null)
+                    {
+                        fieldSegment = (FieldSegment) rootSegment;
+                    }
+                    String alias = fieldSegment.getAlias();
+                    column = alias != null && alias.length() > 0? alias : processor.getColumn(fieldSegment).getColumnName();
+                    break;
+                case QUERY:
+                    QuerySegment querySegment = (QuerySegment) rootSegment;
+                    column = querySegment.getAlias();
+                    break;
             }
 
-            String alias = fieldSegment.getAlias();
-            String columnName = alias != null && alias.length() > 0? alias : processor.getColumn(fieldSegment).getColumnName();
-            Object obj = rs.getObject(columnName);
+            Object obj = rs.getObject(column);
             return obj;
         }
         catch (Exception ex)

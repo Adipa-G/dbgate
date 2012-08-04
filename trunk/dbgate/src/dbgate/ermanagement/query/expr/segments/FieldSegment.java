@@ -12,6 +12,7 @@ import dbgate.ermanagement.query.expr.ExpressionParsingError;
 public class FieldSegment extends BaseSegment
 {
     private Class type;
+    private String typeAlias;
     private String field;
     private String alias;
 
@@ -28,6 +29,14 @@ public class FieldSegment extends BaseSegment
         this.alias = alias;
     }
 
+    public FieldSegment(Class type, String typeAlias, String field, String alias)
+    {
+        this.type = type;
+        this.typeAlias = typeAlias;
+        this.field = field;
+        this.alias = alias;
+    }
+
     @Override
     public SegmentType getSegmentType()
     {
@@ -37,6 +46,11 @@ public class FieldSegment extends BaseSegment
     public Class getType()
     {
         return type;
+    }
+
+    public String getTypeAlias()
+    {
+        return typeAlias;
     }
 
     public String getField()
@@ -59,21 +73,13 @@ public class FieldSegment extends BaseSegment
             case QUERY:
                 throw new ExpressionParsingError("Cannot add field/value/query segments to field segment");
             case MERGE:
-                MergeSegment mergeSegment = (MergeSegment)segment;
-                mergeSegment.setActive(this);
-                return mergeSegment;
+                segment.add(this);
+                return segment;
             case GROUP:
-                ((GroupFunctionSegment)segment).setSegmentToGroup(this);
+            case COMPARE:
+                segment.add(this);
                 parent = segment;
                 return segment;
-            case COMPARE:
-                CompareSegment compareSegment = (CompareSegment) segment;
-                if (compareSegment.getLeft() == null)
-                {   compareSegment.setLeft(this);   }
-                else
-                {   compareSegment.setRight(this);  }
-                parent = compareSegment;
-                return compareSegment;
             default:
                 return this;
         }

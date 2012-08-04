@@ -49,30 +49,22 @@ public class MergeSegment extends BaseSegment
     {
         switch (segment.getSegmentType())
         {
-
             case FIELD:
             case VALUE:
             case QUERY:
             case GROUP:
             case COMPARE:
-                if (active != null)
+                ISegment result = active != null ? active.add(segment) : segment;
+                if (result.getSegmentType() == SegmentType.COMPARE
+                        && ((CompareSegment)result).getRight() != null)
                 {
-                    ISegment result = active.add(segment);
-                    if (result.getSegmentType() == SegmentType.COMPARE
-                            && ((CompareSegment)result).getRight() != null)
-                    {
-                        addSub(result);
-                        ((CompareSegment) result).setParent(this);
-                        active = null;
-                    }
-                    else
-                    {
-                        active = result;
-                    }
+                    addSub(result);
+                    ((CompareSegment) result).setParent(this);
+                    active = null;
                 }
                 else
                 {
-                    active = segment;
+                    active = result;
                 }
                 return this;
             case MERGE:

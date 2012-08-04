@@ -1,5 +1,7 @@
 package dbgate.ermanagement.query.expr;
 
+import dbgate.ermanagement.ISelectionQuery;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -24,6 +26,12 @@ public class SelectExpr extends BaseExpr
     public SelectExpr field(Class type, String field, String alias)
     {
         return (SelectExpr)super.field(type, field,alias);
+    }
+
+    @Override
+    public SelectExpr query(ISelectionQuery query, String alias)
+    {
+        return (SelectExpr)super.query(query,alias);
     }
 
     @Override

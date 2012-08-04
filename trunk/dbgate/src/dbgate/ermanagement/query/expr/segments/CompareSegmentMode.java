@@ -17,5 +17,7 @@ public enum CompareSegmentMode
     LE,
     LIKE,
     BETWEEN,
-    IN
+    IN,
+    EXISTS,
+    NOT_EXISTS
 }
