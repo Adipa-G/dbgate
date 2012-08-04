@@ -64,9 +64,10 @@ public class AbstractTypeFrom implements IAbstractFrom
             catch (Exception ex)
             {
                 ex.printStackTrace();
+                return "<unknown " + type.getCanonicalName() + ">";
             }
-            return "<unknown " + type.getCanonicalName() + ">";
         }
+
         if (alias != null && alias.length() > 0)
         {
             sql = sql + " as " + alias;

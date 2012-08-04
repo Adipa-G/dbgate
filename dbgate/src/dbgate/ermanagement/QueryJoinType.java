@@ -9,10 +9,8 @@ package dbgate.ermanagement;
  */
 public enum QueryJoinType
 {
-    NATURAL,
-    CROSS,
     INNER,
-    OUTER,
-    LEFT_OUTER,
-    RIGHT_OUTER
+    LEFT,
+    RIGHT,
+    FULL
 }

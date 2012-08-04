@@ -2,6 +2,8 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join;
 
 import dbgate.ermanagement.IQueryJoin;
 import dbgate.ermanagement.IQueryOrderBy;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,5 +14,5 @@ import dbgate.ermanagement.IQueryOrderBy;
  */
 public interface IAbstractJoin extends IQueryJoin
 {
-    String createSql();
+    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo);
 }

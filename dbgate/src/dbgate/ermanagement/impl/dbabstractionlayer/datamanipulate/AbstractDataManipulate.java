@@ -642,15 +642,15 @@ public class AbstractDataManipulate implements IDataManipulate
         for (IQueryJoin join : joinList)
         {
             sb.append(" ");
-            sb.append(CreateJoinSql(join));
+            sb.append(CreateJoinSql(join,buildInfo));
         }
     }
 
-    protected String CreateJoinSql(IQueryJoin join)
+    protected String CreateJoinSql(IQueryJoin join,QueryBuildInfo buildInfo)
     {
         if (join != null)
         {
-            return ((IAbstractJoin)join).createSql();
+            return ((IAbstractJoin)join).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect Join*/";
     }
