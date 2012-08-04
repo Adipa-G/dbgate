@@ -17,6 +17,8 @@ public class AbstractJoinFactory
         {
             case RAW_SQL:
                 return new AbstractSqlQueryJoin();
+            case TYPE:
+                return new AbstractTypeJoin();
             default:
                 return null;
         }

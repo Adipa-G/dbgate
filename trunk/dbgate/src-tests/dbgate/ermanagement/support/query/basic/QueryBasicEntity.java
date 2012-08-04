@@ -2,6 +2,7 @@ package dbgate.ermanagement.support.query.basic;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.*;
+import dbgate.ermanagement.support.persistant.changetracker.ChangeTrackerTestOne2OneEntity;
 import dbgate.ermanagement.support.persistant.lazy.LazyOne2ManyEntity;
 import dbgate.ermanagement.support.persistant.lazy.LazyOne2OneEntity;
 
@@ -21,6 +22,13 @@ public class QueryBasicEntity extends DefaultServerDBClass
     private int idCol;
     @DBColumnInfo(columnType = DBColumnType.VARCHAR)
     private String name;
+    @ForeignKeyInfo(name = "fk_basic2join"
+            ,relatedObjectType = QueryBasicJoinEntity.class
+            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")
+                               ,@ForeignKeyColumnMapping(fromField = "name", toField = "name")}
+            ,updateRule = ReferentialRuleType.RESTRICT
+            ,deleteRule = ReferentialRuleType.CASCADE)
+    private QueryBasicJoinEntity joinEntity;
 
     public QueryBasicEntity()
     {
@@ -44,5 +52,15 @@ public class QueryBasicEntity extends DefaultServerDBClass
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public QueryBasicJoinEntity getJoinEntity()
+    {
+        return joinEntity;
+    }
+
+    public void setJoinEntity(QueryBasicJoinEntity joinEntity)
+    {
+        this.joinEntity = joinEntity;
     }
 }

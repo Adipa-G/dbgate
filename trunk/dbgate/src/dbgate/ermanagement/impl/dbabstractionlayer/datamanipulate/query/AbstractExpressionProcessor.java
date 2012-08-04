@@ -2,6 +2,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query;
 
 import dbgate.ServerRODBClass;
 import dbgate.ermanagement.IDBColumn;
+import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
@@ -59,6 +60,39 @@ public class AbstractExpressionProcessor
                 if (column.getAttributeName().equals(segment.getField()))
                 {
                     return column;
+                }
+            }
+        }
+        return null;
+    }
+
+    public IDBRelation getRelation(Class typeFrom,Class typeTo)
+    {
+        Collection<IDBRelation> relations = null;
+        try
+        {
+            relations = CacheManager.fieldCache.getRelations(typeFrom);
+        }
+        catch (FieldCacheMissException e)
+        {
+            try
+            {
+                CacheManager.fieldCache.register(typeFrom, (ServerRODBClass) typeFrom.newInstance());
+                relations = CacheManager.fieldCache.getRelations(typeFrom);
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+
+        if (relations != null)
+        {
+            for (IDBRelation relation : relations)
+            {
+                if (relation.getRelatedObjectType() == typeTo)
+                {
+                    return relation;
                 }
             }
         }
@@ -143,7 +177,7 @@ public class AbstractExpressionProcessor
 
     private void processField(StringBuilder sb,FieldSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
     {
-        String fieldName = getFieldName(segment,false,buildInfo);
+        String fieldName = getFieldName(segment, false, buildInfo);
         sb.append(fieldName);
     }
 

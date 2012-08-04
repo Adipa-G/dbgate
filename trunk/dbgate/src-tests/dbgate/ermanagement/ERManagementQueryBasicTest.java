@@ -6,8 +6,10 @@ import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.query.*;
 import dbgate.ermanagement.query.expr.ConditionExpr;
+import dbgate.ermanagement.query.expr.JoinExpr;
 import dbgate.ermanagement.support.query.basic.QueryBasicDetailsEntity;
 import dbgate.ermanagement.support.query.basic.QueryBasicEntity;
+import dbgate.ermanagement.support.query.basic.QueryBasicJoinEntity;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
@@ -44,6 +46,14 @@ public class ERManagementQueryBasicTest
             PreparedStatement ps = con.prepareStatement(sql);
             ps.execute();
 
+            sql = "Create table query_basic_join (\n" +
+                    "\tid_col Int NOT NULL,\n" +
+                    "\tname Varchar(20) NOT NULL,\n" +
+                    "\toverride_description Varchar(50) NOT NULL,\n" +
+                    " Primary Key (id_col,name))";
+            ps = con.prepareStatement(sql);
+            ps.execute();
+
             sql = "Create table query_basic_details (\n" +
                     "\tname Varchar(20) NOT NULL,\n" +
                     "\tdescription Varchar(50) NOT NULL )";
@@ -74,7 +84,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithBasicSqlQuery_shouldLoadAll()
+    public void basic_withSql_shouldSelectAll()
     {
         try
         {
@@ -109,7 +119,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithDistinctSqlQuery_shouldLoadAll()
+    public void distinct_withSql_shouldSelectDistinct()
     {
         try
         {
@@ -149,7 +159,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithRowSkipSqlQuery_shouldLoadAll()
+    public void skip_withSql_shouldSkip()
     {
         try
         {
@@ -175,7 +185,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll()
+    public void fetch_withSql_shouldFetch()
     {
         try
         {
@@ -201,7 +211,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithRowSkipAndFetchSqlQuery_shouldLoadAll()
+    public void skipAndFetch_withSql_shouldSkipAndFetch()
     {
         try
         {
@@ -227,7 +237,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithTypeSelection_shouldLoadAll()
+    public void select_withTypeSelection_shouldSelectAll()
     {
         try
         {
@@ -260,7 +270,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithSubQuerySelection_shouldLoadAll()
+    public void select_withSubQuerySelection_shouldSelectAll()
     {
         try
         {
@@ -301,7 +311,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithColumnSelection_shouldLoadAll()
+    public void select_withColumnSelection_shouldSelectAll()
     {
         try
         {
@@ -327,7 +337,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithSumSelection_shouldGetSum()
+    public void select_withSumSelection_shouldSelectSum()
     {
         try
         {
@@ -365,7 +375,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithCountSelection_shouldGetCount()
+    public void select_withCountSelection_shouldSelectCount()
     {
         try
         {
@@ -398,7 +408,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithCustomFunctionSelectionWithCount_shouldGetCount()
+    public void select_withCustomFunctionCountAsExampleSelection_shouldSelectCount()
     {
         try
         {
@@ -431,7 +441,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithTypeFrom_shouldLoadAll()
+    public void from_withTypeFrom_shouldSelectAll()
     {
         try
         {
@@ -456,7 +466,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithQueryFrom_shouldLoadAll()
+    public void from_withQueryFrom_shouldSelectAll()
     {
         try
         {
@@ -485,7 +495,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteToRetrieveAll_WithQueryUnionFrom_shouldLoadUnion()
+    public void from_withQueryUnionFrom_shouldSelectUnion()
     {
         try
         {
@@ -519,7 +529,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithBasicSqlQuery_shouldLoadTarget()
+    public void condition_withSql_shouldSelectMatching()
     {
         try
         {
@@ -546,7 +556,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderEq_shouldLoadTarget()
+    public void condition_withEqExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -573,7 +583,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderNEq_shouldLoadTarget()
+    public void condition_withNeqExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -600,7 +610,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderGt_shouldLoadTarget()
+    public void condition_withGtExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -627,7 +637,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderGe_shouldLoadTarget()
+    public void condition_withGeExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -654,7 +664,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderLt_shouldLoadTarget()
+    public void condition_withLtExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -681,7 +691,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderLe_shouldLoadTarget()
+    public void condition_withLeExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -708,7 +718,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderLike_shouldLoadTarget()
+    public void condition_withLikeExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -735,7 +745,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderNEqWithField_shouldLoadTarget()
+    public void condition_withNeqExpression_withField_shouldSelectMatching()
     {
         try
         {
@@ -762,7 +772,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderGtWithQuery_shouldLoadTarget()
+    public void condition_withGtExpression_withQuery_shouldSelectMatching()
     {
         try
         {
@@ -795,7 +805,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderBetween_shouldLoadTarget()
+    public void condition_withBetweenExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -822,7 +832,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderInWithValues_shouldLoadTarget()
+    public void condition_withInExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -849,7 +859,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderInWithQuery_shouldLoadTarget()
+    public void condition_withInExpression_withQuery_shouldSelectMatching()
     {
         try
         {
@@ -881,7 +891,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderExists_shouldLoadTarget()
+    public void condition_withExistsExpression_shouldSelectMatching()
     {
         try
         {
@@ -915,7 +925,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderNotExists_shouldLoadTarget()
+    public void condition_withNotExistsExpression_shouldSelectMatching()
     {
         try
         {
@@ -949,7 +959,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderAnd_shouldLoadTarget()
+    public void condition_withSimpleMergeExpression_SingleAnd_shouldSelectMatching()
     {
         try
         {
@@ -977,7 +987,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderOr_shouldLoadTarget()
+    public void condition_withSimpleMergeExpression_TwoOr_shouldSelectMatching()
     {
         try
         {
@@ -1006,7 +1016,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderOrAnd_shouldLoadTarget()
+    public void condition_withSimpleMergeExpression_SingleAndSingleOr_shouldSelectMatching()
     {
         try
         {
@@ -1035,7 +1045,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationAnd_shouldLoadTarget()
+    public void condition_withComplexMergeExpression_CombinedTwoAndsWithOr_shouldSelectMatching()
     {
         try
         {
@@ -1066,7 +1076,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithCondition_WithExpressionBuilderMergeCombinationOr_shouldLoadTarget()
+    public void condition_withComplexMergeExpression_CombinedTwoOrsWithOr_shouldSelectMatching()
     {
         try
         {
@@ -1097,7 +1107,144 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithGroup_WithBasicSqlQuery_shouldLoadTarget()
+    public void join_withBasicSql_shouldJoin()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .join(QueryJoin.rawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
+                    .orderBy(QueryOrderBy.rawSql("qb1.name"))
+                    .select(QuerySelection.rawSql("qb1.name as name"))
+                    .select(QuerySelection.rawSql("description"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void join_withEntityDefinedJoin_directionOfDefinition_shouldJoin()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .join(QueryJoin.type(QueryBasicEntity.class,QueryBasicJoinEntity.class,"qbj1"))
+                    .select(QuerySelection.column(QueryBasicEntity.class, "idCol", null));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void join_withEntityDefinedJoin_directionOppositeToDefinition_shouldJoin()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicJoinEntity.class,"qbj1"))
+                    .join(QueryJoin.type(QueryBasicJoinEntity.class,QueryBasicEntity.class,"qb1"))
+                    .select(QuerySelection.column(QueryBasicJoinEntity.class, "idCol", null));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void join_withEntityDefinedJoin_withOuterJoin_shouldJoin()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .join(QueryJoin.type(QueryBasicEntity.class, QueryBasicJoinEntity.class, "qbj1",
+                                         QueryJoinType.LEFT))
+                    .select(QuerySelection.column(QueryBasicEntity.class, "idCol", null));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void join_withoutEntityDefinedJoin_withExpression_shouldJoin()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .join(QueryJoin.type(QueryBasicEntity.class
+                            , QueryBasicDetailsEntity.class
+                            , JoinExpr.build()
+                                .field(QueryBasicEntity.class,"name").eq().field(QueryBasicDetailsEntity.class,"name")
+                            , "qbd1"))
+                    .select(QuerySelection.column(QueryBasicDetailsEntity.class, "description", null));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void group_withBasicSql_shouldGroup()
     {
         try
         {
@@ -1123,7 +1270,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithGroupCondition_WithBasicSqlQuery_shouldLoadTarget()
+    public void groupCondition_withBasicSql_shouldSelectMatchingGroups()
     {
         try
         {
@@ -1150,7 +1297,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void ERQuery_ExecuteWithOrderBy_WithBasicSqlQuery_shouldLoadTarget()
+    public void orderBy_withBasicSql_shouldSelectOrdered()
     {
         try
         {
@@ -1164,34 +1311,6 @@ public class ERManagementQueryBasicTest
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .orderBy(QueryOrderBy.rawSql("name"))
                     .select(QuerySelection.rawSql("name"));
-
-            Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 4);
-        }
-        catch (Exception e)
-        {
-            Assert.fail(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void ERQuery_ExecuteWithJoin_WithBasicSqlQuery_shouldLoadTarget()
-    {
-        try
-        {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
-
-            connection = connector.getConnection();
-            ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.rawSql("query_basic qb1"))
-                    .join(QueryJoin.rawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
-                    .orderBy(QueryOrderBy.rawSql("qb1.name"))
-                    .select(QuerySelection.rawSql("qb1.name as name"))
-                    .select(QuerySelection.rawSql("description"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
@@ -1232,6 +1351,9 @@ public class ERManagementQueryBasicTest
         QueryBasicEntity entity = new QueryBasicEntity();
         entity.setIdCol(id);
         entity.setName("Org-NameA");
+        QueryBasicJoinEntity joinEntity = new QueryBasicJoinEntity();
+        joinEntity.setOverrideDescription(entity.getName() + "Details");
+        entity.setJoinEntity(joinEntity);
         entity.persist(connection);
         basicEntities.add(entity);
 
@@ -1259,6 +1381,9 @@ public class ERManagementQueryBasicTest
         entity = new QueryBasicEntity();
         entity.setIdCol(id);
         entity.setName("Org-NameB");
+        joinEntity = new QueryBasicJoinEntity();
+        joinEntity.setOverrideDescription(entity.getName() + "Details");
+        entity.setJoinEntity(joinEntity);
         entity.persist(connection);
         basicEntities.add(entity);
 
@@ -1277,6 +1402,9 @@ public class ERManagementQueryBasicTest
             Connection con = DriverManager.getConnection("jdbc:derby:memory:init-testing-query-basic;create=true");
 
             PreparedStatement ps = con.prepareStatement("DELETE FROM query_basic");
+            ps.execute();
+
+            ps = con.prepareStatement("DELETE FROM query_basic_join");
             ps.execute();
 
             ps = con.prepareStatement("DELETE FROM query_basic_details");

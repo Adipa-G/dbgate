@@ -9,5 +9,6 @@ package dbgate.ermanagement.query;
  */
 public enum QueryJoinExpressionType
 {
-    RAW_SQL
+    RAW_SQL,
+    TYPE
 }
