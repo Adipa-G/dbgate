@@ -1,15 +1,8 @@
 package dbgate.ermanagement;
 
-import dbgate.DateWrapper;
 import dbgate.ServerDBClass;
-import dbgate.TimeStampWrapper;
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
-import dbgate.ermanagement.support.patch.patchempty.LeafEntity;
-import dbgate.ermanagement.support.patch.patchempty.LeafEntitySubA;
-import dbgate.ermanagement.support.patch.patchempty.LeafEntitySubB;
-import dbgate.ermanagement.support.patch.patchempty.RootEntity;
 import dbgate.ermanagement.support.patch.patchtabledifferences.FourColumnEntity;
 import dbgate.ermanagement.support.patch.patchtabledifferences.ThreeColumnEntity;
 import dbgate.ermanagement.support.patch.patchtabledifferences.ThreeColumnTypeDifferentEntity;
@@ -24,7 +17,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 /**
@@ -44,7 +36,7 @@ public class ErManagementPatchTableDifferenceDBTests
         {
             Logger.getLogger(ErManagementPatchTableDifferenceDBTests.class.getName()).info("Starting in-memory database for unit tests");
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-table-difference;create=true");
+            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-table-difference;create=true");
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-table-difference;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
@@ -59,19 +51,19 @@ public class ErManagementPatchTableDifferenceDBTests
     }
 
     @Test
-    public void ERLayer_patchDB_withTableColumnAdded_shouldAddColumn()
+    public void patchDifference_patchDB_withTableColumnAdded_shouldAddColumn()
     {
         try
         {
             Connection connection = connector.getConnection();
-            Collection<ServerDBClass> dbClasses = new ArrayList<ServerDBClass>();
+            Collection<ServerDBClass> dbClasses = new ArrayList<>();
             dbClasses.add(new ThreeColumnEntity());
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
 
             connection = connector.getConnection();
-            dbClasses = new ArrayList<ServerDBClass>();
+            dbClasses = new ArrayList<>();
             dbClasses.add(new FourColumnEntity());
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
@@ -82,7 +74,7 @@ public class ErManagementPatchTableDifferenceDBTests
             connection = connector.getConnection();
             FourColumnEntity columnEntity = createFourColumnEntity(id);
             columnEntity.persist(connection);
-            columnEntity = loadFourColumnEntityWithId(connection,id);
+            loadFourColumnEntityWithId(connection,id);
             connection.close();
         }
         catch (Exception e)
@@ -93,19 +85,19 @@ public class ErManagementPatchTableDifferenceDBTests
     }
 
     @Test
-    public void ERLayer_patchDB_withTableColumnDeleted_shouldDeleteColumn()
+    public void patchDifference_patchDB_withTableColumnDeleted_shouldDeleteColumn()
     {
         try
         {
             Connection connection = connector.getConnection();
-            Collection<ServerDBClass> dbClasses = new ArrayList<ServerDBClass>();
+            Collection<ServerDBClass> dbClasses = new ArrayList<>();
             dbClasses.add(new FourColumnEntity());
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
 
             connection = connector.getConnection();
-            dbClasses = new ArrayList<ServerDBClass>();
+            dbClasses = new ArrayList<>();
             dbClasses.add(new ThreeColumnEntity());
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
@@ -134,7 +126,7 @@ public class ErManagementPatchTableDifferenceDBTests
     }
 
     @Test
-    public void ERLayer_patchDB_withTableColumnChanged_shouldUpdateColumn()
+    public void patchDifference_patchDB_withTableColumnChanged_shouldUpdateColumn()
     {
         try
         {
@@ -145,7 +137,7 @@ public class ErManagementPatchTableDifferenceDBTests
             }
 
             Connection connection = connector.getConnection();
-            Collection<ServerDBClass> dbClasses = new ArrayList<ServerDBClass>();
+            Collection<ServerDBClass> dbClasses = new ArrayList<>();
             dbClasses.add(new ThreeColumnEntity());
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
@@ -168,7 +160,7 @@ public class ErManagementPatchTableDifferenceDBTests
 
 
             connection = connector.getConnection();
-            dbClasses = new ArrayList<ServerDBClass>();
+            dbClasses = new ArrayList<>();
             dbClasses.add(new ThreeColumnTypeDifferentEntity());
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
@@ -207,25 +199,6 @@ public class ErManagementPatchTableDifferenceDBTests
         return loadedEntity;
     }
     
-    private ThreeColumnEntity loadThreeColumnEntityWithId(Connection connection,int id) throws Exception
-    {
-        ThreeColumnEntity loadedEntity = null;
-
-        PreparedStatement ps = connection.prepareStatement("select * from table_change_test_entity where id_col = ?");
-        ps.setInt(1,id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next())
-        {
-            loadedEntity = new ThreeColumnEntity();
-            loadedEntity.retrieve(rs,connection);
-        }
-        rs.close();
-        ps.close();
-        connection.close();
-
-        return loadedEntity;
-    }
-
     private FourColumnEntity createFourColumnEntity(int id)
     {
         FourColumnEntity entity = new FourColumnEntity();

@@ -44,7 +44,7 @@ public class ERManagementFeatureIntegrationTest
             
             con = connector.getConnection();
 
-            Collection<ServerDBClass> dbClassList = new ArrayList<ServerDBClass>();
+            Collection<ServerDBClass> dbClassList = new ArrayList<>();
             dbClassList.add(new ItemTransaction());
             dbClassList.add(new ItemTransactionCharge());
             dbClassList.add(new Transaction());
@@ -72,7 +72,7 @@ public class ERManagementFeatureIntegrationTest
     }
 
     @Test
-    public void ERLayer_persistAndRetrieve_WithComplexStructure_retrievedShouldBeSameAsPersisted()
+    public void featureIntegration_persistAndRetrieve_WithComplexStructure_retrievedShouldBeSameAsPersisted()
     {
         try
         {

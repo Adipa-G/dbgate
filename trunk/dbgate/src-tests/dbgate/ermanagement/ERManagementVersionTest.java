@@ -80,7 +80,7 @@ public class ERManagementVersionTest
     }
 
     @Test
-    public void ERLayer_persistTwice_WithVersionColumnEntity_shouldNotThrowException()
+    public void version_persistTwice_WithVersionColumnEntity_shouldNotThrowException()
     {
         try
         {
@@ -107,7 +107,7 @@ public class ERManagementVersionTest
     }
 
     @Test
-    public void ERLayer_persistTwice_WithoutVersionColumnEntity_shouldNotThrowException()
+    public void version_persistTwice_WithoutVersionColumnEntity_shouldNotThrowException()
     {
         try
         {
@@ -134,7 +134,7 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_persistWithTwoChanges_WithoutUpdateChangedColumnsOnly_shouldThrowException() throws Exception
+    public void version_persistWithTwoChanges_WithoutUpdateChangedColumnsOnly_shouldThrowException() throws Exception
     {
         Connection connection = connector.getConnection();
 
@@ -164,7 +164,7 @@ public class ERManagementVersionTest
     }
 
     @Test
-    public void ERLayer_persistWithTwoChanges_WithUpdateChangedColumnsOnly_shouldNotThrowException() throws Exception
+    public void version_persistWithTwoChanges_WithUpdateChangedColumnsOnly_shouldNotThrowException() throws Exception
     {
         try
         {
@@ -203,9 +203,9 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_rootUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
+    public void version_rootUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection = null;
+        Connection connection;
         VersionColumnTestRootEntity entity = null;
         try
         {
@@ -240,9 +240,9 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_rootUpdateFromAnotherTransaction_WithOutVersionColumnEntity_shouldThrowException() throws Exception
+    public void version_rootUpdateFromAnotherTransaction_WithOutVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection = null;
+        Connection connection;
         VersionGeneralTestRootEntity entity = null;
 
         try
@@ -278,9 +278,9 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_one2oneChildUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
+    public void version_one2oneChildUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection = null;
+        Connection connection;
         VersionColumnTestRootEntity entity = null;
 
         try
@@ -321,9 +321,9 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_one2oneChildUpdateFromAnotherTransaction_WithoutVersionColumnEntity_shouldThrowException() throws Exception
+    public void version_one2oneChildUpdateFromAnotherTransaction_WithoutVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection = null;
+        Connection connection;
         VersionGeneralTestRootEntity entity = null;
 
         try
@@ -364,9 +364,9 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_one2manyChildUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
+    public void version_one2manyChildUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection = null;
+        Connection connection;
         VersionColumnTestRootEntity entity = null;
 
         try
@@ -410,9 +410,9 @@ public class ERManagementVersionTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_one2manyChildUpdateFromAnotherTransaction_WithoutVersionColumnEntity_shouldThrowException() throws Exception
+    public void version_one2manyChildUpdateFromAnotherTransaction_WithoutVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection = null;
+        Connection connection;
         VersionGeneralTestRootEntity entity = null;
 
         try

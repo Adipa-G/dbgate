@@ -77,7 +77,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteOneToOneChild_WithReverseRelationShip_shouldNotDeleteChild()
+    public void constraintValidation_deleteOneToOneChild_WithReverseRelationShip_shouldNotDeleteChild()
     {
         try
         {
@@ -121,7 +121,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteOneToManyChild_WithReverseRelationShip_shouldNotDeleteChild()
+    public void constraintValidation_deleteOneToManyChild_WithReverseRelationShip_shouldNotDeleteChild()
     {
         try
         {
@@ -166,7 +166,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteRootWithOneToOneChild_WithReverseRelationShip_shouldNotDeleteChild()
+    public void constraintValidation_deleteRootWithOneToOneChild_WithReverseRelationShip_shouldNotDeleteChild()
     {
         try
         {
@@ -209,7 +209,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteRootWithOneToManyChild_WithReverseRelationShip_shouldNotDeleteChild()
+    public void constraintValidation_deleteRootWithOneToManyChild_WithReverseRelationShip_shouldNotDeleteChild()
     {
         try
         {
@@ -253,7 +253,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_deleteRootWithOneToOneChild_WithRestrictConstraint_shouldThrowException() throws Exception
+    public void constraintValidation_deleteRootWithOneToOneChild_WithRestrictConstraint_shouldThrowException() throws Exception
     {
         Connection connection = connector.getConnection();
 
@@ -280,7 +280,7 @@ public class ERManagementConstraintValidationTest
     }
     
     @Test(expected = PersistException.class)
-    public void ERLayer_deleteRootWithOneToManyChild_WithRestrictConstraint_shouldThrowException() throws Exception
+    public void constraintValidation_deleteRootWithOneToManyChild_WithRestrictConstraint_shouldThrowException() throws Exception
     {
         Connection connection = connector.getConnection();
 
@@ -307,7 +307,7 @@ public class ERManagementConstraintValidationTest
     }
     
     @Test
-    public void ERLayer_deleteOneToManyChild_WithCascadeConstraint_shouldDeleteChild()
+    public void constraintValidation_deleteOneToManyChild_WithCascadeConstraint_shouldDeleteChild()
     {
         try
         {
@@ -351,7 +351,7 @@ public class ERManagementConstraintValidationTest
     }
     
     @Test
-    public void ERLayer_deleteOneToOneChild_WithCascadeConstraint_shouldDeleteChild()
+    public void constraintValidation_deleteOneToOneChild_WithCascadeConstraint_shouldDeleteChild()
     {
         try
         {
@@ -395,7 +395,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteOneToManyRoot_WithCascadeConstraint_shouldDeleteBoth()
+    public void constraintValidation_deleteOneToManyRoot_WithCascadeConstraint_shouldDeleteBoth()
     {
         try
         {
@@ -439,7 +439,7 @@ public class ERManagementConstraintValidationTest
     }
 
     @Test
-    public void ERLayer_deleteOneToOneRoot_WithCascadeConstraint_shouldDeleteBoth()
+    public void constraintValidation_deleteOneToOneRoot_WithCascadeConstraint_shouldDeleteBoth()
     {
         try
         {

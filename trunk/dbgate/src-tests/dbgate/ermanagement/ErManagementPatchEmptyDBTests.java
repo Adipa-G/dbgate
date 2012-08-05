@@ -41,7 +41,7 @@ public class ErManagementPatchEmptyDBTests
         {
             Logger.getLogger(ErManagementPatchEmptyDBTests.class.getName()).info("Starting in-memory database for unit tests");
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-empty;create=true");
+            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-empty;create=true");
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-empty;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
@@ -56,13 +56,13 @@ public class ErManagementPatchEmptyDBTests
     }
 
     @Test
-    public void ERLayer_patchDataBase_withEmptyDb_shouldCreateTables_shouldBeAbleToInsertData()
+    public void patchEmpty_patchDataBase_withEmptyDb_shouldCreateTables_shouldBeAbleToInsertData()
     {
         try
         {
             Connection connection = connector.getConnection();
 
-            Collection<ServerDBClass> dbClasses = new ArrayList<ServerDBClass>();
+            Collection<ServerDBClass> dbClasses = new ArrayList<>();
             dbClasses.add(new LeafEntitySubA());
             dbClasses.add(new LeafEntitySubB());
             dbClasses.add(new RootEntity());
@@ -91,11 +91,11 @@ public class ErManagementPatchEmptyDBTests
 
 
     @Test(expected = PersistException.class)
-    public void ERLayer_patchDataBase_withEmptyDb_shouldCreatePrimaryKeys_shouldNotAbleToPutDuplicateData() throws Exception
+    public void patchEmpty_patchDataBase_withEmptyDb_shouldCreatePrimaryKeys_shouldNotAbleToPutDuplicateData() throws Exception
     {
         Connection connection = connector.getConnection();
 
-        Collection<ServerDBClass> dbClasses = new ArrayList<ServerDBClass>();
+        Collection<ServerDBClass> dbClasses = new ArrayList<>();
         dbClasses.add(new LeafEntitySubA());
         dbClasses.add(new LeafEntitySubB());
         dbClasses.add(new RootEntity());
@@ -117,11 +117,11 @@ public class ErManagementPatchEmptyDBTests
     }
 
     @Test(expected = PersistException.class)
-    public void ERLayer_patchDataBase_withEmptyDb_shouldCreateForeignKeys_shouldNotAbleToInconsistantData() throws Exception
+    public void patchEmpty_patchDataBase_withEmptyDb_shouldCreateForeignKeys_shouldNotAbleToInconsistantData() throws Exception
     {
         Connection connection = connector.getConnection();
 
-        Collection<ServerDBClass> dbClasses = new ArrayList<ServerDBClass>();
+        Collection<ServerDBClass> dbClasses = new ArrayList<>();
         dbClasses.add(new LeafEntitySubA());
         dbClasses.add(new LeafEntitySubB());
         dbClasses.add(new RootEntity());
@@ -143,11 +143,11 @@ public class ErManagementPatchEmptyDBTests
     }
 
     @Test
-    public void ERLayer_patchDataBase_pathTwice_shouldNotThrowException() throws Exception
+    public void patchEmpty_patchDataBase_pathTwice_shouldNotThrowException() throws Exception
     {
         Connection connection = connector.getConnection();
 
-        Collection<ServerDBClass> dbClasses = new ArrayList<ServerDBClass>();
+        Collection<ServerDBClass> dbClasses = new ArrayList<>();
         dbClasses.add(new LeafEntitySubA());
         dbClasses.add(new LeafEntitySubB());
         dbClasses.add(new RootEntity());
