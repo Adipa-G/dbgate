@@ -1,5 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby;
 
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryOrderByExpressionType;
 
 /**
@@ -30,7 +32,7 @@ public class AbstractSqlQueryOrderBy implements IAbstractOrderBy
     }
 
     @Override
-    public String createSql()
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
         return sql;
     }

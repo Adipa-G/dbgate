@@ -6,6 +6,7 @@ import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.query.*;
 import dbgate.ermanagement.query.expr.ConditionExpr;
+import dbgate.ermanagement.query.expr.GroupConditionExpr;
 import dbgate.ermanagement.query.expr.JoinExpr;
 import dbgate.ermanagement.support.query.basic.QueryBasicDetailsEntity;
 import dbgate.ermanagement.support.query.basic.QueryBasicEntity;
@@ -13,7 +14,6 @@ import dbgate.ermanagement.support.query.basic.QueryBasicJoinEntity;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
-import javax.jws.Oneway;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -331,7 +331,7 @@ public class ERManagementQueryBasicTest
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
-                    .select(QuerySelection.column(QueryBasicEntity.class,"name","name1"));
+                    .select(QuerySelection.field(QueryBasicEntity.class, "name", "name1"));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
@@ -659,7 +659,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,55,65);
+            hasIds(results, 55, 65);
         }
         catch (Exception e)
         {
@@ -686,7 +686,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,45,55,65);
+            hasIds(results, 45, 55, 65);
         }
         catch (Exception e)
         {
@@ -740,7 +740,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,45);
+            hasIds(results, 35, 45);
         }
         catch (Exception e)
         {
@@ -767,7 +767,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,45,55);
+            hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
         {
@@ -818,7 +818,7 @@ public class ERManagementQueryBasicTest
             ISelectionQuery subQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class, "qbd1"))
                     .orderBy(QueryOrderBy.rawSql("id_col"))
-                    .select(QuerySelection.column(QueryBasicEntity.class, "idCol", "id_col")).fetch(1);
+                    .select(QuerySelection.field(QueryBasicEntity.class, "idCol", "id_col")).fetch(1);
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
@@ -827,7 +827,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,Arrays.copyOfRange(basicEntityIds,1,4));
+            hasIds(results, Arrays.copyOfRange(basicEntityIds, 1, 4));
         }
         catch (Exception e)
         {
@@ -854,7 +854,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,45,55);
+            hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
         {
@@ -881,7 +881,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,55);
+            hasIds(results, 35, 55);
         }
         catch (Exception e)
         {
@@ -904,7 +904,7 @@ public class ERManagementQueryBasicTest
 
             ISelectionQuery subQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
-                    .select(QuerySelection.column(QueryBasicEntity.class,"idCol",null));
+                    .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
@@ -947,7 +947,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,basicEntityIds);
+            hasIds(results, basicEntityIds);
         }
         catch (Exception e)
         {
@@ -1009,7 +1009,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,55);
+            hasIds(results, 55);
         }
         catch (Exception e)
         {
@@ -1038,7 +1038,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,45,55);
+            hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
         {
@@ -1098,7 +1098,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,45,55);
+            hasIds(results, 45, 55);
         }
         catch (Exception e)
         {
@@ -1129,7 +1129,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,45,55);
+            hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
         {
@@ -1156,7 +1156,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            hasIds(results,basicEntityIds);
+            hasIds(results, basicEntityIds);
         }
         catch (Exception e)
         {
@@ -1179,10 +1179,10 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .join(QueryJoin.type(QueryBasicEntity.class,QueryBasicJoinEntity.class,"qbj1"))
-                    .select(QuerySelection.column(QueryBasicEntity.class, "idCol", null));
+                    .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,65);
+            hasIds(results, 35, 65);
         }
         catch (Exception e)
         {
@@ -1205,10 +1205,10 @@ public class ERManagementQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicJoinEntity.class,"qbj1"))
                     .join(QueryJoin.type(QueryBasicJoinEntity.class,QueryBasicEntity.class,"qb1"))
-                    .select(QuerySelection.column(QueryBasicJoinEntity.class, "idCol", null));
+                    .select(QuerySelection.field(QueryBasicJoinEntity.class, "idCol", null));
 
             Collection results = query.toList(connection);
-            hasIds(results,35,65);
+            hasIds(results, 35, 65);
         }
         catch (Exception e)
         {
@@ -1232,10 +1232,10 @@ public class ERManagementQueryBasicTest
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .join(QueryJoin.type(QueryBasicEntity.class, QueryBasicJoinEntity.class, "qbj1",
                                          QueryJoinType.LEFT))
-                    .select(QuerySelection.column(QueryBasicEntity.class, "idCol", null));
+                    .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
             Collection results = query.toList(connection);
-            hasIds(results,basicEntityIds);
+            hasIds(results, basicEntityIds);
         }
         catch (Exception e)
         {
@@ -1262,7 +1262,7 @@ public class ERManagementQueryBasicTest
                             , JoinExpr.build()
                                 .field(QueryBasicEntity.class,"name").eq().field(QueryBasicDetailsEntity.class,"name")
                             , "qbd1"))
-                    .select(QuerySelection.column(QueryBasicDetailsEntity.class, "description", null));
+                    .select(QuerySelection.field(QueryBasicDetailsEntity.class, "description", null));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
@@ -1289,6 +1289,32 @@ public class ERManagementQueryBasicTest
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .groupBy(QueryGroup.rawSql("name"))
                     .select(QuerySelection.rawSql("name"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 2);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void queryBasic_group_withExpression_shouldGroup()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class, "qb"))
+                    .groupBy(QueryGroup.field(QueryBasicEntity.class, "name"))
+                    .select(QuerySelection.field(QueryBasicEntity.class, "name", null));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 2);
@@ -1328,6 +1354,36 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
+    public void queryBasic_groupCondition_withExpressionCount_shouldSelectMatchingGroups()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class, "qb"))
+                    .select(QuerySelection.field(QueryBasicEntity.class, "name", null))
+                    .groupBy(QueryGroup.field(QueryBasicEntity.class, "name"))
+                    .having(QueryGroupCondition.expression(
+                            GroupConditionExpr.build()
+                                .field(QueryBasicEntity.class, "name").count().gt().value(DBColumnType.INTEGER,1)
+                    ));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 1);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void queryBasic_orderBy_withBasicSql_shouldSelectOrdered()
     {
         try
@@ -1342,6 +1398,60 @@ public class ERManagementQueryBasicTest
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .orderBy(QueryOrderBy.rawSql("name"))
                     .select(QuerySelection.rawSql("name"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void queryBasic_orderBy_withExpression_shouldSelectOrdered()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "name"))
+                    .orderBy(QueryOrderBy.field(QueryBasicEntity.class,"idCol"))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void queryBasic_orderBy_withExpressionDesc_shouldSelectOrdered()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.rawSql("query_basic qb1"))
+                    .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "name", QueryOrderType.DESCEND))
+                    .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "idCol", QueryOrderType.DESCEND))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);

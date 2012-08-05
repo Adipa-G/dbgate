@@ -1,8 +1,11 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryOrderBy;
+import dbgate.ermanagement.QueryOrderType;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractExpressionOrderBy;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractOrderByFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractSqlQueryOrderBy;
+import dbgate.ermanagement.query.expr.OrderByExpr;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,5 +28,18 @@ public class QueryOrderBy
         AbstractSqlQueryOrderBy queryOrderBy = (AbstractSqlQueryOrderBy) factory.createOrderBy(QueryOrderByExpressionType.RAW_SQL);
         queryOrderBy.setSql(sql);
         return queryOrderBy;
+    }
+
+    public static IQueryOrderBy field(Class type,String field)
+    {
+        return field(type,field,QueryOrderType.ASCEND);
+    }
+
+    public static IQueryOrderBy field(Class type,String field,QueryOrderType orderType)
+    {
+        AbstractExpressionOrderBy expressionOrderBy = (AbstractExpressionOrderBy) factory.createOrderBy(QueryOrderByExpressionType.EXPRESSION);
+        expressionOrderBy.setExpr(OrderByExpr.build().field(type, field));
+        expressionOrderBy.setOrderType(orderType);
+        return expressionOrderBy;
     }
 }

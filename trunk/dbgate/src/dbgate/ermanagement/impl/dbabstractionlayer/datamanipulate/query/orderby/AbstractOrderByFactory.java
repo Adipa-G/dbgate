@@ -17,6 +17,8 @@ public class AbstractOrderByFactory
         {
             case RAW_SQL:
                 return new AbstractSqlQueryOrderBy();
+            case EXPRESSION:
+                return new AbstractExpressionOrderBy();
             default:
                 return null;
         }

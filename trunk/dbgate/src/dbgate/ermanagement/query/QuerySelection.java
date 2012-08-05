@@ -51,7 +51,7 @@ public class QuerySelection
         return expressionSelection;
     }
 
-    public static IQuerySelection column(Class type,String field,String alias)
+    public static IQuerySelection field(Class type, String field, String alias)
     {
         return expression(SelectExpr.build().field(type,field,alias));
     }

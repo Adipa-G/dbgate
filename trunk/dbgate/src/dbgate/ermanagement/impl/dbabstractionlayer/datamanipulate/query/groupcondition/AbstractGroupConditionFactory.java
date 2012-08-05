@@ -17,6 +17,8 @@ public class AbstractGroupConditionFactory
         {
             case RAW_SQL:
                 return new AbstractSqlQueryGroupCondition();
+            case EXPRESSION:
+                return new AbstractExpressionGroupCondition();
             default:
                 return null;
         }

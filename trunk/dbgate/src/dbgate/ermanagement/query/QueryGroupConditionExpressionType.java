@@ -9,5 +9,6 @@ package dbgate.ermanagement.query;
  */
 public enum QueryGroupConditionExpressionType
 {
-    RAW_SQL
+    RAW_SQL,
+    EXPRESSION
 }

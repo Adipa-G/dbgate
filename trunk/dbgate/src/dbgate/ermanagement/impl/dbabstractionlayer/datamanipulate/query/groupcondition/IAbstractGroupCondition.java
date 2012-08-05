@@ -2,6 +2,8 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupco
 
 import dbgate.ermanagement.IQueryCondition;
 import dbgate.ermanagement.IQueryGroupCondition;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,5 +14,5 @@ import dbgate.ermanagement.IQueryGroupCondition;
  */
 public interface IAbstractGroupCondition extends IQueryGroupCondition
 {
-    String createSql();
+    String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo);
 }
