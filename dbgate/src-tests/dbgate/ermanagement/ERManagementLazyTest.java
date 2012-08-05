@@ -78,7 +78,7 @@ public class ERManagementLazyTest
     }
 
     @Test
-    public void ERLayer_persistAndLoad_WithEmptyLazyFieldsWithLazyOn_shouldHaveProxiesForLazyFields()
+    public void lazy_persistAndLoad_WithEmptyLazyFieldsWithLazyOn_shouldHaveProxiesForLazyFields()
     {
         try
         {
@@ -114,7 +114,7 @@ public class ERManagementLazyTest
     }
 
     @Test
-    public void ERLayer_persistAndLoad_WithLazyOnWithValuesInLazyFields_shouldRetrieveLazyFieldsInSameConnection()
+    public void lazy_persistAndLoad_WithLazyOnWithValuesInLazyFields_shouldRetrieveLazyFieldsInSameConnection()
     {
         try
         {
@@ -167,7 +167,7 @@ public class ERManagementLazyTest
     }
 
     @Test
-    public void ERLayer_persistAndLoad_WithLazyOnWithValuesInLazyFields_shouldRetrieveLazyFieldsInAnotherConnection()
+    public void lazy_persistAndLoad_WithLazyOnWithValuesInLazyFields_shouldRetrieveLazyFieldsInAnotherConnection()
     {
         try
         {
@@ -219,7 +219,7 @@ public class ERManagementLazyTest
     }
 
     @Test
-    public void ERLayer_loadAndPersist_WithLazyOnWithoutFetchingLazyFields_shouldNotLoadLazyLoadingQueries()
+    public void lazy_loadAndPersist_WithLazyOnWithoutFetchingLazyFields_shouldNotLoadLazyLoadingQueries()
     {
         try
         {

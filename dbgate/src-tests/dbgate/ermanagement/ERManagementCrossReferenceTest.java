@@ -77,7 +77,7 @@ public class ERManagementCrossReferenceTest
     }
 
     @Test
-    public void ERLayer_persistWithOne2OneChild_WithCrossReference_loadedShouldBeSameAsPersisted()
+    public void crossReference_persistWithOne2OneChild_WithCrossReference_loadedShouldBeSameAsPersisted()
     {
         try
         {
@@ -115,7 +115,7 @@ public class ERManagementCrossReferenceTest
     }
 
     @Test
-    public void ERLayer_persistWithOne2ManyChild_WithCrossReference_loadedShouldBeSameAsPersisted()
+    public void crossReference_persistWithOne2ManyChild_WithCrossReference_loadedShouldBeSameAsPersisted()
     {
         try
         {
@@ -171,40 +171,6 @@ public class ERManagementCrossReferenceTest
         return loaded;
     }
 
-    private boolean existsOne2OneChild(Connection connection,int id) throws SQLException
-    {
-        boolean exists = false;
-
-        PreparedStatement ps = connection.prepareStatement("select * from cross_reference_test_one2one where id_col = ?");
-        ps.setInt(1,id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next())
-        {
-            exists = true;
-        }
-        rs.close();
-        ps.close();
-
-        return exists;
-    }
-
-    private boolean existsOne2ManyChild(Connection connection,int id) throws SQLException
-    {
-        boolean exists = false;
-
-        PreparedStatement ps = connection.prepareStatement("select * from cross_reference_test_one2many where id_col = ?");
-        ps.setInt(1,id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next())
-        {
-            exists = true;
-        }
-        rs.close();
-        ps.close();
-
-        return exists;
-    }
-    
     @After
     public void afterEach()
     {

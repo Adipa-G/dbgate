@@ -13,10 +13,12 @@ import dbgate.ermanagement.support.query.basic.QueryBasicJoinEntity;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
+import javax.jws.Oneway;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.logging.Logger;
 
@@ -27,6 +29,10 @@ import java.util.logging.Logger;
 public class ERManagementQueryBasicTest
 {
     private static DBConnector connector;
+    private int[] basicEntityIds;
+    private String[] basicEntityNames;
+    private boolean[] hasOverrideChildren;
+
     private Collection<QueryBasicEntity> basicEntities;
     private Collection<QueryBasicDetailsEntity> detailsEntities;
 
@@ -84,7 +90,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void basic_withSql_shouldSelectAll()
+    public void queryBasic_basic_withSql_shouldSelectAll()
     {
         try
         {
@@ -100,6 +106,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.rawSql("name as name_col"));
 
             Collection results = query.toList(connection);
+
             Assert.assertTrue(results.size() == 4);
             for (Object result : results)
             {
@@ -119,7 +126,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void distinct_withSql_shouldSelectDistinct()
+    public void queryBasic_distinct_withSql_shouldSelectDistinct()
     {
         try
         {
@@ -135,8 +142,8 @@ public class ERManagementQueryBasicTest
                     .distinct();
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
 
+            Assert.assertTrue(results.size() == 2);
             int count = 0;
             for (Object result : results)
             {
@@ -159,7 +166,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void skip_withSql_shouldSkip()
+    public void queryBasic_skip_withSql_shouldSkip()
     {
         try
         {
@@ -171,11 +178,11 @@ public class ERManagementQueryBasicTest
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
-                    .select(QuerySelection.rawSql("name as name_col"))
+                    .select(QuerySelection.type(QueryBasicEntity.class))
                     .skip(1);
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results, Arrays.copyOfRange(basicEntityIds,1,4));
         }
         catch (Exception e)
         {
@@ -185,7 +192,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void fetch_withSql_shouldFetch()
+    public void queryBasic_fetch_withSql_shouldFetch()
     {
         try
         {
@@ -197,11 +204,11 @@ public class ERManagementQueryBasicTest
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
-                    .select(QuerySelection.rawSql("name as name_col"))
+                    .select(QuerySelection.type(QueryBasicEntity.class))
                     .fetch(2);
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results, Arrays.copyOfRange(basicEntityIds,0,2));
         }
         catch (Exception e)
         {
@@ -211,7 +218,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void skipAndFetch_withSql_shouldSkipAndFetch()
+    public void queryBasic_skipAndFetch_withSql_shouldSkipAndFetch()
     {
         try
         {
@@ -223,11 +230,11 @@ public class ERManagementQueryBasicTest
             connection = connector.getConnection();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
-                    .select(QuerySelection.rawSql("name as name_col"))
+                    .select(QuerySelection.type(QueryBasicEntity.class))
                     .skip(1).fetch(2);
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results, Arrays.copyOfRange(basicEntityIds,1,3));
         }
         catch (Exception e)
         {
@@ -237,7 +244,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void select_withTypeSelection_shouldSelectAll()
+    public void queryBasic_select_withTypeSelection_shouldSelectAll()
     {
         try
         {
@@ -270,7 +277,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void select_withSubQuerySelection_shouldSelectAll()
+    public void queryBasic_select_withSubQuerySelection_shouldSelectAll()
     {
         try
         {
@@ -311,7 +318,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void select_withColumnSelection_shouldSelectAll()
+    public void queryBasic_select_withColumnSelection_shouldSelectAll()
     {
         try
         {
@@ -328,6 +335,14 @@ public class ERManagementQueryBasicTest
 
             Collection results = query.toList(connection);
             Assert.assertTrue(results.size() == 4);
+            int index = 0;
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                String name = (String) resultArray[0];
+
+                Assert.assertTrue(basicEntityNames[index++].equals(name));
+            }
         }
         catch (Exception e)
         {
@@ -337,7 +352,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void select_withSumSelection_shouldSelectSum()
+    public void queryBasic_select_withSumSelection_shouldSelectSum()
     {
         try
         {
@@ -375,7 +390,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void select_withCountSelection_shouldSelectCount()
+    public void queryBasic_select_withCountSelection_shouldSelectCount()
     {
         try
         {
@@ -408,7 +423,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void select_withCustomFunctionCountAsExampleSelection_shouldSelectCount()
+    public void queryBasic_select_withCustomFunctionCountAsExampleSelection_shouldSelectCount()
     {
         try
         {
@@ -441,7 +456,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void from_withTypeFrom_shouldSelectAll()
+    public void queryBasic_from_withTypeFrom_shouldSelectAll()
     {
         try
         {
@@ -456,7 +471,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 4);
+            hasIds(results,basicEntityIds);
         }
         catch (Exception e)
         {
@@ -466,7 +481,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void from_withQueryFrom_shouldSelectAll()
+    public void queryBasic_from_withQueryFrom_shouldSelectAll()
     {
         try
         {
@@ -485,7 +500,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 4);
+            hasIds(results,basicEntityIds);
         }
         catch (Exception e)
         {
@@ -495,7 +510,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void from_withQueryUnionFrom_shouldSelectUnion()
+    public void queryBasic_from_withQueryUnionFrom_shouldSelectUnion()
     {
         try
         {
@@ -519,7 +534,24 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.rawSql("name1"));
 
             Collection results = query.toList(connection);
+
             Assert.assertTrue(results.size() == 6);
+            int index = 0;
+            for (Object result : results)
+            {
+                Object[] resultArray = (Object[]) result;
+                String name = (String) resultArray[0];
+
+                if (index < 4)
+                {
+                    Assert.assertTrue(basicEntityNames[index++].equals(name));
+                }
+                else
+                {
+                    QueryBasicDetailsEntity detailsEntity = (QueryBasicDetailsEntity)detailsEntities.toArray()[index++ - 4];
+                    Assert.assertTrue(detailsEntity.getName().equals(name));
+                }
+            }
         }
         catch (Exception e)
         {
@@ -529,7 +561,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withSql_shouldSelectMatching()
+    public void queryBasic_condition_withSql_shouldSelectMatching()
     {
         try
         {
@@ -546,7 +578,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.rawSql("id_col,name"));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 1);
+            hasIds(results, 35);
         }
         catch (Exception e)
         {
@@ -556,7 +588,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withEqExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withEqExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -573,7 +605,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 1);
+            hasIds(results, 35);
         }
         catch (Exception e)
         {
@@ -583,7 +615,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withNeqExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withNeqExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -600,7 +632,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results,45,55,65);
         }
         catch (Exception e)
         {
@@ -610,7 +642,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withGtExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withGtExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -627,7 +659,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results,55,65);
         }
         catch (Exception e)
         {
@@ -637,7 +669,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withGeExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withGeExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -654,7 +686,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results,45,55,65);
         }
         catch (Exception e)
         {
@@ -664,7 +696,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withLtExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withLtExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -681,7 +713,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 1);
+            hasIds(results,35);
         }
         catch (Exception e)
         {
@@ -691,7 +723,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withLeExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withLeExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -708,7 +740,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results,35,45);
         }
         catch (Exception e)
         {
@@ -718,7 +750,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withLikeExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withLikeExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -735,7 +767,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results,35,45,55);
         }
         catch (Exception e)
         {
@@ -745,7 +777,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withNeqExpression_withField_shouldSelectMatching()
+    public void queryBasic_condition_withNeqExpression_withField_shouldSelectMatching()
     {
         try
         {
@@ -772,7 +804,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withGtExpression_withQuery_shouldSelectMatching()
+    public void queryBasic_condition_withGtExpression_withQuery_shouldSelectMatching()
     {
         try
         {
@@ -795,7 +827,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results,Arrays.copyOfRange(basicEntityIds,1,4));
         }
         catch (Exception e)
         {
@@ -805,7 +837,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withBetweenExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withBetweenExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -822,7 +854,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results,35,45,55);
         }
         catch (Exception e)
         {
@@ -832,7 +864,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withInExpression_withValue_shouldSelectMatching()
+    public void queryBasic_condition_withInExpression_withValue_shouldSelectMatching()
     {
         try
         {
@@ -849,7 +881,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results,35,55);
         }
         catch (Exception e)
         {
@@ -859,7 +891,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withInExpression_withQuery_shouldSelectMatching()
+    public void queryBasic_condition_withInExpression_withQuery_shouldSelectMatching()
     {
         try
         {
@@ -881,7 +913,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 4);
+            hasIds(results,basicEntityIds);
         }
         catch (Exception e)
         {
@@ -891,7 +923,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withExistsExpression_shouldSelectMatching()
+    public void queryBasic_condition_withExistsExpression_shouldSelectMatching()
     {
         try
         {
@@ -915,7 +947,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 4);
+            hasIds(results,basicEntityIds);
         }
         catch (Exception e)
         {
@@ -925,7 +957,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withNotExistsExpression_shouldSelectMatching()
+    public void queryBasic_condition_withNotExistsExpression_shouldSelectMatching()
     {
         try
         {
@@ -959,7 +991,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withSimpleMergeExpression_SingleAnd_shouldSelectMatching()
+    public void queryBasic_condition_withSimpleMergeExpressionSingleAnd_shouldSelectMatching()
     {
         try
         {
@@ -977,7 +1009,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 1);
+            hasIds(results,55);
         }
         catch (Exception e)
         {
@@ -987,7 +1019,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withSimpleMergeExpression_TwoOr_shouldSelectMatching()
+    public void queryBasic_condition_withSimpleMergeExpressionTwoOr_shouldSelectMatching()
     {
         try
         {
@@ -1006,7 +1038,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results,35,45,55);
         }
         catch (Exception e)
         {
@@ -1016,7 +1048,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withSimpleMergeExpression_SingleAndSingleOr_shouldSelectMatching()
+    public void queryBasic_condition_withSimpleMergeExpressionSingleAndSingleOr_shouldSelectMatching()
     {
         try
         {
@@ -1035,7 +1067,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results,35,55);
         }
         catch (Exception e)
         {
@@ -1045,7 +1077,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withComplexMergeExpression_CombinedTwoAndsWithOr_shouldSelectMatching()
+    public void queryBasic_condition_withComplexMergeExpressionCombinedTwoAndsWithOr_shouldSelectMatching()
     {
         try
         {
@@ -1066,7 +1098,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results,45,55);
         }
         catch (Exception e)
         {
@@ -1076,7 +1108,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void condition_withComplexMergeExpression_CombinedTwoOrsWithOr_shouldSelectMatching()
+    public void queryBasic_condition_withComplexMergeExpressionCombinedTwoOrsWithOr_shouldSelectMatching()
     {
         try
         {
@@ -1097,7 +1129,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 3);
+            hasIds(results,35,45,55);
         }
         catch (Exception e)
         {
@@ -1107,7 +1139,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void join_withBasicSql_shouldJoin()
+    public void queryBasic_join_withBasicSql_shouldJoin()
     {
         try
         {
@@ -1121,11 +1153,10 @@ public class ERManagementQueryBasicTest
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .join(QueryJoin.rawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
                     .orderBy(QueryOrderBy.rawSql("qb1.name"))
-                    .select(QuerySelection.rawSql("qb1.name as name"))
-                    .select(QuerySelection.rawSql("description"));
+                    .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 4);
+            hasIds(results,basicEntityIds);
         }
         catch (Exception e)
         {
@@ -1135,7 +1166,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void join_withEntityDefinedJoin_directionOfDefinition_shouldJoin()
+    public void queryBasic_join_withEntityDefinedJoinDirectionOfDefinition_shouldJoin()
     {
         try
         {
@@ -1151,7 +1182,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.column(QueryBasicEntity.class, "idCol", null));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results,35,65);
         }
         catch (Exception e)
         {
@@ -1161,7 +1192,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void join_withEntityDefinedJoin_directionOppositeToDefinition_shouldJoin()
+    public void queryBasic_join_withEntityDefinedJoinDirectionOppositeToDefinition_shouldJoin()
     {
         try
         {
@@ -1177,7 +1208,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.column(QueryBasicJoinEntity.class, "idCol", null));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 2);
+            hasIds(results,35,65);
         }
         catch (Exception e)
         {
@@ -1187,7 +1218,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void join_withEntityDefinedJoin_withOuterJoin_shouldJoin()
+    public void queryBasic_join_withEntityDefinedJoinWithOuterJoin_shouldJoin()
     {
         try
         {
@@ -1204,7 +1235,7 @@ public class ERManagementQueryBasicTest
                     .select(QuerySelection.column(QueryBasicEntity.class, "idCol", null));
 
             Collection results = query.toList(connection);
-            Assert.assertTrue(results.size() == 4);
+            hasIds(results,basicEntityIds);
         }
         catch (Exception e)
         {
@@ -1214,7 +1245,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void join_withoutEntityDefinedJoin_withExpression_shouldJoin()
+    public void queryBasic_join_withoutEntityDefinedJoinWithExpression_shouldJoin()
     {
         try
         {
@@ -1244,7 +1275,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void group_withBasicSql_shouldGroup()
+    public void queryBasic_group_withBasicSql_shouldGroup()
     {
         try
         {
@@ -1270,7 +1301,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void groupCondition_withBasicSql_shouldSelectMatchingGroups()
+    public void queryBasic_groupCondition_withBasicSql_shouldSelectMatchingGroups()
     {
         try
         {
@@ -1297,7 +1328,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void orderBy_withBasicSql_shouldSelectOrdered()
+    public void queryBasic_orderBy_withBasicSql_shouldSelectOrdered()
     {
         try
         {
@@ -1320,6 +1351,45 @@ public class ERManagementQueryBasicTest
             Assert.fail(e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    private boolean hasIds(Collection list,int... ids)
+    {
+        if (list.size() != ids.length)
+            return false;
+
+        for (int id : ids)
+        {
+            boolean found = false;
+            for (Object listItem : list)
+            {
+                if (listItem instanceof QueryBasicEntity)
+                {
+                    found = found || ((QueryBasicEntity)listItem).getIdCol() == id;
+                }
+                else if (listItem instanceof Object[])
+                {
+                    Object[] items = (Object[])listItem;
+                    for (Object item : items)
+                    {
+                        if (item instanceof Integer)
+                        {
+                            found = found || ((Integer)item) == id;
+                        }
+                    }
+                }
+                else
+                {
+                    found = found || ((Integer)listItem) == id;
+                }
+            }
+            if (!found)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private QueryBasicEntity getById(int id)
@@ -1344,54 +1414,51 @@ public class ERManagementQueryBasicTest
 
     private void createTestData(Connection connection) throws PersistException
     {
+        basicEntityIds = new int[]{35,45,55,65};
+        basicEntityNames = new String[]{"Org-NameA","Org-NameA","Org-NameA","Org-NameB"};
+        hasOverrideChildren = new boolean[]{true,false,false,true};
+
         basicEntities = new ArrayList<>();
         detailsEntities = new ArrayList<>();
 
-        int id = 35;
-        QueryBasicEntity entity = new QueryBasicEntity();
-        entity.setIdCol(id);
-        entity.setName("Org-NameA");
-        QueryBasicJoinEntity joinEntity = new QueryBasicJoinEntity();
-        joinEntity.setOverrideDescription(entity.getName() + "Details");
-        entity.setJoinEntity(joinEntity);
-        entity.persist(connection);
-        basicEntities.add(entity);
+        for (int i = 0, basicEntityIdsLength = basicEntityIds.length; i < basicEntityIdsLength; i++)
+        {
+            int basicEntityId = basicEntityIds[i];
+            QueryBasicEntity entity = new QueryBasicEntity();
+            entity.setIdCol(basicEntityId);
+            entity.setName(basicEntityNames[i]);
+            if (hasOverrideChildren[i])
+            {
+                QueryBasicJoinEntity joinEntity = new QueryBasicJoinEntity();
+                joinEntity.setOverrideDescription(entity.getName() + "Details");
+                entity.setJoinEntity(joinEntity);
+            }
+            entity.persist(connection);
+            basicEntities.add(entity);
+        }
 
-        QueryBasicDetailsEntity detailsEntity = new QueryBasicDetailsEntity();
-        detailsEntity.setName(entity.getName());
-        detailsEntity.setDescription(entity.getName() + "Details");
-        detailsEntity.persist(connection);
-        detailsEntities.add(detailsEntity);
+        for (String basicEntityName : basicEntityNames)
+        {
+            boolean found = false;
+            for (QueryBasicDetailsEntity detailsEntity : detailsEntities)
+            {
+                if (detailsEntity.getName().equals(basicEntityName))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+            {
+                continue;
+            }
 
-        id = 45;
-        entity = new QueryBasicEntity();
-        entity.setIdCol(id);
-        entity.setName("Org-NameA");
-        entity.persist(connection);
-        basicEntities.add(entity);
-
-        id = 55;
-        entity = new QueryBasicEntity();
-        entity.setIdCol(id);
-        entity.setName("Org-NameA");
-        entity.persist(connection);
-        basicEntities.add(entity);
-
-        id = 65;
-        entity = new QueryBasicEntity();
-        entity.setIdCol(id);
-        entity.setName("Org-NameB");
-        joinEntity = new QueryBasicJoinEntity();
-        joinEntity.setOverrideDescription(entity.getName() + "Details");
-        entity.setJoinEntity(joinEntity);
-        entity.persist(connection);
-        basicEntities.add(entity);
-
-        detailsEntity = new QueryBasicDetailsEntity();
-        detailsEntity.setName(entity.getName());
-        detailsEntity.setDescription(entity.getName() + "Details");
-        detailsEntity.persist(connection);
-        detailsEntities.add(detailsEntity);
+            QueryBasicDetailsEntity detailsEntity = new QueryBasicDetailsEntity();
+            detailsEntity.setName(basicEntityName);
+            detailsEntity.setDescription(basicEntityName + "Details");
+            detailsEntity.persist(connection);
+            detailsEntities.add(detailsEntity);
+        }
     }
 
     @After

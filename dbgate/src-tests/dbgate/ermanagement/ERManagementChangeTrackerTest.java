@@ -75,7 +75,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_changeField_WithAutoTrackChangesOn_shouldUpdateTheEntityInDb()
+    public void changeTracker_changeField_WithAutoTrackChangesOn_shouldUpdateTheEntityInDb()
     {
         try
         {
@@ -113,7 +113,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_changeField_WithAutoTrackChangesOnAndClearTracker_shouldUpdateTheEntityInDb()
+    public void changeTracker_changeField_WithAutoTrackChangesOnAndClearTracker_shouldUpdateTheEntityInDb()
     {
         try
         {
@@ -153,7 +153,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_changeField_WithAutoTrackChangesOff_shouldNotUpdateTheEntityInDb()
+    public void changeTracker_changeField_WithAutoTrackChangesOff_shouldNotUpdateTheEntityInDb()
     {
         try
         {
@@ -191,7 +191,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_removeOneToOneChild_WithAutoTrackChangesOn_shouldDeleteChildInDb()
+    public void changeTracker_removeOneToOneChild_WithAutoTrackChangesOn_shouldDeleteChildInDb()
     {
         try
         {
@@ -230,7 +230,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_removeOneToOneChild_WithAutoTrackChangesOff_DeleteChildInDb()
+    public void changeTracker_removeOneToOneChild_WithAutoTrackChangesOff_DeleteChildInDb()
     {
         try
         {
@@ -269,7 +269,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_changeOneToOneChild_WithAutoTrackChangesOn_shouldUpdateChildInDb()
+    public void changeTracker_changeOneToOneChild_WithAutoTrackChangesOn_shouldUpdateChildInDb()
     {
         try
         {
@@ -309,7 +309,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_changeOneToOneChild_WithAutoTrackChangesOff_shouldUpdateChildInDb()
+    public void changeTracker_changeOneToOneChild_WithAutoTrackChangesOff_shouldUpdateChildInDb()
     {
         try
         {
@@ -349,7 +349,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_removeOneToManyChild_WithAutoTrackChangesOn_shouldDeleteChildInDb()
+    public void changeTracker_removeOneToManyChild_WithAutoTrackChangesOn_shouldDeleteChildInDb()
     {
         try
         {
@@ -392,7 +392,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_removeOneToManyChild_WithAutoTrackChangesOff_shouldDeleteChildInDb()
+    public void changeTracker_removeOneToManyChild_WithAutoTrackChangesOff_shouldDeleteChildInDb()
     {
         try
         {
@@ -435,7 +435,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_changeOneToManyChild_WithAutoTrackChangesOn_shouldUpdateChildInDb()
+    public void changeTracker_changeOneToManyChild_WithAutoTrackChangesOn_shouldUpdateChildInDb()
     {
         try
         {
@@ -481,7 +481,7 @@ public class ERManagementChangeTrackerTest
     }
 
     @Test
-    public void ERLayer_changeOneToManyChild_WithAutoTrackChangesOff_shouldUpdateChildInDb()
+    public void changeTracker_changeOneToManyChild_WithAutoTrackChangesOff_shouldUpdateChildInDb()
     {
         try
         {

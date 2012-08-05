@@ -84,7 +84,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_insert_withFieldsDifferentTypesWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_insert_withFieldsDifferentTypesWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -113,7 +113,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_insert_withExtsDifferentTypesWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_insert_withExtsDifferentTypesWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -146,7 +146,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_insert_withAnnotationsDifferentTypesWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_insert_withAnnotationsDifferentTypesWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -175,7 +175,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_insert_withFieldsDifferentTypesWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_insert_withFieldsDifferentTypesWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -204,7 +204,7 @@ public class ErManagementColumnPersistTests
     }
 
      @Test
-    public void ERLayer_insert_withExtsDifferentTypesWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_insert_withExtsDifferentTypesWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -237,7 +237,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_insert_withAnnotationsDifferentTypesWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_insert_withAnnotationsDifferentTypesWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -266,7 +266,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withFieldsDifferentTypesStartWithoutNullEndWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withFieldsDifferentTypesStartWithoutNullEndWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -307,7 +307,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withExtsDifferentTypesStartWithoutNullEndWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withExtsDifferentTypesStartWithoutNullEndWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -352,7 +352,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withAnnotationsDifferentTypesStartWithoutNullEndWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withAnnotationsDifferentTypesStartWithoutNullEndWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -393,7 +393,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withFieldsDifferentTypesStartWithoutNullEndWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withFieldsDifferentTypesStartWithoutNullEndWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -434,7 +434,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withExtsDifferentTypesStartWithoutNullEndWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withExtsDifferentTypesStartWithoutNullEndWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -479,7 +479,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withAnnotationsDifferentTypesStartWithoutNullEndWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withAnnotationsDifferentTypesStartWithoutNullEndWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -520,7 +520,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withFieldsDifferentTypesStartWithNullEndWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withFieldsDifferentTypesStartWithNullEndWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -561,7 +561,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withExtsDifferentTypesStartWithNullEndWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withExtsDifferentTypesStartWithNullEndWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -606,7 +606,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withAnnotationsDifferentTypesStartWithNullEndWithoutNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withAnnotationsDifferentTypesStartWithNullEndWithoutNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -647,7 +647,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withFieldsDifferentTypesStartWithNullEndWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withFieldsDifferentTypesStartWithNullEndWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -688,7 +688,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withExtsDifferentTypesStartWithNullEndWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withExtsDifferentTypesStartWithNullEndWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -733,7 +733,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_update_withAnnotationsDifferentTypesStartWithNullEndWithNull_shouldEqualWhenLoaded()
+    public void columnPersist_update_withAnnotationsDifferentTypesStartWithNullEndWithNull_shouldEqualWhenLoaded()
     {
         try
         {
@@ -774,7 +774,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_delete_withFieldsDifferentTypesStartWithNullEndWithNull_shouldDelete()
+    public void columnPersist_delete_withFieldsDifferentTypesStartWithNullEndWithNull_shouldDelete()
     {
         try
         {
@@ -813,7 +813,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_delete_withExtsDifferentTypesStartWithNullEndWithNull_shouldDelete()
+    public void columnPersist_delete_withExtsDifferentTypesStartWithNullEndWithNull_shouldDelete()
     {
         try
         {
@@ -856,7 +856,7 @@ public class ErManagementColumnPersistTests
     }
 
     @Test
-    public void ERLayer_delete_withAnnotationsDifferentTypesStartWithNullEndWithNull_shouldDelete()
+    public void columnPersist_delete_withAnnotationsDifferentTypesStartWithNullEndWithNull_shouldDelete()
     {
         try
         {

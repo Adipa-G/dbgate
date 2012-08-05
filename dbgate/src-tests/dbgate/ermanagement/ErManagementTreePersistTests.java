@@ -96,7 +96,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_insert_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_insert_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -124,7 +124,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_insert_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -152,7 +152,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_insert_withExtsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_insert_withExtsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -182,7 +182,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_update_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_update_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -228,7 +228,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_update_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_update_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -274,7 +274,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_update_withExtsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_update_withExtsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -322,7 +322,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_delete_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_delete_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -365,7 +365,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_delete_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_delete_withFieldsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -408,7 +408,7 @@ public class ErManagementTreePersistTests
     }
 
     @Test
-    public void ERLayer_delete_withExtsDifferentTypeOfChildren_shouldEqualWhenLoaded()
+    public void treePersist_delete_withExtsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try
         {
@@ -506,25 +506,25 @@ public class ErManagementTreePersistTests
 
     private ITreeTestRootEntity createFullObjectTree(int id,int type)
     {
-        ITreeTestRootEntity entity = null;
+        ITreeTestRootEntity entity;
         entity = (type == TYPE_ANNOTATION)?new TreeTestRootEntityAnnotations()
                                           :(type==TYPE_FIELD)?new TreeTestRootEntityFields()
-                                                             :new TreeTestRootEntityExt(); //todo fix after stupid java bug fixed
+                                                             :new TreeTestRootEntityExt();
         entity.setIdCol(id);
         entity.setName("root");
 
-        ITreeTestOne2OneEntity one2OneEntity = null;
+        ITreeTestOne2OneEntity one2OneEntity;
         one2OneEntity = (type == TYPE_ANNOTATION)?new TreeTestOne2OneEntityAnnotations()
                                           :(type==TYPE_FIELD)?new TreeTestOne2OneEntityFields()
-                                                             :new TreeTestOne2OneEntityExt(); //todo fix after stupid java bug fixed
+                                                             :new TreeTestOne2OneEntityExt();
         one2OneEntity.setIdCol(id);
         one2OneEntity.setName("one2one");
         entity.setOne2OneEntity(one2OneEntity);
 
-        ITreeTestOne2ManyEntity one2ManyEntity = null;
+        ITreeTestOne2ManyEntity one2ManyEntity;
         one2ManyEntity = (type == TYPE_ANNOTATION)?new TreeTestOne2ManyEntityAnnotations()
                                           :(type==TYPE_FIELD)?new TreeTestOne2ManyEntityFields()
-                                                             :new TreeTestOne2ManyEntityExt(); //todo fix after stupid java bug fixed
+                                                             :new TreeTestOne2ManyEntityExt();
         one2ManyEntity.setIdCol(id);
         one2ManyEntity.setIndexNo(0);
         one2ManyEntity.setName("one2many");

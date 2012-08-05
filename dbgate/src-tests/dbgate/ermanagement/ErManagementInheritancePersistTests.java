@@ -95,7 +95,7 @@ public class ErManagementInheritancePersistTests
     }
 
     @Test
-    public void ERLayer_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded()
+    public void inheritance_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded()
     {
         try
         {
@@ -112,13 +112,13 @@ public class ErManagementInheritancePersistTests
                 switch (type)
                 {
                     case TYPE_ANNOTATION:
-                        System.out.println("ERLayer_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With annotations");
+                        System.out.println("inheritance_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With annotations");
                         break;
                     case TYPE_EXTERNAL:
-                        System.out.println("ERLayer_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With externals");
+                        System.out.println("inheritance_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With externals");
                         break;
                     case TYPE_FIELD:
-                        System.out.println("ERLayer_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With fields");
+                        System.out.println("inheritance_insert_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With fields");
                         break;
                 }
 
@@ -158,7 +158,7 @@ public class ErManagementInheritancePersistTests
     }
 
     @Test
-    public void ERLayer_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded()
+    public void inheritance_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded()
     {
         try
         {
@@ -175,13 +175,13 @@ public class ErManagementInheritancePersistTests
                 switch (type)
                 {
                     case TYPE_ANNOTATION:
-                        System.out.println("ERLayer_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With annotations");
+                        System.out.println("inheritance_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With annotations");
                         break;
                     case TYPE_EXTERNAL:
-                        System.out.println("ERLayer_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With externals");
+                        System.out.println("inheritance_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With externals");
                         break;
                     case TYPE_FIELD:
-                        System.out.println("ERLayer_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With fields");
+                        System.out.println("inheritance_update_withAllModesWithBothSubClasses_shouldEqualWhenLoaded With fields");
                         break;
                 }
 
@@ -220,7 +220,6 @@ public class ErManagementInheritancePersistTests
                 connection.close();
 
                 connection = connector.getConnection();
-                connection = connector.getConnection();
                 IInheritanceTestSubEntityA reLoadedEntityA = createObjectEmptyTypeA(type);
                 IInheritanceTestSubEntityB reLoadedEntityB = createObjectEmptyTypeB(type);
                 loadEntityWithTypeA(connection,reLoadedEntityA,idA);
@@ -242,7 +241,7 @@ public class ErManagementInheritancePersistTests
     }
 
     @Test
-    public void ERLayer_delete_withAllModesWithBothSubClasses_shouldDelete()
+    public void inheritance_delete_withAllModesWithBothSubClasses_shouldDelete()
     {
         try
         {
@@ -259,13 +258,13 @@ public class ErManagementInheritancePersistTests
                 switch (type)
                 {
                     case TYPE_ANNOTATION:
-                        System.out.println("ERLayer_delete_withAllModesWithBothSubClasses_shouldDelete With annotations");
+                        System.out.println("inheritance_delete_withAllModesWithBothSubClasses_shouldDelete With annotations");
                         break;
                     case TYPE_EXTERNAL:
-                        System.out.println("ERLayer_delete_withAllModesWithBothSubClasses_shouldDelete With externals");
+                        System.out.println("inheritance_delete_withAllModesWithBothSubClasses_shouldDelete With externals");
                         break;
                     case TYPE_FIELD:
-                        System.out.println("ERLayer_delete_withAllModesWithBothSubClasses_shouldDelete With fields");
+                        System.out.println("inheritance_delete_withAllModesWithBothSubClasses_shouldDelete With fields");
                         break;
                 }
 
@@ -303,7 +302,6 @@ public class ErManagementInheritancePersistTests
                 loadedEntityB.persist(connection);
                 connection.close();
 
-                connection = connector.getConnection();
                 connection = connector.getConnection();
                 IInheritanceTestSubEntityA reLoadedEntityA = createObjectEmptyTypeA(type);
                 IInheritanceTestSubEntityB reLoadedEntityB = createObjectEmptyTypeB(type);
@@ -420,7 +418,7 @@ public class ErManagementInheritancePersistTests
 
     private IInheritanceTestSubEntityA createObjectWithDataTypeA(int id,int type)
     {
-        IInheritanceTestSubEntityA entity = null;
+        IInheritanceTestSubEntityA entity;
         entity = (type == TYPE_ANNOTATION)?new InheritanceTestSubEntityAAnnotations()
                                           :(type==TYPE_FIELD)?new InheritanceTestSubEntityAFields()
                                                              : new InheritanceTestSubEntityAExt();
@@ -433,7 +431,7 @@ public class ErManagementInheritancePersistTests
 
     private IInheritanceTestSubEntityB createObjectWithDataTypeB(int id,int type)
     {
-        IInheritanceTestSubEntityB entity = null;
+        IInheritanceTestSubEntityB entity;
         entity = (type == TYPE_ANNOTATION)?new InheritanceTestSubEntityBAnnotations()
                                           :(type==TYPE_FIELD)?new InheritanceTestSubEntityBFields()
                                                              : new InheritanceTestSubEntityBExt();
@@ -446,7 +444,7 @@ public class ErManagementInheritancePersistTests
 
     private IInheritanceTestSubEntityA createObjectEmptyTypeA(int type)
     {
-        IInheritanceTestSubEntityA entity = null;
+        IInheritanceTestSubEntityA entity;
         entity = (type == TYPE_ANNOTATION)?new InheritanceTestSubEntityAAnnotations()
                                           :(type==TYPE_FIELD)?new InheritanceTestSubEntityAFields()
                                                              : new InheritanceTestSubEntityAExt();
@@ -455,7 +453,7 @@ public class ErManagementInheritancePersistTests
 
     private IInheritanceTestSubEntityB createObjectEmptyTypeB(int type)
     {
-        IInheritanceTestSubEntityB entity = null;
+        IInheritanceTestSubEntityB entity;
         entity = (type == TYPE_ANNOTATION)?new InheritanceTestSubEntityBAnnotations()
                                           :(type==TYPE_FIELD)?new InheritanceTestSubEntityBFields()
                                                              : new InheritanceTestSubEntityBExt();

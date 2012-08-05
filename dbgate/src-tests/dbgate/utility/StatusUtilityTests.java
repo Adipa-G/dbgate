@@ -17,7 +17,7 @@ import java.util.Collection;
 public class StatusUtilityTests
 {
     @Test
-    public void StatusManager_setStatus_withMultiLevelHirachy_shouldSetStatus()
+    public void statusUtility_setStatus_withMultipleLevelHierarchy_shouldSetStatus()
     {
         RootEntity rootEntity = new RootEntity();
         LeafEntity leafEntityA = new LeafEntity();
@@ -40,7 +40,7 @@ public class StatusUtilityTests
     }
 
     @Test
-    public void StatusManager_isModified_withMultiLevelHirachy_shouldGetStatus()
+    public void statusUtility_isModified_withMultipleLevelHierarchy_shouldGetStatus()
     {
         RootEntity rootEntity = new RootEntity();
         LeafEntity leafEntityA = new LeafEntity();
@@ -74,7 +74,7 @@ public class StatusUtilityTests
     }
 
     @Test
-    public void StatusManager_getImmidiateChildrenAndClear_withMultiLevelHirachy_shouldGetChildren()
+    public void statusUtility_getImmediateChildrenAndClear_withMultipleLevelHierarchy_shouldGetChildren()
     {
         RootEntity rootEntity = new RootEntity();
         LeafEntity leafEntityA = new LeafEntity();

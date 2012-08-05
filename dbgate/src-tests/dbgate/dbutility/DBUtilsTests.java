@@ -63,7 +63,7 @@ public class DBUtilsTests
     }
 
     @Test
-    public void DBConnector_getConnection_databaseInitialized_shouldCreateConnection()
+    public void utils_getConnection_databaseInitialized_shouldCreateConnection()
     {
         try
         {
