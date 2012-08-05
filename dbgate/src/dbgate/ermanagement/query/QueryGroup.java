@@ -1,8 +1,10 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryGroup;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractExpressionGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractGroupFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractSqlQueryGroup;
+import dbgate.ermanagement.query.expr.GroupExpr;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,5 +27,12 @@ public class QueryGroup
         AbstractSqlQueryGroup queryGroup = (AbstractSqlQueryGroup) factory.createGroup(QueryGroupExpressionType.RAW_SQL);
         queryGroup.setSql(sql);
         return queryGroup;
+    }
+    
+    public static IQueryGroup field(Class type, String field)
+    {
+        AbstractExpressionGroup expressionGroup = (AbstractExpressionGroup) factory.createGroup(QueryGroupExpressionType.EXPRESSION);
+        expressionGroup.setExpr(GroupExpr.build().field(type,field));
+        return expressionGroup;
     }
 }

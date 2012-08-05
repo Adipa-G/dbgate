@@ -84,6 +84,18 @@ public class CompareSegment extends BaseSegment
                         left = groupFunctionSegment;
                     }
                 }
+                else
+                {
+                    if (left == null
+                            && !(mode == CompareSegmentMode.EXISTS || mode == CompareSegmentMode.NOT_EXISTS))
+                    {
+                        left = segment;
+                    }
+                    else
+                    {
+                        right = segment;
+                    }
+                }
                 return this;
             case MERGE:
                 segment.add(this);

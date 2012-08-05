@@ -1,6 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group;
 
 import dbgate.ermanagement.IQueryGroup;
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,5 +16,5 @@ import java.sql.SQLException;
  */
 public interface IAbstractGroup extends IQueryGroup
 {
-    String createSql();
+    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo);
 }

@@ -1,5 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition;
 
+import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryGroupConditionExpressionType;
 
 /**
@@ -30,7 +32,7 @@ public class AbstractSqlQueryGroupCondition implements IAbstractGroupCondition
     }
 
     @Override
-    public String createSql()
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
     {
         return sql;
     }

@@ -700,16 +700,16 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(",");
             }
-            sb.append(CreateGroupSql(group));
+            sb.append(CreateGroupSql(group,buildInfo));
             initial = false;
         }
     }
 
-    protected String CreateGroupSql(IQueryGroup group)
+    protected String CreateGroupSql(IQueryGroup group, QueryBuildInfo buildInfo)
     {
         if (group != null)
         {
-            return ((IAbstractGroup)group).createSql();
+            return ((IAbstractGroup)group).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect Group*/";
     }
@@ -729,16 +729,16 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(" AND ");
             }
-            sb.append(CreateGroupConditionSql(groupCondition));
+            sb.append(CreateGroupConditionSql(groupCondition,buildInfo));
             initial = false;
         }
     }
 
-    protected String CreateGroupConditionSql(IQueryGroupCondition groupCondition)
+    protected String CreateGroupConditionSql(IQueryGroupCondition groupCondition,QueryBuildInfo buildInfo)
     {
         if (groupCondition != null)
         {
-            return ((IAbstractGroupCondition)groupCondition).createSql();
+            return ((IAbstractGroupCondition)groupCondition).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect Group Condition*/";
     }
@@ -758,16 +758,16 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(",");
             }
-            sb.append(CreateOrderBySql(orderBy));
+            sb.append(CreateOrderBySql(orderBy,buildInfo));
             initial = false;
         }
     }
 
-    protected String CreateOrderBySql(IQueryOrderBy orderBy)
+    protected String CreateOrderBySql(IQueryOrderBy orderBy,QueryBuildInfo buildInfo)
     {
         if (orderBy != null)
         {
-            return ((IAbstractOrderBy)orderBy).createSql();
+            return ((IAbstractOrderBy)orderBy).createSql(dbLayer,buildInfo);
         }
         return "/*Incorrect Order*/";
     }
