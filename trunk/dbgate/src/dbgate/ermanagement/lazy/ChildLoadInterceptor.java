@@ -5,6 +5,7 @@ import dbgate.dbutility.DBConnector;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.impl.ERDataRetrievalManager;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -64,7 +65,8 @@ public class ChildLoadInterceptor implements MethodInterceptor
                 }
             }
 
-            Method getter = CacheManager.methodCache.getGetter(parentRoEntity.getClass(),relation.getAttributeName());
+            EntityInfo entityInfo = CacheManager.getEntityInfo(parentRoEntity);
+            Method getter = entityInfo.getGetter(relation.getAttributeName());
             objectToInvoke = getter.invoke(parentRoEntity);
         }
 

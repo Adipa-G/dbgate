@@ -1,21 +1,21 @@
 package dbgate.ermanagement.impl.utils;
 
 import dbgate.DBColumnType;
+import dbgate.DbGateException;
 import dbgate.ServerDBClass;
 import dbgate.ServerRODBClass;
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.context.EntityFieldValue;
 import dbgate.ermanagement.context.IEntityFieldValueList;
 import dbgate.ermanagement.context.IFieldValueList;
 import dbgate.ermanagement.context.ITypeFieldValueList;
-import dbgate.ermanagement.context.impl.*;
-import dbgate.ermanagement.exceptions.EntityRegistrationException;
-import dbgate.ermanagement.exceptions.FieldCacheMissException;
-import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
+import dbgate.ermanagement.context.impl.EntityFieldValueList;
+import dbgate.ermanagement.context.impl.EntityRelationFieldValueList;
+import dbgate.ermanagement.context.impl.EntityTypeFieldValueList;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,13 +26,13 @@ import java.util.Collection;
  */
 public class ERDataManagerUtils
 {
-    public static Collection<ServerDBClass> getRelationEntities(ServerDBClass parent, IDBRelation relation)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    public static Collection<ServerDBClass> getRelationEntities(ServerDBClass rootEntity, IDBRelation relation) throws DbGateException
     {
-        Method getter = CacheManager.methodCache.getGetter(parent.getClass(),relation.getAttributeName());
-        Object value = getter.invoke(parent);
+        EntityInfo entityInfo = CacheManager.getEntityInfo(rootEntity);
+        Method getter = entityInfo.getGetter(relation.getAttributeName());
+        Object value = ReflectionUtils.getValue(getter,rootEntity);
 
-        Collection<ServerDBClass> fieldObjects = new ArrayList<ServerDBClass>();
+        Collection<ServerDBClass> treeEntities = new ArrayList<>();
         if (value instanceof Collection)
         {
             Collection collection = (Collection) value;
@@ -41,20 +41,19 @@ public class ERDataManagerUtils
                 if (o instanceof ServerDBClass
                         && ReflectionUtils.isSubClassOf(o.getClass(),relation.getRelatedObjectType()))
                 {
-                    fieldObjects.add((ServerDBClass) o);
+                    treeEntities.add((ServerDBClass) o);
                 }
             }
         }
         else if (value instanceof ServerDBClass
                         && ReflectionUtils.isSubClassOf(value.getClass(),relation.getRelatedObjectType()))
         {
-            fieldObjects.add((ServerDBClass) value);
+            treeEntities.add((ServerDBClass) value);
         }
-        return fieldObjects;
+        return treeEntities;
     }
 
-    public static IEntityFieldValueList extractEntityKeyValues(ServerRODBClass entity) throws FieldCacheMissException
-            , NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    public static IEntityFieldValueList extractEntityKeyValues(ServerRODBClass entity) throws DbGateException
     {
         EntityFieldValueList valueList = null;
         if (entity instanceof ServerDBClass)
@@ -66,8 +65,7 @@ public class ERDataManagerUtils
         return valueList;
     }
 
-    public static ITypeFieldValueList extractTypeFieldValues(ServerRODBClass entity,Class type) throws FieldCacheMissException
-            , NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    public static ITypeFieldValueList extractEntityTypeFieldValues(ServerRODBClass entity, Class type) throws DbGateException
     {
         EntityTypeFieldValueList valueList = null;
         if (entity instanceof ServerDBClass)
@@ -79,8 +77,7 @@ public class ERDataManagerUtils
         return valueList;
     }
 
-    public static ITypeFieldValueList extractTypeKeyValues(ServerRODBClass entity,Class type) throws FieldCacheMissException
-            , NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    public static ITypeFieldValueList extractEntityTypeKeyValues(ServerRODBClass entity, Class type) throws DbGateException
     {
         EntityTypeFieldValueList valueList = null;
         if (entity instanceof ServerDBClass)
@@ -92,8 +89,8 @@ public class ERDataManagerUtils
         return valueList;
     }
 
-    public static ITypeFieldValueList extractRelationKeyValues(ServerRODBClass child,IDBRelation relation) throws FieldCacheMissException
-            , NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    public static ITypeFieldValueList extractRelationKeyValues(ServerRODBClass child,IDBRelation relation)
+            throws DbGateException
     {
         EntityRelationFieldValueList valueList = null;
         if (child instanceof ServerDBClass)
@@ -105,30 +102,35 @@ public class ERDataManagerUtils
         return valueList;
     }
 
-    private static Collection<EntityFieldValue> extractValues(ServerDBClass serverDBClass,boolean key,Class typeToLoad) throws FieldCacheMissException
-            , NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    private static Collection<EntityFieldValue> extractValues(ServerDBClass entity,boolean key,Class typeToLoad)
+            throws DbGateException
     {
-        Collection<EntityFieldValue> entityFieldValues = new ArrayList<EntityFieldValue>();
+        Collection<EntityFieldValue> entityFieldValues = new ArrayList<>();
+        EntityInfo parentEntityInfo = CacheManager.getEntityInfo(entity);
+        EntityInfo entityInfo = parentEntityInfo;
 
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(serverDBClass.getClass(),new Class[]{ServerDBClass.class});
-        for (Class type : typeList)
+        while (entityInfo != null)
         {
-            if (typeToLoad != null && typeToLoad != type)
+            if (typeToLoad != null && typeToLoad != entityInfo.getEntityType())
             {
+                entityInfo = entityInfo.getSuperEntityInfo();
                 continue;
             }
-            Collection<IDBColumn> subLevelColumns = CacheManager.fieldCache.getColumns(type);
+
+            Collection<IDBColumn> subLevelColumns = entityInfo.getColumns();
             for (IDBColumn subLevelColumn : subLevelColumns)
             {
                 if (!key || (subLevelColumn.isKey() && key))
                 {
-                    Method getter = CacheManager.methodCache.getGetter(serverDBClass.getClass(), subLevelColumn.getAttributeName());
-                    Object value = getter.invoke(serverDBClass);
+                    Method getter = parentEntityInfo.getGetter(subLevelColumn.getAttributeName());
+                    Object value = ReflectionUtils.getValue(getter,entity);
 
                     entityFieldValues.add(new EntityFieldValue(value,subLevelColumn));
                 }
             }
+            entityInfo = entityInfo.getSuperEntityInfo();
         }
+
         return entityFieldValues;
     }
 
@@ -204,16 +206,6 @@ public class ERDataManagerUtils
         return null;
     }
 
-    public static void reverse(Class[] types)
-    {
-        for (int left = 0, right = types.length - 1; left < right; left++, right--)
-        {
-            Class temp = types[left];
-            types[left]  = types[right];
-            types[right] = temp;
-        }
-    }
-
     public static void incrementVersion(ITypeFieldValueList fieldValues)
     {
         for (EntityFieldValue fieldValue : fieldValues.getFieldValues())
@@ -226,12 +218,5 @@ public class ERDataManagerUtils
                 break;
             }
         }
-    }
-
-    public static void registerType(Class type) throws EntityRegistrationException
-            , SequenceGeneratorInitializationException
-    {
-        CacheManager.tableCache.register(type);
-        CacheManager.fieldCache.register(type);
     }
 }

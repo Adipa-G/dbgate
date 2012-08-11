@@ -1,6 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.common;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.BaseException;
  * Date: Mar 26, 2011
  * Time: 12:11:15 PM
  */
-public class DBConnectorNotInitializedException extends BaseException
+public class DBConnectorNotInitializedException extends DbGateException
 {
     public DBConnectorNotInitializedException()
     {

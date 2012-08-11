@@ -1,8 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.migration;
 
-import dbgate.BaseException;
-
-import java.sql.SQLException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +8,7 @@ import java.sql.SQLException;
  * Date: Sep 30, 2006
  * Time: 7:37:31 PM
  */
-public class MetaDataException extends BaseException
+public class MetaDataException extends DbGateException
 {
     public MetaDataException(String reason)
     {

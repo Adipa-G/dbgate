@@ -2,8 +2,6 @@ package dbgate.ermanagement;
 
 import dbgate.DBClassStatus;
 import dbgate.ServerDBClass;
-import dbgate.ermanagement.context.IEntityContext;
-import dbgate.ermanagement.context.impl.EntityContext;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.impl.utils.MiscUtils;

@@ -120,8 +120,8 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerTable(type,ColumnTestExtFactory.getTableNames(type));
-            ERLayer.getSharedInstance().registerFields(type,ColumnTestExtFactory.getFieldInfo(type));
+            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+                    ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityExts();
@@ -211,8 +211,8 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerTable(type,ColumnTestExtFactory.getTableNames(type));
-            ERLayer.getSharedInstance().registerFields(type,ColumnTestExtFactory.getFieldInfo(type));
+            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+                    ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity entity = new ColumnTestEntityExts();
@@ -314,8 +314,8 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerTable(type,ColumnTestExtFactory.getTableNames(type));
-            ERLayer.getSharedInstance().registerFields(type,ColumnTestExtFactory.getFieldInfo(type));
+            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+                    ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
@@ -441,8 +441,8 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerTable(type,ColumnTestExtFactory.getTableNames(type));
-            ERLayer.getSharedInstance().registerFields(type,ColumnTestExtFactory.getFieldInfo(type));
+            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+                    ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
@@ -568,8 +568,8 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerTable(type,ColumnTestExtFactory.getTableNames(type));
-            ERLayer.getSharedInstance().registerFields(type,ColumnTestExtFactory.getFieldInfo(type));
+            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+                    ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
@@ -695,8 +695,8 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerTable(type,ColumnTestExtFactory.getTableNames(type));
-            ERLayer.getSharedInstance().registerFields(type,ColumnTestExtFactory.getFieldInfo(type));
+            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+                    ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
@@ -820,8 +820,8 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerTable(type,ColumnTestExtFactory.getTableNames(type));
-            ERLayer.getSharedInstance().registerFields(type,ColumnTestExtFactory.getFieldInfo(type));
+            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+                    ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();

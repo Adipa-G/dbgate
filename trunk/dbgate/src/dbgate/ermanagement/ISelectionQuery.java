@@ -3,9 +3,6 @@ package dbgate.ermanagement;
 import dbgate.ermanagement.exceptions.RetrievalException;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
 import java.util.Collection;
 
 /**

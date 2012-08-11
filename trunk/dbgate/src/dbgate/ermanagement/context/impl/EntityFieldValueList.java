@@ -1,11 +1,7 @@
 package dbgate.ermanagement.context.impl;
 
 import dbgate.ServerRODBClass;
-import dbgate.ermanagement.context.EntityFieldValue;
 import dbgate.ermanagement.context.IEntityFieldValueList;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Date: Mar 22, 2011

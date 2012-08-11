@@ -1,10 +1,14 @@
 package dbgate.ermanagement.caches;
 
-import dbgate.ermanagement.caches.impl.FieldCache;
-import dbgate.ermanagement.caches.impl.MethodCache;
-import dbgate.ermanagement.caches.impl.QueryCache;
-import dbgate.ermanagement.caches.impl.TableCache;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.IRODBClass;
+import dbgate.ermanagement.IERLayerConfig;
+import dbgate.ermanagement.IField;
+import dbgate.ermanagement.caches.impl.EntityInfo;
+import dbgate.ermanagement.caches.impl.EntityInfoCache;
+import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
+import dbgate.ermanagement.exceptions.common.EntityRegistrationException;
+
+import java.util.Collection;
 
 /**
  * Date: Mar 24, 2011
@@ -12,16 +16,35 @@ import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
  */
 public class CacheManager
 {
-    public static IQueryCache queryCache;
-    public static IFieldCache fieldCache;
-    public static IMethodCache methodCache;
-    public static ITableCache tableCache;
+    private static IEntityInfoCache entityInfoCache;
 
-    public static void init(IDBLayer dbLayer)
+    public static void init(IERLayerConfig config)
     {
-        queryCache = new QueryCache(dbLayer);
-        fieldCache = new FieldCache();
-        methodCache = new MethodCache();
-        tableCache = new TableCache();
+        entityInfoCache = new EntityInfoCache(config);
+    }
+
+    public static EntityInfo getEntityInfo(Class type)
+    {
+        return entityInfoCache.getEntityInfo(type);
+    }
+
+    public static EntityInfo getEntityInfo(IRODBClass entity)
+    {
+        return entityInfoCache.getEntityInfo(entity);
+    }
+
+    public static void register(Class type) throws SequenceGeneratorInitializationException, EntityRegistrationException
+    {
+        entityInfoCache.register(type);
+    }
+
+    public static void register(Class type,String tableName,Collection<IField> fields)
+    {
+        entityInfoCache.register(type,tableName,fields);
+    }
+
+    public static void clear()
+    {
+        entityInfoCache.clear();
     }
 }

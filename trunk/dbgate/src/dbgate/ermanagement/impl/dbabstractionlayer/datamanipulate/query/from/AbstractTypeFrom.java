@@ -1,11 +1,10 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
-import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.query.QueryFromExpressionType;
 
 /**
@@ -49,24 +48,8 @@ public class AbstractTypeFrom implements IAbstractFrom
     @Override
     public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
-        String sql = null;
-        try
-        {
-            sql = CacheManager.tableCache.getTableName(type);
-        }
-        catch (TableCacheMissException e)
-        {
-            try
-            {
-                ERDataManagerUtils.registerType(type);
-                sql = CacheManager.tableCache.getTableName(type);
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-                return "<unknown " + type.getCanonicalName() + ">";
-            }
-        }
+        EntityInfo entityInfo = CacheManager.getEntityInfo(type);
+        String sql = entityInfo.getTableName();
 
         if (alias != null && alias.length() > 0)
         {

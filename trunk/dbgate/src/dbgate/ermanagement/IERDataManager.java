@@ -25,7 +25,5 @@ public interface IERDataManager
 
     void clearCache();
 
-    void registerTable(Class type,String tableName);
-
-    void registerFields(Class type,Collection<IField> fields);
+    void registerEntity(Class type, String tableName, Collection<IField> fields);
 }

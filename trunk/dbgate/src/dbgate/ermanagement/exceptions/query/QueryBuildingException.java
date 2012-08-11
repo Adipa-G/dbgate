@@ -1,6 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.query;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.BaseException;
  * Date: Mar 26, 2011
  * Time: 12:28:43 PM
  */
-public class QueryBuildingException extends BaseException
+public class QueryBuildingException extends DbGateException
 {
     public QueryBuildingException()
     {

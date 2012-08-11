@@ -1,6 +1,5 @@
 package dbgate;
 
-import dbgate.ermanagement.context.IEntityContext;
 import dbgate.ermanagement.exceptions.PersistException;
 
 import java.sql.Connection;

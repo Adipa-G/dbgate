@@ -1,6 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.retrival;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.BaseException;
  * Date: Mar 26, 2011
  * Time: 12:56:19 PM
  */
-public class NoMatchingRecordFoundForSuperClassException extends BaseException
+public class NoMatchingRecordFoundForSuperClassException extends DbGateException
 {
     public NoMatchingRecordFoundForSuperClassException()
     {

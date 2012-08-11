@@ -4,10 +4,7 @@ import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.IAbstractCondition;
-import dbgate.ermanagement.query.QueryConditionExpressionType;
 import dbgate.ermanagement.query.QueryGroupConditionExpressionType;
-import dbgate.ermanagement.query.expr.ConditionExpr;
 import dbgate.ermanagement.query.expr.GroupConditionExpr;
 
 /**

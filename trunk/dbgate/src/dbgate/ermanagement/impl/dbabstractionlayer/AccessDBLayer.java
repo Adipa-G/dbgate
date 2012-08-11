@@ -1,10 +1,10 @@
 package dbgate.ermanagement.impl.dbabstractionlayer;
 
-import dbgate.ermanagement.exceptions.MetaDataException;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.accessdm.AccessDataManipulate;
+import dbgate.ermanagement.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.IDataManipulate;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultmm.DefaultMetaManipulate;
+import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.accessdm.AccessDataManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.IMetaManipulate;
+import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultmm.DefaultMetaManipulate;
 
 import java.sql.Connection;
 

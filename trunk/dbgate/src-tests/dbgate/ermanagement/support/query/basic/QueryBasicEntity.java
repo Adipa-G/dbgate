@@ -2,12 +2,6 @@ package dbgate.ermanagement.support.query.basic;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.*;
-import dbgate.ermanagement.support.persistant.changetracker.ChangeTrackerTestOne2OneEntity;
-import dbgate.ermanagement.support.persistant.lazy.LazyOne2ManyEntity;
-import dbgate.ermanagement.support.persistant.lazy.LazyOne2OneEntity;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA.

@@ -9,9 +9,6 @@ import dbgate.ermanagement.query.QuerySelectionExpressionType;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.

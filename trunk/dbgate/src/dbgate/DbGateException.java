@@ -6,23 +6,23 @@ package dbgate;
  * Date: Mar 26, 2011
  * Time: 11:51:00 AM
  */
-public class BaseException extends Exception
+public class DbGateException extends Exception
 {
-    public BaseException()
+    public DbGateException()
     {
     }
 
-    public BaseException(String s)
+    public DbGateException(String s)
     {
         super(s);
     }
 
-    public BaseException(String s, Throwable throwable)
+    public DbGateException(String s, Throwable throwable)
     {
         super(s, throwable);
     }
 
-    public BaseException(Throwable throwable)
+    public DbGateException(Throwable throwable)
     {
         super(throwable);
     }

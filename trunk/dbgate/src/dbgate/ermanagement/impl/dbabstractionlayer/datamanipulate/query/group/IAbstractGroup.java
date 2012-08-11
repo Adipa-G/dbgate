@@ -4,9 +4,6 @@ import dbgate.ermanagement.IQueryGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa

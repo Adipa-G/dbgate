@@ -1,8 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultmm;
 
 import dbgate.DBColumnType;
-import dbgate.ermanagement.exceptions.MetaDataException;
 import dbgate.dbutility.DBMgmtUtility;
+import dbgate.ermanagement.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.AbstractMetaManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;
