@@ -1,6 +1,7 @@
 package dbgate.ermanagement.query.expr;
 
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +18,7 @@ public class GroupExpr extends BaseExpr
     }
 
     @Override
-    public GroupExpr field(Class type, String field)
+    public GroupExpr field(Class type, String field) throws ExpressionParsingException
     {
         return (GroupExpr)super.field(type, field);
     }

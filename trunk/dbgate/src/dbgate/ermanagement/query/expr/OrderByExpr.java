@@ -1,5 +1,7 @@
 package dbgate.ermanagement.query.expr;
 
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -15,7 +17,7 @@ public class OrderByExpr extends BaseExpr
     }
 
     @Override
-    public OrderByExpr field(Class type, String field)
+    public OrderByExpr field(Class type, String field) throws ExpressionParsingException
     {
         return (OrderByExpr)super.field(type, field);
     }

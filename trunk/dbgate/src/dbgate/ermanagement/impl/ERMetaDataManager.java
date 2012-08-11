@@ -4,6 +4,7 @@ import dbgate.ServerDBClass;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.TableCache;
 import dbgate.ermanagement.exceptions.DBPatchingException;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
@@ -45,23 +46,19 @@ public class ERMetaDataManager
         this.config = config;
     }
 
-    public void patchDataBase(Connection con, Collection<ServerDBClass> dbClasses,boolean dropAll) throws DBPatchingException
+    public void patchDataBase(Connection con, Collection<Class> entityTypes,boolean dropAll) throws DBPatchingException
     {
         try
         {
-            for (ServerDBClass dbClass : dbClasses)
+            for (Class type : entityTypes)
             {
-                Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(dbClass.getClass(),new Class[]{ServerDBClass.class});
-                for (Class type : typeList)
-                {
-                    CacheManager.tableCache.register(type,dbClass);
-                    CacheManager.fieldCache.register(type,dbClass);
-                }
+                CacheManager.tableCache.register(type);
+                CacheManager.fieldCache.register(type);
             }
             
             IMetaManipulate metaManipulate =  dbLayer.getMetaManipulate(con);
             Collection<IMetaItem> existingItems = metaManipulate.getMetaData(con);
-            Collection<IMetaItem> requiredItems = createMetaItemsFromDbClasses(dbClasses);
+            Collection<IMetaItem> requiredItems = createMetaItemsFromDbClasses(entityTypes);
 
             ArrayList<MetaQueryHolder> queryHolders = new ArrayList<MetaQueryHolder>();
 
@@ -119,15 +116,15 @@ public class ERMetaDataManager
         }
     }
 
-    private Collection<IMetaItem> createMetaItemsFromDbClasses(Collection<ServerDBClass> dbClasses) throws SequenceGeneratorInitializationException
+    private Collection<IMetaItem> createMetaItemsFromDbClasses(Collection<Class> entityTypes) throws SequenceGeneratorInitializationException
             , TableCacheMissException, FieldCacheMissException
     {
         Collection<IMetaItem> metaItems = new ArrayList<IMetaItem>();
         Collection<String> uniqueNames = new ArrayList<String>();
 
-        for (ServerDBClass serverDBClass : dbClasses)
+        for (Class type : entityTypes)
         {
-            Collection<IMetaItem> classMetaItems =extractMetaItems(serverDBClass);
+            Collection<IMetaItem> classMetaItems =extractMetaItems(type);
             for (IMetaItem metaItem : classMetaItems)
             {
                 //this is to remove duplicate tables in case of different sub classes inheriting same superclass
@@ -141,20 +138,20 @@ public class ERMetaDataManager
         return metaItems;
     }
 
-    private Collection<IMetaItem> extractMetaItems(ServerDBClass serverDBClass) throws SequenceGeneratorInitializationException
+    private Collection<IMetaItem> extractMetaItems(Class subType) throws SequenceGeneratorInitializationException
             , TableCacheMissException, FieldCacheMissException
     {
         Collection<IMetaItem> retItems = new ArrayList<IMetaItem>();
 
-        Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(serverDBClass.getClass(),new Class[]{ServerDBClass.class});
+        Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{ServerDBClass.class});
         for (Class superType : superTypes)
         {
-            String tableName = DBClassAttributeExtractionUtils.getTableName(serverDBClass,superType);
+            String tableName = CacheManager.tableCache.getTableName(superType);
             if (tableName == null)
             {
                 continue;
             }
-            Collection<IField> fields = DBClassAttributeExtractionUtils.getAllFields(serverDBClass,superType);
+            Collection<IField> fields = CacheManager.fieldCache.getFields(superType);
 
             Collection<IDBColumn> dbColumns = new ArrayList<IDBColumn>();
             Collection<IDBRelation> dbRelations = new ArrayList<IDBRelation>();

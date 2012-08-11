@@ -1,6 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
 import dbgate.ermanagement.IQueryFrom;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -14,5 +15,5 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBui
  */
 public interface IAbstractFrom extends IQueryFrom
 {
-    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo);
+    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo) throws ExpressionParsingException;
 }

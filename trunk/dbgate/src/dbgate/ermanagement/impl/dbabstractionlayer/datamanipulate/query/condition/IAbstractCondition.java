@@ -1,6 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition;
 
 import dbgate.ermanagement.IQueryCondition;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
@@ -13,5 +14,5 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBui
  */
 public interface IAbstractCondition extends IQueryCondition
 {
-    String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo);
+    String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo) throws ExpressionParsingException;
 }

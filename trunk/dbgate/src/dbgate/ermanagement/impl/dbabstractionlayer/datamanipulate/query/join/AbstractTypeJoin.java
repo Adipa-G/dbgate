@@ -3,6 +3,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join;
 import dbgate.ermanagement.DBRelationColumnMapping;
 import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.QueryJoinType;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -83,7 +84,7 @@ public class AbstractTypeJoin implements IAbstractJoin
     }
 
     @Override
-    public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         if (expr == null)
         {
@@ -92,7 +93,7 @@ public class AbstractTypeJoin implements IAbstractJoin
         return createSqlForExpression(dbLayer,buildInfo);
     }
 
-    private void createJoinExpressionForDefinedRelation(QueryBuildInfo buildInfo)
+    private void createJoinExpressionForDefinedRelation(QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         String typeFromAlias = buildInfo.getAlias(typeFrom);
         IDBRelation relation = processor.getRelation(typeFrom,typeTo);
@@ -119,7 +120,7 @@ public class AbstractTypeJoin implements IAbstractJoin
         }
     }
 
-    private String createSqlForExpression(IDBLayer dbLayer,QueryBuildInfo buildInfo)
+    private String createSqlForExpression(IDBLayer dbLayer,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         AbstractTypeFrom from = new AbstractTypeFrom();
         from.setType(typeTo);

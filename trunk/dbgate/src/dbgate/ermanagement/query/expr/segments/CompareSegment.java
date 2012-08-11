@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr.segments;
 
-import dbgate.ermanagement.query.expr.ExpressionParsingError;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -52,7 +52,7 @@ public class CompareSegment extends BaseSegment
     }
 
     @Override
-    public ISegment add(ISegment segment)
+    public ISegment add(ISegment segment) throws ExpressionParsingException
     {
         switch (segment.getSegmentType())
         {
@@ -102,7 +102,7 @@ public class CompareSegment extends BaseSegment
                 parent = segment;
                 return segment;
             case COMPARE:
-                throw new ExpressionParsingError("Cannot add compare segment to compare segment");
+                throw new ExpressionParsingException("Cannot add compare segment to compare segment");
             default:
                 return this;
         }

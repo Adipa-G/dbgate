@@ -1,9 +1,15 @@
 package dbgate.ermanagement.caches.impl;
 
+import dbgate.ServerDBClass;
 import dbgate.ServerRODBClass;
+import dbgate.ermanagement.IManagedDBClass;
+import dbgate.ermanagement.IManagedRODBClass;
+import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.ITableCache;
+import dbgate.ermanagement.exceptions.EntityRegistrationException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.utils.DBClassAttributeExtractionUtils;
+import dbgate.ermanagement.impl.utils.ReflectionUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,22 +42,55 @@ public class TableCache implements ITableCache
     {
         if (cache.containsKey(type))
         {
-            cache.remove(type);
-        }
-        cache.put(type,tableName);
-    }
-
-    @Override
-    public void register(Class type, ServerRODBClass serverRODBClass)
-    {
-        String tableName = DBClassAttributeExtractionUtils.getTableName(serverRODBClass,type);
-        if (cache.containsKey(type))
-        {
             return;
         }
         synchronized (cache)
         {
             cache.put(type,tableName);
+        }
+    }
+
+    @Override
+    public void register(Class type) throws EntityRegistrationException
+    {
+        if (cache.containsKey(type))
+        {
+            return;
+        }
+
+        IManagedDBClass managedDBClass = null;
+        if (ReflectionUtils.isImplementInterface(type,IManagedDBClass.class))
+        {
+            try
+            {
+                managedDBClass = (IManagedDBClass)type.newInstance();
+            }
+            catch (Exception e)
+            {
+                throw  new EntityRegistrationException(String.format("Could not register type %s",type.getCanonicalName()),e);
+            }
+        }
+
+        HashMap<Class,String> tempStore = new HashMap<>();
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{ServerRODBClass.class});
+        for (Class regType : typeList)
+        {
+            if (cache.containsKey(regType))
+            {
+                continue;
+            }
+            String tableName = managedDBClass != null
+                    ? managedDBClass.getTableNames().get(regType)
+                    : DBClassAttributeExtractionUtils.getTableName(regType);
+            tempStore.put(regType,tableName);
+        }
+
+        synchronized (cache)
+        {
+            for (Class entityType : tempStore.keySet())
+            {
+                cache.put(entityType,tempStore.get(entityType));
+            }
         }
     }
 

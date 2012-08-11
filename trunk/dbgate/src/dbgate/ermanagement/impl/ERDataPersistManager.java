@@ -45,7 +45,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         try
         {
             ERSessionUtils.initSession(entity);
-            ERDataManagerUtils.registerTypes(entity);
+            ERDataManagerUtils.registerType(entity.getClass());
             trackAndCommitChanges(entity, con);
 
             Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(entity.getClass(),new Class[]{ServerDBClass.class});
@@ -67,7 +67,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     private void trackAndCommitChanges(ServerDBClass serverDBClass, Connection con)
             throws SequenceGeneratorInitializationException, InvocationTargetException
             , NoSuchMethodException, FieldCacheMissException, IllegalAccessException
-            , IntegrityConstraintViolationException, NoFieldsFoundException, SQLException
+            , IntegrityConstraintViolationException, EntityRegistrationException, SQLException
             , TableCacheMissException, QueryBuildingException, NoMatchingColumnFoundException
             , RetrievalException, InstantiationException
     {
@@ -99,7 +99,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     private void saveForType(ServerDBClass entity,Class type, Connection con) throws TableCacheMissException
             , PersistException, FieldCacheMissException, InvocationTargetException, NoSuchMethodException
             , IllegalAccessException, SQLException, QueryBuildingException, NoMatchingColumnFoundException
-            , IncorrectStatusException, SequenceGeneratorInitializationException, NoFieldsFoundException
+            , IncorrectStatusException, SequenceGeneratorInitializationException, EntityRegistrationException
             , DataUpdatedFromAnotherSourceException
     {
         String tableName = CacheManager.tableCache.getTableName(type);
@@ -123,7 +123,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                 {
                     for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
                     {
-                        setParentRelationFieldsForNonIdentifyingRelations(entity,childObjects,mapping);
+                        setParentRelationFieldsForNonIdentifyingRelations(entity,relation.getRelatedObjectType(),childObjects,mapping);
                     }
                 }
             }
@@ -185,8 +185,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             Collection<ServerDBClass> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
             if (childObjects != null)
             {
-
-                setRelationObjectKeyValues(fieldValues,type,childObjects,relation);
+                setRelationObjectKeyValues(fieldValues,type,relation.getRelatedObjectType(),childObjects,relation);
                 for (ServerDBClass fieldObject : childObjects)
                 {
                     IEntityFieldValueList childEntityKeyList = ERDataManagerUtils.extractEntityKeyValues(fieldObject);
@@ -229,7 +228,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             {
                 columnValue = dbColumn.getSequenceGenerator().getNextSequenceValue(con);
 
-                Method keySetter = CacheManager.methodCache.getSetter(entity,dbColumn);
+                Method keySetter = CacheManager.methodCache.getSetter(type,dbColumn);
                 keySetter.invoke(entity,columnValue);
             }
             else
@@ -377,9 +376,9 @@ public class ERDataPersistManager extends ERDataCommonManager
         DBMgmtUtility.close(ps);
     }
 
-    private void setRelationObjectKeyValues(ITypeFieldValueList valueTypeList,Class type,Collection<ServerDBClass> childObjects
+    private void setRelationObjectKeyValues(ITypeFieldValueList valueTypeList,Class type,Class childType,Collection<ServerDBClass> childObjects
             ,IDBRelation relation) throws FieldCacheMissException, InvocationTargetException, NoMatchingColumnFoundException
-            , NoSuchMethodException, IllegalAccessException, NoFieldsFoundException, SequenceGeneratorInitializationException
+            , NoSuchMethodException, IllegalAccessException, EntityRegistrationException, SequenceGeneratorInitializationException
     {
         Collection<IDBColumn> columns = CacheManager.fieldCache.getColumns(type);
         for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
@@ -389,7 +388,7 @@ public class ERDataPersistManager extends ERDataCommonManager
 
             if (fieldValue != null)
             {
-                setChildPrimaryKeys(fieldValue,childObjects,mapping);
+                setChildPrimaryKeys(fieldValue,childType,childObjects,mapping);
             }
             else
             {
@@ -399,24 +398,15 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private void setChildPrimaryKeys(EntityFieldValue parentFieldValue,Collection<ServerDBClass> childObjects
-            ,DBRelationColumnMapping mapping) throws FieldCacheMissException, NoSuchMethodException, InvocationTargetException
-            , IllegalAccessException, NoMatchingColumnFoundException, SequenceGeneratorInitializationException
-            , NoFieldsFoundException
+    private void setChildPrimaryKeys(EntityFieldValue parentFieldValue,Class childType
+            ,Collection<ServerDBClass> childObjects,DBRelationColumnMapping mapping) throws FieldCacheMissException
+            , NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoMatchingColumnFoundException
+            , SequenceGeneratorInitializationException, EntityRegistrationException
     {
-        ServerRODBClass firstObject = null;
-        if (childObjects.size() > 0)
-        {
-            firstObject = childObjects.iterator().next();
-        }
-        if (firstObject == null)
-        {
-            return;
-        }
-        ERDataManagerUtils.registerTypes(firstObject);
+        ERDataManagerUtils.registerType(childType);
 
         boolean foundOnce = false;
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(firstObject.getClass(),new Class[]{ServerRODBClass.class});
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(childType,new Class[]{ServerRODBClass.class});
         for (Class type : typeList)
         {
             Collection<IDBColumn> subLevelColumns = CacheManager.fieldCache.getColumns(type);
@@ -425,7 +415,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             if (subLevelMatchedColumn != null)
             {
                 foundOnce = true;
-                Method setter = CacheManager.methodCache.getSetter(firstObject, subLevelMatchedColumn);
+                Method setter = CacheManager.methodCache.getSetter(childType, subLevelMatchedColumn);
                 for (ServerRODBClass dbObject : childObjects)
                 {
                     setter.invoke(dbObject, parentFieldValue.getValue());
@@ -434,15 +424,16 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
         if (!foundOnce)
         {
-            String message = String.format("The field %s does not have a matching field in the object %s", mapping.getToField(),firstObject.getClass().getName());
+            String message = String.format("The field %s does not have a matching field in the object %s",
+                                           mapping.getToField(), childType.getName());
             throw new NoMatchingColumnFoundException(message);
         }
     }
 
-    private void setParentRelationFieldsForNonIdentifyingRelations(ServerDBClass parentEntity,Collection<ServerDBClass> childObjects
-            ,DBRelationColumnMapping mapping) throws FieldCacheMissException, NoSuchMethodException, InvocationTargetException
-            , IllegalAccessException, NoMatchingColumnFoundException, SequenceGeneratorInitializationException
-            , NoFieldsFoundException
+    private void setParentRelationFieldsForNonIdentifyingRelations(ServerDBClass parentEntity,Class childType
+            ,Collection<ServerDBClass> childObjects,DBRelationColumnMapping mapping) throws FieldCacheMissException, NoSuchMethodException
+            , InvocationTargetException , IllegalAccessException, NoMatchingColumnFoundException
+            , SequenceGeneratorInitializationException, EntityRegistrationException
     {
         ServerRODBClass firstObject = null;
         if (childObjects.size() > 0)
@@ -453,7 +444,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         {
             return;
         }
-        ERDataManagerUtils.registerTypes(firstObject);
+        ERDataManagerUtils.registerType(childType);
 
         Class[] parentTypeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(parentEntity.getClass(),new Class[]{ServerRODBClass.class});
         Class[] childTypeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(firstObject.getClass(),new Class[]{ServerRODBClass.class});
@@ -467,7 +458,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             if (parentMatchedColumn != null)
             {
                 foundOnce = true;
-                setter = CacheManager.methodCache.getSetter(parentEntity, parentMatchedColumn);
+                setter = CacheManager.methodCache.getSetter(parentEntity.getClass(), parentMatchedColumn);
             }
         }
         if (!foundOnce)
@@ -517,7 +508,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     private boolean checkForModification(ServerDBClass serverDBClass,Connection con, IEntityContext entityContext)
             throws FieldCacheMissException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
             , SQLException, TableCacheMissException, QueryBuildingException, SequenceGeneratorInitializationException
-            , NoFieldsFoundException, NoMatchingColumnFoundException, RetrievalException, InstantiationException
+            , EntityRegistrationException, NoMatchingColumnFoundException, RetrievalException, InstantiationException
     {
         if (!entityContext.getChangeTracker().isValid())
         {
@@ -535,7 +526,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                     continue;
                 }
 
-                Method getter = CacheManager.methodCache.getGetter(serverDBClass, subLevelColumn.getAttributeName());
+                Method getter = CacheManager.methodCache.getGetter(serverDBClass.getClass(), subLevelColumn.getAttributeName());
                 Object value = getter.invoke(serverDBClass);
 
                 EntityFieldValue fieldValue = entityContext.getChangeTracker().getFieldValue(subLevelColumn.getAttributeName());
@@ -553,7 +544,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     private void fillChangeTrackerValues(ServerDBClass serverDBClass, Connection con, IEntityContext entityContext)
             throws InvocationTargetException, NoSuchMethodException, FieldCacheMissException
             , IllegalAccessException, SQLException, TableCacheMissException, QueryBuildingException
-            , NoFieldsFoundException, SequenceGeneratorInitializationException, NoMatchingColumnFoundException
+            , EntityRegistrationException, SequenceGeneratorInitializationException, NoMatchingColumnFoundException
             , RetrievalException, InstantiationException
     {
         if (serverDBClass.getStatus() == DBClassStatus.NEW

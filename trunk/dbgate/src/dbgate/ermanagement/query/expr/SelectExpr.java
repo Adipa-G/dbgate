@@ -1,6 +1,7 @@
 package dbgate.ermanagement.query.expr;
 
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,37 +18,49 @@ public class SelectExpr extends BaseExpr
     }
 
     @Override
-    public SelectExpr field(Class type, String field)
+    public SelectExpr field(String field) throws ExpressionParsingException
+    {
+        return (SelectExpr)super.field(field);
+    }
+
+    @Override
+    public SelectExpr field(String field, String alias) throws ExpressionParsingException
+    {
+        return (SelectExpr)super.field(field,alias);
+    }
+
+    @Override
+    public SelectExpr field(Class type, String field) throws ExpressionParsingException
     {
         return (SelectExpr)super.field(type, field);
     }
 
     @Override
-    public SelectExpr field(Class type, String field, String alias)
+    public SelectExpr field(Class type, String field, String alias) throws ExpressionParsingException
     {
         return (SelectExpr)super.field(type, field,alias);
     }
 
     @Override
-    public SelectExpr query(ISelectionQuery query, String alias)
+    public SelectExpr query(ISelectionQuery query, String alias) throws ExpressionParsingException
     {
         return (SelectExpr)super.query(query,alias);
     }
 
     @Override
-    public SelectExpr sum()
+    public SelectExpr sum() throws ExpressionParsingException
     {
         return (SelectExpr)super.sum();
     }
 
     @Override
-    public SelectExpr count()
+    public SelectExpr count() throws ExpressionParsingException
     {
         return (SelectExpr)super.count();
     }
 
     @Override
-    public SelectExpr custFunc(String func)
+    public SelectExpr custFunc(String func) throws ExpressionParsingException
     {
         return (SelectExpr)super.custFunc(func);
     }

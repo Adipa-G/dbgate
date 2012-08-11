@@ -70,9 +70,9 @@ public class ERLayer implements IERLayer
         return erDataManager.select(query,con);
     }
 
-    public void patchDataBase(Connection con, Collection<ServerDBClass> dbClasses, boolean dropAll) throws DBPatchingException
+    public void patchDataBase(Connection con, Collection<Class> entityTypes, boolean dropAll) throws DBPatchingException
     {
-        erMetaDataManager.patchDataBase(con, dbClasses, dropAll);
+        erMetaDataManager.patchDataBase(con, entityTypes, dropAll);
     }
 
     public void clearCache()

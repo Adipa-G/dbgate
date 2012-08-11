@@ -1,5 +1,7 @@
 package dbgate.ermanagement.query.expr.segments;
 
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -11,5 +13,5 @@ public interface ISegment
 {
     SegmentType getSegmentType();
 
-    ISegment add(ISegment segment);
+    ISegment add(ISegment segment) throws ExpressionParsingException;
 }

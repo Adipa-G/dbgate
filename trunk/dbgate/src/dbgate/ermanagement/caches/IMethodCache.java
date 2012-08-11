@@ -12,11 +12,11 @@ import java.lang.reflect.Method;
  */
 public interface IMethodCache
 {
-    Method getGetter(Object obj, String attributeName) throws NoSuchMethodException;
+    Method getGetter(Class type, String attributeName) throws NoSuchMethodException;
 
-    Method getSetter(Object obj,String attributeName, Class[] params) throws NoSuchMethodException;
+    Method getSetter(Class type,String attributeName, Class[] params) throws NoSuchMethodException;
 
-    Method getSetter(Object obj, IDBColumn dbColumn) throws NoSuchMethodException;
+    Method getSetter(Class type, IDBColumn dbColumn) throws NoSuchMethodException;
 
     void clear();
 }

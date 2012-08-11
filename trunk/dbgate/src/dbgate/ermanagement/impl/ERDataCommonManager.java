@@ -100,28 +100,28 @@ public abstract class ERDataCommonManager
     {
         for (EntityFieldValue fieldValue : values.getFieldValues())
         {
-            Method setter = CacheManager.methodCache.getSetter(roEntity,fieldValue.getDbColumn());
+            Method setter = CacheManager.methodCache.getSetter(roEntity.getClass(),fieldValue.getDbColumn());
             setter.invoke(roEntity,fieldValue.getValue());
         }
     }
 
     protected static Collection<ITypeFieldValueList> getChildEntityValueListExcludingDeletedStatusItems(ServerDBClass serverDBClass) throws FieldCacheMissException
             , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SequenceGeneratorInitializationException
-            , NoFieldsFoundException
+            , EntityRegistrationException
     {
         return getChildEntityValueList(serverDBClass,false);
     }
 
     protected static Collection<ITypeFieldValueList> getChildEntityValueListIncludingDeletedStatusItems(ServerDBClass serverDBClass) throws FieldCacheMissException
             , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SequenceGeneratorInitializationException
-            , NoFieldsFoundException
+            , EntityRegistrationException
     {
         return getChildEntityValueList(serverDBClass,true);
     }
 
     protected static Collection<ITypeFieldValueList> getChildEntityValueList(ServerDBClass parentEntity,boolean takeDeleted) throws FieldCacheMissException
             , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SequenceGeneratorInitializationException
-            , NoFieldsFoundException
+            , EntityRegistrationException
     {
         Collection<ITypeFieldValueList> existingEntityChildRelations = new ArrayList<ITypeFieldValueList>();
 
@@ -141,11 +141,11 @@ public abstract class ERDataCommonManager
                     continue;
                 }
 
+                ERDataManagerUtils.registerType(typeRelation.getRelatedObjectType());
+
                 Collection<ServerDBClass> childEntities = ERDataManagerUtils.getRelationEntities(parentEntity,typeRelation);
                 for (ServerDBClass childEntity : childEntities)
                 {
-                    ERDataManagerUtils.registerTypes(childEntity);
-
                     if (parentEntity.getStatus() == DBClassStatus.DELETED
                             && typeRelation.getDeleteRule() == ReferentialRuleType.CASCADE)
                     {
@@ -171,7 +171,7 @@ public abstract class ERDataCommonManager
     {
         if (relation.isLazy())
         {
-            Method getter = CacheManager.methodCache.getGetter(entity,relation.getAttributeName());
+            Method getter = CacheManager.methodCache.getGetter(entity.getClass(),relation.getAttributeName());
             Object value = getter.invoke(entity);
 
             if (value == null)
@@ -191,11 +191,10 @@ public abstract class ERDataCommonManager
             ,Connection con,IDBRelation relation) throws TableCacheMissException, QueryBuildingException
             , SQLException, FieldCacheMissException, NoSuchMethodException, InvocationTargetException
             , IllegalAccessException, InstantiationException, RetrievalException, NoMatchingColumnFoundException
-            , SequenceGeneratorInitializationException, NoFieldsFoundException
+            , SequenceGeneratorInitializationException, EntityRegistrationException
     {
         Class childType = relation.getRelatedObjectType();
-        ServerRODBClass childTypeInstance = (ServerRODBClass) childType.newInstance();
-        ERDataManagerUtils.registerTypes(childTypeInstance);
+        ERDataManagerUtils.registerType(childType);
 
         StringBuilder logSb = new StringBuilder();
         String query = CacheManager.queryCache.getRelationObjectLoad(entity.getClass(),relation);
@@ -220,7 +219,7 @@ public abstract class ERDataCommonManager
 
             if (matchColumn != null)
             {
-                Method getter = CacheManager.methodCache.getGetter(entity,matchColumn.getAttributeName());
+                Method getter = CacheManager.methodCache.getGetter(type,matchColumn.getAttributeName());
                 Object fieldValue = getter.invoke(entity);
 
                 if (showQuery)

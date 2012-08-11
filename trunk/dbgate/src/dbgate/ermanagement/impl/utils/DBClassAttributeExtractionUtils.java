@@ -2,6 +2,7 @@ package dbgate.ermanagement.impl.utils;
 
 import dbgate.ServerRODBClass;
 import dbgate.ermanagement.*;
+import dbgate.ermanagement.exceptions.EntityRegistrationException;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
 
 import java.lang.annotation.Annotation;
@@ -18,41 +19,25 @@ import java.util.Map;
  */
 public class DBClassAttributeExtractionUtils
 {
-    public static String getTableName(ServerRODBClass serverRODBClass, Class type)
+    public static String getTableName(Class type)
     {
         String tableName = null;
-        if (serverRODBClass instanceof IManagedDBClass)
+        Annotation[] annotations = type.getAnnotations();
+        for (Annotation annotation : annotations)
         {
-            Map<Class,String> tableNames = ((IManagedDBClass)serverRODBClass).getTableNames();
-            if (tableNames != null
-                    && tableNames.containsKey(type))
+            if (annotation instanceof DBTableInfo)
             {
-                tableName = tableNames.get(type);
-            }
-        }
-        if (tableName == null)
-        {
-            Annotation[] annotations = type.getAnnotations();
-            for (Annotation annotation : annotations)
-            {
-                if (annotation instanceof DBTableInfo)
-                {
-                    DBTableInfo tableInfo = (DBTableInfo) annotation;
-                    tableName = tableInfo.tableName();
-                    break;
-                }
+                DBTableInfo tableInfo = (DBTableInfo) annotation;
+                tableName = tableInfo.tableName();
+                break;
             }
         }
         return tableName;
     }
 
-    public static Collection<IField> getAllFields(ServerRODBClass serverRODBClass,Class type) throws SequenceGeneratorInitializationException
+    public static Collection<IField> getAllFields(Class type) throws SequenceGeneratorInitializationException
     {
         Map<Class,Collection<IField>> fieldInfoMap = null;
-        if (serverRODBClass instanceof IManagedRODBClass)
-        {
-            fieldInfoMap = ((IManagedRODBClass)serverRODBClass).getFieldInfo();
-        }
         Collection<IField> fields = new ArrayList<IField>();
         Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{ServerRODBClass.class});
 

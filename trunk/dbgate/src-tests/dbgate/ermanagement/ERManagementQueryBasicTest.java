@@ -318,7 +318,7 @@ public class ERManagementQueryBasicTest
     }
 
     @Test
-    public void queryBasic_select_withColumnSelection_shouldSelectAll()
+    public void queryBasic_select_withFieldSelectionWithClass_shouldSelectColumn()
     {
         try
         {
@@ -350,6 +350,40 @@ public class ERManagementQueryBasicTest
             e.printStackTrace();
         }
     }
+
+//    @Test
+//    public void queryBasic_select_withFieldSelectionWithoutClass_shouldSelectColumn()
+//    {
+//        try
+//        {
+//            Connection connection = connector.getConnection();
+//            createTestData(connection);
+//            connection.commit();
+//            connection.close();
+//
+//            connection = connector.getConnection();
+//
+//            ISelectionQuery query = new SelectionQuery()
+//                    .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
+//                    .select(QuerySelection.field("name","name1"));
+//
+//            Collection results = query.toList(connection);
+//            Assert.assertTrue(results.size() == 4);
+//            int index = 0;
+//            for (Object result : results)
+//            {
+//                Object[] resultArray = (Object[]) result;
+//                String name = (String) resultArray[0];
+//
+//                Assert.assertTrue(basicEntityNames[index++].equals(name));
+//            }
+//        }
+//        catch (Exception e)
+//        {
+//            Assert.fail(e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
 
     @Test
     public void queryBasic_select_withSumSelection_shouldSelectSum()

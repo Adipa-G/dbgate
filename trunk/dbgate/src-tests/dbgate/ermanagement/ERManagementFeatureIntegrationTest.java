@@ -44,12 +44,12 @@ public class ERManagementFeatureIntegrationTest
             
             con = connector.getConnection();
 
-            Collection<ServerDBClass> dbClassList = new ArrayList<>();
-            dbClassList.add(new ItemTransaction());
-            dbClassList.add(new ItemTransactionCharge());
-            dbClassList.add(new Transaction());
-            dbClassList.add(new Product());
-            dbClassList.add(new Service());
+            Collection<Class> dbClassList = new ArrayList<>();
+            dbClassList.add(ItemTransaction.class);
+            dbClassList.add(ItemTransactionCharge.class);
+            dbClassList.add(Transaction.class);
+            dbClassList.add(Product.class);
+            dbClassList.add(Service.class);
             ERLayer.getSharedInstance().patchDataBase(con,dbClassList,true);
 
             con.commit();

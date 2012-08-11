@@ -20,9 +20,9 @@ public class MethodCache implements IMethodCache
     private final static HashMap<String, Method> columnCache = new HashMap<String, Method>();
 
     @Override
-    public Method getGetter(Object obj, String attributeName) throws NoSuchMethodException
+    public Method getGetter(Class type, String attributeName) throws NoSuchMethodException
     {
-        String cacheKey = createCacheKey(obj,true,attributeName);
+        String cacheKey = createCacheKey(type,true,attributeName);
         if (columnCache.containsKey(cacheKey))
         {
             return columnCache.get(cacheKey);
@@ -31,7 +31,7 @@ public class MethodCache implements IMethodCache
         String getterName = "get" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
         try
         {
-            Method method = obj.getClass().getMethod(getterName);
+            Method method = type.getMethod(getterName);
             synchronized (columnCache)
             {
                 columnCache.put(cacheKey,method);
@@ -41,7 +41,7 @@ public class MethodCache implements IMethodCache
         catch (NoSuchMethodException e)
         {
             getterName = "is" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-            Method method = obj.getClass().getMethod(getterName);
+            Method method = type.getMethod(getterName);
             synchronized (columnCache)
             {
                 columnCache.put(cacheKey,method);
@@ -51,16 +51,16 @@ public class MethodCache implements IMethodCache
     }
 
     @Override
-    public Method getSetter(Object obj, String attributeName, Class[] params) throws NoSuchMethodException
+    public Method getSetter(Class type, String attributeName, Class[] params) throws NoSuchMethodException
     {
-        String cacheKey = createCacheKey(obj,false,attributeName);
+        String cacheKey = createCacheKey(type,false,attributeName);
         if (columnCache.containsKey(cacheKey))
         {
             return columnCache.get(cacheKey);
         }
 
         String setterName = "set" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-        Method method = obj.getClass().getMethod(setterName,params);
+        Method method = type.getMethod(setterName,params);
         synchronized (columnCache)
         {
             columnCache.put(cacheKey,method);
@@ -69,9 +69,9 @@ public class MethodCache implements IMethodCache
     }
 
     @Override
-    public Method getSetter(Object obj, IDBColumn dbColumn) throws NoSuchMethodException
+    public Method getSetter(Class type, IDBColumn dbColumn) throws NoSuchMethodException
     {
-        String cacheKey = createCacheKey(obj,false,dbColumn.getAttributeName());
+        String cacheKey = createCacheKey(type,false,dbColumn.getAttributeName());
         if (columnCache.containsKey(cacheKey))
         {
             return columnCache.get(cacheKey);
@@ -83,7 +83,7 @@ public class MethodCache implements IMethodCache
         {
             return null;
         }
-        Method method = obj.getClass().getMethod(setterName,params);
+        Method method = type.getMethod(setterName,params);
         synchronized (columnCache)
         {
             columnCache.put(cacheKey,method);
@@ -172,9 +172,9 @@ public class MethodCache implements IMethodCache
         return params;
     }
 
-    public String createCacheKey(Object object,boolean getter,String field)
+    public String createCacheKey(Class type,boolean getter,String field)
     {
-        return object.getClass().getCanonicalName() + "_" + (getter?"get_":"set_") + field;
+        return type.getCanonicalName() + "_" + (getter?"get_":"set_") + field;
     }
 
     @Override

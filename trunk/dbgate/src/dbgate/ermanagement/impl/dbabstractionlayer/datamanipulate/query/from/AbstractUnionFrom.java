@@ -1,6 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryFromExpressionType;
@@ -47,7 +48,7 @@ public class AbstractUnionFrom implements IAbstractFrom
     }
 
     @Override
-    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         String alias = "union_src_" + UUID.randomUUID().toString().substring(0,5);
 

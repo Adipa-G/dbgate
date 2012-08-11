@@ -1,5 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition;
 
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -43,7 +44,7 @@ public class AbstractExpressionGroupCondition implements IAbstractGroupCondition
     }
 
     @Override
-    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         return processor.process(null,expr.getRootSegment(),buildInfo,dbLayer);
     }

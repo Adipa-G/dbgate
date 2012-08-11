@@ -2,6 +2,7 @@ package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryOrderBy;
 import dbgate.ermanagement.QueryOrderType;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractExpressionOrderBy;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractOrderByFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.AbstractSqlQueryOrderBy;
@@ -30,12 +31,13 @@ public class QueryOrderBy
         return queryOrderBy;
     }
 
-    public static IQueryOrderBy field(Class type,String field)
+    public static IQueryOrderBy field(Class type,String field) throws ExpressionParsingException
     {
         return field(type,field,QueryOrderType.ASCEND);
     }
 
-    public static IQueryOrderBy field(Class type,String field,QueryOrderType orderType)
+    public static IQueryOrderBy field(Class type,String field,QueryOrderType orderType) throws
+    ExpressionParsingException
     {
         AbstractExpressionOrderBy expressionOrderBy = (AbstractExpressionOrderBy) factory.createOrderBy(QueryOrderByExpressionType.EXPRESSION);
         expressionOrderBy.setExpr(OrderByExpr.build().field(type, field));

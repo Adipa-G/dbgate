@@ -4,6 +4,7 @@ import dbgate.ServerRODBClass;
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
@@ -44,7 +45,7 @@ public class AbstractExpressionProcessor
         {
             try
             {
-                CacheManager.fieldCache.register(segment.getType(), (ServerRODBClass) segment.getType().newInstance());
+                CacheManager.fieldCache.register(segment.getType());
                 columns = CacheManager.fieldCache.getColumns(segment.getType());
             }
             catch (Exception ex)
@@ -77,7 +78,7 @@ public class AbstractExpressionProcessor
         {
             try
             {
-                CacheManager.fieldCache.register(typeFrom, (ServerRODBClass) typeFrom.newInstance());
+                CacheManager.fieldCache.register(typeFrom);
                 relations = CacheManager.fieldCache.getRelations(typeFrom);
             }
             catch (Exception ex)
@@ -148,7 +149,7 @@ public class AbstractExpressionProcessor
         return sql;
     }
 
-    public String process(StringBuilder sb,ISegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
+    public String process(StringBuilder sb,ISegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer) throws ExpressionParsingException
     {
         if (sb == null) sb = new StringBuilder();
         switch (segment.getSegmentType())
@@ -199,6 +200,7 @@ public class AbstractExpressionProcessor
     }
 
     private void processQuery(StringBuilder sb,QuerySegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
+                             throws ExpressionParsingException
     {
         buildInfo = dbLayer.getDataManipulate().processQuery(buildInfo,segment.getQuery().getStructure());
         sb.append(" ( ");
@@ -206,7 +208,7 @@ public class AbstractExpressionProcessor
         sb.append(" ) ");
     }
     
-    private void processCompare(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
+    private void processCompare(StringBuilder sb,CompareSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer) throws ExpressionParsingException
     {
         if (segment.getLeft() != null)
         {
@@ -292,14 +294,14 @@ public class AbstractExpressionProcessor
         sb.append(") ");
     }
 
-    private void processQueryValues(StringBuilder sb, CompareSegment segment, QueryBuildInfo buildInfo,IDBLayer dbLayer)
+    private void processQueryValues(StringBuilder sb, CompareSegment segment, QueryBuildInfo buildInfo,IDBLayer dbLayer) throws ExpressionParsingException
     {
         sb.append(" IN ");
         QuerySegment querySegment = (QuerySegment) segment.getRight();
         processQuery(sb,querySegment,buildInfo,dbLayer);
     }
 
-    private void processMerge(StringBuilder sb,MergeSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer)
+    private void processMerge(StringBuilder sb,MergeSegment segment,QueryBuildInfo buildInfo,IDBLayer dbLayer) throws ExpressionParsingException
     {
         int count = 0;
         if (segment.getMode() == MergeSegmentMode.PARA_AND

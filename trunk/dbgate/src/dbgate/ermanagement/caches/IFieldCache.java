@@ -1,11 +1,10 @@
 package dbgate.ermanagement.caches;
 
-import dbgate.ServerRODBClass;
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.IField;
+import dbgate.ermanagement.exceptions.EntityRegistrationException;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
-import dbgate.ermanagement.exceptions.NoFieldsFoundException;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
 
 import java.util.Collection;
@@ -28,7 +27,7 @@ public interface IFieldCache
 
     void register(Class type,Collection<IField> fields);
 
-    void register(Class type,ServerRODBClass serverRODBClass) throws SequenceGeneratorInitializationException, NoFieldsFoundException;
+    void register(Class type) throws SequenceGeneratorInitializationException, EntityRegistrationException;
 
     void clear();
 }

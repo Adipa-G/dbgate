@@ -1,6 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryFromExpressionType;
@@ -44,7 +45,7 @@ public class AbstractSubQueryFrom implements IAbstractFrom
     }
 
     @Override
-    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         QueryBuildInfo result = dbLayer.getDataManipulate().processQuery(buildInfo,query.getStructure());
         String sql = "(" + result.getExecInfo().getSql() + ")";
