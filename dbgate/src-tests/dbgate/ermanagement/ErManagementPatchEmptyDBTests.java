@@ -1,7 +1,6 @@
 package dbgate.ermanagement;
 
 import dbgate.DateWrapper;
-import dbgate.ServerDBClass;
 import dbgate.TimeStampWrapper;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;

@@ -75,16 +75,16 @@ public class ErManagementInheritancePersistTests
     private void registerForExternal()
     {
         Class objType = InheritanceTestSuperEntityExt.class;
-        ERLayer.getSharedInstance().registerTable(objType,InheritanceTestExtFactory.getTableNames(objType));
-        ERLayer.getSharedInstance().registerFields(objType,InheritanceTestExtFactory.getFieldInfo(objType));
+        ERLayer.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+                ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityAExt.class;
-        ERLayer.getSharedInstance().registerTable(objType,InheritanceTestExtFactory.getTableNames(objType));
-        ERLayer.getSharedInstance().registerFields(objType,InheritanceTestExtFactory.getFieldInfo(objType));
+        ERLayer.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+                ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityBExt.class;
-        ERLayer.getSharedInstance().registerTable(objType,InheritanceTestExtFactory.getTableNames(objType));
-        ERLayer.getSharedInstance().registerFields(objType,InheritanceTestExtFactory.getFieldInfo(objType));
+        ERLayer.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+                ,InheritanceTestExtFactory.getFieldInfo(objType));
     }
 
     @Before

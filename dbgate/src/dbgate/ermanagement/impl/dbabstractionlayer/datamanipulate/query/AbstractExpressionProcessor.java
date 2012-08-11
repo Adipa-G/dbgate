@@ -1,11 +1,10 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query;
 
-import dbgate.ServerRODBClass;
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
-import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
 import dbgate.ermanagement.query.expr.segments.*;
@@ -36,23 +35,8 @@ public class AbstractExpressionProcessor
 
     public IDBColumn getColumn(FieldSegment segment)
     {
-        Collection<IDBColumn> columns = null;
-        try
-        {
-            columns = CacheManager.fieldCache.getColumns(segment.getType());
-        }
-        catch (FieldCacheMissException e)
-        {
-            try
-            {
-                CacheManager.fieldCache.register(segment.getType());
-                columns = CacheManager.fieldCache.getColumns(segment.getType());
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+        EntityInfo entityInfo = CacheManager.getEntityInfo(segment.getType());
+        Collection<IDBColumn> columns = entityInfo.getColumns();
 
         if (columns != null)
         {
@@ -69,23 +53,8 @@ public class AbstractExpressionProcessor
 
     public IDBRelation getRelation(Class typeFrom,Class typeTo)
     {
-        Collection<IDBRelation> relations = null;
-        try
-        {
-            relations = CacheManager.fieldCache.getRelations(typeFrom);
-        }
-        catch (FieldCacheMissException e)
-        {
-            try
-            {
-                CacheManager.fieldCache.register(typeFrom);
-                relations = CacheManager.fieldCache.getRelations(typeFrom);
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+        EntityInfo entityInfo = CacheManager.getEntityInfo(typeFrom);
+        Collection<IDBRelation> relations = entityInfo.getRelations();
 
         if (relations != null)
         {

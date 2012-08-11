@@ -5,10 +5,10 @@ import dbgate.ServerRODBClass;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.exceptions.DBConnectorNotInitializedException;
 import dbgate.ermanagement.exceptions.DBPatchingException;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.ermanagement.exceptions.common.DBConnectorNotInitializedException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.LayerFactory;
 
@@ -43,7 +43,7 @@ public class ERLayer implements IERLayer
         initializeDefaults();
 
         IDBLayer dbLayer = LayerFactory.createLayer(dbType);
-        CacheManager.init(dbLayer);
+        CacheManager.init(config);
         erDataManager = new ERDataManager(dbLayer,statistics,config);
         erMetaDataManager = new ERMetaDataManager(dbLayer,statistics,config);
     }
@@ -80,14 +80,10 @@ public class ERLayer implements IERLayer
         erDataManager.clearCache();
     }
 
-    public void registerTable(Class type, String tableName)
+    @Override
+    public void registerEntity(Class type, String tableName, Collection<IField> fields)
     {
-        erDataManager.registerTable(type,tableName);
-    }
-
-    public void registerFields(Class type, Collection<IField> fields)
-    {
-        erDataManager.registerFields(type,fields);
+        erDataManager.registerEntity(type, tableName, fields);
     }
 
     public IERLayerConfig getConfig()

@@ -83,16 +83,16 @@ public class ErManagementTreePersistTests
     private void registerForExternal()
     {
         Class objType = TreeTestRootEntityExt.class;
-        ERLayer.getSharedInstance().registerTable(objType,TreeTestExtFactory.getTableNames(objType));
-        ERLayer.getSharedInstance().registerFields(objType,TreeTestExtFactory.getFieldInfo(objType));
+        ERLayer.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+                , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2OneEntityExt.class;
-        ERLayer.getSharedInstance().registerTable(objType,TreeTestExtFactory.getTableNames(objType));
-        ERLayer.getSharedInstance().registerFields(objType,TreeTestExtFactory.getFieldInfo(objType));
+        ERLayer.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+                , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2ManyEntityExt.class;
-        ERLayer.getSharedInstance().registerTable(objType,TreeTestExtFactory.getTableNames(objType));
-        ERLayer.getSharedInstance().registerFields(objType,TreeTestExtFactory.getFieldInfo(objType));
+        ERLayer.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+                , TreeTestExtFactory.getFieldInfo(objType));
     }
 
     @Test

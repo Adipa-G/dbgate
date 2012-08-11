@@ -1,6 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.common;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.BaseException;
  * Date: Mar 26, 2011
  * Time: 5:31:27 PM
  */
-public class NoMatchingColumnFoundException extends BaseException
+public class NoMatchingColumnFoundException extends DbGateException
 {
     public NoMatchingColumnFoundException()
     {

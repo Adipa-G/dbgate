@@ -1,7 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join;
 
 import dbgate.ermanagement.IQueryJoin;
-import dbgate.ermanagement.IQueryOrderBy;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;

@@ -1,23 +1,27 @@
 package dbgate.ermanagement.impl;
 
 import dbgate.DBClassStatus;
+import dbgate.DbGateException;
 import dbgate.ServerDBClass;
 import dbgate.ServerRODBClass;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.context.EntityFieldValue;
 import dbgate.ermanagement.context.IEntityFieldValueList;
 import dbgate.ermanagement.context.ITypeFieldValueList;
 import dbgate.ermanagement.context.impl.EntityTypeFieldValueList;
-import dbgate.ermanagement.exceptions.*;
+import dbgate.ermanagement.exceptions.common.MethodInvocationException;
+import dbgate.ermanagement.exceptions.common.NoMatchingColumnFoundException;
+import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
+import dbgate.ermanagement.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
 import dbgate.ermanagement.impl.utils.ERSessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
 import net.sf.cglib.proxy.Enhancer;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,13 +51,23 @@ public abstract class ERDataCommonManager
     }
 
     protected PreparedStatement createRetrievalPreparedStatement(ITypeFieldValueList keyValueList, Connection con)
-            throws TableCacheMissException, QueryBuildingException, FieldCacheMissException, SQLException
+            throws DbGateException
     {
         Class targetType = keyValueList.getType();
-        String query = CacheManager.queryCache.getLoadQuery(targetType);
+        EntityInfo entityInfo = CacheManager.getEntityInfo(targetType);
 
-        PreparedStatement ps = con.prepareStatement(query);
-        Collection<IDBColumn> keys = CacheManager.fieldCache.getKeys(targetType);
+        String query = entityInfo.getLoadQuery(dbLayer);
+        PreparedStatement ps;
+        try
+        {
+            ps = con.prepareStatement(query);
+        }
+        catch (SQLException ex)
+        {
+            String message = String.format("SQL Exception while trying create prepared statement for sql %s",query);
+            throw new StatementPreparingException(message,ex);
+        }
+        Collection<IDBColumn> keys = entityInfo.getKeys();
 
         StringBuilder logSb = new StringBuilder();
         boolean showQuery = config.isShowQueries();
@@ -83,10 +97,12 @@ public abstract class ERDataCommonManager
         return ps;
     }
 
-    protected ITypeFieldValueList readValues(Class type, ResultSet rs) throws FieldCacheMissException, SQLException
+    protected ITypeFieldValueList readValues(Class type, ResultSet rs) throws ReadFromResultSetException
     {
+        EntityInfo entityInfo = CacheManager.getEntityInfo(type);
+
         ITypeFieldValueList valueTypeList = new EntityTypeFieldValueList(type);
-        Collection<IDBColumn> dbColumns = CacheManager.fieldCache.getColumns(type);
+        Collection<IDBColumn> dbColumns = entityInfo.getColumns();
         for (IDBColumn dbColumn : dbColumns)
         {
             Object value = dbLayer.getDataManipulate().readFromResultSet(rs,dbColumn);
@@ -95,40 +111,46 @@ public abstract class ERDataCommonManager
         return valueTypeList;
     }
 
-    protected static void setValues(ServerRODBClass roEntity, ITypeFieldValueList values) throws FieldCacheMissException
-            , NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    protected static void setValues(ServerRODBClass roEntity, ITypeFieldValueList values) throws DbGateException
     {
-        for (EntityFieldValue fieldValue : values.getFieldValues())
+        EntityInfo entityInfo = CacheManager.getEntityInfo(roEntity);
+
+        try
         {
-            Method setter = CacheManager.methodCache.getSetter(roEntity.getClass(),fieldValue.getDbColumn());
-            setter.invoke(roEntity,fieldValue.getValue());
+            for (EntityFieldValue fieldValue : values.getFieldValues())
+            {
+                Method setter = entityInfo.getSetter(fieldValue.getDbColumn());
+                setter.invoke(roEntity,fieldValue.getValue());
+            }
+        }
+        catch (Exception ex)
+        {
+            String message = String.format("Exception while trying to invoking setters of entity %s",entityInfo.getEntityType().getCanonicalName());
+            throw new MethodInvocationException(message,ex);
         }
     }
 
-    protected static Collection<ITypeFieldValueList> getChildEntityValueListExcludingDeletedStatusItems(ServerDBClass serverDBClass) throws FieldCacheMissException
-            , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SequenceGeneratorInitializationException
-            , EntityRegistrationException
+    protected static Collection<ITypeFieldValueList> getChildEntityValueListExcludingDeletedStatusItems(ServerDBClass parentEntity)
+        throws DbGateException
     {
-        return getChildEntityValueList(serverDBClass,false);
+        return getChildEntityValueList(parentEntity,false);
     }
 
-    protected static Collection<ITypeFieldValueList> getChildEntityValueListIncludingDeletedStatusItems(ServerDBClass serverDBClass) throws FieldCacheMissException
-            , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SequenceGeneratorInitializationException
-            , EntityRegistrationException
+    protected static Collection<ITypeFieldValueList> getChildEntityValueListIncludingDeletedStatusItems(ServerDBClass parentEntity)
+        throws DbGateException
     {
-        return getChildEntityValueList(serverDBClass,true);
+        return getChildEntityValueList(parentEntity,true);
     }
 
-    protected static Collection<ITypeFieldValueList> getChildEntityValueList(ServerDBClass parentEntity,boolean takeDeleted) throws FieldCacheMissException
-            , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SequenceGeneratorInitializationException
-            , EntityRegistrationException
+    protected static Collection<ITypeFieldValueList> getChildEntityValueList(ServerDBClass parentEntity,boolean takeDeleted)
+            throws DbGateException
     {
+        EntityInfo entityInfo = CacheManager.getEntityInfo(parentEntity);
         Collection<ITypeFieldValueList> existingEntityChildRelations = new ArrayList<ITypeFieldValueList>();
 
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(parentEntity.getClass(),new Class[]{ServerDBClass.class});
-        for (Class type : typeList)
+        while (entityInfo != null)
         {
-            Collection<IDBRelation> typeRelations = CacheManager.fieldCache.getRelations(type);
+            Collection<IDBRelation> typeRelations = entityInfo.getRelations();
             for (IDBRelation typeRelation : typeRelations)
             {
                 if (typeRelation.isReverseRelationship())
@@ -140,8 +162,6 @@ public abstract class ERDataCommonManager
                 {
                     continue;
                 }
-
-                ERDataManagerUtils.registerType(typeRelation.getRelatedObjectType());
 
                 Collection<ServerDBClass> childEntities = ERDataManagerUtils.getRelationEntities(parentEntity,typeRelation);
                 for (ServerDBClass childEntity : childEntities)
@@ -162,17 +182,28 @@ public abstract class ERDataCommonManager
                     }
                 }
             }
+            entityInfo = entityInfo.getSuperEntityInfo();
         }
+
         return existingEntityChildRelations;
     }
 
-    protected static boolean isProxyObject(ServerDBClass entity, IDBRelation relation) throws NoSuchMethodException
-            , IllegalAccessException, InvocationTargetException
+    protected static boolean isProxyObject(ServerDBClass entity, IDBRelation relation) throws DbGateException
     {
         if (relation.isLazy())
         {
-            Method getter = CacheManager.methodCache.getGetter(entity.getClass(),relation.getAttributeName());
-            Object value = getter.invoke(entity);
+            EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
+            Object value;
+            try
+            {
+                Method getter = entityInfo.getGetter(relation.getAttributeName());
+                value = getter.invoke(entity);
+            }
+            catch (Exception ex)
+            {
+                String message = String.format("Exception while trying to invoking setters of entity %s",entity.getClass().getCanonicalName());
+                throw new MethodInvocationException(message,ex);
+            }
 
             if (value == null)
             {
@@ -188,16 +219,13 @@ public abstract class ERDataCommonManager
     }
 
     protected Collection<ServerRODBClass> readRelationChildrenFromDb(ServerRODBClass entity,Class type
-            ,Connection con,IDBRelation relation) throws TableCacheMissException, QueryBuildingException
-            , SQLException, FieldCacheMissException, NoSuchMethodException, InvocationTargetException
-            , IllegalAccessException, InstantiationException, RetrievalException, NoMatchingColumnFoundException
-            , SequenceGeneratorInitializationException, EntityRegistrationException
+            ,Connection con,IDBRelation relation) throws DbGateException
     {
+        EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         Class childType = relation.getRelatedObjectType();
-        ERDataManagerUtils.registerType(childType);
 
         StringBuilder logSb = new StringBuilder();
-        String query = CacheManager.queryCache.getRelationObjectLoad(entity.getClass(),relation);
+        String query = entityInfo.getRelationObjectLoad(dbLayer,relation);
 
         ArrayList<String> fields = new ArrayList<String>();
         for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
@@ -205,13 +233,23 @@ public abstract class ERDataCommonManager
             fields.add(mapping.getFromField());
         }
 
-        PreparedStatement ps = con.prepareStatement(query);
+        PreparedStatement ps;
+        try
+        {
+            ps = con.prepareStatement(query);
+        }
+        catch (SQLException ex)
+        {
+            String message = String.format("SQL Exception while trying create prepared statement for sql %s",query);
+            throw new StatementPreparingException(message,ex);
+        }
+
         boolean showQuery = config.isShowQueries();
         if (showQuery)
         {
             logSb.append(query);
         }
-        Collection<IDBColumn> dbColumns = CacheManager.fieldCache.getColumns(type);
+        Collection<IDBColumn> dbColumns = entityInfo.getColumns();
         for (int i = 0; i < fields.size(); i++)
         {
             String field = fields.get(i);
@@ -219,8 +257,8 @@ public abstract class ERDataCommonManager
 
             if (matchColumn != null)
             {
-                Method getter = CacheManager.methodCache.getGetter(type,matchColumn.getAttributeName());
-                Object fieldValue = getter.invoke(entity);
+                Method getter = entityInfo.getGetter(matchColumn.getAttributeName());
+                Object fieldValue = ReflectionUtils.getValue(getter,entity);
 
                 if (showQuery)
                 {
@@ -242,44 +280,58 @@ public abstract class ERDataCommonManager
         {
             statistics.registerSelect(childType);
         }
-        return readFromPreparedStatement(entity, con, ps, childType);
+        return executeAndReadFromPreparedStatement(entity, con, ps, childType);
     }
 
-    private Collection<ServerRODBClass> readFromPreparedStatement(ServerRODBClass entity, Connection con, PreparedStatement ps, Class childType)
-            throws SQLException, FieldCacheMissException, InstantiationException, IllegalAccessException, RetrievalException, NoSuchMethodException, InvocationTargetException
+    private Collection<ServerRODBClass> executeAndReadFromPreparedStatement(ServerRODBClass entity, Connection con,
+                                                                            PreparedStatement ps, Class childType)
+            throws DbGateException
     {
+        ResultSet rs = null;
+        EntityInfo entityInfo = CacheManager.getEntityInfo(childType);
         Collection<IDBColumn> childKeys = null;
         Collection<ServerRODBClass> data = new ArrayList<ServerRODBClass>();
-        ResultSet rs = ps.executeQuery();
-        while (rs.next())
+
+        try
         {
-            if (childKeys == null)
+            rs = ps.executeQuery();
+            while (rs.next())
             {
-                childKeys = CacheManager.fieldCache.getKeys(childType);
-            }
-            ITypeFieldValueList childTypeKeyList = new EntityTypeFieldValueList(childType);
-            for (IDBColumn childKey : childKeys)
-            {
-                Object value = dbLayer.getDataManipulate().readFromResultSet(rs,childKey);
-                childTypeKeyList.getFieldValues().add(new EntityFieldValue(value,childKey));
-            }
-            if (ERSessionUtils.existsInSession(entity, childTypeKeyList))
-            {
-                data.add(ERSessionUtils.getFromSession(entity,childTypeKeyList));
-                continue;
-            }
+                if (childKeys == null)
+                {
+                    childKeys = entityInfo.getKeys();
+                }
+                ITypeFieldValueList childTypeKeyList = new EntityTypeFieldValueList(childType);
+                for (IDBColumn childKey : childKeys)
+                {
+                    Object value = dbLayer.getDataManipulate().readFromResultSet(rs,childKey);
+                    childTypeKeyList.getFieldValues().add(new EntityFieldValue(value,childKey));
+                }
+                if (ERSessionUtils.existsInSession(entity, childTypeKeyList))
+                {
+                    data.add(ERSessionUtils.getFromSession(entity,childTypeKeyList));
+                    continue;
+                }
 
-            ServerRODBClass rodbClass = (ServerRODBClass) childType.newInstance();
-            ERSessionUtils.transferSession(entity,rodbClass);
-            rodbClass.retrieve(rs,con);
-            data.add(rodbClass);
+                ServerRODBClass rodbClass = (ServerRODBClass) ReflectionUtils.createInstance(childType);
+                ERSessionUtils.transferSession(entity,rodbClass);
+                rodbClass.retrieve(rs,con);
+                data.add(rodbClass);
 
-            IEntityFieldValueList childEntityKeyList = ERDataManagerUtils.extractEntityKeyValues(rodbClass);
-            ERSessionUtils.addToSession(entity,childEntityKeyList);
+                IEntityFieldValueList childEntityKeyList = ERDataManagerUtils.extractEntityKeyValues(rodbClass);
+                ERSessionUtils.addToSession(entity,childEntityKeyList);
+            }
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-
+        catch (SQLException ex)
+        {
+            String message = String.format("SQL Exception while trying to read type %s from result set",childType.getCanonicalName());
+            throw new ReadFromResultSetException(message,ex);
+        }
+        finally
+        {
+            DBMgmtUtility.close(rs);
+            DBMgmtUtility.close(ps);
+        }
         return data;
     }
 }

@@ -1,21 +1,12 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group;
 
-import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.query.QueryGroupExpressionType;
-import dbgate.ermanagement.query.QuerySelectionExpressionType;
 import dbgate.ermanagement.query.expr.GroupExpr;
-import dbgate.ermanagement.query.expr.SelectExpr;
 import dbgate.ermanagement.query.expr.segments.FieldSegment;
-import dbgate.ermanagement.query.expr.segments.GroupFunctionSegment;
 import dbgate.ermanagement.query.expr.segments.ISegment;
-import dbgate.ermanagement.query.expr.segments.QuerySegment;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
 
 /**
  * Created by IntelliJ IDEA.

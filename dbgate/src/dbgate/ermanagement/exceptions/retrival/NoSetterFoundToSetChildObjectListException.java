@@ -1,6 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.retrival;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.BaseException;
  * Date: Mar 26, 2011
  * Time: 3:38:06 PM
  */
-public class NoSetterFoundToSetChildObjectListException extends BaseException
+public class NoSetterFoundToSetChildObjectListException extends DbGateException
 {
     public NoSetterFoundToSetChildObjectListException()
     {

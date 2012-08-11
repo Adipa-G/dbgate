@@ -1,23 +1,18 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.ServerDBClass;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.caches.impl.TableCache;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
-import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.IMetaManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.CompareUtility;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.IMetaComparisonGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.*;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.support.MetaQueryHolder;
-import dbgate.ermanagement.impl.utils.DBClassAttributeExtractionUtils;
 import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
-import dbgate.ermanagement.impl.utils.ReflectionUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,8 +47,7 @@ public class ERMetaDataManager
         {
             for (Class type : entityTypes)
             {
-                CacheManager.tableCache.register(type);
-                CacheManager.fieldCache.register(type);
+                CacheManager.register(type);
             }
             
             IMetaManipulate metaManipulate =  dbLayer.getMetaManipulate(con);
@@ -116,8 +110,8 @@ public class ERMetaDataManager
         }
     }
 
-    private Collection<IMetaItem> createMetaItemsFromDbClasses(Collection<Class> entityTypes) throws SequenceGeneratorInitializationException
-            , TableCacheMissException, FieldCacheMissException
+    private Collection<IMetaItem> createMetaItemsFromDbClasses(Collection<Class> entityTypes)
+            throws SequenceGeneratorInitializationException
     {
         Collection<IMetaItem> metaItems = new ArrayList<IMetaItem>();
         Collection<String> uniqueNames = new ArrayList<String>();
@@ -138,51 +132,37 @@ public class ERMetaDataManager
         return metaItems;
     }
 
-    private Collection<IMetaItem> extractMetaItems(Class subType) throws SequenceGeneratorInitializationException
-            , TableCacheMissException, FieldCacheMissException
+    private Collection<IMetaItem> extractMetaItems(Class subType)
+            throws SequenceGeneratorInitializationException
     {
         Collection<IMetaItem> retItems = new ArrayList<IMetaItem>();
-
-        Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{ServerDBClass.class});
-        for (Class superType : superTypes)
+        EntityInfo entityInfo = CacheManager.getEntityInfo(subType);
+        while (entityInfo != null)
         {
-            String tableName = CacheManager.tableCache.getTableName(superType);
-            if (tableName == null)
-            {
-                continue;
-            }
-            Collection<IField> fields = CacheManager.fieldCache.getFields(superType);
+            Collection<IDBColumn> dbColumns = entityInfo.getColumns();
+            Collection<IDBRelation> dbRelations = entityInfo.getRelations();
+            Collection<IDBRelation> filteredRelations = new ArrayList<>();
 
-            Collection<IDBColumn> dbColumns = new ArrayList<IDBColumn>();
-            Collection<IDBRelation> dbRelations = new ArrayList<IDBRelation>();
-
-            for (IField field : fields)
+            for (IDBRelation relation : dbRelations)
             {
-                if (field instanceof IDBColumn)
+                if (!relation.isReverseRelationship()
+                        && !relation.isNonIdentifyingRelation())
                 {
-                    dbColumns.add((IDBColumn) field);
-                }
-                else if (field instanceof IDBRelation)
-                {
-                    IDBRelation relation = (IDBRelation)field;
-                    if (!relation.isReverseRelationship()
-                            && !relation.isNonIdentifyingRelation())
-                    {
-                        dbRelations.add(relation);
-                    }
+                    filteredRelations.add(relation);
                 }
             }
+            retItems.add(createTable(entityInfo.getEntityType(),dbColumns,filteredRelations));
 
-            retItems.add(createTable(superType,dbColumns,dbRelations));
+            entityInfo = entityInfo.getSuperEntityInfo();
         }
         return retItems;
     }
 
-    private IMetaItem createTable(Class type,Collection<IDBColumn> dbColumns,Collection<IDBRelation> dbRelations) throws TableCacheMissException
-            , FieldCacheMissException
+    private IMetaItem createTable(Class type,Collection<IDBColumn> dbColumns,Collection<IDBRelation> dbRelations)
     {
         MetaTable table = new MetaTable();
-        table.setName(CacheManager.tableCache.getTableName(type));
+        EntityInfo entityInfo = CacheManager.getEntityInfo(type);
+        table.setName(entityInfo.getTableName());
 
         for (IDBColumn dbColumn : dbColumns)
         {
@@ -196,13 +176,15 @@ public class ERMetaDataManager
 
         for (IDBRelation relation : dbRelations)
         {
+            EntityInfo relatedEntityInfo = CacheManager.getEntityInfo(relation.getRelatedObjectType());
+
             MetaForeignKey foreignKey = new MetaForeignKey();
             foreignKey.setName(relation.getRelationshipName());
-            foreignKey.setToTable(CacheManager.tableCache.getTableName(relation.getRelatedObjectType()));
+            foreignKey.setToTable(relatedEntityInfo.getTableName());
             for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
             {
-                String fromCol = ERDataManagerUtils.findColumnByAttribute(CacheManager.fieldCache.getColumns(type),mapping.getFromField()).getColumnName();
-                String toCol = ERDataManagerUtils.findColumnByAttribute(CacheManager.fieldCache.getColumns(relation.getRelatedObjectType()),mapping.getToField()).getColumnName();
+                String fromCol = ERDataManagerUtils.findColumnByAttribute(entityInfo.getColumns(),mapping.getFromField()).getColumnName();
+                String toCol = ERDataManagerUtils.findColumnByAttribute(relatedEntityInfo.getColumns(),mapping.getToField()).getColumnName();
                 foreignKey.getColumnMappings().add(new MetaForeignKeyColumnMapping(fromCol,toCol));
             }
             foreignKey.setDeleteRule(relation.getDeleteRule());

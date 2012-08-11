@@ -7,7 +7,10 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.Abstract
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
 import dbgate.ermanagement.query.expr.SelectExpr;
-import dbgate.ermanagement.query.expr.segments.*;
+import dbgate.ermanagement.query.expr.segments.FieldSegment;
+import dbgate.ermanagement.query.expr.segments.GroupFunctionSegment;
+import dbgate.ermanagement.query.expr.segments.ISegment;
+import dbgate.ermanagement.query.expr.segments.QuerySegment;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -1,6 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.persist;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.BaseException;
  * Date: Mar 26, 2011
  * Time: 5:58:11 PM
  */
-public class IncorrectStatusException extends BaseException
+public class IncorrectStatusException extends DbGateException
 {
     public IncorrectStatusException()
     {

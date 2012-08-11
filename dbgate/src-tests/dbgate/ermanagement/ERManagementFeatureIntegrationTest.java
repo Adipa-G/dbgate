@@ -1,6 +1,5 @@
 package dbgate.ermanagement;
 
-import dbgate.ServerDBClass;
 import dbgate.dbutility.DBConnector;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.exceptions.PersistException;

@@ -5,9 +5,11 @@ import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
-import dbgate.ermanagement.exceptions.FieldCacheMissException;
-import dbgate.ermanagement.exceptions.TableCacheMissException;
+import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
+import dbgate.ermanagement.exceptions.common.StatementExecutionException;
+import dbgate.ermanagement.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractConditionFactory;
@@ -206,11 +208,13 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public String createRelatedObjectsLoadQuery(IDBRelation relation) throws TableCacheMissException, FieldCacheMissException
+    public String createRelatedObjectsLoadQuery(IDBRelation relation)
     {
+        EntityInfo entityInfo = CacheManager.getEntityInfo(relation.getRelatedObjectType());
+
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ");
-        sb.append(CacheManager.tableCache.getTableName(relation.getRelatedObjectType()));
+        sb.append(entityInfo.getTableName());
         sb.append(" WHERE ");
 
         for (int i = 0; i < relation.getTableColumnMappings().length; i++)
@@ -220,7 +224,7 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(" AND ");
             }
-            sb.append(ERDataManagerUtils.findColumnByAttribute(CacheManager.fieldCache.getColumns(relation.getRelatedObjectType()),mapping.getToField()).getColumnName());
+            sb.append(ERDataManagerUtils.findColumnByAttribute(entityInfo.getColumns(),mapping.getToField()).getColumnName());
             sb.append("= ?");
         }
 
@@ -228,300 +232,326 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public Object readFromResultSet(ResultSet rs, IDBColumn dbColumn) throws SQLException
+    public Object readFromResultSet(ResultSet rs, IDBColumn dbColumn) throws ReadFromResultSetException
     {
-        switch (dbColumn.getColumnType())
+        try
         {
-            case BOOLEAN:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+            switch (dbColumn.getColumnType())
+            {
+                case BOOLEAN:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return rs.getBoolean(dbColumn.getColumnName());
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return rs.getBoolean(dbColumn.getColumnName());
                     }
-                    return null;
-                }
-                else
-                {
-                    return rs.getBoolean(dbColumn.getColumnName());
-                }
-            case CHAR:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case CHAR:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return rs.getString(dbColumn.getColumnName()).charAt(0);
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return rs.getString(dbColumn.getColumnName()).charAt(0);
                     }
-                    return null;
-                }
-                else
-                {
-                    return rs.getString(dbColumn.getColumnName()).charAt(0);
-                }
-            case DATE:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case DATE:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return new DateWrapper(rs.getDate(dbColumn.getColumnName()));
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return new DateWrapper(rs.getDate(dbColumn.getColumnName()));
                     }
-                    return null;
-                }
-                else
-                {
-                    return new DateWrapper(rs.getDate(dbColumn.getColumnName()));
-                }
-            case DOUBLE:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case DOUBLE:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return rs.getDouble(dbColumn.getColumnName());
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return rs.getDouble(dbColumn.getColumnName());
                     }
-                    return null;
-                }
-                else
-                {
-                    return rs.getDouble(dbColumn.getColumnName());
-                }
-            case FLOAT:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case FLOAT:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return rs.getFloat(dbColumn.getColumnName());
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return rs.getFloat(dbColumn.getColumnName());
                     }
-                    return null;
-                }
-                else
-                {
-                    return rs.getFloat(dbColumn.getColumnName());
-                }
-            case INTEGER:
-            case VERSION:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case INTEGER:
+                case VERSION:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return rs.getInt(dbColumn.getColumnName());
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return rs.getInt(dbColumn.getColumnName());
                     }
-                    return null;
-                }
-                else
-                {
-                    return rs.getInt(dbColumn.getColumnName());
-                }
-            case LONG:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case LONG:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return rs.getLong(dbColumn.getColumnName());
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return rs.getLong(dbColumn.getColumnName());
                     }
-                    return null;
-                }
-                else
-                {
-                    return rs.getLong(dbColumn.getColumnName());
-                }
-            case TIMESTAMP:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case TIMESTAMP:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return new TimeStampWrapper(rs.getTimestamp(dbColumn.getColumnName()));
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return new TimeStampWrapper(rs.getTimestamp(dbColumn.getColumnName()));
                     }
-                    return null;
-                }
-                else
-                {
-                    return new TimeStampWrapper(rs.getTimestamp(dbColumn.getColumnName()));
-                }
-            case VARCHAR:
-                if (dbColumn.isNullable())
-                {
-                    Object obj = rs.getObject(dbColumn.getColumnName());
-                    if (obj != null)
+                case VARCHAR:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return rs.getString(dbColumn.getColumnName());
+                        }
+                        return null;
+                    }
+                    else
                     {
                         return rs.getString(dbColumn.getColumnName());
                     }
+                default:
                     return null;
-                }
-                else
-                {
-                    return rs.getString(dbColumn.getColumnName());
-                }
-            default:
-                return null;
+            }
+        }
+        catch (SQLException ex)
+        {
+            String message = String.format("SQL Exception while trying to read column named %s with type %s",dbColumn.getColumnName(),dbColumn.getColumnType());
+            throw new ReadFromResultSetException(message,ex);
         }
     }
 
     @Override
-    public void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IDBColumn dbColumn) throws SQLException
+    public void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IDBColumn dbColumn)
+        throws StatementPreparingException
     {
         setToPreparedStatement(ps,obj,parameterIndex,dbColumn.isNullable(),dbColumn.getColumnType());
     }
     
-    protected void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex,boolean nullable, DBColumnType dbColumnType) throws SQLException
+    protected void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex,boolean canBeNull, DBColumnType dbColumnType)
+        throws StatementPreparingException
     {
-        switch (dbColumnType)
+        try
         {
-            case BOOLEAN:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex, Types.BOOLEAN);
-                }
-                else
-                {
-                    ps.setBoolean(parameterIndex,(Boolean)obj);
-                }
-                break;
-            case CHAR:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.VARCHAR);
-                }
-                else
-                {
-                    ps.setString(parameterIndex,obj.toString());
-                }
-                break;
-            case DATE:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.DATE);
-                }
-                else
-                {
-                    ps.setDate(parameterIndex,((DateWrapper)obj)._getSQLDate());
-                }
-                break;
-            case DOUBLE:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.DOUBLE);
-                }
-                else
-                {
-                    ps.setDouble(parameterIndex,(Double)obj);
-                }
-                break;
-            case FLOAT:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.FLOAT);
-                }
-                else
-                {
-                    ps.setFloat(parameterIndex,(Float)obj);
-                }
-                break;
-            case INTEGER:
-            case VERSION:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.INTEGER);
-                }
-                else
-                {
-                    ps.setInt(parameterIndex,(Integer)obj);
-                }
-                break;
-            case LONG:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.BIGINT);
-                }
-                else
-                {
-                    ps.setLong(parameterIndex,(Long)obj);
-                }
-                break;
-            case TIMESTAMP:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.TIMESTAMP);
-                }
-                else
-                {
-                    ps.setTimestamp(parameterIndex,((TimeStampWrapper)obj)._getSQLTimeStamp());
-                }
-                break;
-            case VARCHAR:
-                if (nullable && obj == null)
-                {
-                    ps.setNull(parameterIndex,Types.VARCHAR);
-                }
-                else
-                {
-                    ps.setString(parameterIndex,obj.toString());
-                }
-                break;
+            switch (dbColumnType)
+            {
+                case BOOLEAN:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex, Types.BOOLEAN);
+                    }
+                    else
+                    {
+                        ps.setBoolean(parameterIndex,(Boolean)obj);
+                    }
+                    break;
+                case CHAR:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.VARCHAR);
+                    }
+                    else
+                    {
+                        ps.setString(parameterIndex,obj.toString());
+                    }
+                    break;
+                case DATE:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.DATE);
+                    }
+                    else
+                    {
+                        ps.setDate(parameterIndex,((DateWrapper)obj)._getSQLDate());
+                    }
+                    break;
+                case DOUBLE:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.DOUBLE);
+                    }
+                    else
+                    {
+                        ps.setDouble(parameterIndex,(Double)obj);
+                    }
+                    break;
+                case FLOAT:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.FLOAT);
+                    }
+                    else
+                    {
+                        ps.setFloat(parameterIndex,(Float)obj);
+                    }
+                    break;
+                case INTEGER:
+                case VERSION:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.INTEGER);
+                    }
+                    else
+                    {
+                        ps.setInt(parameterIndex,(Integer)obj);
+                    }
+                    break;
+                case LONG:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.BIGINT);
+                    }
+                    else
+                    {
+                        ps.setLong(parameterIndex,(Long)obj);
+                    }
+                    break;
+                case TIMESTAMP:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.TIMESTAMP);
+                    }
+                    else
+                    {
+                        ps.setTimestamp(parameterIndex,((TimeStampWrapper)obj)._getSQLTimeStamp());
+                    }
+                    break;
+                case VARCHAR:
+                    if (canBeNull && obj == null)
+                    {
+                        ps.setNull(parameterIndex,Types.VARCHAR);
+                    }
+                    else
+                    {
+                        ps.setString(parameterIndex,obj.toString());
+                    }
+                    break;
+            }
+        }
+        catch (SQLException ex)
+        {
+            String message = String.format("SQL Exception while trying set parameter %s with value %s",parameterIndex,obj);
+            throw new StatementPreparingException(message,ex);
         }
     }
 
     @Override
-    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo) throws SQLException
+    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo) throws StatementPreparingException,StatementExecutionException
     {
-        boolean storedProcedure = isStoredProcedure(execInfo.getSql());
-
-        PreparedStatement ps;
-        ResultSet rs;
-
-        if (storedProcedure)
+        try
         {
-            ps = con.prepareCall(execInfo.getSql());
-        }
-        else
-        {
-            ps = con.prepareStatement(execInfo.getSql());
-        }
+            boolean storedProcedure = isStoredProcedure(execInfo.getSql());
 
-        List<QueryExecParam> params = execInfo.getParams();
-        Collections.sort(params,new Comparator<QueryExecParam>()
-        {
-            @Override
-            public int compare(QueryExecParam o1, QueryExecParam o2)
+            PreparedStatement ps;
+            ResultSet rs;
+
+            if (storedProcedure)
             {
-                return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
+                ps = con.prepareCall(execInfo.getSql());
             }
-        });
-
-        for (int i = 0; i < (storedProcedure ? params.size() + 1 : params.size()); i++)
-        {
-            int count = i + 1;
-            if (i == 0 && storedProcedure)
+            else
             {
-                //todo check
-                ((CallableStatement) ps).registerOutParameter(count, Types.REF);
-                continue;
+                ps = con.prepareStatement(execInfo.getSql());
             }
 
-            QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
-            DBColumnType type = param.getType();
-            Object value = param.getValue();
+            List<QueryExecParam> params = execInfo.getParams();
+            Collections.sort(params,new Comparator<QueryExecParam>()
+            {
+                @Override
+                public int compare(QueryExecParam o1, QueryExecParam o2)
+                {
+                    return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
+                }
+            });
 
-            setToPreparedStatement(ps,value,count,value == null,type);
-        }
+            for (int i = 0; i < (storedProcedure ? params.size() + 1 : params.size()); i++)
+            {
+                int count = i + 1;
+                if (i == 0 && storedProcedure)
+                {
+                    //todo check
+                    ((CallableStatement) ps).registerOutParameter(count, Types.REF);
+                    continue;
+                }
 
-        if (storedProcedure)
-        {
-            ps.execute();
-            rs = ps.getResultSet();
+                QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
+                DBColumnType type = param.getType();
+                Object value = param.getValue();
+
+                setToPreparedStatement(ps,value,count,value == null,type);
+            }
+
+            if (storedProcedure)
+            {
+                ps.execute();
+                rs = ps.getResultSet();
+            }
+            else
+            {
+                rs = ps.executeQuery();
+            }
+            return rs;
         }
-        else
+        catch (SQLException ex)
         {
-            rs = ps.executeQuery();
+            String message = String.format("SQL Exception while trying set executing %s",execInfo.getSql());
+            throw new StatementExecutionException(message,ex);
         }
-        return rs;
     }
 
     private static  boolean isStoredProcedure(String sql)

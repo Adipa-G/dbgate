@@ -1,14 +1,19 @@
 package dbgate.ermanagement.impl;
 
 import dbgate.DBClassStatus;
+import dbgate.DbGateException;
 import dbgate.ServerDBClass;
 import dbgate.ServerRODBClass;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.context.IEntityContext;
 import dbgate.ermanagement.context.ITypeFieldValueList;
-import dbgate.ermanagement.exceptions.*;
+import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
+import dbgate.ermanagement.exceptions.retrival.NoMatchingRecordFoundForSuperClassException;
+import dbgate.ermanagement.exceptions.retrival.NoSetterFoundToSetChildObjectListException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
@@ -20,7 +25,6 @@ import dbgate.ermanagement.impl.utils.ReflectionUtils;
 import dbgate.ermanagement.lazy.ChildLoadInterceptor;
 import net.sf.cglib.proxy.Enhancer;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,7 +107,6 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         try
         {
             ERSessionUtils.initSession(roEntity);
-            ERDataManagerUtils.registerType(roEntity.getClass());
             loadFromDb(roEntity, rs, con);
             ERSessionUtils.destroySession(roEntity);
         }
@@ -114,20 +117,15 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         }
     }
 
-    private void loadFromDb(ServerRODBClass roEntity, ResultSet rs, Connection con) throws TableCacheMissException
-            , FieldCacheMissException, InvocationTargetException, NoSuchMethodException, IllegalAccessException
-            , SQLException, QueryBuildingException, InstantiationException, NoSetterFoundToSetChildObjectListException
-            , RetrievalException, NoMatchingColumnFoundException, NoMatchingRecordFoundForSuperClassException, EntityRegistrationException
-            , SequenceGeneratorInitializationException
+    private void loadFromDb(ServerRODBClass roEntity, ResultSet rs, Connection con) throws DbGateException
     {
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(roEntity.getClass(),new Class[]{ServerRODBClass.class});
-        for (int i = 0, typeListLength = typeList.length; i < typeListLength; i++)
+        EntityInfo entityInfo = CacheManager.getEntityInfo(roEntity);
+        while (entityInfo != null)
         {
-            Class type = typeList[i];
-            String tableName = CacheManager.tableCache.getTableName(type);
-            if (i == 0 || tableName == null) //if i==0 that means it's base class and can use existing result set
+            String tableName = entityInfo.getTableName();
+            if (entityInfo.getEntityType() == roEntity.getClass() || tableName == null) //if i==0 that means it's base class and can use existing result set
             {
-                loadForType(roEntity, type, rs, con);
+                loadForType(roEntity, entityInfo.getEntityType(), rs, con);
             }
             else
             {
@@ -135,18 +133,26 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                 ResultSet superRs = null;
                 try
                 {
-                    ITypeFieldValueList keyValueList = ERDataManagerUtils.extractTypeKeyValues(roEntity,type);
+                    ITypeFieldValueList keyValueList = ERDataManagerUtils.extractEntityTypeKeyValues(roEntity,
+                                                                                                     entityInfo.getEntityType());
                     superPs = createRetrievalPreparedStatement(keyValueList,con);
                     superRs = superPs.executeQuery();
                     if (superRs.next())
                     {
-                        loadForType(roEntity,type,superRs,con);
+                        loadForType(roEntity,entityInfo.getEntityType(),superRs,con);
                     }
                     else
                     {
-                        String message = String.format("Super class %s does not contains a matching record for the base class %s",type.getCanonicalName(),typeList[0].getCanonicalName());
+                        String message = String.format(
+                                "Super class %s does not contains a matching record for the base class %s",
+                                entityInfo.getEntityType().getCanonicalName(), roEntity.getClass().getCanonicalName());
                         throw new NoMatchingRecordFoundForSuperClassException(message);
                     }
+                }
+                catch (SQLException ex)
+                {
+                    String message = String.format("SQL Exception while trying to read from table %s",tableName);
+                    throw new ReadFromResultSetException(message,ex);
                 }
                 finally
                 {
@@ -154,14 +160,13 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                     DBMgmtUtility.close(superPs);
                 }
             }
+            entityInfo = entityInfo.getSuperEntityInfo();
         }
     }
 
-    private void loadForType(ServerRODBClass entity,Class type, ResultSet rs, Connection con) throws FieldCacheMissException
-            , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SQLException
-            , TableCacheMissException, QueryBuildingException, InstantiationException, NoSetterFoundToSetChildObjectListException
-            , RetrievalException, NoMatchingColumnFoundException, SequenceGeneratorInitializationException, EntityRegistrationException
+    private void loadForType(ServerRODBClass entity,Class type, ResultSet rs, Connection con) throws DbGateException
     {
+        EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         IEntityContext entityContext = entity.getContext();
         ITypeFieldValueList valueTypeList = readValues(type,rs);
         setValues(entity, valueTypeList);
@@ -172,7 +177,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
             entityContext.getChangeTracker().getFields().addAll(valueTypeList.getFieldValues());
         }
 
-        Collection<IDBRelation> dbRelations = CacheManager.fieldCache.getRelations(type);
+        Collection<IDBRelation> dbRelations = entityInfo.getRelations();
         for (IDBRelation relation : dbRelations)
         {
             loadChildrenFromRelation(entity, type, con,relation,false);
@@ -180,14 +185,11 @@ public class ERDataRetrievalManager extends ERDataCommonManager
     }
 
     public void loadChildrenFromRelation(ServerRODBClass parentRoEntity, Class type
-            , Connection con, IDBRelation relation,boolean lazy) throws NoSuchMethodException, IllegalAccessException
-            , InvocationTargetException, TableCacheMissException, QueryBuildingException, SQLException
-            , FieldCacheMissException, InstantiationException, NoSetterFoundToSetChildObjectListException
-            , RetrievalException, NoMatchingColumnFoundException, EntityRegistrationException
-            , SequenceGeneratorInitializationException
+            , Connection con, IDBRelation relation,boolean lazy) throws DbGateException
     {
-        Method getter = CacheManager.methodCache.getGetter(type,relation.getAttributeName());
-        Method setter = CacheManager.methodCache.getSetter(type,relation.getAttributeName(),new Class[]{getter.getReturnType()});
+        EntityInfo entityInfo = CacheManager.getEntityInfo(type);
+        Method getter = entityInfo.getGetter(relation.getAttributeName());
+        Method setter = entityInfo.getSetter(relation.getAttributeName(),new Class[]{getter.getReturnType()});
 
         if (!lazy && relation.isLazy())
         {
@@ -199,12 +201,12 @@ public class ERDataRetrievalManager extends ERDataCommonManager
             
             Object proxy = Enhancer.create(proxyType, new ChildLoadInterceptor(this, parentRoEntity, type, con,
                                                                                relation));
-            setter.invoke(parentRoEntity,proxy);
+            ReflectionUtils.setValue(setter, parentRoEntity, proxy);
             return;
         }
 
         IEntityContext entityContext = parentRoEntity.getContext();
-        Object value = getter.invoke(parentRoEntity);
+        Object value = ReflectionUtils.getValue(getter,parentRoEntity);
 
         Collection<ServerRODBClass> children = readRelationChildrenFromDb(parentRoEntity,type,con,relation);
         if (entityContext != null
@@ -223,7 +225,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         if ((value == null || Enhancer.isEnhanced(value.getClass()))
                 && ReflectionUtils.isImplementInterface(getter.getReturnType(),Collection.class))
         {
-            setter.invoke(parentRoEntity, children);
+            ReflectionUtils.setValue(setter, parentRoEntity, children);
         }
         else if (value != null
                 && ReflectionUtils.isImplementInterface(getter.getReturnType(),Collection.class))
@@ -237,7 +239,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                 ServerRODBClass singleRODBClass = children.iterator().next();
                 if (getter.getReturnType().isAssignableFrom(singleRODBClass.getClass()))
                 {
-                    setter.invoke(parentRoEntity,singleRODBClass);
+                    ReflectionUtils.setValue(setter, parentRoEntity, singleRODBClass);
                 }
                 else
                 {

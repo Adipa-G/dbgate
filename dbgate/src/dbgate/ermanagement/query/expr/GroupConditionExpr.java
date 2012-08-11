@@ -1,7 +1,6 @@
 package dbgate.ermanagement.query.expr;
 
 import dbgate.DBColumnType;
-import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**

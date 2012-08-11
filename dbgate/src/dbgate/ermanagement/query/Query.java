@@ -1,11 +1,9 @@
 package dbgate.ermanagement.query;
 
-import dbgate.IRODBClass;
-import dbgate.ermanagement.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.UUID;
+import dbgate.ermanagement.IQuery;
+import dbgate.ermanagement.IQueryCondition;
+import dbgate.ermanagement.IQueryFrom;
+import dbgate.ermanagement.IQueryJoin;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,5 +1,9 @@
 package dbgate.ermanagement.impl.utils;
 
+import dbgate.ermanagement.exceptions.common.EntityInstantiationException;
+import dbgate.ermanagement.exceptions.common.MethodInvocationException;
+
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,5 +86,47 @@ public class ReflectionUtils
             }
         }
         return false;
+    }
+
+    public static Object getValue(Method getter,Object target) throws MethodInvocationException
+    {
+        try
+        {
+            return getter.invoke(target);
+        }
+        catch (Exception ex)
+        {
+            String message = String.format("Exception while trying to invoking getter %s of entity %s"
+                    ,getter.getName(),target.getClass().getCanonicalName());
+            throw new MethodInvocationException(message,ex);
+        }
+    }
+
+    public static void setValue(Method setter,Object target,Object value) throws MethodInvocationException
+    {
+        try
+        {
+            setter.invoke(target,value);
+        }
+        catch (Exception ex)
+        {
+            String message = String.format("Exception while trying to invoking setter %s of entity %s"
+                    ,setter.getName(),target.getClass().getCanonicalName());
+            throw new MethodInvocationException(message,ex);
+        }
+    }
+
+    public static Object createInstance(Class type) throws EntityInstantiationException
+    {
+        try
+        {
+            return type.newInstance();
+        }
+        catch (Exception ex)
+        {
+            String message = String.format("Exception while trying to create an instance of type %s"
+                    ,type.getClass().getCanonicalName());
+            throw new EntityInstantiationException(message,ex);
+        }
     }
 }

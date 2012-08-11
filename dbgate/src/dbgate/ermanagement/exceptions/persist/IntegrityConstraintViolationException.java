@@ -1,6 +1,6 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.persist;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.BaseException;
  * Date: Mar 26, 2011
  * Time: 7:08:38 PM
  */
-public class IntegrityConstraintViolationException extends BaseException
+public class IntegrityConstraintViolationException extends DbGateException
 {
     public IntegrityConstraintViolationException()
     {

@@ -1,12 +1,12 @@
-package dbgate.ermanagement.exceptions;
+package dbgate.ermanagement.exceptions.persist;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Date: Mar 28, 2011
  * Time: 10:05:55 PM
  */
-public class DataUpdatedFromAnotherSourceException extends BaseException
+public class DataUpdatedFromAnotherSourceException extends DbGateException
 {
     public DataUpdatedFromAnotherSourceException()
     {

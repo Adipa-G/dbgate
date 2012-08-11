@@ -3,7 +3,6 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query;
 import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 
-import java.util.HashMap;
 import java.util.Hashtable;
 
 /**

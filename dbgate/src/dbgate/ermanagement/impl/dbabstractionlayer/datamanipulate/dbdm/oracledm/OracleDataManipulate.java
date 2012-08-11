@@ -1,8 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.oracledm;
 
 import dbgate.DBColumnType;
-import dbgate.DateWrapper;
-import dbgate.TimeStampWrapper;
+import dbgate.ermanagement.exceptions.common.StatementExecutionException;
+import dbgate.ermanagement.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
@@ -29,58 +29,67 @@ public class OracleDataManipulate extends AbstractDataManipulate
     }
 
     @Override
-    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo) throws SQLException
+    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo)
+        throws StatementPreparingException,StatementExecutionException
     {
-        boolean storedProcedure = isStoredProcedure(execInfo.getSql());
-
-        PreparedStatement ps;
-        ResultSet rs;
-
-        if (storedProcedure)
+        try
         {
-            ps = con.prepareCall(execInfo.getSql());
-        }
-        else
-        {
-            ps = con.prepareStatement(execInfo.getSql());
-        }
+            boolean storedProcedure = isStoredProcedure(execInfo.getSql());
 
-        List<QueryExecParam> params = execInfo.getParams();
-        Collections.sort(params, new Comparator<QueryExecParam>()
-        {
-            @Override
-            public int compare(QueryExecParam o1, QueryExecParam o2)
+            PreparedStatement ps;
+            ResultSet rs;
+
+            if (storedProcedure)
             {
-                return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
+                ps = con.prepareCall(execInfo.getSql());
             }
-        });
-
-        for (int i = 0; i < (storedProcedure ? params.size() + 1 : params.size()); i++)
-        {
-            int count = i + 1;
-            if (i == 0 && storedProcedure)
+            else
             {
-                ((CallableStatement) ps).registerOutParameter(count, OracleTypes.CURSOR);
-                continue;
+                ps = con.prepareStatement(execInfo.getSql());
             }
 
-            QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
-            DBColumnType type = param.getType();
-            Object value = param.getValue();
+            List<QueryExecParam> params = execInfo.getParams();
+            Collections.sort(params, new Comparator<QueryExecParam>()
+            {
+                @Override
+                public int compare(QueryExecParam o1, QueryExecParam o2)
+                {
+                    return (new Integer(o1.getIndex())).compareTo(o2.getIndex());
+                }
+            });
 
-            setToPreparedStatement(ps,value,count,value == null,type);
-        }
+            for (int i = 0; i < (storedProcedure ? params.size() + 1 : params.size()); i++)
+            {
+                int count = i + 1;
+                if (i == 0 && storedProcedure)
+                {
+                    ((CallableStatement) ps).registerOutParameter(count, OracleTypes.CURSOR);
+                    continue;
+                }
 
-        if (storedProcedure)
-        {
-            ps.execute();
-            rs = ((OracleCallableStatement) ps).getCursor(1);
+                QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
+                DBColumnType type = param.getType();
+                Object value = param.getValue();
+
+                setToPreparedStatement(ps,value,count,value == null,type);
+            }
+
+            if (storedProcedure)
+            {
+                ps.execute();
+                rs = ((OracleCallableStatement) ps).getCursor(1);
+            }
+            else
+            {
+                rs = ps.executeQuery();
+            }
+            return rs;
         }
-        else
+        catch (SQLException ex)
         {
-            rs = ps.executeQuery();
+            String message = String.format("SQL Exception while trying set executing %s",execInfo.getSql());
+            throw new StatementExecutionException(message,ex);
         }
-        return rs;
     }
 
     private static  boolean isStoredProcedure(String sql)

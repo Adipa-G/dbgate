@@ -1,7 +1,9 @@
 package dbgate.ermanagement.support.query.basic;
 
 import dbgate.DBColumnType;
-import dbgate.ermanagement.*;
+import dbgate.ermanagement.DBColumnInfo;
+import dbgate.ermanagement.DBTableInfo;
+import dbgate.ermanagement.DefaultServerDBClass;
 
 /**
  * Created by IntelliJ IDEA.

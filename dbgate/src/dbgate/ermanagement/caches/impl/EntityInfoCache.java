@@ -1,0 +1,349 @@
+package dbgate.ermanagement.caches.impl;
+
+import dbgate.IRODBClass;
+import dbgate.ServerRODBClass;
+import dbgate.ermanagement.*;
+import dbgate.ermanagement.caches.IEntityInfoCache;
+import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
+import dbgate.ermanagement.exceptions.common.EntityRegistrationException;
+import dbgate.ermanagement.impl.utils.ReflectionUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: Adipa
+ * Date: 8/11/12
+ * Time: 3:32 PM
+ * To change this template use File | Settings | File Templates.
+ */
+public class EntityInfoCache implements IEntityInfoCache
+{
+    private final static HashMap<Class,EntityInfo> cache = new HashMap<>();
+    private IERLayerConfig config;
+
+    public EntityInfoCache(IERLayerConfig config)
+    {
+        this.config = config;
+    }
+
+    @Override
+    public EntityInfo getEntityInfo(Class type)
+    {
+        try
+        {
+            if (!cache.containsKey(type))
+            {
+                register(type);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(config.getLoggerName()).log(Level.SEVERE,ex.getMessage(),ex);
+        }
+        return cache.get(type);
+    }
+
+    @Override
+    public EntityInfo getEntityInfo(IRODBClass entity)
+    {
+        Class type = entity.getClass();
+        try
+        {
+            if (!cache.containsKey(type))
+            {
+                register(type);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(config.getLoggerName()).log(Level.SEVERE,ex.getMessage(),ex);
+        }
+        return cache.get(type);
+    }
+
+    @Override
+    public void register(Class subType, String tableName, Collection<IField> fields)
+    {
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{ServerRODBClass.class});
+        Class immediateSuper = typeList.length > 1 ? typeList[1] : null;
+
+        EntityInfo subEntityInfo = new EntityInfo(subType);
+        subEntityInfo.setFields(fields);
+        subEntityInfo.setTableName(tableName);
+
+        if (immediateSuper != null
+                && cache.containsKey(immediateSuper))
+        {
+            EntityInfo immediateSuperEntityInfo = cache.get(immediateSuper);
+            subEntityInfo.setSuperEntityInfo(immediateSuperEntityInfo);
+        }
+
+        synchronized (cache)
+        {
+            cache.put(subType,subEntityInfo);
+        }
+    }
+
+    public void register(Class type) throws SequenceGeneratorInitializationException, EntityRegistrationException
+    {
+        if (cache.containsKey(type))
+        {
+            return;
+        }
+        HashMap<Class,EntityInfo> extracted = extractTableAndFieldInfo(type);
+        synchronized (cache)
+        {
+            for (Class regType : extracted.keySet())
+            {
+                cache.put(regType,extracted.get(regType));
+            }
+        }
+    }
+
+    @Override
+    public void clear()
+    {
+        synchronized (cache)
+        {
+            cache.clear();
+        }
+    }
+
+    private HashMap<Class,EntityInfo> extractTableAndFieldInfo(Class subType) throws SequenceGeneratorInitializationException,EntityRegistrationException
+    {
+        HashMap<Class,EntityInfo> entityInfoMap = new HashMap<>();
+
+        EntityInfo subEntity = null;
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{ServerRODBClass.class});
+        for (Class regType : typeList)
+        {
+            if (cache.containsKey(regType))
+            {
+                subEntity.setSuperEntityInfo(cache.get(regType));
+                continue;
+            }
+
+            String tableName = getTableName(regType, subType);
+            Collection<IField> fields = getAllFields(regType, subType);
+
+            if (tableName != null || fields.size() > 0)
+            {
+                EntityInfo entityInfo = new EntityInfo(regType);
+                entityInfo.setFields(fields);
+                entityInfo.setTableName(tableName);
+                if (subEntity != null)
+                {
+                    subEntity.setSuperEntityInfo(entityInfo);
+                }
+                entityInfoMap.put(regType,entityInfo);
+                subEntity = entityInfo;
+            }
+        }
+        return entityInfoMap;
+    }
+
+    private static String getTableName(Class regType,Class subType) throws EntityRegistrationException
+    {
+        String tableName = getTableNameIfManagedClass(regType,subType);
+        if (tableName == null)
+        {
+            Annotation[] annotations = regType.getAnnotations();
+            for (Annotation annotation : annotations)
+            {
+                if (annotation instanceof DBTableInfo)
+                {
+                    DBTableInfo tableInfo = (DBTableInfo) annotation;
+                    tableName = tableInfo.tableName();
+                    break;
+                }
+            }
+        }
+        return tableName;
+    }
+
+    private static String getTableNameIfManagedClass(Class regType,Class subType) throws EntityRegistrationException
+    {
+        if (ReflectionUtils.isImplementInterface(regType, IManagedDBClass.class))
+        {
+            try
+            {
+                IManagedDBClass managedDBClass = (IManagedDBClass)subType.newInstance();
+                return managedDBClass.getTableNames().get(regType);
+            }
+            catch (Exception e)
+            {
+                throw  new EntityRegistrationException(String.format("Could not register type %s",regType.getCanonicalName()),e);
+            }
+        }
+        return null;
+    }
+
+    private static Collection<IField> getAllFields(Class regType,Class subType) throws EntityRegistrationException,SequenceGeneratorInitializationException
+    {
+        Collection<IField> fields = getFieldsIfManagedClass(regType,subType);
+        Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(regType,new Class[]{ServerRODBClass.class});
+
+        for (int i = 0; i < superTypes.length; i++)
+        {
+            Class superType = superTypes[i];
+            fields.addAll(getAllFields(superType,i > 0));
+        }
+
+        return fields;
+    }
+
+    private static Collection<IField> getFieldsIfManagedClass(Class regType,Class subType) throws EntityRegistrationException
+    {
+        if (ReflectionUtils.isImplementInterface(regType, IManagedDBClass.class))
+        {
+            try
+            {
+                IManagedDBClass managedDBClass = (IManagedDBClass)subType.newInstance();
+                return getFieldsForManagedClass(managedDBClass,regType);
+            }
+            catch (Exception e)
+            {
+                throw  new EntityRegistrationException(String.format("Could not register type %s",regType.getCanonicalName()),e);
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    private static Collection<IField> getFieldsForManagedClass(IManagedRODBClass entity,Class type)
+    {
+        Collection<IField> fields = new ArrayList<>();
+
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{ServerRODBClass.class});
+        for (Class targetType : typeList)
+        {
+            Collection<IField> targetTypeFields = entity.getFieldInfo().get(targetType);
+            if (targetType == type && targetTypeFields != null)
+            {
+                fields.addAll(targetTypeFields);
+            }
+            else if (targetTypeFields != null)
+            {
+                for (IField field : targetTypeFields)
+                {
+                    if (field instanceof IDBColumn)
+                    {
+                        IDBColumn column = (IDBColumn) field;
+                        if (column.isSubClassCommonColumn())
+                        {
+                            fields.add(column);
+                        }
+                    }
+                }
+            }
+        }
+
+        return fields;
+    }
+
+    private static Collection<IField> getAllFields(Class type,boolean superClass) throws SequenceGeneratorInitializationException
+    {
+        Collection<IField> fields = new ArrayList<IField>();
+
+        Field[] dbClassFields = type.getDeclaredFields();
+        for (Field dbClassField : dbClassFields)
+        {
+            Annotation[] annotations = dbClassField.getAnnotations();
+            for (Annotation annotation : annotations)
+            {
+                if (annotation instanceof DBColumnInfo)
+                {
+                    DBColumnInfo dbColumnInfo = (DBColumnInfo) annotation;
+                    IDBColumn column = createColumnMapping(dbClassField, dbColumnInfo);
+                    if (superClass)
+                    {
+                        if (column.isSubClassCommonColumn())
+                        {
+                            fields.add(column);
+                        }
+                    }
+                    else
+                    {
+                        fields.add(column);
+                    }
+                }
+                else if (annotation instanceof ForeignKeyInfo)
+                {
+                    if (superClass)
+                    {
+                        continue;
+                    }
+                    ForeignKeyInfo foreignKeyInfo = (ForeignKeyInfo) annotation;
+                    IDBRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
+                    fields.add(relation);
+                }
+                else if (annotation instanceof ForeignKeyInfoList)
+                {
+                    if (superClass)
+                    {
+                        continue;
+                    }
+                    ForeignKeyInfoList foreignKeyInfoList = (ForeignKeyInfoList) annotation;
+                    for (ForeignKeyInfo foreignKeyInfo : foreignKeyInfoList.infoList())
+                    {
+                        IDBRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
+                        fields.add(relation);
+                    }
+                }
+            }
+        }
+
+        return fields;
+    }
+
+    private static IDBColumn createColumnMapping(Field dbClassField, DBColumnInfo dbColumnInfo) throws SequenceGeneratorInitializationException
+    {
+        IDBColumn column = new DefaultDBColumn(dbClassField.getName(),dbColumnInfo.columnType(),dbColumnInfo.nullable());
+        if (dbColumnInfo.columnName() != null
+                && dbColumnInfo.columnName().trim().length() > 0)
+        {
+            column.setColumnName(dbColumnInfo.columnName());
+        }
+        column.setKey(dbColumnInfo.key());
+        column.setSize(dbColumnInfo.size());
+        column.setSubClassCommonColumn(dbColumnInfo.subClassCommonColumn());
+        column.setReadFromSequence(dbColumnInfo.readFromSequence());
+        if (column.isReadFromSequence())
+        {
+            try
+            {
+                column.setSequenceGenerator((ISequenceGenerator) Class.forName(dbColumnInfo.sequenceGeneratorClassName()).newInstance());
+            }
+            catch (Exception e)
+            {
+
+                throw new SequenceGeneratorInitializationException(String.format("Could not initialize sequence generator %s",dbColumnInfo.sequenceGeneratorClassName()),e);
+            }
+        }
+        return column;
+    }
+
+    private static IDBRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
+    {
+        DBRelationColumnMapping[] objectMappings = new DBRelationColumnMapping[foreignKeyInfo.columnMappings().length];
+        ForeignKeyColumnMapping[] annotationMappings = foreignKeyInfo.columnMappings();
+        for (int i = 0, columnMappingsLength = annotationMappings.length; i < columnMappingsLength; i++)
+        {
+            ForeignKeyColumnMapping mapping = annotationMappings[i];
+            objectMappings[i] = new DBRelationColumnMapping(mapping.fromField(),mapping.toField());
+        }
+
+        IDBRelation relation = new DefaultDBRelation(dbClassField.getName(),foreignKeyInfo.name()
+                ,foreignKeyInfo.relatedObjectType(),objectMappings,foreignKeyInfo.updateRule()
+                ,foreignKeyInfo.deleteRule(),foreignKeyInfo.reverseRelation()
+                ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.lazy());
+
+        return relation;
+    }
+}

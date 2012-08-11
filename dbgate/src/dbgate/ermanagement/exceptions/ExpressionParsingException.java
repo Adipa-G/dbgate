@@ -1,6 +1,6 @@
 package dbgate.ermanagement.exceptions;
 
-import dbgate.BaseException;
+import dbgate.DbGateException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +9,7 @@ import dbgate.BaseException;
  * Time: 3:43 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ExpressionParsingException extends BaseException
+public class ExpressionParsingException extends DbGateException
 {
     public ExpressionParsingException()
     {

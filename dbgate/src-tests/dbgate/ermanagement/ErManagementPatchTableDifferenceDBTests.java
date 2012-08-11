@@ -1,6 +1,5 @@
 package dbgate.ermanagement;
 
-import dbgate.ServerDBClass;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.support.patch.patchtabledifferences.FourColumnEntity;
