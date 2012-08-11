@@ -62,10 +62,10 @@ public class ErManagementPatchEmptyDBTests
         {
             Connection connection = connector.getConnection();
 
-            Collection<ServerDBClass> dbClasses = new ArrayList<>();
-            dbClasses.add(new LeafEntitySubA());
-            dbClasses.add(new LeafEntitySubB());
-            dbClasses.add(new RootEntity());
+            Collection<Class> dbClasses = new ArrayList<>();
+            dbClasses.add(LeafEntitySubA.class);
+            dbClasses.add(LeafEntitySubB.class);
+            dbClasses.add(RootEntity.class);
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
 
             int id = 35;
@@ -95,10 +95,10 @@ public class ErManagementPatchEmptyDBTests
     {
         Connection connection = connector.getConnection();
 
-        Collection<ServerDBClass> dbClasses = new ArrayList<>();
-        dbClasses.add(new LeafEntitySubA());
-        dbClasses.add(new LeafEntitySubB());
-        dbClasses.add(new RootEntity());
+        Collection<Class> dbClasses = new ArrayList<>();
+        dbClasses.add(LeafEntitySubA.class);
+        dbClasses.add(LeafEntitySubB.class);
+        dbClasses.add(RootEntity.class);
         ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
 
         int id = 35;
@@ -121,10 +121,10 @@ public class ErManagementPatchEmptyDBTests
     {
         Connection connection = connector.getConnection();
 
-        Collection<ServerDBClass> dbClasses = new ArrayList<>();
-        dbClasses.add(new LeafEntitySubA());
-        dbClasses.add(new LeafEntitySubB());
-        dbClasses.add(new RootEntity());
+        Collection<Class> dbClasses = new ArrayList<>();
+        dbClasses.add(LeafEntitySubA.class);
+        dbClasses.add(LeafEntitySubB.class);
+        dbClasses.add(RootEntity.class);
         ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
 
         int id = 35;
@@ -147,10 +147,10 @@ public class ErManagementPatchEmptyDBTests
     {
         Connection connection = connector.getConnection();
 
-        Collection<ServerDBClass> dbClasses = new ArrayList<>();
-        dbClasses.add(new LeafEntitySubA());
-        dbClasses.add(new LeafEntitySubB());
-        dbClasses.add(new RootEntity());
+        Collection<Class> dbClasses = new ArrayList<>();
+        dbClasses.add(LeafEntitySubA.class);
+        dbClasses.add(LeafEntitySubB.class);
+        dbClasses.add(RootEntity.class);
 
         ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
         

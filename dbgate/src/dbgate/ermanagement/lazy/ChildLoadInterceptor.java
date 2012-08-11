@@ -64,7 +64,7 @@ public class ChildLoadInterceptor implements MethodInterceptor
                 }
             }
 
-            Method getter = CacheManager.methodCache.getGetter(parentRoEntity,relation.getAttributeName());
+            Method getter = CacheManager.methodCache.getGetter(parentRoEntity.getClass(),relation.getAttributeName());
             objectToInvoke = getter.invoke(parentRoEntity);
         }
 

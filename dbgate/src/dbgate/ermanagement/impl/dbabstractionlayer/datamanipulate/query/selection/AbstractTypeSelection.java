@@ -1,6 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
 import dbgate.ServerRODBClass;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -40,7 +41,7 @@ public class AbstractTypeSelection implements IAbstractSelection
     }
 
     @Override
-    public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         String alias = buildInfo.getAlias(type);
         if (alias != null)

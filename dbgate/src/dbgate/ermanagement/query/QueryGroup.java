@@ -1,6 +1,7 @@
 package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQueryGroup;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractExpressionGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractGroupFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractSqlQueryGroup;
@@ -29,7 +30,7 @@ public class QueryGroup
         return queryGroup;
     }
     
-    public static IQueryGroup field(Class type, String field)
+    public static IQueryGroup field(Class type, String field) throws ExpressionParsingException
     {
         AbstractExpressionGroup expressionGroup = (AbstractExpressionGroup) factory.createGroup(QueryGroupExpressionType.EXPRESSION);
         expressionGroup.setExpr(GroupExpr.build().field(type,field));

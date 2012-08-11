@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr.segments;
 
-import dbgate.ermanagement.query.expr.ExpressionParsingError;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +45,7 @@ public class MergeSegment extends BaseSegment
     }
 
     @Override
-    public ISegment add(ISegment segment)
+    public ISegment add(ISegment segment) throws ExpressionParsingException
     {
         switch (segment.getSegmentType())
         {

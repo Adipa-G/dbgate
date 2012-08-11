@@ -3,6 +3,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 import dbgate.ermanagement.IDBColumn;
 import dbgate.ermanagement.IDBRelation;
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -38,5 +39,5 @@ public interface IDataManipulate
 
     ResultSet createResultSet(Connection con, QueryExecInfo execInfo) throws SQLException;
 
-    QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure);
+    QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure) throws ExpressionParsingException;
 }

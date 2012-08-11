@@ -24,7 +24,7 @@ public interface IERLayer
 
     Collection select(ISelectionQuery query,Connection con ) throws RetrievalException;
 
-    void patchDataBase(Connection con, Collection<ServerDBClass> dbClasses, boolean dropAll) throws DBPatchingException;
+    void patchDataBase(Connection con, Collection<Class> entityTypes, boolean dropAll) throws DBPatchingException;
 
     void clearCache();
 

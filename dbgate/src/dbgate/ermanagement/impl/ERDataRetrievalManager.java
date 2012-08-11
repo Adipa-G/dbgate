@@ -103,7 +103,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         try
         {
             ERSessionUtils.initSession(roEntity);
-            ERDataManagerUtils.registerTypes(roEntity);
+            ERDataManagerUtils.registerType(roEntity.getClass());
             loadFromDb(roEntity, rs, con);
             ERSessionUtils.destroySession(roEntity);
         }
@@ -117,7 +117,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
     private void loadFromDb(ServerRODBClass roEntity, ResultSet rs, Connection con) throws TableCacheMissException
             , FieldCacheMissException, InvocationTargetException, NoSuchMethodException, IllegalAccessException
             , SQLException, QueryBuildingException, InstantiationException, NoSetterFoundToSetChildObjectListException
-            , RetrievalException, NoMatchingColumnFoundException, NoMatchingRecordFoundForSuperClassException, NoFieldsFoundException
+            , RetrievalException, NoMatchingColumnFoundException, NoMatchingRecordFoundForSuperClassException, EntityRegistrationException
             , SequenceGeneratorInitializationException
     {
         Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(roEntity.getClass(),new Class[]{ServerRODBClass.class});
@@ -160,7 +160,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
     private void loadForType(ServerRODBClass entity,Class type, ResultSet rs, Connection con) throws FieldCacheMissException
             , InvocationTargetException, NoSuchMethodException, IllegalAccessException, SQLException
             , TableCacheMissException, QueryBuildingException, InstantiationException, NoSetterFoundToSetChildObjectListException
-            , RetrievalException, NoMatchingColumnFoundException, SequenceGeneratorInitializationException, NoFieldsFoundException
+            , RetrievalException, NoMatchingColumnFoundException, SequenceGeneratorInitializationException, EntityRegistrationException
     {
         IEntityContext entityContext = entity.getContext();
         ITypeFieldValueList valueTypeList = readValues(type,rs);
@@ -183,11 +183,11 @@ public class ERDataRetrievalManager extends ERDataCommonManager
             , Connection con, IDBRelation relation,boolean lazy) throws NoSuchMethodException, IllegalAccessException
             , InvocationTargetException, TableCacheMissException, QueryBuildingException, SQLException
             , FieldCacheMissException, InstantiationException, NoSetterFoundToSetChildObjectListException
-            , RetrievalException, NoMatchingColumnFoundException, NoFieldsFoundException
+            , RetrievalException, NoMatchingColumnFoundException, EntityRegistrationException
             , SequenceGeneratorInitializationException
     {
-        Method getter = CacheManager.methodCache.getGetter(parentRoEntity,relation.getAttributeName());
-        Method setter = CacheManager.methodCache.getSetter(parentRoEntity,relation.getAttributeName(),new Class[]{getter.getReturnType()});
+        Method getter = CacheManager.methodCache.getGetter(type,relation.getAttributeName());
+        Method setter = CacheManager.methodCache.getSetter(type,relation.getAttributeName(),new Class[]{getter.getReturnType()});
 
         if (!lazy && relation.isLazy())
         {

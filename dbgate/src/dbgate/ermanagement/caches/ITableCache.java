@@ -1,6 +1,7 @@
 package dbgate.ermanagement.caches;
 
 import dbgate.ServerRODBClass;
+import dbgate.ermanagement.exceptions.EntityRegistrationException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 
 /**
@@ -15,7 +16,7 @@ public interface ITableCache
 
     void register(Class type,String tableName);
 
-    void register(Class type,ServerRODBClass serverRODBClass);
+    void register(Class type) throws EntityRegistrationException;
 
     void clear();
 }

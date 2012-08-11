@@ -56,15 +56,15 @@ public class ErManagementPatchTableDifferenceDBTests
         try
         {
             Connection connection = connector.getConnection();
-            Collection<ServerDBClass> dbClasses = new ArrayList<>();
-            dbClasses.add(new ThreeColumnEntity());
+            Collection<Class> dbClasses = new ArrayList<>();
+            dbClasses.add(ThreeColumnEntity.class);
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
 
             connection = connector.getConnection();
             dbClasses = new ArrayList<>();
-            dbClasses.add(new FourColumnEntity());
+            dbClasses.add(FourColumnEntity.class);
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
             connection.close();
@@ -90,15 +90,15 @@ public class ErManagementPatchTableDifferenceDBTests
         try
         {
             Connection connection = connector.getConnection();
-            Collection<ServerDBClass> dbClasses = new ArrayList<>();
-            dbClasses.add(new FourColumnEntity());
+            Collection<Class> dbClasses = new ArrayList<>();
+            dbClasses.add(FourColumnEntity.class);
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
 
             connection = connector.getConnection();
             dbClasses = new ArrayList<>();
-            dbClasses.add(new ThreeColumnEntity());
+            dbClasses.add(ThreeColumnEntity.class);
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
             connection.close();
@@ -137,8 +137,8 @@ public class ErManagementPatchTableDifferenceDBTests
             }
 
             Connection connection = connector.getConnection();
-            Collection<ServerDBClass> dbClasses = new ArrayList<>();
-            dbClasses.add(new ThreeColumnEntity());
+            Collection<Class> dbClasses = new ArrayList<>();
+            dbClasses.add(ThreeColumnEntity.class);
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
@@ -161,7 +161,7 @@ public class ErManagementPatchTableDifferenceDBTests
 
             connection = connector.getConnection();
             dbClasses = new ArrayList<>();
-            dbClasses.add(new ThreeColumnTypeDifferentEntity());
+            dbClasses.add(ThreeColumnTypeDifferentEntity.class);
             ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
             connection.close();

@@ -5,6 +5,7 @@ import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
@@ -528,7 +529,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return sql.replaceAll(" ", "").contains("begin?:=");
     }
 
-    public QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure)
+    public QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure) throws ExpressionParsingException
     {
         buildInfo = new QueryBuildInfo(buildInfo);
         buildInfo.setCurrentQueryId(structure.getQueryId());
@@ -573,7 +574,7 @@ public class AbstractDataManipulate implements IDataManipulate
         }
     }
 
-    private void processSelection(StringBuilder querySb,QueryBuildInfo buildInfo,QueryStructure structure)
+    private void processSelection(StringBuilder querySb,QueryBuildInfo buildInfo,QueryStructure structure) throws ExpressionParsingException
     {
         StringBuilder selectSb = new StringBuilder();
         selectSb.append("SELECT ");
@@ -598,7 +599,7 @@ public class AbstractDataManipulate implements IDataManipulate
         querySb.insert(0,selectSb.toString());
     }
 
-    protected String CreateSelectionSql(IQuerySelection selection,QueryBuildInfo buildInfo)
+    protected String CreateSelectionSql(IQuerySelection selection,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         if (selection != null)
         {
@@ -607,7 +608,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect Selection*/";
     }
 
-    private void processFrom(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
+    private void processFrom(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure) throws ExpressionParsingException
     {
         sb.append(" FROM ");
 
@@ -624,7 +625,7 @@ public class AbstractDataManipulate implements IDataManipulate
         }
     }
 
-    protected String CreateFromSql(IQueryFrom from,QueryBuildInfo buildInfo)
+    protected String CreateFromSql(IQueryFrom from,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         if (from != null)
         {
@@ -633,7 +634,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect From*/";
     }
 
-    private void processJoin(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
+    private void processJoin(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure) throws ExpressionParsingException
     {
         Collection<IQueryJoin> joinList = structure.getJoinList();
         if (joinList.size() == 0)
@@ -646,7 +647,7 @@ public class AbstractDataManipulate implements IDataManipulate
         }
     }
 
-    protected String CreateJoinSql(IQueryJoin join,QueryBuildInfo buildInfo)
+    protected String CreateJoinSql(IQueryJoin join,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         if (join != null)
         {
@@ -655,7 +656,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect Join*/";
     }
 
-    private void processWhere(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
+    private void processWhere(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure) throws ExpressionParsingException
     {
         Collection<IQueryCondition> conditionList = structure.getConditionList();
 
@@ -676,7 +677,7 @@ public class AbstractDataManipulate implements IDataManipulate
         }
     }
 
-    protected String CreateWhereSql(IQueryCondition condition,QueryBuildInfo buildInfo)
+    protected String CreateWhereSql(IQueryCondition condition,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         if (condition != null)
         {
@@ -714,7 +715,7 @@ public class AbstractDataManipulate implements IDataManipulate
         return "/*Incorrect Group*/";
     }
 
-    private void processGroupCondition(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure)
+    private void processGroupCondition(StringBuilder sb, QueryBuildInfo buildInfo, QueryStructure structure) throws ExpressionParsingException
     {
         Collection<IQueryGroupCondition> groupConditionList = structure.getGroupConditionList();
         if (groupConditionList.size() == 0)
@@ -734,7 +735,7 @@ public class AbstractDataManipulate implements IDataManipulate
         }
     }
 
-    protected String CreateGroupConditionSql(IQueryGroupCondition groupCondition,QueryBuildInfo buildInfo)
+    protected String CreateGroupConditionSql(IQueryGroupCondition groupCondition,QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         if (groupCondition != null)
         {

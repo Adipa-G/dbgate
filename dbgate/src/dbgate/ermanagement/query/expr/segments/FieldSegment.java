@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr.segments;
 
-import dbgate.ermanagement.query.expr.ExpressionParsingError;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,6 +15,17 @@ public class FieldSegment extends BaseSegment
     private String typeAlias;
     private String field;
     private String alias;
+
+    public FieldSegment(String field)
+    {
+        this.field = field;
+    }
+
+    public FieldSegment(String field, String alias)
+    {
+        this.field = field;
+        this.alias = alias;
+    }
 
     public FieldSegment(Class type, String field)
     {
@@ -64,14 +75,14 @@ public class FieldSegment extends BaseSegment
     }
 
     @Override
-    public ISegment add(ISegment segment)
+    public ISegment add(ISegment segment) throws ExpressionParsingException
     {
         switch (segment.getSegmentType())
         {
             case FIELD:
             case VALUE:
             case QUERY:
-                throw new ExpressionParsingError("Cannot add field/value/query segments to field segment");
+                throw new ExpressionParsingException("Cannot add field/value/query segments to field segment");
             case MERGE:
                 segment.add(this);
                 return segment;

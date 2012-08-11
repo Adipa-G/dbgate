@@ -1,12 +1,14 @@
 package dbgate.ermanagement.caches.impl;
 
+import dbgate.ServerDBClass;
 import dbgate.ServerRODBClass;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.IFieldCache;
+import dbgate.ermanagement.exceptions.EntityRegistrationException;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
-import dbgate.ermanagement.exceptions.NoFieldsFoundException;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
 import dbgate.ermanagement.impl.utils.DBClassAttributeExtractionUtils;
+import dbgate.ermanagement.impl.utils.ReflectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -103,27 +105,96 @@ public class FieldCache implements IFieldCache
     }
 
     @Override
-    public void register(Class type,ServerRODBClass serverRODBClass) throws SequenceGeneratorInitializationException,NoFieldsFoundException
+    public void register(Class type) throws SequenceGeneratorInitializationException,EntityRegistrationException
     {
-        String cacheKey = getCacheKey(type);
-        if (columnCache.containsKey(cacheKey))
+        if (columnCache.containsKey(getCacheKey(type)))
         {
             return;
         }
-        Collection<IField> applicableDbColumns = DBClassAttributeExtractionUtils.getAllFields(serverRODBClass,type);
-        if (applicableDbColumns == null)
+
+        IManagedRODBClass managedDBClass = null;
+        if (ReflectionUtils.isImplementInterface(type, IManagedRODBClass.class))
         {
-            throw new NoFieldsFoundException(String.format("Can't find list of fields for type %s",type.getCanonicalName()));
+            try
+            {
+                managedDBClass = (IManagedRODBClass)type.newInstance();
+            }
+            catch (Exception e)
+            {
+                throw  new EntityRegistrationException(String.format("Could not register type %s",type.getCanonicalName()),e);
+            }
         }
+
+        HashMap<String, Collection<IField>> tempStore = new HashMap<>();
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{ServerRODBClass.class});
+        for (Class regType : typeList)
+        {
+            String cacheKey = getCacheKey(regType);
+            if (columnCache.containsKey(cacheKey))
+            {
+                continue;
+            }
+
+            Collection<IField> extractedFields = DBClassAttributeExtractionUtils.getAllFields(regType);
+            Collection<IField> managedFields = managedDBClass != null
+                    ? getFieldsForManagedClass(managedDBClass,regType)
+                    : new ArrayList<IField>();
+
+            if (managedFields != null)
+            {
+                extractedFields.addAll(managedFields);
+            }
+            tempStore.put(cacheKey,extractedFields );
+        }
+
+        if (tempStore.isEmpty())
+        {
+            throw new EntityRegistrationException(String.format("Can't find list of fields for type %s",type.getCanonicalName()));
+        }
+
         synchronized (columnCache)
         {
-            columnCache.put(cacheKey, applicableDbColumns);
+            for (String cacheKey : tempStore.keySet())
+            {
+                columnCache.put(cacheKey,tempStore.get(cacheKey));
+            }
         }
     }
 
     private String getCacheKey(Class type)
     {
         return type.getCanonicalName();
+    }
+
+    private Collection<IField> getFieldsForManagedClass(IManagedRODBClass entity,Class type)
+    {
+        Collection<IField> fields = new ArrayList<>();
+
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{ServerRODBClass.class});
+        for (Class targetType : typeList)
+        {
+            Collection<IField> targetTypeFields = entity.getFieldInfo().get(targetType);
+            if (targetType == type && targetTypeFields != null)
+            {
+                fields.addAll(targetTypeFields);
+            }
+            else if (targetTypeFields != null)
+            {
+                for (IField field : targetTypeFields)
+                {
+                    if (field instanceof IDBColumn)
+                    {
+                        IDBColumn column = (IDBColumn) field;
+                        if (column.isSubClassCommonColumn())
+                        {
+                            fields.add(column);
+                        }
+                    }
+                }
+            }
+        }
+
+        return fields;
     }
 
     @Override

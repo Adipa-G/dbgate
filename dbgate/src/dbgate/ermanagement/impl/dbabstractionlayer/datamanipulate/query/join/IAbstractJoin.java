@@ -2,6 +2,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join;
 
 import dbgate.ermanagement.IQueryJoin;
 import dbgate.ermanagement.IQueryOrderBy;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 
@@ -14,5 +15,5 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBui
  */
 public interface IAbstractJoin extends IQueryJoin
 {
-    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo);
+    String createSql(IDBLayer dbLayer,QueryBuildInfo buildInfo) throws ExpressionParsingException;
 }

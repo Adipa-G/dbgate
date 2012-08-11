@@ -2,6 +2,7 @@ package dbgate.ermanagement.query.expr;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.query.expr.segments.*;
 
 /**
@@ -23,145 +24,157 @@ class BaseExpr
     {
         return  rootSegment;
     }
+
+    protected BaseExpr field(String field) throws ExpressionParsingException
+    {
+        FieldSegment segment = new FieldSegment(field);
+        return addSegment(segment);
+    }
+
+    protected BaseExpr field(String field,String alias) throws ExpressionParsingException
+    {
+        FieldSegment segment = new FieldSegment(field,alias);
+        return addSegment(segment);
+    }
     
-    protected BaseExpr field(Class type,String field)
+    protected BaseExpr field(Class type,String field) throws ExpressionParsingException
     {
         FieldSegment segment = new FieldSegment(type,field);
         return addSegment(segment);
     }
 
-    protected BaseExpr field(Class type,String field,String alias)
+    protected BaseExpr field(Class type,String field,String alias) throws ExpressionParsingException
     {
         FieldSegment segment = new FieldSegment(type,field,alias);
         return addSegment(segment);
     }
 
-    protected BaseExpr field(Class type,String typeAlias,String field,String alias)
+    protected BaseExpr field(Class type,String typeAlias,String field,String alias) throws ExpressionParsingException
     {
         FieldSegment segment = new FieldSegment(type,typeAlias,field,alias);
         return addSegment(segment);
     }
 
-    protected BaseExpr value(DBColumnType type,Object value)
+    protected BaseExpr value(DBColumnType type,Object value) throws ExpressionParsingException
     {
         ValueSegment segment = new ValueSegment(type,value);
         return addSegment(segment);
     }
 
-    protected BaseExpr values(DBColumnType type,Object... values)
+    protected BaseExpr values(DBColumnType type,Object... values) throws ExpressionParsingException
     {
         ValueSegment segment = new ValueSegment(type,values);
         return addSegment(segment);
     }
 
-    protected BaseExpr query(ISelectionQuery query)
+    protected BaseExpr query(ISelectionQuery query) throws ExpressionParsingException
     {
         return query(query,null);
     }
 
-    protected BaseExpr query(ISelectionQuery query,String alias)
+    protected BaseExpr query(ISelectionQuery query,String alias) throws ExpressionParsingException
     {
         QuerySegment segment = new QuerySegment(query,alias);
         return addSegment(segment);
     }
 
-    protected BaseExpr sum()
+    protected BaseExpr sum() throws ExpressionParsingException
     {
         GroupFunctionSegment segment = new GroupFunctionSegment(GroupFunctionSegmentMode.SUM);
         return addSegment(segment);
     }
 
-    protected BaseExpr count()
+    protected BaseExpr count() throws ExpressionParsingException
     {
         GroupFunctionSegment segment = new GroupFunctionSegment(GroupFunctionSegmentMode.COUNT);
         return addSegment(segment);
     }
 
-    protected BaseExpr custFunc(String func)
+    protected BaseExpr custFunc(String func) throws ExpressionParsingException
     {
         GroupFunctionSegment segment = new GroupFunctionSegment(func);
         return addSegment(segment);
     }
 
-    protected BaseExpr eq()
+    protected BaseExpr eq() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.EQ);
         return addSegment(segment);
     }
 
-    protected BaseExpr ge()
+    protected BaseExpr ge() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.GE);
         return addSegment(segment);
     }
 
-    protected BaseExpr gt()
+    protected BaseExpr gt() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.GT);
         return addSegment(segment);
     }
 
-    protected BaseExpr le()
+    protected BaseExpr le() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.LE);
         return addSegment(segment);
     }
 
-    protected BaseExpr lt()
+    protected BaseExpr lt() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.LT);
         return addSegment(segment);
     }
 
-    protected BaseExpr neq()
+    protected BaseExpr neq() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.NEQ);
         return addSegment(segment);
     }
 
-    protected BaseExpr like()
+    protected BaseExpr like() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.LIKE);
         return addSegment(segment);
     }
 
-    protected BaseExpr between()
+    protected BaseExpr between() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.BETWEEN);
         return addSegment(segment);
     }
 
-    protected BaseExpr in()
+    protected BaseExpr in() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.IN);
         return addSegment(segment);
     }
 
-    protected BaseExpr exists()
+    protected BaseExpr exists() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.EXISTS);
         return addSegment(segment);
     }
 
-    protected BaseExpr notExists()
+    protected BaseExpr notExists() throws ExpressionParsingException
     {
         CompareSegment segment = new CompareSegment(CompareSegmentMode.NOT_EXISTS);
         return addSegment(segment);
     }
 
-    protected BaseExpr and()
+    protected BaseExpr and() throws ExpressionParsingException
     {
         MergeSegment mergeSegment = new MergeSegment(MergeSegmentMode.AND);
         return addSegment(mergeSegment);
     }
 
-    protected BaseExpr or()
+    protected BaseExpr or() throws ExpressionParsingException
     {
         MergeSegment mergeSegment = new MergeSegment(MergeSegmentMode.OR);
         return addSegment(mergeSegment);
     }
 
-    protected BaseExpr and(BaseExpr... expressions)
+    protected BaseExpr and(BaseExpr... expressions) throws ExpressionParsingException
     {
         MergeSegment mergeSegment = new MergeSegment(MergeSegmentMode.PARA_AND);
         for (BaseExpr expression : expressions)
@@ -171,7 +184,7 @@ class BaseExpr
         return addSegment(mergeSegment);
     }
 
-    protected BaseExpr or(BaseExpr... expressions)
+    protected BaseExpr or(BaseExpr... expressions) throws ExpressionParsingException
     {
         MergeSegment mergeSegment = new MergeSegment(MergeSegmentMode.PARA_OR);
         for (BaseExpr expression : expressions)
@@ -181,7 +194,7 @@ class BaseExpr
         return addSegment(mergeSegment);
     }
 
-    private BaseExpr addSegment(ISegment segment)
+    private BaseExpr addSegment(ISegment segment) throws ExpressionParsingException
     {
         rootSegment = rootSegment == null
                 ? segment

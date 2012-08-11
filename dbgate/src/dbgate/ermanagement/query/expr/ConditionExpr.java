@@ -2,6 +2,7 @@ package dbgate.ermanagement.query.expr;
 
 import dbgate.DBColumnType;
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,119 +19,119 @@ public class ConditionExpr extends BaseExpr
     }
 
     @Override
-    public ConditionExpr field(Class type, String field)
+    public ConditionExpr field(Class type, String field) throws ExpressionParsingException
     {
         return (ConditionExpr)super.field(type, field);
     }
 
     @Override
-    public ConditionExpr field(Class type, String typeAlias, String field)
+    public ConditionExpr field(Class type, String typeAlias, String field) throws ExpressionParsingException
     {
         return (ConditionExpr)super.field(type, typeAlias, field,null);
     }
 
     @Override
-    public ConditionExpr value(DBColumnType type, Object value)
+    public ConditionExpr value(DBColumnType type, Object value) throws ExpressionParsingException
     {
         return (ConditionExpr)super.value(type, value);
     }
 
     @Override
-    public ConditionExpr values(DBColumnType type, Object... values)
+    public ConditionExpr values(DBColumnType type, Object... values) throws ExpressionParsingException
     {
         return (ConditionExpr)super.value(type, values);
     }
 
     @Override
-    public ConditionExpr query(ISelectionQuery query)
+    public ConditionExpr query(ISelectionQuery query) throws ExpressionParsingException
     {
         return (ConditionExpr)super.query(query);
     }
 
     @Override
-    public ConditionExpr eq()
+    public ConditionExpr eq() throws ExpressionParsingException
     {
         return (ConditionExpr)super.eq();
     }
 
     @Override
-    public ConditionExpr ge()
+    public ConditionExpr ge() throws ExpressionParsingException
     {
         return (ConditionExpr)super.ge();
     }
 
     @Override
-    public ConditionExpr gt()
+    public ConditionExpr gt() throws ExpressionParsingException
     {
         return (ConditionExpr)super.gt();
     }
 
     @Override
-    public ConditionExpr le()
+    public ConditionExpr le() throws ExpressionParsingException
     {
         return (ConditionExpr)super.le();
     }
 
     @Override
-    public ConditionExpr lt()
+    public ConditionExpr lt() throws ExpressionParsingException
     {
         return (ConditionExpr)super.lt();
     }
 
     @Override
-    public ConditionExpr neq()
+    public ConditionExpr neq() throws ExpressionParsingException
     {
         return (ConditionExpr)super.neq();
     }
 
     @Override
-    public ConditionExpr like()
+    public ConditionExpr like() throws ExpressionParsingException
     {
         return (ConditionExpr)super.like();
     }
 
     @Override
-    public ConditionExpr between()
+    public ConditionExpr between() throws ExpressionParsingException
     {
         return (ConditionExpr)super.between();
     }
 
     @Override
-    public ConditionExpr in()
+    public ConditionExpr in() throws ExpressionParsingException
     {
         return (ConditionExpr)super.in();
     }
 
     @Override
-    public ConditionExpr exists()
+    public ConditionExpr exists() throws ExpressionParsingException
     {
         return (ConditionExpr)super.exists();
     }
 
     @Override
-    public ConditionExpr notExists()
+    public ConditionExpr notExists() throws ExpressionParsingException
     {
         return (ConditionExpr)super.notExists();
     }
 
     @Override
-    public ConditionExpr and()
+    public ConditionExpr and() throws ExpressionParsingException
     {
         return (ConditionExpr)super.and();
     }
 
     @Override
-    public ConditionExpr or()
+    public ConditionExpr or() throws ExpressionParsingException
     {
         return (ConditionExpr)super.or();
     }
 
-    public ConditionExpr and(ConditionExpr... expressions)
+    public ConditionExpr and(ConditionExpr... expressions) throws ExpressionParsingException
     {
         return (ConditionExpr)super.and(expressions);
     }
 
-    public ConditionExpr or(ConditionExpr... expressions)
+    public ConditionExpr or(ConditionExpr... expressions) throws ExpressionParsingException
     {
         return (ConditionExpr)super.or(expressions);
     }

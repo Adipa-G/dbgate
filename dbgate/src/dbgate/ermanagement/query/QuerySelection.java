@@ -2,6 +2,7 @@ package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.IQuerySelection;
 import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.*;
 import dbgate.ermanagement.query.expr.SelectExpr;
 
@@ -37,7 +38,7 @@ public class QuerySelection
         return selection;
     }
 
-    public static IQuerySelection query(ISelectionQuery query,String alias)
+    public static IQuerySelection query(ISelectionQuery query,String alias) throws ExpressionParsingException
     {
         AbstractExpressionSelection expressionSelection = (AbstractExpressionSelection) factory.createSelection(QuerySelectionExpressionType.EXPRESSION);
         expressionSelection.setExpr(SelectExpr.build().query(query,alias));
@@ -51,22 +52,32 @@ public class QuerySelection
         return expressionSelection;
     }
 
-    public static IQuerySelection field(Class type, String field, String alias)
+    public static IQuerySelection field(String field) throws ExpressionParsingException
+    {
+        return expression(SelectExpr.build().field(field));
+    }
+
+    public static IQuerySelection field(String field, String alias) throws ExpressionParsingException
+    {
+        return expression(SelectExpr.build().field(field,alias));
+    }
+
+    public static IQuerySelection field(Class type, String field, String alias) throws ExpressionParsingException
     {
         return expression(SelectExpr.build().field(type,field,alias));
     }
 
-    public static IQuerySelection sum(Class type,String field,String alias)
+    public static IQuerySelection sum(Class type,String field,String alias) throws ExpressionParsingException
     {
         return expression(SelectExpr.build().field(type,field,alias).sum());
     }
 
-    public static IQuerySelection count(Class type,String field,String alias)
+    public static IQuerySelection count(Class type,String field,String alias) throws ExpressionParsingException
     {
         return expression(SelectExpr.build().field(type,field,alias).count());
     }
 
-    public static IQuerySelection custFunction(String sqlFunction,Class type,String field,String alias)
+    public static IQuerySelection custFunction(String sqlFunction,Class type,String field,String alias) throws ExpressionParsingException
     {
         return expression(SelectExpr.build().field(type,field,alias).custFunc(sqlFunction));
     }

@@ -11,8 +11,8 @@ import dbgate.ermanagement.context.IEntityFieldValueList;
 import dbgate.ermanagement.context.IFieldValueList;
 import dbgate.ermanagement.context.ITypeFieldValueList;
 import dbgate.ermanagement.context.impl.*;
+import dbgate.ermanagement.exceptions.EntityRegistrationException;
 import dbgate.ermanagement.exceptions.FieldCacheMissException;
-import dbgate.ermanagement.exceptions.NoFieldsFoundException;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,7 +29,7 @@ public class ERDataManagerUtils
     public static Collection<ServerDBClass> getRelationEntities(ServerDBClass parent, IDBRelation relation)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
-        Method getter = CacheManager.methodCache.getGetter(parent,relation.getAttributeName());
+        Method getter = CacheManager.methodCache.getGetter(parent.getClass(),relation.getAttributeName());
         Object value = getter.invoke(parent);
 
         Collection<ServerDBClass> fieldObjects = new ArrayList<ServerDBClass>();
@@ -122,7 +122,7 @@ public class ERDataManagerUtils
             {
                 if (!key || (subLevelColumn.isKey() && key))
                 {
-                    Method getter = CacheManager.methodCache.getGetter(serverDBClass, subLevelColumn.getAttributeName());
+                    Method getter = CacheManager.methodCache.getGetter(serverDBClass.getClass(), subLevelColumn.getAttributeName());
                     Object value = getter.invoke(serverDBClass);
 
                     entityFieldValues.add(new EntityFieldValue(value,subLevelColumn));
@@ -228,14 +228,10 @@ public class ERDataManagerUtils
         }
     }
 
-    public static void registerTypes(ServerRODBClass roEntity) throws NoFieldsFoundException
+    public static void registerType(Class type) throws EntityRegistrationException
             , SequenceGeneratorInitializationException
     {
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(roEntity.getClass(),new Class[]{ServerRODBClass.class});
-        for (Class type : typeList)
-        {
-            CacheManager.tableCache.register(type,roEntity);
-            CacheManager.fieldCache.register(type,roEntity);
-        }
+        CacheManager.tableCache.register(type);
+        CacheManager.fieldCache.register(type);
     }
 }

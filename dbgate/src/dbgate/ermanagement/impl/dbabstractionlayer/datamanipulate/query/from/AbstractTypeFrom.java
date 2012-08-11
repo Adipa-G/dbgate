@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
-import dbgate.ServerRODBClass;
 import dbgate.ermanagement.caches.CacheManager;
+import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.TableCacheMissException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -47,7 +47,7 @@ public class AbstractTypeFrom implements IAbstractFrom
     }
 
     @Override
-    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo)
+    public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         String sql = null;
         try
@@ -58,7 +58,7 @@ public class AbstractTypeFrom implements IAbstractFrom
         {
             try
             {
-                ERDataManagerUtils.registerTypes((ServerRODBClass)type.newInstance());
+                ERDataManagerUtils.registerType(type);
                 sql = CacheManager.tableCache.getTableName(type);
             }
             catch (Exception ex)
