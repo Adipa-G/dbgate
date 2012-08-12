@@ -1,9 +1,9 @@
 package dbgate.ermanagement.impl.utils;
 
 import dbgate.IReadOnlyEntity;
-import dbgate.ermanagement.context.IEntityFieldValueList;
-import dbgate.ermanagement.context.ITypeFieldValueList;
-import dbgate.ermanagement.context.impl.ERSession;
+import dbgate.context.IEntityFieldValueList;
+import dbgate.context.ITypeFieldValueList;
+import dbgate.context.impl.ERSession;
 
 /**
  * Created by IntelliJ IDEA.

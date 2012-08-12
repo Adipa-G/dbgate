@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.utils;
 
-import dbgate.ermanagement.exceptions.common.EntityInstantiationException;
-import dbgate.ermanagement.exceptions.common.MethodInvocationException;
+import dbgate.exceptions.common.EntityInstantiationException;
+import dbgate.exceptions.common.MethodInvocationException;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

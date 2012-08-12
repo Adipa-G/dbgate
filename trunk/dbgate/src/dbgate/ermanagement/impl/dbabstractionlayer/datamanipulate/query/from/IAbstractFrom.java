@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
 import dbgate.IQueryFrom;
-import dbgate.ermanagement.exceptions.ExpressionParsingException;
+import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 

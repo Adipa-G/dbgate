@@ -1,7 +1,7 @@
 package dbgate.support.persistant.inheritancetest;
 
 import dbgate.EntityStatus;
-import dbgate.ermanagement.context.IEntityContext;
+import dbgate.context.IEntityContext;
 import dbgate.support.persistant.treetest.ITreeTestOne2OneEntity;
 
 /**

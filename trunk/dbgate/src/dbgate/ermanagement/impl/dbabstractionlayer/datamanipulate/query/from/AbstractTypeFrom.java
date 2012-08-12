@@ -1,8 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from;
 
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.caches.impl.EntityInfo;
-import dbgate.ermanagement.exceptions.ExpressionParsingException;
+import dbgate.caches.CacheManager;
+import dbgate.caches.impl.EntityInfo;
+import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryFromExpressionType;

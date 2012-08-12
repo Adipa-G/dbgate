@@ -1,7 +1,7 @@
 package dbgate;
 
-import dbgate.ermanagement.context.IEntityContext;
-import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.context.IEntityContext;
+import dbgate.exceptions.RetrievalException;
 
 import java.io.Serializable;
 import java.sql.Connection;

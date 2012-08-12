@@ -1,12 +1,12 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
 import dbgate.*;
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.caches.impl.EntityInfo;
-import dbgate.ermanagement.exceptions.ExpressionParsingException;
-import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
-import dbgate.ermanagement.exceptions.common.StatementExecutionException;
-import dbgate.ermanagement.exceptions.common.StatementPreparingException;
+import dbgate.caches.CacheManager;
+import dbgate.caches.impl.EntityInfo;
+import dbgate.exceptions.ExpressionParsingException;
+import dbgate.exceptions.common.ReadFromResultSetException;
+import dbgate.exceptions.common.StatementExecutionException;
+import dbgate.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractConditionFactory;

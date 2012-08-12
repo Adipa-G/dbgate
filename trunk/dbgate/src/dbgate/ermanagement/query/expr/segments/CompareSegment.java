@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr.segments;
 
-import dbgate.ermanagement.exceptions.ExpressionParsingException;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

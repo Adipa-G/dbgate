@@ -2,7 +2,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultm
 
 import dbgate.ColumnType;
 import dbgate.utility.DBMgtUtility;
-import dbgate.ermanagement.exceptions.migration.MetaDataException;
+import dbgate.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.AbstractMetaManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;

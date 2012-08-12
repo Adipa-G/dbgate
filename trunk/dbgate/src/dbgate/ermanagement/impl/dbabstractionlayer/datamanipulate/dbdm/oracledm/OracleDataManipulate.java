@@ -1,8 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.oracledm;
 
 import dbgate.ColumnType;
-import dbgate.ermanagement.exceptions.common.StatementExecutionException;
-import dbgate.ermanagement.exceptions.common.StatementPreparingException;
+import dbgate.exceptions.common.StatementExecutionException;
+import dbgate.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;

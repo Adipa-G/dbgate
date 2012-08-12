@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.exceptions.PersistException;
+import dbgate.exceptions.PersistException;
 
 import java.sql.Connection;
 

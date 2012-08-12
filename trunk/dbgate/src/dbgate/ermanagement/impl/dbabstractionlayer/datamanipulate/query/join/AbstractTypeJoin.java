@@ -3,7 +3,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join;
 import dbgate.RelationColumnMapping;
 import dbgate.IRelation;
 import dbgate.QueryJoinType;
-import dbgate.ermanagement.exceptions.ExpressionParsingException;
+import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;

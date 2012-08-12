@@ -1,9 +1,8 @@
 package dbgate;
 
-import dbgate.IReadOnlyEntity;
-import dbgate.ermanagement.context.IEntityContext;
-import dbgate.ermanagement.context.impl.EntityContext;
-import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.context.IEntityContext;
+import dbgate.context.impl.EntityContext;
+import dbgate.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.DbGate;
 
 import java.sql.Connection;

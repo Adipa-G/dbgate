@@ -2,7 +2,7 @@ package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.accessdm
 
 import dbgate.ColumnType;
 import dbgate.IColumn;
-import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
+import dbgate.exceptions.common.ReadFromResultSetException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
 

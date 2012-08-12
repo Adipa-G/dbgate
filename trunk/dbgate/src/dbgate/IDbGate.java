@@ -1,8 +1,8 @@
 package dbgate;
 
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

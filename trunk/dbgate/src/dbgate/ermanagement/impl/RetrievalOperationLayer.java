@@ -2,14 +2,14 @@ package dbgate.ermanagement.impl;
 
 import dbgate.*;
 import dbgate.utility.DBMgtUtility;
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.caches.impl.EntityInfo;
-import dbgate.ermanagement.context.IEntityContext;
-import dbgate.ermanagement.context.ITypeFieldValueList;
-import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
-import dbgate.ermanagement.exceptions.retrival.NoMatchingRecordFoundForSuperClassException;
-import dbgate.ermanagement.exceptions.retrival.NoSetterFoundToSetChildObjectListException;
+import dbgate.caches.CacheManager;
+import dbgate.caches.impl.EntityInfo;
+import dbgate.context.IEntityContext;
+import dbgate.context.ITypeFieldValueList;
+import dbgate.exceptions.RetrievalException;
+import dbgate.exceptions.common.ReadFromResultSetException;
+import dbgate.exceptions.retrival.NoMatchingRecordFoundForSuperClassException;
+import dbgate.exceptions.retrival.NoSetterFoundToSetChildObjectListException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
@@ -18,7 +18,7 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selectio
 import dbgate.ermanagement.impl.utils.OperationUtils;
 import dbgate.ermanagement.impl.utils.SessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
-import dbgate.ermanagement.lazy.ChildLoadInterceptor;
+import dbgate.lazy.ChildLoadInterceptor;
 import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.Method;
