@@ -1,16 +1,15 @@
 package dbgate.one2manyexample;
 
 import dbgate.ExampleBase;
-import dbgate.ServerDBClass;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
 import dbgate.one2manyexample.entities.One2ManyChildEntity;
 import dbgate.one2manyexample.entities.One2ManyChildEntityA;
 import dbgate.one2manyexample.entities.One2ManyChildEntityB;
 import dbgate.one2manyexample.entities.One2ManyParentEntity;
+import dbgate.utility.DBMgtUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,13 +46,13 @@ public class One2ManyExample extends ExampleBase
     public void patch() throws DBPatchingException, SQLException
     {
         Connection con = connector.getConnection();
-        Collection<ServerDBClass> entities = new ArrayList<ServerDBClass>();
-        entities.add(createEntityWithChildern());
-        entities.add(new One2ManyChildEntityA());
-        entities.add(new One2ManyChildEntityB());
-        ERLayer.getSharedInstance().patchDataBase(con,entities,false);
+        Collection<Class> entityTypes = new ArrayList<Class>();
+        entityTypes.add(One2ManyParentEntity.class);
+        entityTypes.add(One2ManyChildEntityA.class);
+        entityTypes.add(One2ManyChildEntityB.class);
+        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public void persist() throws PersistException, SQLException
@@ -62,7 +61,7 @@ public class One2ManyExample extends ExampleBase
         One2ManyParentEntity entity = createEntityWithChildern();
         entity.persist(con);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public One2ManyParentEntity retrieve(int id) throws SQLException,RetrievalException
@@ -77,9 +76,9 @@ public class One2ManyExample extends ExampleBase
             entity = new One2ManyParentEntity();
             entity.retrieve(rs,con);
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(rs);
+        DBMgtUtility.close(ps);
+        DBMgtUtility.close(con);
         return entity;
     }
 

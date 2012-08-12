@@ -1,22 +1,21 @@
 package dbgate.complexexample.entities.order;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.*;
+import dbgate.*;
 
 /**
  * Date: Mar 31, 2011
  * Time: 9:59:13 PM
  */
-@DBTableInfo(tableName = "order_item_transaction_charge")
-public class ItemTransactionCharge  extends DefaultServerDBClass
+@TableInfo(tableName = "order_item_transaction_charge")
+public class ItemTransactionCharge  extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int transactionId;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int chargeIndex;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String chargeCode;
     @ForeignKeyInfo(name = "item_tx_charge2tx_rev"
                 ,relatedObjectType = Transaction.class

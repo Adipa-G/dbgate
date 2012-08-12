@@ -1,17 +1,18 @@
 package dbgate.inheritanceexample.entities;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
+
+import dbgate.ColumnInfo;
+import dbgate.ColumnType;
+import dbgate.TableInfo;
 
 /**
  * Date: Mar 30, 2011
  * Time: 12:09:13 AM
  */
-@DBTableInfo(tableName = "middle_entity")
-public class MiddleEntity extends SuperEntity
+@TableInfo(tableName = "middle_entity")
+public class MiddleEntity extends TopEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String middleName;
 
     public MiddleEntity()

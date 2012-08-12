@@ -1,10 +1,9 @@
 package dbgate.complexexample.entities.order;
 
-import dbgate.DBColumnType;
+import dbgate.*;
 import dbgate.complexexample.entities.product.Item;
 import dbgate.complexexample.entities.product.Product;
 import dbgate.complexexample.entities.product.Service;
-import dbgate.ermanagement.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,14 +12,14 @@ import java.util.Collection;
  * Date: Mar 31, 2011
  * Time: 9:59:13 PM
  */
-@DBTableInfo(tableName = "order_item_transaction")
-public class ItemTransaction  extends DefaultServerDBClass
+@TableInfo(tableName = "order_item_transaction")
+public class ItemTransaction  extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int transactionId;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER)
+    @ColumnInfo(columnType = ColumnType.INTEGER)
     private int itemId;
     @ForeignKeyInfoList(infoList = {
     @ForeignKeyInfo(name = "item_tx2product"

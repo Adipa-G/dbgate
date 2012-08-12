@@ -1,19 +1,19 @@
 package dbgate.complexexample.entities.product;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
+import dbgate.ColumnInfo;
+import dbgate.ColumnType;
+import dbgate.TableInfo;
 
 /**
  * Date: Mar 31, 2011
  * Time: 9:46:32 PM
  */
-@DBTableInfo(tableName = "product_product")
+@TableInfo(tableName = "product_product")
 public class Product extends Item
 {
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE)
+    @ColumnInfo(columnType = ColumnType.DOUBLE)
     private double unitPrice;
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE,nullable = true)
+    @ColumnInfo(columnType = ColumnType.DOUBLE,nullable = true)
     private Double bulkUnitPrice;
 
     public double getUnitPrice()
