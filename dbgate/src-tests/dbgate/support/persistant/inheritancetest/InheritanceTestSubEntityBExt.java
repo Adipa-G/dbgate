@@ -1,7 +1,7 @@
 package dbgate.support.persistant.inheritancetest;
 
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.DbGate;
 
 import java.sql.Connection;

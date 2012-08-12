@@ -3,9 +3,9 @@ package dbgate.support.persistant.columntest;
 import dbgate.EntityStatus;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
-import dbgate.ermanagement.context.IEntityContext;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.context.IEntityContext;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.DbGate;
 
 import java.sql.Connection;

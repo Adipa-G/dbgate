@@ -1,7 +1,7 @@
 package dbgate.ermanagement.query.expr;
 
 import dbgate.ColumnType;
-import dbgate.ermanagement.exceptions.ExpressionParsingException;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

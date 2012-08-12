@@ -2,11 +2,11 @@ package dbgate.ermanagement.impl;
 
 import dbgate.*;
 import dbgate.DBConnector;
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.exceptions.common.DBConnectorNotInitializedException;
+import dbgate.caches.CacheManager;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
+import dbgate.exceptions.common.DBConnectorNotInitializedException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.LayerFactory;
 

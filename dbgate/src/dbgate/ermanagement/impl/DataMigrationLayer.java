@@ -2,10 +2,10 @@ package dbgate.ermanagement.impl;
 
 import dbgate.*;
 import dbgate.utility.DBMgtUtility;
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.caches.impl.EntityInfo;
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
+import dbgate.caches.CacheManager;
+import dbgate.caches.impl.EntityInfo;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.SequenceGeneratorInitializationException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.IMetaManipulate;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.CompareUtility;

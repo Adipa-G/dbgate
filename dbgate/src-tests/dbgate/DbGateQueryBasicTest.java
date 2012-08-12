@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.exceptions.PersistException;
+import dbgate.exceptions.PersistException;
 import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.query.*;
 import dbgate.ermanagement.query.expr.ConditionExpr;

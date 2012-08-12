@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.exceptions.RetrievalException;
 
 import java.sql.Connection;
 import java.util.Collection;

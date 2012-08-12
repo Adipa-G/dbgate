@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.exceptions.PersistException;
+import dbgate.exceptions.PersistException;
 import dbgate.ermanagement.impl.DbGate;
 import dbgate.support.patch.patchempty.LeafEntity;
 import dbgate.support.patch.patchempty.LeafEntitySubA;

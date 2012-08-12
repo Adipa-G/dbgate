@@ -1,9 +1,9 @@
 package dbgate.ermanagement.impl;
 
 import dbgate.*;
-import dbgate.ermanagement.caches.CacheManager;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
+import dbgate.caches.CacheManager;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 
 import java.sql.Connection;
