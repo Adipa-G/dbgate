@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context.impl;
 
-import dbgate.ermanagement.IRelation;
+import dbgate.IRelation;
 import dbgate.ermanagement.context.EntityFieldValue;
 import dbgate.ermanagement.context.ITypeFieldValueList;
 

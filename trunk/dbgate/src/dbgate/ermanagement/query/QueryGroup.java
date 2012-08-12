@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQueryGroup;
+import dbgate.IQueryGroup;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractExpressionGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.group.AbstractGroupFactory;

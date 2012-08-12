@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer;
 
-import dbgate.dbutility.DBConnector;
+import dbgate.DBConnector;
 
 /**
  * Created by IntelliJ IDEA.

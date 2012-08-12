@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition;
 
-import dbgate.ermanagement.IQueryGroupCondition;
+import dbgate.IQueryGroupCondition;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;

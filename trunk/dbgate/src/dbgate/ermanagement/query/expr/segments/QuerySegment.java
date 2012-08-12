@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr.segments;
 
-import dbgate.ermanagement.ISelectionQuery;
+import dbgate.ISelectionQuery;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**

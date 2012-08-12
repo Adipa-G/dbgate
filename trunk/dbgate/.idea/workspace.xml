@@ -2,49 +2,204 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="deba5122-0dda-46ca-971c-4bc58543f01b" name="Default" comment="">
-      <change type="DELETED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IERDataManager.java" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchempty" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchtabledifferences" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/changetracker" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/columntest" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/constraint" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/crossreference" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/order" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/product" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/lazy" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/version" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/query/basic" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/query" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/support/dbutility" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/support/statusutility" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/support" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateChangeTrackerTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateColumnPersistTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateConstraintValidationTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateCrossReferenceTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateFeatureIntegrationTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateIheritancePersistTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateLazyTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGatePatchEmptyDBTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGatePatchTableDifferenceDBTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateQueryBasicTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateTreePersistTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateVersionTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchempty/LeafEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchempty/LeafEntitySubA.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchempty/LeafEntitySubB.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchempty/RootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchtabledifferences/FourColumnEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchtabledifferences/ThreeColumnEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchtabledifferences/ThreeColumnTypeDifferentEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/changetracker/ChangeTrackerTestOne2ManyEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/changetracker/ChangeTrackerTestOne2OneEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/changetracker/ChangeTrackerTestRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/columntest/ColumnTestEntityAnnotations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/columntest/ColumnTestEntityExts.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/columntest/ColumnTestEntityFields.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/columntest/ColumnTestExtFactory.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/columntest/IColumnTestEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/columntest/PrimaryKeyGenerator.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/constraint/ConstraintTestDeleteCascadeRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/constraint/ConstraintTestDeleteRestrictRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/constraint/ConstraintTestOne2ManyEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/constraint/ConstraintTestOne2OneEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/constraint/ConstraintTestReverseRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/crossreference/CrossReferenceTestOne2ManyEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/crossreference/CrossReferenceTestOne2OneEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/crossreference/CrossReferenceTestRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/order/ItemTransaction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/order/ItemTransactionCharge.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/order/Transaction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/product/Item.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/product/Product.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/featureintegration/product/Service.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/IInheritanceTestSubEntityA.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/IInheritanceTestSubEntityB.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/IInheritanceTestSuperEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestExtFactory.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSubEntityAAnnotations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSubEntityAExt.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSubEntityAFields.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSubEntityBAnnotations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSubEntityBExt.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSubEntityBFields.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSuperEntityAnnotations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSuperEntityExt.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/inheritancetest/InheritanceTestSuperEntityFields.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/lazy/LazyOne2ManyEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/lazy/LazyOne2OneEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/lazy/LazyRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/ITreeTestOne2ManyEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/ITreeTestOne2OneEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/ITreeTestRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestExtFactory.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestOne2ManyEntityAnnotations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestOne2ManyEntityExt.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestOne2ManyEntityFields.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestOne2OneEntityAnnotations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestOne2OneEntityExt.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestOne2OneEntityFields.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestRootEntityAnnotations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestRootEntityExt.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/treetest/TreeTestRootEntityFields.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/version/VersionColumnTestOne2ManyEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/version/VersionColumnTestOne2OneEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/version/VersionColumnTestRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/version/VersionGeneralTestOne2ManyEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/version/VersionGeneralTestOne2OneEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/persistant/version/VersionGeneralTestRootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/query/basic/QueryBasicDetailsEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/query/basic/QueryBasicEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/query/basic/QueryBasicJoinEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/DBUtilsTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/StatusUtilityTests.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/support/dbutility/RootEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/support/statusutility/LeafEntity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/utility/support/statusutility/RootEntity.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/dbgate/dbutility" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementChangeTrackerTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementConstraintValidationTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementConstraintValidationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementCrossReferenceTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementCrossReferenceTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementFeatureIntegrationTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementFeatureIntegrationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementLazyTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementLazyTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementQueryBasicTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementVersionTest.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementVersionTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementColumnPersistTests.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementColumnPersistTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementInheritancePersistTests.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementInheritancePersistTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchTableDifferenceDBTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementTreePersistTests.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementTreePersistTests.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/columntest/ColumnTestEntityExts.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/columntest/ColumnTestEntityExts.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/inheritancetest/InheritanceTestSubEntityAExt.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/inheritancetest/InheritanceTestSubEntityAExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/inheritancetest/InheritanceTestSubEntityBExt.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/inheritancetest/InheritanceTestSubEntityBExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/treetest/TreeTestOne2ManyEntityExt.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/treetest/TreeTestOne2ManyEntityExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/treetest/TreeTestOne2OneEntityExt.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/treetest/TreeTestOne2OneEntityExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/treetest/TreeTestRootEntityExt.java" afterPath="$PROJECT_DIR$/src-tests/dbgate/ermanagement/support/persistant/treetest/TreeTestRootEntityExt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/DefaultEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/DefaultEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/DefaultReadOnlyEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/DefaultReadOnlyEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/CacheManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/CacheManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/IEntityInfoCache.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/IEntityInfoCache.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/impl/EntityInfo.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/impl/EntityInfo.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/impl/EntityInfoCache.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/caches/impl/EntityInfoCache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ERSession.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/ERSession.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/context/EntityFieldValue.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/context/EntityFieldValue.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/EntityRelationFieldValueList.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/context/impl/EntityRelationFieldValueList.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/BaseOperationLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/BaseOperationLayer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateConfig.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateStatistics.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateStatistics.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistRetrievalLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistRetrievalLayer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/RetrievalOperationLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/RetrievalOperationLayer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/LayerFactory.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/LayerFactory.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/IDataManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/IDataManipulate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/dbdm/accessdm/AccessDataManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/dbdm/accessdm/AccessDataManipulate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/AbstractExpressionProcessor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/QueryBuildInfo.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/QueryBuildInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/IAbstractCondition.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/condition/IAbstractCondition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/from/AbstractSubQueryFrom.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/from/AbstractSubQueryFrom.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/from/AbstractUnionFrom.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/from/AbstractUnionFrom.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/from/IAbstractFrom.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/from/IAbstractFrom.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/group/IAbstractGroup.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/group/IAbstractGroup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/groupcondition/IAbstractGroupCondition.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/groupcondition/IAbstractGroupCondition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/join/AbstractTypeJoin.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/join/AbstractTypeJoin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/join/IAbstractJoin.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/join/IAbstractJoin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/orderby/AbstractExpressionOrderBy.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/orderby/AbstractExpressionOrderBy.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/orderby/IAbstractOrderBy.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/orderby/IAbstractOrderBy.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/IAbstractSelection.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/query/selection/IAbstractSelection.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaForeignKey.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/datastructures/MetaForeignKey.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/dbmm/defaultmm/DefaultMetaManipulate.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/dbmm/defaultmm/DefaultMetaManipulate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/mappings/ReferentialRuleTypeMapItem.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/mappings/ReferentialRuleTypeMapItem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/OperationUtils.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/OperationUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/lazy/ChildLoadInterceptor.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/lazy/ChildLoadInterceptor.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/Query.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/Query.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryCondition.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryCondition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryFrom.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryFrom.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryGroup.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryGroup.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryGroupCondition.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryGroupCondition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryJoin.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryJoin.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryOrderBy.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryOrderBy.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QuerySelection.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QuerySelection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryStructure.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/QueryStructure.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/SelectionQuery.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/SelectionQuery.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IERLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/IDbGate.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IERLayerConfig.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/IDbGateConfig.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IERLayerStatistics.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/IDbGateStatistics.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERDataCommonManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/BaseOperationLayer.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERDataManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistRetrievalLayer.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERDataPersistManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERDataRetrievalManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/RetrievalOperationLayer.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGate.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERLayerConfig.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateConfig.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERLayerStatistics.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateStatistics.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\ERMetaDataManager.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\utils\ERDataManagerUtils.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/OperationUtils.java" />
-      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\impl\utils\ERSessionUtils.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/SessionUtils.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/ConditionExpr.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/ConditionExpr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/SelectExpr.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/SelectExpr.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/QuerySegment.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/segments/QuerySegment.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\dbutility\DBConnector.java" afterPath="$PROJECT_DIR$/src/dbgate/DBConnector.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\dbutility\DBMgmtUtility.java" afterPath="$PROJECT_DIR$/src/dbgate/utility/DBMgtUtility.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\AbstractColumn.java" afterPath="$PROJECT_DIR$/src/dbgate/AbstractColumn.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\AbstractManagedEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/AbstractManagedEntity.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\AbstractManagedReadOnlyEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/AbstractManagedReadOnlyEntity.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\AbstractRelation.java" afterPath="$PROJECT_DIR$/src/dbgate/AbstractRelation.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\ColumnInfo.java" afterPath="$PROJECT_DIR$/src/dbgate/ColumnInfo.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\DefaultColumn.java" afterPath="$PROJECT_DIR$/src/dbgate/DefaultColumn.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\DefaultEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/DefaultEntity.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\DefaultReadOnlyEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/DefaultReadOnlyEntity.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\DefaultRelation.java" afterPath="$PROJECT_DIR$/src/dbgate/DefaultRelation.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\ForeignKeyColumnMapping.java" afterPath="$PROJECT_DIR$/src/dbgate/ForeignKeyColumnMapping.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\ForeignKeyInfo.java" afterPath="$PROJECT_DIR$/src/dbgate/ForeignKeyInfo.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\ForeignKeyInfoList.java" afterPath="$PROJECT_DIR$/src/dbgate/ForeignKeyInfoList.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IColumn.java" afterPath="$PROJECT_DIR$/src/dbgate/IColumn.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IDbGate.java" afterPath="$PROJECT_DIR$/src/dbgate/IDbGate.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IDbGateConfig.java" afterPath="$PROJECT_DIR$/src/dbgate/IDbGateConfig.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IDbGateStatistics.java" afterPath="$PROJECT_DIR$/src/dbgate/IDbGateStatistics.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IField.java" afterPath="$PROJECT_DIR$/src/dbgate/IField.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IManagedEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/IManagedEntity.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IManagedReadOnlyEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/IManagedReadOnlyEntity.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQuery.java" afterPath="$PROJECT_DIR$/src/dbgate/IQuery.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQueryCondition.java" afterPath="$PROJECT_DIR$/src/dbgate/IQueryCondition.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQueryFrom.java" afterPath="$PROJECT_DIR$/src/dbgate/IQueryFrom.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQueryGroup.java" afterPath="$PROJECT_DIR$/src/dbgate/IQueryGroup.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQueryGroupCondition.java" afterPath="$PROJECT_DIR$/src/dbgate/IQueryGroupCondition.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQueryJoin.java" afterPath="$PROJECT_DIR$/src/dbgate/IQueryJoin.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQueryOrderBy.java" afterPath="$PROJECT_DIR$/src/dbgate/IQueryOrderBy.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IQuerySelection.java" afterPath="$PROJECT_DIR$/src/dbgate/IQuerySelection.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\IRelation.java" afterPath="$PROJECT_DIR$/src/dbgate/IRelation.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\ISelectionQuery.java" afterPath="$PROJECT_DIR$/src/dbgate/ISelectionQuery.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\ISequenceGenerator.java" afterPath="$PROJECT_DIR$/src/dbgate/ISequenceGenerator.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\QueryJoinType.java" afterPath="$PROJECT_DIR$/src/dbgate/QueryJoinType.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\QueryOrderType.java" afterPath="$PROJECT_DIR$/src/dbgate/QueryOrderType.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\ReferentialRuleType.java" afterPath="$PROJECT_DIR$/src/dbgate/ReferentialRuleType.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\RelationColumnMapping.java" afterPath="$PROJECT_DIR$/src/dbgate/RelationColumnMapping.java" />
+      <change type="MOVED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\src\dbgate\ermanagement\TableInfo.java" afterPath="$PROJECT_DIR$/src/dbgate/TableInfo.java" />
     </list>
     <ignored path="dbgate.iws" />
     <ignored path="build/" />
@@ -69,19 +224,6 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ERManagementVersionTest.java" line="331" class="dbgate.ermanagement.ERManagementVersionTest" package="dbgate.ermanagement">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
       <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/query/expr/BaseExpr.java" line="0" class="BaseExpr.java" package="">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -121,7 +263,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="210" class="dbgate.ermanagement.impl.ERDataPersistManager" package="dbgate.ermanagement.impl">
+      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="209" class="dbgate.ermanagement.impl.PersistOperationLayer" package="dbgate.ermanagement.impl">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -134,7 +276,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="138" class="dbgate.ermanagement.impl.ERDataPersistManager" package="dbgate.ermanagement.impl">
+      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="137" class="dbgate.ermanagement.impl.PersistOperationLayer" package="dbgate.ermanagement.impl">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -147,7 +289,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java" line="67" class="dbgate.ermanagement.ErManagementPatchEmptyDBTests" package="dbgate.ermanagement">
+      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="186" class="dbgate.ermanagement.impl.PersistOperationLayer" package="dbgate.ermanagement.impl">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -160,7 +302,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="187" class="dbgate.ermanagement.impl.ERDataPersistManager" package="dbgate.ermanagement.impl">
+      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="109" class="dbgate.ermanagement.impl.PersistOperationLayer" package="dbgate.ermanagement.impl">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -173,33 +315,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src-tests/dbgate/ermanagement/ErManagementPatchEmptyDBTests.java" line="70" class="dbgate.ermanagement.ErManagementPatchEmptyDBTests" package="dbgate.ermanagement">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" line="110" class="dbgate.ermanagement.impl.ERDataPersistManager" package="dbgate.ermanagement.impl">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="false" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java" line="203" class="dbgate.ermanagement.impl.ERMetaDataManager" package="dbgate.ermanagement.impl">
+      <breakpoint url="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java" line="205" class="dbgate.ermanagement.impl.DataMigrationLayer" package="dbgate.ermanagement.impl">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -253,91 +369,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PersistRetrievalLayer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistRetrievalLayer.java">
+      <file leaf-file-name="dbgate.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dbgate.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="26" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SessionUtils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/SessionUtils.java">
+      <file leaf-file-name="build.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="13" selection-start="344" selection-end="344" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReflectionUtils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ReflectionUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="381" selection-end="381" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MiscUtils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/MiscUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="157" selection-end="157" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OperationUtils.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/OperationUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="15" selection-start="900" selection-end="900" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IMetaManipulate.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="19" selection-start="946" selection-end="946" vertical-scroll-proportion="0.6774848">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractMetaManipulate.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="22" selection-start="1153" selection-end="1153" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractDataManipulate.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="13" selection-start="2383" selection-end="2383" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IDataManipulate.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/IDataManipulate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="18" selection-start="800" selection-end="800" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataMigrationLayer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="31" selection-start="1243" selection-end="1243" vertical-scroll-proportion="0.0">
+            <state line="113" column="24" selection-start="5489" selection-end="5489" vertical-scroll-proportion="0.8233618">
               <folding />
             </state>
           </provider>
@@ -357,22 +401,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/BaseOperationLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataPersistManager.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERDataRetrievalManager.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/RetrivalOperationLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/RetrirvalOperationLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/RetrievalOperationLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/ERMetaDataManager.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGatePersistRetrivalLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistRetrievalLayer.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERSessionUtils.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/SessionUtils.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ERDataManagerUtils.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/OperationUtils.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/IDataManipulate.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ErManagementInheritancePersistTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGateIheritancePersistTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ERManagementLazyTest.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGateLazyTest.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ErManagementPatchEmptyDBTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGatePatchEmptyDBTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ErManagementPatchTableDifferenceDBTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGatePatchTableDifferenceDBTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ERManagementQueryBasicTest.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGateQueryBasicTest.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ErManagementTreePersistTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGateTreePersistTests.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/ERManagementVersionTest.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGatteVersionTest.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/DbGateVersionTest.java" />
+        <option value="$PROJECT_DIR$/src-tests/dbgate/support/patch/patchempty/LeafEntity.java" />
       </list>
     </option>
   </component>
@@ -420,8 +464,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -498,26 +540,50 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="utility" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dbgate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="ermanagement" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="114" />
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="true" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth1" value="114" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth0" value="95" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth3" value="44" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="115" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth2" value="115" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder0" value="0" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatOrder2" value="2" />
@@ -532,29 +598,29 @@
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth5" value="775" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth4" value="100" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="100" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="dbgate" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeWidth3" value="100" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth4" value="116" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="790" />
     <property name="GoToClass.includeLibraries" value="false" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_flatWidth5" value="790" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
     <property name="options.lastSelected" value="preferences.sourceCode.Java" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder5" value="5" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder4" value="4" />
     <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder1" value="1" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
-    <property name="project.structure.side.proportion" value="0.2" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
-    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder2" value="2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="FileHistory.org.jetbrains.idea.svn.history.SvnHistoryProvider_treeOrder0" value="0" />
     <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -572,20 +638,133 @@
       <recent name="dbgate.ermanagement.impl" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="dbgate" />
+      <recent name="dbgate.utility" />
+      <recent name="dbgate.utility.support" />
       <recent name="dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query" />
       <recent name="dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm" />
-      <recent name="dbgate.ermanagement.support.patch" />
-      <recent name="dbgate.ermanagement.support.metadata.patchempty" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ERManagementQueryBasicTest">
-    <configuration default="false" name="ERManagementConstraintValidationTest" type="JUnit" factoryName="JUnit" temporary="true">
+  <component name="RestoreUpdateTree">
+    <UpdateInfo date="Moments ago" ActionInfo="_Update">
+      <UpdatedFiles>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated from server" />
+          <option name="myStatusName" value="Changed on server" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CHANGED_ON_SERVER" />
+          <FILE-GROUP>
+            <option name="myUpdateName" value="Updated" />
+            <option name="myStatusName" value="Changed" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" value="UPDATED" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" value="Created" />
+            <option name="myStatusName" value="Created" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" value="CREATED" />
+            <PATH vcs="svn" revision="50">Y:\dev\java\community\dbgate\trunk\dbgate\src-tests</PATH>
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" value="Deleted" />
+            <option name="myStatusName" value="Deleted" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="true" />
+            <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+          </FILE-GROUP>
+          <FILE-GROUP>
+            <option name="myUpdateName" value="Restored" />
+            <option name="myStatusName" value="Will be restored" />
+            <option name="mySupportsDeletion" value="false" />
+            <option name="myCanBeAbsent" value="false" />
+            <option name="myId" value="RESTORED" />
+          </FILE-GROUP>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Modified" />
+          <option name="myStatusName" value="Modified" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="MODIFIED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Skipped" />
+          <option name="myStatusName" value="Skipped" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="SKIPPED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Merged with conflicts" />
+          <option name="myStatusName" value="Will be merged with conflicts" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="MERGED_WITH_CONFLICTS" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Merged with tree conflicts" />
+          <option name="myStatusName" value="Merged with tree conflicts" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Merged" />
+          <option name="myStatusName" value="Will be merged" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="MERGED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Not in repository" />
+          <option name="myStatusName" value="Not in repository" />
+          <option name="mySupportsDeletion" value="true" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UNKNOWN" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Locally added" />
+          <option name="myStatusName" value="Locally added" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="LOCALLY_ADDED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Locally removed" />
+          <option name="myStatusName" value="Locally removed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="LOCALLY_REMOVED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Switched" />
+          <option name="myStatusName" value="Switched" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="SWITCHED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Merged with property conflicts" />
+          <option name="myStatusName" value="Will be merged with property conflicts" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+        </FILE-GROUP>
+      </UpdatedFiles>
+    </UpdateInfo>
+  </component>
+  <component name="RunManager" selected="JUnit.DbGateQueryBasicTest">
+    <configuration default="false" name="DbGateConstraintValidationTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementConstraintValidationTest" />
+      <option name="PACKAGE_NAME" value="dbgate" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.DbGateConstraintValidationTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -602,13 +781,13 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ERManagementCrossReferenceTest" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="DbGateCrossReferenceTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementCrossReferenceTest" />
+      <option name="PACKAGE_NAME" value="dbgate" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.DbGateCrossReferenceTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -625,13 +804,13 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ERManagementFeatureIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="DbGateFeatureIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementFeatureIntegrationTest" />
+      <option name="PACKAGE_NAME" value="dbgate" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.DbGateFeatureIntegrationTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -648,13 +827,13 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ErManagementInheritancePersistTests" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="DbGateIheritancePersistTests" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ErManagementInheritancePersistTests" />
+      <option name="PACKAGE_NAME" value="dbgate" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.DbGateIheritancePersistTests" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -677,13 +856,13 @@
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <configuration default="false" name="ERManagementQueryBasicTest" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration default="false" name="DbGateQueryBasicTest" type="JUnit" factoryName="JUnit" temporary="true">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementQueryBasicTest" />
+      <option name="PACKAGE_NAME" value="dbgate" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.DbGateQueryBasicTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" />
@@ -709,24 +888,6 @@
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
@@ -756,6 +917,24 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -808,13 +987,13 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="false" name="ERManagementQueryBasicTest.ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll" type="JUnit" factoryName="JUnit">
+    <configuration default="false" name="DbGateQueryBasicTest.ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll" type="JUnit" factoryName="JUnit">
       <extension name="snapshooter" />
       <module name="dbgate" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="dbgate.ermanagement" />
-      <option name="MAIN_CLASS_NAME" value="dbgate.ermanagement.ERManagementQueryBasicTest" />
+      <option name="PACKAGE_NAME" value="dbgate" />
+      <option name="MAIN_CLASS_NAME" value="dbgate.DbGateQueryBasicTest" />
       <option name="METHOD_NAME" value="ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" />
@@ -832,12 +1011,12 @@
       <method />
     </configuration>
     <list size="6">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest.ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.ERManagementConstraintValidationTest" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.ERManagementCrossReferenceTest" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.ERManagementFeatureIntegrationTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ErManagementInheritancePersistTests" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.ERManagementQueryBasicTest" />
+      <item index="0" class="java.lang.String" itemvalue="JUnit.DbGateQueryBasicTest.ERQuery_ExecuteToRetrieveAll_WithRowFetchSqlQuery_shouldLoadAll" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.DbGateConstraintValidationTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.DbGateCrossReferenceTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.DbGateFeatureIntegrationTest" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.DbGateIheritancePersistTests" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.DbGateQueryBasicTest" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -886,33 +1065,34 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="deba5122-0dda-46ca-971c-4bc58543f01b" name="Default" comment="" />
       <created>1334297651783</created>
-      <updated>1334297651783</updated>
+      <updated>1344753589437</updated>
     </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="3" y="1" width="1363" height="736" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32235703" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32235703" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31715772" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20554273" sideWeight="0.6759099" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20554273" sideWeight="0.677643" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25996533" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928944" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32409012" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928944" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2886836" sideWeight="0.21663778" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32953683" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39939255" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28945342" sideWeight="0.6759099" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2886836" sideWeight="0.677643" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3067591" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Properties" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3295082" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31715772" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -952,7 +1132,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="renaming classes/ changing structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Trying to sort out damn svn conflict" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -986,6 +1166,9 @@
     <MESSAGE value="grouping/ordering/group conditions :) with that we are there, need to add complicated tests now" />
     <MESSAGE value="bit of a refactoring, specially how the classes are registered" />
     <MESSAGE value="renaming classes/ changing structure" />
+    <MESSAGE value="Changing the structure" />
+    <MESSAGE value="Revert: Added adding,removing and altering columns when patching" />
+    <MESSAGE value="Trying to sort out damn svn conflict" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1022,114 +1205,14 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGate.java">
+    <entry file="file://$PROJECT_DIR$/dbgate.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="13" selection-start="776" selection-end="776" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateConfig.java">
+    <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="25" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/BaseOperationLayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="40" selection-start="1463" selection-end="1481" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistOperationLayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="34" selection-start="1709" selection-end="1730" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/RetrievalOperationLayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="19" selection-start="1791" selection-end="1791" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/DbGateStatistics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="19" selection-start="279" selection-end="279" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/DataMigrationLayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="31" selection-start="1243" selection-end="1243" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/PersistRetrievalLayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="26" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/SessionUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="344" selection-end="344" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/ReflectionUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="381" selection-end="381" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/MiscUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="157" selection-end="157" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/utils/OperationUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="15" selection-start="900" selection-end="900" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/AbstractMetaManipulate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="22" selection-start="1153" selection-end="1153" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/AbstractDataManipulate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="13" selection-start="2383" selection-end="2383" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/datamanipulate/IDataManipulate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="18" selection-start="800" selection-end="800" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ermanagement/impl/dbabstractionlayer/metamanipulate/IMetaManipulate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="19" selection-start="946" selection-end="946" vertical-scroll-proportion="0.6774848">
+        <state line="113" column="24" selection-start="5489" selection-end="5489" vertical-scroll-proportion="0.8233618">
           <folding />
         </state>
       </provider>

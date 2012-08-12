@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.*;
+import dbgate.*;
 import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.DbGate;
 

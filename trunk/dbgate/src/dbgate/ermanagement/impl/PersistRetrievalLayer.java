@@ -1,8 +1,6 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.IEntity;
-import dbgate.IReadOnlyEntity;
-import dbgate.ermanagement.*;
+import dbgate.*;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.exceptions.RetrievalException;

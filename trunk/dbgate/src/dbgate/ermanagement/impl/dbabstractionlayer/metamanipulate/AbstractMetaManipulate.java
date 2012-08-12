@@ -1,8 +1,8 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate;
 
 import dbgate.ColumnType;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.ReferentialRuleType;
+import dbgate.ReferentialRuleType;
+import dbgate.utility.DBMgtUtility;
 import dbgate.ermanagement.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.*;
@@ -59,7 +59,7 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
                 mapItem._setTypeFromSqlType(resultSet.getShort("DATA_TYPE"));
                 columnTypeMapItems.add(mapItem);
             }
-            DBMgmtUtility.close(resultSet);
+            DBMgtUtility.close(resultSet);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -179,7 +179,7 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
 
                 extractForeignKeyData(metaData, table);
             }
-            DBMgmtUtility.close(tableResultSet);
+            DBMgtUtility.close(tableResultSet);
         } catch (SQLException e)
         {
             e.printStackTrace();

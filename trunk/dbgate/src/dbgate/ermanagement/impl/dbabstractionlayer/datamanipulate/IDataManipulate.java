@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
-import dbgate.ermanagement.IColumn;
-import dbgate.ermanagement.IRelation;
+import dbgate.IColumn;
+import dbgate.IRelation;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
 import dbgate.ermanagement.exceptions.common.StatementExecutionException;

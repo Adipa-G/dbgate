@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures;
 
-import dbgate.ermanagement.ReferentialRuleType;
+import dbgate.ReferentialRuleType;
 
 import java.util.ArrayList;
 import java.util.Collection;

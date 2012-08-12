@@ -1,7 +1,7 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQueryJoin;
-import dbgate.ermanagement.QueryJoinType;
+import dbgate.IQueryJoin;
+import dbgate.QueryJoinType;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractJoinFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractSqlQueryJoin;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join.AbstractTypeJoin;

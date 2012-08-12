@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.mappings;
 
-import dbgate.ermanagement.ReferentialRuleType;
+import dbgate.ReferentialRuleType;
 
 /**
  * Created by IntelliJ IDEA.

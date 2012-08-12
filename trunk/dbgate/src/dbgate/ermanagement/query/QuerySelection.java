@@ -1,7 +1,7 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQuerySelection;
-import dbgate.ermanagement.ISelectionQuery;
+import dbgate.IQuerySelection;
+import dbgate.ISelectionQuery;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractExpressionSelection;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSelectionFactory;

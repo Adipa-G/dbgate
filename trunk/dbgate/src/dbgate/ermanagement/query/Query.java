@@ -1,9 +1,9 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQuery;
-import dbgate.ermanagement.IQueryCondition;
-import dbgate.ermanagement.IQueryFrom;
-import dbgate.ermanagement.IQueryJoin;
+import dbgate.IQuery;
+import dbgate.IQueryCondition;
+import dbgate.IQueryFrom;
+import dbgate.IQueryJoin;
 
 /**
  * Created by IntelliJ IDEA.

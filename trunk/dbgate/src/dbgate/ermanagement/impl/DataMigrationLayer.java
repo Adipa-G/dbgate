@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.*;
+import dbgate.*;
+import dbgate.utility.DBMgtUtility;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.DBPatchingException;
@@ -97,7 +97,7 @@ public class DataMigrationLayer
 
                 PreparedStatement ps = con.prepareStatement(holder.getQueryString());
                 ps.execute();
-                DBMgmtUtility.close(ps);
+                DBMgtUtility.close(ps);
 
                 if (config.isEnableStatistics()) statistics.registerPatch();
             }

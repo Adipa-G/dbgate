@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate;
 
 import dbgate.ColumnType;
-import dbgate.ermanagement.ReferentialRuleType;
+import dbgate.ReferentialRuleType;
 import dbgate.ermanagement.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.IMetaComparisonGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.IMetaItem;
