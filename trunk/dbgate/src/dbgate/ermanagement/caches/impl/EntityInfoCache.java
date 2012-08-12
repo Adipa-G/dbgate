@@ -1,7 +1,7 @@
 package dbgate.ermanagement.caches.impl;
 
-import dbgate.IRODBClass;
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyClientEntity;
+import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.IEntityInfoCache;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
@@ -51,7 +51,7 @@ public class EntityInfoCache implements IEntityInfoCache
     }
 
     @Override
-    public EntityInfo getEntityInfo(IRODBClass entity)
+    public EntityInfo getEntityInfo(IReadOnlyClientEntity entity)
     {
         Class type = entity.getClass();
         try
@@ -71,7 +71,7 @@ public class EntityInfoCache implements IEntityInfoCache
     @Override
     public void register(Class subType, String tableName, Collection<IField> fields)
     {
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{ServerRODBClass.class});
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{IReadOnlyEntity.class});
         Class immediateSuper = typeList.length > 1 ? typeList[1] : null;
 
         EntityInfo subEntityInfo = new EntityInfo(subType);
@@ -121,7 +121,7 @@ public class EntityInfoCache implements IEntityInfoCache
         HashMap<Class,EntityInfo> entityInfoMap = new HashMap<>();
 
         EntityInfo subEntity = null;
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{ServerRODBClass.class});
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{IReadOnlyEntity.class});
         for (Class regType : typeList)
         {
             if (cache.containsKey(regType))
@@ -157,9 +157,9 @@ public class EntityInfoCache implements IEntityInfoCache
             Annotation[] annotations = regType.getAnnotations();
             for (Annotation annotation : annotations)
             {
-                if (annotation instanceof DBTableInfo)
+                if (annotation instanceof TableInfo)
                 {
-                    DBTableInfo tableInfo = (DBTableInfo) annotation;
+                    TableInfo tableInfo = (TableInfo) annotation;
                     tableName = tableInfo.tableName();
                     break;
                 }
@@ -170,12 +170,12 @@ public class EntityInfoCache implements IEntityInfoCache
 
     private static String getTableNameIfManagedClass(Class regType,Class subType) throws EntityRegistrationException
     {
-        if (ReflectionUtils.isImplementInterface(regType, IManagedDBClass.class))
+        if (ReflectionUtils.isImplementInterface(regType, IManagedEntity.class))
         {
             try
             {
-                IManagedDBClass managedDBClass = (IManagedDBClass)subType.newInstance();
-                return managedDBClass.getTableNames().get(regType);
+                IManagedEntity managedEntity = (IManagedEntity)subType.newInstance();
+                return managedEntity.getTableNames().get(regType);
             }
             catch (Exception e)
             {
@@ -188,7 +188,7 @@ public class EntityInfoCache implements IEntityInfoCache
     private static Collection<IField> getAllFields(Class regType,Class subType) throws EntityRegistrationException,SequenceGeneratorInitializationException
     {
         Collection<IField> fields = getFieldsIfManagedClass(regType,subType);
-        Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(regType,new Class[]{ServerRODBClass.class});
+        Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(regType,new Class[]{IReadOnlyEntity.class});
 
         for (int i = 0; i < superTypes.length; i++)
         {
@@ -201,12 +201,12 @@ public class EntityInfoCache implements IEntityInfoCache
 
     private static Collection<IField> getFieldsIfManagedClass(Class regType,Class subType) throws EntityRegistrationException
     {
-        if (ReflectionUtils.isImplementInterface(regType, IManagedDBClass.class))
+        if (ReflectionUtils.isImplementInterface(regType, IManagedEntity.class))
         {
             try
             {
-                IManagedDBClass managedDBClass = (IManagedDBClass)subType.newInstance();
-                return getFieldsForManagedClass(managedDBClass,regType);
+                IManagedEntity managedEntity = (IManagedEntity)subType.newInstance();
+                return getFieldsForManagedClass(managedEntity,regType);
             }
             catch (Exception e)
             {
@@ -216,11 +216,11 @@ public class EntityInfoCache implements IEntityInfoCache
         return new ArrayList<>();
     }
 
-    private static Collection<IField> getFieldsForManagedClass(IManagedRODBClass entity,Class type)
+    private static Collection<IField> getFieldsForManagedClass(IManagedReadOnlyEntity entity,Class type)
     {
         Collection<IField> fields = new ArrayList<>();
 
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{ServerRODBClass.class});
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{IReadOnlyEntity.class});
         for (Class targetType : typeList)
         {
             Collection<IField> targetTypeFields = entity.getFieldInfo().get(targetType);
@@ -232,9 +232,9 @@ public class EntityInfoCache implements IEntityInfoCache
             {
                 for (IField field : targetTypeFields)
                 {
-                    if (field instanceof IDBColumn)
+                    if (field instanceof IColumn)
                     {
-                        IDBColumn column = (IDBColumn) field;
+                        IColumn column = (IColumn) field;
                         if (column.isSubClassCommonColumn())
                         {
                             fields.add(column);
@@ -257,10 +257,10 @@ public class EntityInfoCache implements IEntityInfoCache
             Annotation[] annotations = dbClassField.getAnnotations();
             for (Annotation annotation : annotations)
             {
-                if (annotation instanceof DBColumnInfo)
+                if (annotation instanceof ColumnInfo)
                 {
-                    DBColumnInfo dbColumnInfo = (DBColumnInfo) annotation;
-                    IDBColumn column = createColumnMapping(dbClassField, dbColumnInfo);
+                    ColumnInfo columnInfo = (ColumnInfo) annotation;
+                    IColumn column = createColumnMapping(dbClassField, columnInfo);
                     if (superClass)
                     {
                         if (column.isSubClassCommonColumn())
@@ -280,7 +280,7 @@ public class EntityInfoCache implements IEntityInfoCache
                         continue;
                     }
                     ForeignKeyInfo foreignKeyInfo = (ForeignKeyInfo) annotation;
-                    IDBRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
+                    IRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
                     fields.add(relation);
                 }
                 else if (annotation instanceof ForeignKeyInfoList)
@@ -292,7 +292,7 @@ public class EntityInfoCache implements IEntityInfoCache
                     ForeignKeyInfoList foreignKeyInfoList = (ForeignKeyInfoList) annotation;
                     for (ForeignKeyInfo foreignKeyInfo : foreignKeyInfoList.infoList())
                     {
-                        IDBRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
+                        IRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
                         fields.add(relation);
                     }
                 }
@@ -302,44 +302,45 @@ public class EntityInfoCache implements IEntityInfoCache
         return fields;
     }
 
-    private static IDBColumn createColumnMapping(Field dbClassField, DBColumnInfo dbColumnInfo) throws SequenceGeneratorInitializationException
+    private static IColumn createColumnMapping(Field dbClassField, ColumnInfo columnInfo) throws SequenceGeneratorInitializationException
     {
-        IDBColumn column = new DefaultDBColumn(dbClassField.getName(),dbColumnInfo.columnType(),dbColumnInfo.nullable());
-        if (dbColumnInfo.columnName() != null
-                && dbColumnInfo.columnName().trim().length() > 0)
+        IColumn column = new DefaultColumn(dbClassField.getName(), columnInfo.columnType(), columnInfo.nullable());
+        if (columnInfo.columnName() != null
+                && columnInfo.columnName().trim().length() > 0)
         {
-            column.setColumnName(dbColumnInfo.columnName());
+            column.setColumnName(columnInfo.columnName());
         }
-        column.setKey(dbColumnInfo.key());
-        column.setSize(dbColumnInfo.size());
-        column.setSubClassCommonColumn(dbColumnInfo.subClassCommonColumn());
-        column.setReadFromSequence(dbColumnInfo.readFromSequence());
+        column.setKey(columnInfo.key());
+        column.setSize(columnInfo.size());
+        column.setSubClassCommonColumn(columnInfo.subClassCommonColumn());
+        column.setReadFromSequence(columnInfo.readFromSequence());
         if (column.isReadFromSequence())
         {
             try
             {
-                column.setSequenceGenerator((ISequenceGenerator) Class.forName(dbColumnInfo.sequenceGeneratorClassName()).newInstance());
+                column.setSequenceGenerator((ISequenceGenerator) Class.forName(columnInfo.sequenceGeneratorClassName()).newInstance());
             }
             catch (Exception e)
             {
 
-                throw new SequenceGeneratorInitializationException(String.format("Could not initialize sequence generator %s",dbColumnInfo.sequenceGeneratorClassName()),e);
+                throw new SequenceGeneratorInitializationException(String.format("Could not initialize sequence generator %s",
+                                                                                 columnInfo.sequenceGeneratorClassName()),e);
             }
         }
         return column;
     }
 
-    private static IDBRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
+    private static IRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
     {
-        DBRelationColumnMapping[] objectMappings = new DBRelationColumnMapping[foreignKeyInfo.columnMappings().length];
+        RelationColumnMapping[] objectMappings = new RelationColumnMapping[foreignKeyInfo.columnMappings().length];
         ForeignKeyColumnMapping[] annotationMappings = foreignKeyInfo.columnMappings();
         for (int i = 0, columnMappingsLength = annotationMappings.length; i < columnMappingsLength; i++)
         {
             ForeignKeyColumnMapping mapping = annotationMappings[i];
-            objectMappings[i] = new DBRelationColumnMapping(mapping.fromField(),mapping.toField());
+            objectMappings[i] = new RelationColumnMapping(mapping.fromField(),mapping.toField());
         }
 
-        IDBRelation relation = new DefaultDBRelation(dbClassField.getName(),foreignKeyInfo.name()
+        IRelation relation = new DefaultRelation(dbClassField.getName(),foreignKeyInfo.name()
                 ,foreignKeyInfo.relatedObjectType(),objectMappings,foreignKeyInfo.updateRule()
                 ,foreignKeyInfo.deleteRule(),foreignKeyInfo.reverseRelation()
                 ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.lazy());

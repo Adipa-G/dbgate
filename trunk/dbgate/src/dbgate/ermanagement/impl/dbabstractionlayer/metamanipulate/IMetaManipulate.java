@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.ReferentialRuleType;
 import dbgate.ermanagement.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.IMetaComparisonGroup;
@@ -20,11 +20,11 @@ public interface IMetaManipulate
 {
     void initialize(Connection con) throws MetaDataException;
 
-    DBColumnType mapColumnTypeNameToType(String columnTypeName);
+    ColumnType mapColumnTypeNameToType(String columnTypeName);
 
-    String mapColumnTypeToTypeName(DBColumnType columnTypeId);
+    String mapColumnTypeToTypeName(ColumnType columnTypeId);
 
-    String getDefaultValueForType(DBColumnType columnTypeId);
+    String getDefaultValueForType(ColumnType columnTypeId);
 
     ReferentialRuleType mapReferentialRuleNameToType(String ruleTypeName);
 

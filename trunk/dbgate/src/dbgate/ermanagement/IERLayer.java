@@ -1,7 +1,7 @@
 package dbgate.ermanagement;
 
-import dbgate.ServerDBClass;
-import dbgate.ServerRODBClass;
+import dbgate.IEntity;
+import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.exceptions.DBPatchingException;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.exceptions.RetrievalException;
@@ -18,9 +18,9 @@ import java.util.Collection;
  */
 public interface IERLayer
 {
-    void load(ServerRODBClass serverRODBClass, ResultSet rs, Connection con) throws RetrievalException;
+    void load(IReadOnlyEntity readOnlyEntity, ResultSet rs, Connection con) throws RetrievalException;
 
-    void save(ServerDBClass serverDBClass, Connection con) throws PersistException;
+    void save(IEntity entity, Connection con) throws PersistException;
 
     Collection select(ISelectionQuery query,Connection con ) throws RetrievalException;
 

@@ -6,7 +6,7 @@ package dbgate;
  * Date: Mar 29, 2010
  * Time: 12:26:12 PM
  */
-public enum DBColumnType
+public enum ColumnType
 {
     LONG,
     BOOLEAN,

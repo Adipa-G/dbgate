@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.dbutility.DBConnector;
@@ -285,7 +285,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNonNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -330,7 +330,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNonNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -371,7 +371,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNonNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -412,7 +412,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -457,7 +457,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -498,7 +498,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -539,7 +539,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNonNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -584,7 +584,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNonNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -625,7 +625,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNonNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -666,7 +666,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -711,7 +711,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -752,7 +752,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             updateEntityWithNullValues(loadedEntity);
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -793,7 +793,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             connection = connector.getConnection();
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -836,7 +836,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             connection = connector.getConnection();
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -875,7 +875,7 @@ public class ErManagementColumnPersistTests
             connection.close();
 
             connection = connector.getConnection();
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();

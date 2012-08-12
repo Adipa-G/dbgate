@@ -1,9 +1,9 @@
 package dbgate.ermanagement.support.patch.patchempty;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.AbstractManagedDBClass;
-import dbgate.ermanagement.DefaultDBColumn;
-import dbgate.ermanagement.IDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.AbstractManagedEntity;
+import dbgate.ermanagement.DefaultColumn;
+import dbgate.ermanagement.IColumn;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 
-public class LeafEntity  extends AbstractManagedDBClass
+public class LeafEntity  extends AbstractManagedEntity
 {
     private int idCol;
     private int indexNo;
@@ -67,13 +67,13 @@ public class LeafEntity  extends AbstractManagedDBClass
         Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
         ArrayList<IField> dbColumns = new ArrayList<IField>();
 
-        IDBColumn idCol = new DefaultDBColumn("idCol",true, DBColumnType.INTEGER);
+        IColumn idCol = new DefaultColumn("idCol",true, ColumnType.INTEGER);
         idCol.setSubClassCommonColumn(true);
         dbColumns.add(idCol);
-        IDBColumn indexCol = new DefaultDBColumn("indexNo",true, DBColumnType.INTEGER);
+        IColumn indexCol = new DefaultColumn("indexNo",true, ColumnType.INTEGER);
         indexCol.setSubClassCommonColumn(true);
         dbColumns.add(indexCol);
-        dbColumns.add(new DefaultDBColumn("someText", DBColumnType.VARCHAR ));
+        dbColumns.add(new DefaultColumn("someText", ColumnType.VARCHAR ));
 
         map.put(LeafEntity.class,dbColumns);
         return map;

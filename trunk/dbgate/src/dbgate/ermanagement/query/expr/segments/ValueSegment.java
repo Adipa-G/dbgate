@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr.segments;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**
@@ -12,10 +12,10 @@ import dbgate.ermanagement.exceptions.ExpressionParsingException;
  */
 public class ValueSegment extends BaseSegment
 {
-    private DBColumnType type;
+    private ColumnType type;
     private Object value;
 
-    public ValueSegment(DBColumnType type, Object value)
+    public ValueSegment(ColumnType type, Object value)
     {
         this.type = type;
         this.value = value;
@@ -27,7 +27,7 @@ public class ValueSegment extends BaseSegment
         return SegmentType.VALUE;
     }
 
-    public DBColumnType getType()
+    public ColumnType getType()
     {
         return type;
     }

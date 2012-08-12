@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context.impl;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.context.IEntityFieldValueList;
 
 /**
@@ -9,16 +9,16 @@ import dbgate.ermanagement.context.IEntityFieldValueList;
  */
 public class EntityFieldValueList extends EntityTypeFieldValueList implements IEntityFieldValueList
 {
-    private ServerRODBClass entity;
+    private IReadOnlyEntity entity;
 
-    public EntityFieldValueList(ServerRODBClass entity)
+    public EntityFieldValueList(IReadOnlyEntity entity)
     {
         super(entity.getClass());
         this.entity = entity;
     }
 
     @Override
-    public ServerRODBClass getEntity()
+    public IReadOnlyEntity getEntity()
     {
         return entity;
     }

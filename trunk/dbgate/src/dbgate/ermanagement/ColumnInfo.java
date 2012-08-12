@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 
 import java.lang.annotation.*;
 
@@ -14,9 +14,9 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface DBColumnInfo
+public @interface ColumnInfo
 {
-    DBColumnType columnType();
+    ColumnType columnType();
     String columnName() default "";
     boolean key() default false;
     boolean nullable() default false;

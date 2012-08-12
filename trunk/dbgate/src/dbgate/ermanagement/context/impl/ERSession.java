@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context.impl;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.context.IERSession;
 import dbgate.ermanagement.context.IEntityFieldValueList;
 import dbgate.ermanagement.context.ITypeFieldValueList;
@@ -31,7 +31,7 @@ public class ERSession implements IERSession
     }
 
     @Override
-    public ServerRODBClass getProcessed(ITypeFieldValueList typeKeyFieldList)
+    public IReadOnlyEntity getProcessed(ITypeFieldValueList typeKeyFieldList)
     {
         for (IEntityFieldValueList existingEntity : entityFieldValueList)
         {

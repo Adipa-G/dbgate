@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.oracledm;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.exceptions.common.StatementExecutionException;
 import dbgate.ermanagement.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
@@ -68,7 +68,7 @@ public class OracleDataManipulate extends AbstractDataManipulate
                 }
 
                 QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
-                DBColumnType type = param.getType();
+                ColumnType type = param.getType();
                 Object value = param.getValue();
 
                 setToPreparedStatement(ps,value,count,value == null,type);

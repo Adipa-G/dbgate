@@ -1,9 +1,9 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBRelationColumnMapping;
-import dbgate.ermanagement.DefaultDBColumn;
-import dbgate.ermanagement.DefaultDBRelation;
+import dbgate.ColumnType;
+import dbgate.ermanagement.RelationColumnMapping;
+import dbgate.ermanagement.DefaultColumn;
+import dbgate.ermanagement.DefaultRelation;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -24,24 +24,24 @@ public class TreeTestExtFactory
 
         if (type == TreeTestRootEntityExt.class)
         {
-            fields.add(new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER));
-            fields.add(new DefaultDBColumn("name",DBColumnType.VARCHAR));
-            fields.add(new DefaultDBRelation("one2ManyEntities","fk_root2one2manyent"
-                    , TreeTestOne2ManyEntityExt.class,new DBRelationColumnMapping[]{new DBRelationColumnMapping("idCol","idCol")}));
-            fields.add(new DefaultDBRelation("one2OneEntity","fk_root2one2oneent"
-                    , TreeTestOne2OneEntityExt.class,new DBRelationColumnMapping[]{new DBRelationColumnMapping("idCol","idCol")}));
+            fields.add(new DefaultColumn("idCol",true,false, ColumnType.INTEGER));
+            fields.add(new DefaultColumn("name", ColumnType.VARCHAR));
+            fields.add(new DefaultRelation("one2ManyEntities","fk_root2one2manyent"
+                    , TreeTestOne2ManyEntityExt.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
+            fields.add(new DefaultRelation("one2OneEntity","fk_root2one2oneent"
+                    , TreeTestOne2OneEntityExt.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
 
         }
         else if (type == TreeTestOne2ManyEntityExt.class)
         {
-            fields.add(new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER));
-            fields.add(new DefaultDBColumn("indexNo",true,false,DBColumnType.INTEGER));
-            fields.add(new DefaultDBColumn("name",DBColumnType.VARCHAR));
+            fields.add(new DefaultColumn("idCol",true,false, ColumnType.INTEGER));
+            fields.add(new DefaultColumn("indexNo",true,false, ColumnType.INTEGER));
+            fields.add(new DefaultColumn("name", ColumnType.VARCHAR));
         }
         else if (type == TreeTestOne2OneEntityExt.class)
         {
-            fields.add(new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER));
-            fields.add(new DefaultDBColumn("name",DBColumnType.VARCHAR));
+            fields.add(new DefaultColumn("idCol",true,false, ColumnType.INTEGER));
+            fields.add(new DefaultColumn("name", ColumnType.VARCHAR));
         }
         return fields;
     }

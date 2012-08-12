@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 
 import java.util.Collection;
@@ -11,12 +11,12 @@ import java.util.Collection;
  * Date: Sep 26, 2010
  * Time: 11:47:59 AM
  */
-@DBTableInfo(tableName = "tree_test_root")
-public class TreeTestRootEntityAnnotations extends DefaultServerDBClass implements ITreeTestRootEntity
+@TableInfo(tableName = "tree_test_root")
+public class TreeTestRootEntityAnnotations extends DefaultEntity implements ITreeTestRootEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"

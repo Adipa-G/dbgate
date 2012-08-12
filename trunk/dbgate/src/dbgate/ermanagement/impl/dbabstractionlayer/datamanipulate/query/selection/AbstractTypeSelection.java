@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.RetrievalException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
@@ -53,7 +53,7 @@ public class AbstractTypeSelection implements IAbstractSelection
     {
         try
         {
-            ServerRODBClass instance = (ServerRODBClass)type.newInstance();
+            IReadOnlyEntity instance = (IReadOnlyEntity)type.newInstance();
             instance.retrieve(rs,con);
             return instance;
         }

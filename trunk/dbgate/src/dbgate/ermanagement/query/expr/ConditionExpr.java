@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
@@ -31,13 +31,13 @@ public class ConditionExpr extends BaseExpr
     }
 
     @Override
-    public ConditionExpr value(DBColumnType type, Object value) throws ExpressionParsingException
+    public ConditionExpr value(ColumnType type, Object value) throws ExpressionParsingException
     {
         return (ConditionExpr)super.value(type, value);
     }
 
     @Override
-    public ConditionExpr values(DBColumnType type, Object... values) throws ExpressionParsingException
+    public ConditionExpr values(ColumnType type, Object... values) throws ExpressionParsingException
     {
         return (ConditionExpr)super.value(type, values);
     }

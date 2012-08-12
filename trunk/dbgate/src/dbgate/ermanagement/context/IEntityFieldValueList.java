@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,5 +10,5 @@ import dbgate.ServerRODBClass;
  */
 public interface IEntityFieldValueList extends ITypeFieldValueList
 {
-    ServerRODBClass getEntity();
+    IReadOnlyEntity getEntity();
 }

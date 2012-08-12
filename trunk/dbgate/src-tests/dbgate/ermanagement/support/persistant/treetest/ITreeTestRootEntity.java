@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.ServerDBClass;
+import dbgate.IEntity;
 
 import java.util.Collection;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
  * Date: Sep 26, 2010
  * Time: 11:47:02 AM
  */
-public interface ITreeTestRootEntity  extends ServerDBClass
+public interface ITreeTestRootEntity  extends IEntity
 {
     int getIdCol();
 

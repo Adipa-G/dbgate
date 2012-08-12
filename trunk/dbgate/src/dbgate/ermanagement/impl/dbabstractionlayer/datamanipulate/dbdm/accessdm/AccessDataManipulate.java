@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.dbdm.accessdm;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.IDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.IColumn;
 import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
@@ -22,11 +22,11 @@ public class AccessDataManipulate extends AbstractDataManipulate
     }
 
     @Override
-    public Object readFromResultSet(ResultSet rs, IDBColumn dbColumn) throws ReadFromResultSetException
+    public Object readFromResultSet(ResultSet rs, IColumn dbColumn) throws ReadFromResultSetException
     {
         Object result = super.readFromResultSet(rs, dbColumn);
         if (result != null
-                && dbColumn.getColumnType() == DBColumnType.VARCHAR)
+                && dbColumn.getColumnType() == ColumnType.VARCHAR)
         {
             return result.toString().replaceAll("\u0000","");
         }

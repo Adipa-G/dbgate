@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.join;
 
-import dbgate.ermanagement.DBRelationColumnMapping;
-import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.RelationColumnMapping;
+import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.QueryJoinType;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
@@ -96,7 +96,7 @@ public class AbstractTypeJoin implements IAbstractJoin
     private void createJoinExpressionForDefinedRelation(QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         String typeFromAlias = buildInfo.getAlias(typeFrom);
-        IDBRelation relation = processor.getRelation(typeFrom,typeTo);
+        IRelation relation = processor.getRelation(typeFrom,typeTo);
         if (relation == null)
         {
             relation = processor.getRelation(typeTo,typeFrom);
@@ -105,10 +105,10 @@ public class AbstractTypeJoin implements IAbstractJoin
         if (relation != null)
         {
             expr = JoinExpr.build();
-            DBRelationColumnMapping[] tableColumnMappings = relation.getTableColumnMappings();
+            RelationColumnMapping[] tableColumnMappings = relation.getTableColumnMappings();
             for (int i = 0, tableColumnMappingsLength = tableColumnMappings.length; i < tableColumnMappingsLength; i++)
             {
-                DBRelationColumnMapping mapping = tableColumnMappings[i];
+                RelationColumnMapping mapping = tableColumnMappings[i];
                 if (i > 0)
                 {
                     expr.and();

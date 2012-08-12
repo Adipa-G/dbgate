@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ public interface IERSession
 
     boolean isProcessed(ITypeFieldValueList typeKeyFieldList);
 
-    ServerRODBClass getProcessed(ITypeFieldValueList typeKeyFieldList);
+    IReadOnlyEntity getProcessed(ITypeFieldValueList typeKeyFieldList);
 
     void checkAndAddEntityList(IEntityFieldValueList entityKeyFieldList);
 }

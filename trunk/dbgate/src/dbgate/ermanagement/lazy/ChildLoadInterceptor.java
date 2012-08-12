@@ -1,9 +1,9 @@
 package dbgate.ermanagement.lazy;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 import dbgate.dbutility.DBConnector;
 import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.impl.ERDataRetrievalManager;
@@ -23,14 +23,14 @@ import java.sql.Connection;
 public class ChildLoadInterceptor implements MethodInterceptor
 {
     private ERDataRetrievalManager erDataRetrievalManager;
-    private ServerRODBClass parentRoEntity;
+    private IReadOnlyEntity parentRoEntity;
     private Class applicableParentType;
-    private IDBRelation relation;
+    private IRelation relation;
     private boolean intercepted;
     private Connection connection;
 
-    public ChildLoadInterceptor(ERDataRetrievalManager erDataRetrievalManager, ServerRODBClass parentRoEntity,
-                                Class applicableParentType,Connection connection, IDBRelation relation)
+    public ChildLoadInterceptor(ERDataRetrievalManager erDataRetrievalManager, IReadOnlyEntity parentRoEntity,
+                                Class applicableParentType,Connection connection, IRelation relation)
     {
         this.erDataRetrievalManager = erDataRetrievalManager;
         this.parentRoEntity = parentRoEntity;

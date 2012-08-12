@@ -139,11 +139,11 @@ public class ERMetaDataManager
         EntityInfo entityInfo = CacheManager.getEntityInfo(subType);
         while (entityInfo != null)
         {
-            Collection<IDBColumn> dbColumns = entityInfo.getColumns();
-            Collection<IDBRelation> dbRelations = entityInfo.getRelations();
-            Collection<IDBRelation> filteredRelations = new ArrayList<>();
+            Collection<IColumn> dbColumns = entityInfo.getColumns();
+            Collection<IRelation> dbRelations = entityInfo.getRelations();
+            Collection<IRelation> filteredRelations = new ArrayList<>();
 
-            for (IDBRelation relation : dbRelations)
+            for (IRelation relation : dbRelations)
             {
                 if (!relation.isReverseRelationship()
                         && !relation.isNonIdentifyingRelation())
@@ -158,13 +158,13 @@ public class ERMetaDataManager
         return retItems;
     }
 
-    private IMetaItem createTable(Class type,Collection<IDBColumn> dbColumns,Collection<IDBRelation> dbRelations)
+    private IMetaItem createTable(Class type,Collection<IColumn> dbColumns,Collection<IRelation> dbRelations)
     {
         MetaTable table = new MetaTable();
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         table.setName(entityInfo.getTableName());
 
-        for (IDBColumn dbColumn : dbColumns)
+        for (IColumn dbColumn : dbColumns)
         {
             MetaColumn metaColumn = new MetaColumn();
             metaColumn.setColumnType(dbColumn.getColumnType());
@@ -174,14 +174,14 @@ public class ERMetaDataManager
             table.getColumns().add(metaColumn);
         }
 
-        for (IDBRelation relation : dbRelations)
+        for (IRelation relation : dbRelations)
         {
             EntityInfo relatedEntityInfo = CacheManager.getEntityInfo(relation.getRelatedObjectType());
 
             MetaForeignKey foreignKey = new MetaForeignKey();
             foreignKey.setName(relation.getRelationshipName());
             foreignKey.setToTable(relatedEntityInfo.getTableName());
-            for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
+            for (RelationColumnMapping mapping : relation.getTableColumnMappings())
             {
                 String fromCol = ERDataManagerUtils.findColumnByAttribute(entityInfo.getColumns(),mapping.getFromField()).getColumnName();
                 String toCol = ERDataManagerUtils.findColumnByAttribute(relatedEntityInfo.getColumns(),mapping.getToField()).getColumnName();
@@ -194,7 +194,7 @@ public class ERMetaDataManager
 
         MetaPrimaryKey primaryKey = new MetaPrimaryKey();
         primaryKey.setName("pk_" + table.getName());
-        for (IDBColumn dbColumn : dbColumns)
+        for (IColumn dbColumn : dbColumns)
         {
             if (dbColumn.isKey())
             {

@@ -1,9 +1,9 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.DBClassStatus;
+import dbgate.IEntity;
+import dbgate.EntityStatus;
 import dbgate.DbGateException;
-import dbgate.ServerDBClass;
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
@@ -97,12 +97,12 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         }
     }
 
-    public void load(ServerRODBClass roEntity, ResultSet rs, Connection con) throws RetrievalException
+    public void load(IReadOnlyEntity roEntity, ResultSet rs, Connection con) throws RetrievalException
     {
-        if (roEntity instanceof ServerDBClass)
+        if (roEntity instanceof IEntity)
         {
-            ServerDBClass entity = (ServerDBClass) roEntity;
-            entity.setStatus(DBClassStatus.UNMODIFIED);
+            IEntity entity = (IEntity) roEntity;
+            entity.setStatus(EntityStatus.UNMODIFIED);
         }
         try
         {
@@ -117,7 +117,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         }
     }
 
-    private void loadFromDb(ServerRODBClass roEntity, ResultSet rs, Connection con) throws DbGateException
+    private void loadFromDb(IReadOnlyEntity roEntity, ResultSet rs, Connection con) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(roEntity);
         while (entityInfo != null)
@@ -164,7 +164,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         }
     }
 
-    private void loadForType(ServerRODBClass entity,Class type, ResultSet rs, Connection con) throws DbGateException
+    private void loadForType(IReadOnlyEntity entity,Class type, ResultSet rs, Connection con) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         IEntityContext entityContext = entity.getContext();
@@ -177,15 +177,15 @@ public class ERDataRetrievalManager extends ERDataCommonManager
             entityContext.getChangeTracker().getFields().addAll(valueTypeList.getFieldValues());
         }
 
-        Collection<IDBRelation> dbRelations = entityInfo.getRelations();
-        for (IDBRelation relation : dbRelations)
+        Collection<IRelation> dbRelations = entityInfo.getRelations();
+        for (IRelation relation : dbRelations)
         {
             loadChildrenFromRelation(entity, type, con,relation,false);
         }
     }
 
-    public void loadChildrenFromRelation(ServerRODBClass parentRoEntity, Class type
-            , Connection con, IDBRelation relation,boolean lazy) throws DbGateException
+    public void loadChildrenFromRelation(IReadOnlyEntity parentRoEntity, Class type
+            , Connection con, IRelation relation,boolean lazy) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         Method getter = entityInfo.getGetter(relation.getAttributeName());
@@ -208,11 +208,11 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         IEntityContext entityContext = parentRoEntity.getContext();
         Object value = ReflectionUtils.getValue(getter,parentRoEntity);
 
-        Collection<ServerRODBClass> children = readRelationChildrenFromDb(parentRoEntity,type,con,relation);
+        Collection<IReadOnlyEntity> children = readRelationChildrenFromDb(parentRoEntity,type,con,relation);
         if (entityContext != null
                 && !relation.isReverseRelationship())
         {
-            for (ServerRODBClass childEntity : children)
+            for (IReadOnlyEntity childEntity : children)
             {
                 ITypeFieldValueList valueTypeList = ERDataManagerUtils.extractRelationKeyValues(childEntity,relation);
                 if (valueTypeList != null)
@@ -236,7 +236,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         {
             if (children.size() > 0)
             {
-                ServerRODBClass singleRODBClass = children.iterator().next();
+                IReadOnlyEntity singleRODBClass = children.iterator().next();
                 if (getter.getReturnType().isAssignableFrom(singleRODBClass.getClass()))
                 {
                     ReflectionUtils.setValue(setter, parentRoEntity, singleRODBClass);

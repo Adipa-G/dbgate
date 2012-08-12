@@ -14,6 +14,6 @@ import java.io.Serializable;
  * read only class
  */
 
-public interface IRODBClass extends Serializable
+public interface IReadOnlyClientEntity extends Serializable
 {
 }

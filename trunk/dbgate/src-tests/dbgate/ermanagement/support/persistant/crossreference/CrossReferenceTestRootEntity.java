@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.crossreference;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 
 import java.util.ArrayList;
@@ -12,12 +12,12 @@ import java.util.Collection;
  * Date: Sep 26, 2010
  * Time: 11:47:59 AM
  */
-@DBTableInfo(tableName = "cross_reference_test_root")
-public class CrossReferenceTestRootEntity extends DefaultServerDBClass
+@TableInfo(tableName = "cross_reference_test_root")
+public class CrossReferenceTestRootEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"

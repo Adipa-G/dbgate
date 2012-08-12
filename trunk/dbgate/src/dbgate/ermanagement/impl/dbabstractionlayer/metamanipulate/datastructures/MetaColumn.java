@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +10,7 @@ import dbgate.DBColumnType;
  */
 public class MetaColumn extends AbstractMetaItem
 {
-    private DBColumnType columnType;
+    private ColumnType columnType;
     private Integer size;
     private boolean isNull;
 
@@ -19,12 +19,12 @@ public class MetaColumn extends AbstractMetaItem
         itemType = MetaItemType.COLUMN;   
     }
 
-    public DBColumnType getColumnType()
+    public ColumnType getColumnType()
     {
         return columnType;
     }
 
-    public void setColumnType(DBColumnType columnType)
+    public void setColumnType(ColumnType columnType)
     {
         this.columnType = columnType;
     }
@@ -60,7 +60,7 @@ public class MetaColumn extends AbstractMetaItem
 
         if (isNull != that.isNull) return false;
         if (columnType != that.columnType) return false;
-        if ((columnType == DBColumnType.VARCHAR || columnType == DBColumnType.CHAR)
+        if ((columnType == ColumnType.VARCHAR || columnType == ColumnType.CHAR)
                 && !size.equals(that.size)) return false;
 
         return true;

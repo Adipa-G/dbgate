@@ -1,6 +1,6 @@
 package dbgate.ermanagement.caches;
 
-import dbgate.IRODBClass;
+import dbgate.IReadOnlyClientEntity;
 import dbgate.ermanagement.IField;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;
@@ -18,7 +18,7 @@ public interface IEntityInfoCache
 {
     EntityInfo getEntityInfo(Class type);
 
-    EntityInfo getEntityInfo(IRODBClass entity);
+    EntityInfo getEntityInfo(IReadOnlyClientEntity entity);
 
     void register(Class type,String tableName,Collection<IField> fields);
 

@@ -1,7 +1,7 @@
 package dbgate.ermanagement.support.patch.patchempty;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DefaultDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.DefaultColumn;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class LeafEntitySubB extends LeafEntity
         Map<Class,Collection<IField>> map = super.getFieldInfo();
         ArrayList<IField> dbColumns = new ArrayList<IField>();
 
-        dbColumns.add(new DefaultDBColumn("someTextB", DBColumnType.VARCHAR ));
+        dbColumns.add(new DefaultColumn("someTextB", ColumnType.VARCHAR ));
 
         map.put(LeafEntitySubB.class,dbColumns);
         return map;

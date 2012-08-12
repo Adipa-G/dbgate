@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.mysqlmm;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.MetaComparisonTableGroup;
@@ -33,8 +33,8 @@ public class MySqlMetaManipulate extends DefaultMetaManipulate
         sb.append(" MODIFY ");
         sb.append(metaColumn.getName());
         sb.append(" ");
-        if (metaColumn.getColumnType() == DBColumnType.CHAR
-                || metaColumn.getColumnType() == DBColumnType.VARCHAR)
+        if (metaColumn.getColumnType() == ColumnType.CHAR
+                || metaColumn.getColumnType() == ColumnType.VARCHAR)
         {
             sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
             sb.append("(");

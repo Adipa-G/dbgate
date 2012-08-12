@@ -2,8 +2,8 @@ package dbgate.ermanagement.caches.impl;
 
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
-import dbgate.ermanagement.IDBColumn;
-import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.IColumn;
+import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.IField;
 import dbgate.ermanagement.exceptions.common.MethodNotFoundException;
 import dbgate.ermanagement.exceptions.query.QueryBuildingException;
@@ -28,8 +28,8 @@ public class EntityInfo
     private EntityInfo superEntityInfo;
 
     private final HashMap<String,Method> methodMap;
-    private final Collection<IDBColumn> columns;
-    private final Collection<IDBRelation> relations;
+    private final Collection<IColumn> columns;
+    private final Collection<IRelation> relations;
     private final HashMap<String,String> queries;
 
     public EntityInfo(Class entityType)
@@ -66,20 +66,20 @@ public class EntityInfo
         this.superEntityInfo = superEntityInfo;
     }
 
-    public Collection<IDBColumn> getColumns()
+    public Collection<IColumn> getColumns()
     {
         return columns;
     }
 
-    public Collection<IDBRelation> getRelations()
+    public Collection<IRelation> getRelations()
     {
         return relations;
     }
 
-    public Collection<IDBColumn> getKeys()
+    public Collection<IColumn> getKeys()
     {
-        Collection<IDBColumn> keys = new ArrayList<>();
-        for (IDBColumn column : columns)
+        Collection<IColumn> keys = new ArrayList<>();
+        for (IColumn column : columns)
         {
             if (column.isKey())
             {
@@ -98,14 +98,14 @@ public class EntityInfo
     {
         for (IField field : fields)
         {
-            if (field instanceof IDBColumn)
+            if (field instanceof IColumn)
             {
-                IDBColumn dbColumn = (IDBColumn) field;
+                IColumn dbColumn = (IColumn) field;
                 columns.add(dbColumn);
             }
-            else if (field instanceof IDBRelation)
+            else if (field instanceof IRelation)
             {
-                relations.add((IDBRelation) field);
+                relations.add((IRelation) field);
             }
         }
     }
@@ -174,7 +174,7 @@ public class EntityInfo
         return query;
     }
 
-    public String getRelationObjectLoad(IDBLayer dbLayer, IDBRelation relation)
+    public String getRelationObjectLoad(IDBLayer dbLayer, IRelation relation)
                 throws QueryBuildingException
     {
         String queryId = relation.getRelationshipName() + "_" + relation.getRelatedObjectType().getCanonicalName();
@@ -269,7 +269,7 @@ public class EntityInfo
         return method;
     }
 
-    public Method getSetter(IDBColumn dbColumn) throws MethodNotFoundException
+    public Method getSetter(IColumn dbColumn) throws MethodNotFoundException
     {
         Class[] params = getParameters(dbColumn);
         if (params == null)
@@ -279,7 +279,7 @@ public class EntityInfo
         return getSetter(dbColumn.getAttributeName(),params);
     }
 
-    private static Class[] getParameters(IDBColumn dbColumn)
+    private static Class[] getParameters(IColumn dbColumn)
     {
         Class[] params;
         switch (dbColumn.getColumnType())

@@ -1,11 +1,11 @@
 package dbgate.ermanagement.support.persistant.columntest;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
-import dbgate.ermanagement.DefaultServerDBClass;
+import dbgate.ermanagement.ColumnInfo;
+import dbgate.ermanagement.TableInfo;
+import dbgate.ermanagement.DefaultEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,46 +14,46 @@ import dbgate.ermanagement.DefaultServerDBClass;
  * Time: 9:45:24 PM
  * To change this template use File | Settings | File Templates.
  */
-@DBTableInfo(tableName = "column_test_entity")
-public class ColumnTestEntityAnnotations extends DefaultServerDBClass implements IColumnTestEntity
+@TableInfo(tableName = "column_test_entity")
+public class ColumnTestEntityAnnotations extends DefaultEntity implements IColumnTestEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true,readFromSequence = true,sequenceGeneratorClassName = "dbgate.ermanagement.support.persistant.columntest.PrimaryKeyGenerator")
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true,readFromSequence = true,sequenceGeneratorClassName = "dbgate.ermanagement.support.persistant.columntest.PrimaryKeyGenerator")
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.LONG)
+    @ColumnInfo(columnType = ColumnType.LONG)
     private long longNotNull;
-    @DBColumnInfo(columnType = DBColumnType.LONG,nullable = true)
+    @ColumnInfo(columnType = ColumnType.LONG,nullable = true)
     private Long longNull;
-    @DBColumnInfo(columnType = DBColumnType.BOOLEAN)
+    @ColumnInfo(columnType = ColumnType.BOOLEAN)
     private boolean booleanNotNull;
-    @DBColumnInfo(columnType = DBColumnType.BOOLEAN,nullable = true)
+    @ColumnInfo(columnType = ColumnType.BOOLEAN,nullable = true)
     private Boolean booleanNull;
-    @DBColumnInfo(columnType = DBColumnType.CHAR)
+    @ColumnInfo(columnType = ColumnType.CHAR)
     private char charNotNull;
-    @DBColumnInfo(columnType = DBColumnType.CHAR,nullable = true)
+    @ColumnInfo(columnType = ColumnType.CHAR,nullable = true)
     private Character charNull;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER)
+    @ColumnInfo(columnType = ColumnType.INTEGER)
     private int intNotNull;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,nullable = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,nullable = true)
     private Integer intNull;
-    @DBColumnInfo(columnType = DBColumnType.DATE)
+    @ColumnInfo(columnType = ColumnType.DATE)
     private DateWrapper dateNotNull;
-    @DBColumnInfo(columnType = DBColumnType.DATE,nullable = true)
+    @ColumnInfo(columnType = ColumnType.DATE,nullable = true)
     private DateWrapper dateNull;
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE)
+    @ColumnInfo(columnType = ColumnType.DOUBLE)
     private double doubleNotNull;
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE,nullable = true)
+    @ColumnInfo(columnType = ColumnType.DOUBLE,nullable = true)
     private Double doubleNull;
-    @DBColumnInfo(columnType = DBColumnType.FLOAT)
+    @ColumnInfo(columnType = ColumnType.FLOAT)
     private float floatNotNull;
-    @DBColumnInfo(columnType = DBColumnType.FLOAT,nullable = true)
+    @ColumnInfo(columnType = ColumnType.FLOAT,nullable = true)
     private Float floatNull;
-    @DBColumnInfo(columnType = DBColumnType.TIMESTAMP)
+    @ColumnInfo(columnType = ColumnType.TIMESTAMP)
     private TimeStampWrapper timestampNotNull;
-    @DBColumnInfo(columnType = DBColumnType.TIMESTAMP,nullable = true)
+    @ColumnInfo(columnType = ColumnType.TIMESTAMP,nullable = true)
     private TimeStampWrapper timestampNull;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String varcharNotNull;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR,nullable = true)
+    @ColumnInfo(columnType = ColumnType.VARCHAR,nullable = true)
     private String varcharNull;
 
     public int getIdCol()

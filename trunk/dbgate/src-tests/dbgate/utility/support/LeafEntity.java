@@ -1,7 +1,7 @@
 package dbgate.utility.support;
 
-import dbgate.DBClassStatus;
-import dbgate.IDBClass;
+import dbgate.EntityStatus;
+import dbgate.IClientEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,9 +9,9 @@ import dbgate.IDBClass;
  * Date: Sep 12, 2010
  * Time: 9:27:47 AM
  */
-public class LeafEntity implements IDBClass
+public class LeafEntity implements IClientEntity
 {
-    private DBClassStatus status;
+    private EntityStatus status;
     private RootEntity rootEntity;
 
     public RootEntity getRootEntity()
@@ -24,12 +24,12 @@ public class LeafEntity implements IDBClass
         this.rootEntity = rootEntity;
     }
 
-    public DBClassStatus getStatus()
+    public EntityStatus getStatus()
     {
         return status;
     }
 
-    public void setStatus(DBClassStatus status)
+    public void setStatus(EntityStatus status)
     {
         this.status = status;
     }

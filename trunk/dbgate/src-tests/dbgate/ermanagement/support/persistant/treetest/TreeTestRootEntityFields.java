@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Map;
  * Date: Sep 26, 2010
  * Time: 11:47:59 AM
  */
-public class TreeTestRootEntityFields extends AbstractManagedDBClass implements ITreeTestRootEntity
+public class TreeTestRootEntityFields extends AbstractManagedEntity implements ITreeTestRootEntity
 {
     private int idCol;
     private String name;
@@ -73,12 +73,12 @@ public class TreeTestRootEntityFields extends AbstractManagedDBClass implements 
         Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
         ArrayList<IField> dbColumns = new ArrayList<IField>();
 
-        dbColumns.add(new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER));
-        dbColumns.add(new DefaultDBColumn("name",DBColumnType.VARCHAR));
-        dbColumns.add(new DefaultDBRelation("one2ManyEntities","fk_root2one2manyent"
-                , TreeTestOne2ManyEntityFields.class,new DBRelationColumnMapping[]{new DBRelationColumnMapping("idCol","idCol")}));
-        dbColumns.add(new DefaultDBRelation("one2OneEntity","fk_root2one2oneent"
-                , TreeTestOne2OneEntityFields.class,new DBRelationColumnMapping[]{new DBRelationColumnMapping("idCol","idCol")}));
+        dbColumns.add(new DefaultColumn("idCol",true,false, ColumnType.INTEGER));
+        dbColumns.add(new DefaultColumn("name", ColumnType.VARCHAR));
+        dbColumns.add(new DefaultRelation("one2ManyEntities","fk_root2one2manyent"
+                , TreeTestOne2ManyEntityFields.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
+        dbColumns.add(new DefaultRelation("one2OneEntity","fk_root2one2oneent"
+                , TreeTestOne2OneEntityFields.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
 
         map.put(this.getClass(),dbColumns);
         return map;

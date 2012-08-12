@@ -6,30 +6,30 @@ package dbgate.ermanagement;
  * Date: Sep 22, 2010
  * Time: 1:03:00 PM
  */
-public abstract class AbstractDBRelation implements IDBRelation
+public abstract class AbstractRelation implements IRelation
 {
     private String attributeName;
     private String relationshipName;
     private Class relatedObjectType;
-    private DBRelationColumnMapping[] tableColumnMappings;
+    private RelationColumnMapping[] tableColumnMappings;
     private ReferentialRuleType updateRule;
     private ReferentialRuleType deleteRule;
     private boolean reverseRelationship;
     private boolean nonIdentifyingRelation;
     private boolean lazy;
 
-    protected AbstractDBRelation(String attributeName,String relationshipName
-            , Class relatedObjectType, DBRelationColumnMapping[] tableColumnMappings)
+    protected AbstractRelation(String attributeName, String relationshipName
+            , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings)
     {
         this(attributeName,relationshipName,relatedObjectType
                 ,tableColumnMappings,ReferentialRuleType.RESTRICT
                 ,ReferentialRuleType.CASCADE,false,false,false);
     }
 
-    protected AbstractDBRelation(String attributeName,String relationshipName
-            , Class relatedObjectType, DBRelationColumnMapping[] tableColumnMappings
+    protected AbstractRelation(String attributeName, String relationshipName
+            , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings
             , ReferentialRuleType updateRule, ReferentialRuleType deleteRule
-            ,boolean reverseRelationship,boolean nonIdentifyingRelation,boolean lazy)
+            , boolean reverseRelationship, boolean nonIdentifyingRelation, boolean lazy)
     {
         this.attributeName = attributeName;
         this.relationshipName = relationshipName;
@@ -79,13 +79,13 @@ public abstract class AbstractDBRelation implements IDBRelation
     }
 
     @Override
-    public DBRelationColumnMapping[] getTableColumnMappings()
+    public RelationColumnMapping[] getTableColumnMappings()
     {
         return tableColumnMappings;
     }
 
     @Override
-    public void setTableColumnMappings(DBRelationColumnMapping[] tableColumnMappings)
+    public void setTableColumnMappings(RelationColumnMapping[] tableColumnMappings)
     {
         this.tableColumnMappings = tableColumnMappings;
     }

@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.ServerDBClass;
-import dbgate.ServerRODBClass;
+import dbgate.IEntity;
+import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.exceptions.PersistException;
@@ -29,12 +29,12 @@ public class ERDataManager implements IERDataManager
         this.erDataPersistManager = new ERDataPersistManager(dbLayer,statistics,config);
     }
 
-    public void load(ServerRODBClass roEntity, ResultSet rs, Connection con) throws RetrievalException
+    public void load(IReadOnlyEntity roEntity, ResultSet rs, Connection con) throws RetrievalException
     {
         erDataRetrievalManager.load(roEntity,rs,con);
     }
 
-    public void save(ServerDBClass entity,Connection con ) throws PersistException
+    public void save(IEntity entity,Connection con ) throws PersistException
     {
         erDataPersistManager.save(entity,con);
     }

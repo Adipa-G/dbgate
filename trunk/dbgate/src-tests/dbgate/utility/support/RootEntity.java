@@ -1,7 +1,7 @@
 package dbgate.utility.support;
 
-import dbgate.DBClassStatus;
-import dbgate.IDBClass;
+import dbgate.EntityStatus;
+import dbgate.IClientEntity;
 
 import java.util.ArrayList;
 
@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * Date: Sep 12, 2010
  * Time: 9:27:39 AM
  */
-public class RootEntity implements IDBClass
+public class RootEntity implements IClientEntity
 {
-    private DBClassStatus status;
+    private EntityStatus status;
     private LeafEntity leafEntityNotNull;
     private LeafEntity leafEntityNull;
     private ArrayList<LeafEntity> leafEntities;
@@ -23,12 +23,12 @@ public class RootEntity implements IDBClass
         leafEntities = new ArrayList<LeafEntity>();
     }
 
-    public DBClassStatus getStatus()
+    public EntityStatus getStatus()
     {
         return status;
     }
 
-    public void setStatus(DBClassStatus status)
+    public void setStatus(EntityStatus status)
     {
         this.status = status;
     }

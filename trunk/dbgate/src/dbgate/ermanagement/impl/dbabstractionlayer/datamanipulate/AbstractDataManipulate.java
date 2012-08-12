@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.*;
@@ -60,11 +60,11 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public String createLoadQuery(String tableName, Collection<IDBColumn> dbColumns)
+    public String createLoadQuery(String tableName, Collection<IColumn> dbColumns)
     {
-        ArrayList<IDBColumn> keys = new ArrayList<IDBColumn>();
+        ArrayList<IColumn> keys = new ArrayList<IColumn>();
 
-        for (IDBColumn dbColumn : dbColumns)
+        for (IColumn dbColumn : dbColumns)
         {
             if (dbColumn.isKey())
             {
@@ -79,7 +79,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
         for (int i = 0; i < keys.size(); i++)
         {
-            IDBColumn dbColumn = keys.get(i);
+            IColumn dbColumn = keys.get(i);
             if (i!=0)
             {
                 sb.append(" AND ");
@@ -92,17 +92,17 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public String createInsertQuery(String tableName, Collection<IDBColumn> dbColumns)
+    public String createInsertQuery(String tableName, Collection<IColumn> dbColumns)
     {
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO ");
         sb.append(tableName);
         sb.append(" (");
 
-        Iterator<IDBColumn> iterator = dbColumns.iterator();
+        Iterator<IColumn> iterator = dbColumns.iterator();
         for (int i = 0; i < dbColumns.size(); i++)
         {
-            IDBColumn dbColumn = iterator.next();
+            IColumn dbColumn = iterator.next();
             if (i!=0)
             {
                 sb.append(",");
@@ -127,12 +127,12 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public String createUpdateQuery(String tableName, Collection<IDBColumn> dbColumns)
+    public String createUpdateQuery(String tableName, Collection<IColumn> dbColumns)
     {
-        ArrayList<IDBColumn> keys = new ArrayList<IDBColumn>();
-        ArrayList<IDBColumn> values = new ArrayList<IDBColumn>();
+        ArrayList<IColumn> keys = new ArrayList<IColumn>();
+        ArrayList<IColumn> values = new ArrayList<IColumn>();
 
-        for (IDBColumn dbColumn : dbColumns)
+        for (IColumn dbColumn : dbColumns)
         {
             if (dbColumn.isKey())
             {
@@ -151,7 +151,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
         for (int i = 0; i < values.size(); i++)
         {
-            IDBColumn dbColumn = values.get(i);
+            IColumn dbColumn = values.get(i);
             if (i!=0)
             {
                 sb.append(",");
@@ -163,7 +163,7 @@ public class AbstractDataManipulate implements IDataManipulate
         sb.append(" WHERE ");
         for (int i = 0; i < keys.size(); i++)
         {
-            IDBColumn dbColumn = keys.get(i);
+            IColumn dbColumn = keys.get(i);
             if (i!=0)
             {
                 sb.append(" AND ");
@@ -176,11 +176,11 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public String createDeleteQuery(String tableName, Collection<IDBColumn> dbColumns)
+    public String createDeleteQuery(String tableName, Collection<IColumn> dbColumns)
     {
-        ArrayList<IDBColumn> keys = new ArrayList<IDBColumn>();
+        ArrayList<IColumn> keys = new ArrayList<IColumn>();
 
-        for (IDBColumn dbColumn : dbColumns)
+        for (IColumn dbColumn : dbColumns)
         {
             if (dbColumn.isKey())
             {
@@ -195,7 +195,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
         for (int i = 0; i < keys.size(); i++)
         {
-            IDBColumn dbColumn = keys.get(i);
+            IColumn dbColumn = keys.get(i);
             if (i!=0)
             {
                 sb.append(" AND ");
@@ -208,7 +208,7 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public String createRelatedObjectsLoadQuery(IDBRelation relation)
+    public String createRelatedObjectsLoadQuery(IRelation relation)
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(relation.getRelatedObjectType());
 
@@ -219,7 +219,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
         for (int i = 0; i < relation.getTableColumnMappings().length; i++)
         {
-            DBRelationColumnMapping mapping = relation.getTableColumnMappings()[i];
+            RelationColumnMapping mapping = relation.getTableColumnMappings()[i];
             if (i!=0)
             {
                 sb.append(" AND ");
@@ -232,7 +232,7 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public Object readFromResultSet(ResultSet rs, IDBColumn dbColumn) throws ReadFromResultSetException
+    public Object readFromResultSet(ResultSet rs, IColumn dbColumn) throws ReadFromResultSetException
     {
         try
         {
@@ -377,18 +377,18 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IDBColumn dbColumn)
+    public void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IColumn dbColumn)
         throws StatementPreparingException
     {
         setToPreparedStatement(ps,obj,parameterIndex,dbColumn.isNullable(),dbColumn.getColumnType());
     }
     
-    protected void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex,boolean canBeNull, DBColumnType dbColumnType)
+    protected void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex,boolean canBeNull, ColumnType columnType)
         throws StatementPreparingException
     {
         try
         {
-            switch (dbColumnType)
+            switch (columnType)
             {
                 case BOOLEAN:
                     if (canBeNull && obj == null)
@@ -530,7 +530,7 @@ public class AbstractDataManipulate implements IDataManipulate
                 }
 
                 QueryExecParam param = storedProcedure ? params.get(i - 1) : params.get(i);
-                DBColumnType type = param.getType();
+                ColumnType type = param.getType();
                 Object value = param.getValue();
 
                 setToPreparedStatement(ps,value,count,value == null,type);
@@ -587,7 +587,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
             QueryExecParam param = new QueryExecParam();
             param.setIndex(buildInfo.getExecInfo().getParams().size());
-            param.setType(DBColumnType.LONG);
+            param.setType(ColumnType.LONG);
             param.setValue(structure.getSkip());
             buildInfo.getExecInfo().getParams().add(param);
         }
@@ -598,7 +598,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
             QueryExecParam param = new QueryExecParam();
             param.setIndex(buildInfo.getExecInfo().getParams().size());
-            param.setType(DBColumnType.LONG);
+            param.setType(ColumnType.LONG);
             param.setValue(structure.getFetch());
             buildInfo.getExecInfo().getParams().add(param);
         }

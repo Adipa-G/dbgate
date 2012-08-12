@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.columntest;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.context.IEntityContext;
@@ -20,7 +20,7 @@ import java.sql.ResultSet;
  */
 public class ColumnTestEntityExts implements IColumnTestEntity
 {
-    private DBClassStatus status;
+    private EntityStatus status;
     private int idCol;
     private long longNotNull;
     private Long longNull;
@@ -43,7 +43,7 @@ public class ColumnTestEntityExts implements IColumnTestEntity
 
     public ColumnTestEntityExts()
     {
-        status = DBClassStatus.NEW;
+        status = EntityStatus.NEW;
     }
 
     public int getIdCol()
@@ -236,12 +236,12 @@ public class ColumnTestEntityExts implements IColumnTestEntity
         this.varcharNull = varcharNull;
     }
 
-    public DBClassStatus getStatus()
+    public EntityStatus getStatus()
     {
         return status;
     }
 
-    public void setStatus(DBClassStatus status)
+    public void setStatus(EntityStatus status)
     {
         this.status = status;
     }

@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.context.IEntityContext;
 import dbgate.ermanagement.context.impl.EntityContext;
 import dbgate.ermanagement.exceptions.RetrievalException;
@@ -15,11 +15,11 @@ import java.sql.ResultSet;
  * Date: Oct 2, 2010
  * Time: 9:27:01 PM
  */
-public class DefaultServerRODBClass implements ServerRODBClass
+public class DefaultReadOnlyEntity implements IReadOnlyEntity
 {
     protected IEntityContext context;
 
-    public DefaultServerRODBClass()
+    public DefaultReadOnlyEntity()
     {
         context = new EntityContext();
     }

@@ -1,8 +1,8 @@
 package dbgate.dbutility.support;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.AbstractManagedDBClass;
-import dbgate.ermanagement.DefaultDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.AbstractManagedEntity;
+import dbgate.ermanagement.DefaultColumn;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.Map;
  * Time: 12:01:29 AM
  * To change this template use File | Settings | File Templates.
  */
-public class RootEntity extends AbstractManagedDBClass
+public class RootEntity extends AbstractManagedEntity
 {
     private int id;
     private String name;
@@ -64,8 +64,8 @@ public class RootEntity extends AbstractManagedDBClass
         Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
         ArrayList<IField> dbColumns = new ArrayList<IField>();
 
-        dbColumns.add(new DefaultDBColumn("id",true, DBColumnType.INTEGER));
-        dbColumns.add(new DefaultDBColumn("name", DBColumnType.VARCHAR ));
+        dbColumns.add(new DefaultColumn("id",true, ColumnType.INTEGER));
+        dbColumns.add(new DefaultColumn("name", ColumnType.VARCHAR ));
 
         map.put(this.getClass(),dbColumns);
         return map;

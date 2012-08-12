@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
@@ -100,7 +100,7 @@ public class ERManagementConstraintValidationTest
             connection = connector.getConnection();
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.getOne2OneEntity().setStatus(DBClassStatus.DELETED);
+            loadedEntity.getOne2OneEntity().setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -145,7 +145,7 @@ public class ERManagementConstraintValidationTest
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
             ConstraintTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
-            loadedOne2ManyEntity.setStatus(DBClassStatus.DELETED);
+            loadedOne2ManyEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -188,7 +188,7 @@ public class ERManagementConstraintValidationTest
             connection = connector.getConnection();
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -232,7 +232,7 @@ public class ERManagementConstraintValidationTest
             connection = connector.getConnection();
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -273,7 +273,7 @@ public class ERManagementConstraintValidationTest
         connection = connector.getConnection();
         ConstraintTestDeleteRestrictRootEntity loadedEntity = new ConstraintTestDeleteRestrictRootEntity();
         loadEntityWithId(connection,loadedEntity,id);
-        loadedEntity.setStatus(DBClassStatus.DELETED);
+        loadedEntity.setStatus(EntityStatus.DELETED);
         loadedEntity.persist(connection);
         connection.commit();
         connection.close();
@@ -300,7 +300,7 @@ public class ERManagementConstraintValidationTest
         connection = connector.getConnection();
         ConstraintTestDeleteRestrictRootEntity loadedEntity = new ConstraintTestDeleteRestrictRootEntity();
         loadEntityWithId(connection,loadedEntity,id);
-        loadedEntity.setStatus(DBClassStatus.DELETED);
+        loadedEntity.setStatus(EntityStatus.DELETED);
         loadedEntity.persist(connection);
         connection.commit();
         connection.close();
@@ -330,7 +330,7 @@ public class ERManagementConstraintValidationTest
             connection = connector.getConnection();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.getOne2ManyEntities().iterator().next().setStatus(DBClassStatus.DELETED);
+            loadedEntity.getOne2ManyEntities().iterator().next().setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -374,7 +374,7 @@ public class ERManagementConstraintValidationTest
             connection = connector.getConnection();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.getOne2OneEntity().setStatus(DBClassStatus.DELETED);
+            loadedEntity.getOne2OneEntity().setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -418,7 +418,7 @@ public class ERManagementConstraintValidationTest
             connection = connector.getConnection();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();
@@ -462,7 +462,7 @@ public class ERManagementConstraintValidationTest
             connection = connector.getConnection();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
             loadedEntity.persist(connection);
             connection.commit();
             connection.close();

@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.support.persistant.treetest.*;
@@ -200,13 +200,13 @@ public class ErManagementTreePersistTests
             connection.close();
 
             loadedEntity.setName("changed-name");
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
             loadedEntity.getOne2OneEntity().setName("changed-one2one");
-            loadedEntity.getOne2OneEntity().setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.getOne2OneEntity().setStatus(EntityStatus.MODIFIED);
 
             ITreeTestOne2ManyEntity one2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             one2ManyEntity.setName("changed-one2many");
-            one2ManyEntity.setStatus(DBClassStatus.MODIFIED);
+            one2ManyEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -246,13 +246,13 @@ public class ErManagementTreePersistTests
             connection.close();
 
             loadedEntity.setName("changed-name");
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
             loadedEntity.getOne2OneEntity().setName("changed-one2one");
-            loadedEntity.getOne2OneEntity().setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.getOne2OneEntity().setStatus(EntityStatus.MODIFIED);
 
             ITreeTestOne2ManyEntity one2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             one2ManyEntity.setName("changed-one2many");
-            one2ManyEntity.setStatus(DBClassStatus.MODIFIED);
+            one2ManyEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -294,13 +294,13 @@ public class ErManagementTreePersistTests
             connection.close();
 
             loadedEntity.setName("changed-name");
-            loadedEntity.setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.setStatus(EntityStatus.MODIFIED);
             loadedEntity.getOne2OneEntity().setName("changed-one2one");
-            loadedEntity.getOne2OneEntity().setStatus(DBClassStatus.MODIFIED);
+            loadedEntity.getOne2OneEntity().setStatus(EntityStatus.MODIFIED);
 
             ITreeTestOne2ManyEntity one2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             one2ManyEntity.setName("changed-one2many");
-            one2ManyEntity.setStatus(DBClassStatus.MODIFIED);
+            one2ManyEntity.setStatus(EntityStatus.MODIFIED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -340,7 +340,7 @@ public class ErManagementTreePersistTests
             connection.close();
 
             loadedEntity.setName("changed-name");
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -383,7 +383,7 @@ public class ErManagementTreePersistTests
             connection.close();
 
             loadedEntity.setName("changed-name");
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);
@@ -428,7 +428,7 @@ public class ErManagementTreePersistTests
             connection.close();
 
             loadedEntity.setName("changed-name");
-            loadedEntity.setStatus(DBClassStatus.DELETED);
+            loadedEntity.setStatus(EntityStatus.DELETED);
 
             connection = connector.getConnection();
             loadedEntity.persist(connection);

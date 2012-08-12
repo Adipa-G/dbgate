@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,14 +8,14 @@ import dbgate.DBColumnType;
  * Date: Jul 5, 2008
  * Time: 1:54:14 PM
  */
-public abstract class AbstractDBColumn implements IDBColumn
+public abstract class AbstractColumn implements IColumn
 {
     private String attributeName;
     private String columnName;
     private boolean key;
     private boolean nullable;
     private boolean subClassCommonColumn;
-    private DBColumnType columnType;
+    private ColumnType columnType;
     private int size;
     private boolean readFromSequence;
     private ISequenceGenerator sequenceGenerator;
@@ -45,34 +45,34 @@ public abstract class AbstractDBColumn implements IDBColumn
         return stringBuilder.toString();
     }
 
-    protected AbstractDBColumn(String attributeName, DBColumnType type)
+    protected AbstractColumn(String attributeName, ColumnType type)
     {
         this(attributeName,predictColumnName(attributeName),false,type,false,null);
     }
 
-    protected AbstractDBColumn(String attributeName, DBColumnType type,boolean nullable)
+    protected AbstractColumn(String attributeName, ColumnType type, boolean nullable)
     {
         this(attributeName,predictColumnName(attributeName),false,nullable,type,20,false,null);
     }
 
-    protected AbstractDBColumn(String attributeName, boolean key, DBColumnType type)
+    protected AbstractColumn(String attributeName, boolean key, ColumnType type)
     {
         this(attributeName,predictColumnName(attributeName),key,type,false,null);
     }
 
-    protected AbstractDBColumn(String attributeName, boolean key,boolean nullable, DBColumnType type)
+    protected AbstractColumn(String attributeName, boolean key, boolean nullable, ColumnType type)
     {
         this(attributeName,predictColumnName(attributeName),key,nullable,type,20,false,null);
     }
 
-    protected AbstractDBColumn(String attributeName, String columnName, boolean key
-            , DBColumnType type, boolean readFromSequence,ISequenceGenerator generator)
+    protected AbstractColumn(String attributeName, String columnName, boolean key
+            , ColumnType type, boolean readFromSequence, ISequenceGenerator generator)
     {
         this(attributeName,columnName,key,false,type,20,readFromSequence,generator);
     }
 
-    protected AbstractDBColumn(String attributeName, String columnName, boolean key
-            ,boolean nullable, DBColumnType type,int size, boolean readFromSequence,ISequenceGenerator generator)
+    protected AbstractColumn(String attributeName, String columnName, boolean key
+            , boolean nullable, ColumnType type, int size, boolean readFromSequence, ISequenceGenerator generator)
     {
         this.attributeName = attributeName;
         this.columnName = columnName;
@@ -85,13 +85,13 @@ public abstract class AbstractDBColumn implements IDBColumn
     }
 
     @Override
-    public DBColumnType getColumnType()
+    public ColumnType getColumnType()
     {
         return columnType;
     }
 
     @Override
-    public void setColumnType(DBColumnType type)
+    public void setColumnType(ColumnType type)
     {
         this.columnType = type;
     }

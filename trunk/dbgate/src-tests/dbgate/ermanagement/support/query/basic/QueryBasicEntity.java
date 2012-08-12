@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.query.basic;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 
 /**
@@ -9,12 +9,12 @@ import dbgate.ermanagement.*;
  * Date: Sep 26, 2010
  * Time: 11:47:59 AM
  */
-@DBTableInfo(tableName = "query_basic")
-public class QueryBasicEntity extends DefaultServerDBClass
+@TableInfo(tableName = "query_basic")
+public class QueryBasicEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
     @ForeignKeyInfo(name = "fk_basic2join"
             ,relatedObjectType = QueryBasicJoinEntity.class
