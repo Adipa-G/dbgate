@@ -1,6 +1,7 @@
 package dbgate.ermanagement.impl;
 
 import dbgate.*;
+import dbgate.ermanagement.query.IQuerySelection;
 import dbgate.utility.DBMgtUtility;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
@@ -10,11 +11,11 @@ import dbgate.exceptions.RetrievalException;
 import dbgate.exceptions.common.ReadFromResultSetException;
 import dbgate.exceptions.retrival.NoMatchingRecordFoundForSuperClassException;
 import dbgate.exceptions.retrival.NoSetterFoundToSetChildObjectListException;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecInfo;
+import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecParam;
+import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
+import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.impl.utils.OperationUtils;
 import dbgate.ermanagement.impl.utils.SessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;

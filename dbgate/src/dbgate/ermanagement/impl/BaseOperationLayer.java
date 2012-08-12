@@ -12,7 +12,7 @@ import dbgate.exceptions.common.MethodInvocationException;
 import dbgate.exceptions.common.NoMatchingColumnFoundException;
 import dbgate.exceptions.common.ReadFromResultSetException;
 import dbgate.exceptions.common.StatementPreparingException;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.OperationUtils;
 import dbgate.ermanagement.impl.utils.SessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;

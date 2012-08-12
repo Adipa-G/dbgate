@@ -6,12 +6,12 @@ import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.SequenceGeneratorInitializationException;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.IMetaManipulate;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.CompareUtility;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.IMetaComparisonGroup;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.*;
-import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.support.MetaQueryHolder;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.IMetaManipulate;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.CompareUtility;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.IMetaComparisonGroup;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.datastructures.*;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.support.MetaQueryHolder;
 import dbgate.ermanagement.impl.utils.OperationUtils;
 
 import java.sql.Connection;

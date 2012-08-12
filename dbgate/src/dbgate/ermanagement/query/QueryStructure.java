@@ -1,7 +1,5 @@
 package dbgate.ermanagement.query;
 
-import dbgate.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;

@@ -1,5 +1,8 @@
 package dbgate;
 
+import dbgate.ermanagement.query.IQueryCondition;
+import dbgate.ermanagement.query.IQueryFrom;
+import dbgate.ermanagement.query.IQueryJoin;
 import dbgate.ermanagement.query.QueryStructure;
 
 /**
