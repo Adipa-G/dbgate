@@ -3,7 +3,7 @@ package dbgate.ermanagement;
 import dbgate.dbutility.DBConnector;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.featureintegration.order.ItemTransaction;
 import dbgate.ermanagement.support.persistant.featureintegration.order.ItemTransactionCharge;
 import dbgate.ermanagement.support.persistant.featureintegration.order.Transaction;
@@ -38,8 +38,8 @@ public class ERManagementFeatureIntegrationTest
             DBMgmtUtility.close(con);
             
             connector = new DBConnector("jdbc:derby:memory:testing-feature_integreation;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(true);
             
             con = connector.getConnection();
 
@@ -49,7 +49,7 @@ public class ERManagementFeatureIntegrationTest
             dbClassList.add(Transaction.class);
             dbClassList.add(Product.class);
             dbClassList.add(Service.class);
-            ERLayer.getSharedInstance().patchDataBase(con,dbClassList,true);
+            DbGate.getSharedInstance().patchDataBase(con,dbClassList,true);
 
             con.commit();
             con.close();
@@ -66,7 +66,7 @@ public class ERManagementFeatureIntegrationTest
     {
         if (DBConnector.getSharedInstance() != null)
         {
-            ERLayer.getSharedInstance().clearCache();
+            DbGate.getSharedInstance().clearCache();
         }
     }
 

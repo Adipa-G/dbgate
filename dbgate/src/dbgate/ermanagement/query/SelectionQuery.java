@@ -2,7 +2,7 @@ package dbgate.ermanagement.query;
 
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 
 import java.sql.Connection;
 import java.util.Collection;
@@ -23,7 +23,7 @@ public class SelectionQuery extends Query implements ISelectionQuery
     @Override
     public Collection toList(Connection con) throws RetrievalException
     {
-        return ERLayer.getSharedInstance().select(this,con);
+        return DbGate.getSharedInstance().select(this,con);
     }
 
     @Override

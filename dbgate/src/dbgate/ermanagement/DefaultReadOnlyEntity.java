@@ -4,7 +4,7 @@ import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.context.IEntityContext;
 import dbgate.ermanagement.context.impl.EntityContext;
 import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,7 +26,7 @@ public class DefaultReadOnlyEntity implements IReadOnlyEntity
 
     public void retrieve(ResultSet rs, Connection con) throws RetrievalException
     {
-        ERLayer.getSharedInstance().load(this,rs,con);
+        DbGate.getSharedInstance().load(this,rs,con);
     }
 
     public IEntityContext getContext()

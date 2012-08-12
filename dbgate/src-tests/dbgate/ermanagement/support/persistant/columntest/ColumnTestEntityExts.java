@@ -6,7 +6,7 @@ import dbgate.TimeStampWrapper;
 import dbgate.ermanagement.context.IEntityContext;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -248,12 +248,12 @@ public class ColumnTestEntityExts implements IColumnTestEntity
 
     public void persist(Connection con) throws PersistException
     {
-        ERLayer.getSharedInstance().save(this,con);
+        DbGate.getSharedInstance().save(this,con);
     }
 
     public void retrieve(ResultSet rs, Connection con) throws RetrievalException
     {
-        ERLayer.getSharedInstance().load(this,rs,con);
+        DbGate.getSharedInstance().load(this,rs,con);
     }
 
     public IEntityContext getContext()

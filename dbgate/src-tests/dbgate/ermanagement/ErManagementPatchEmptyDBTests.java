@@ -4,7 +4,7 @@ import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.patch.patchempty.LeafEntity;
 import dbgate.ermanagement.support.patch.patchempty.LeafEntitySubA;
 import dbgate.ermanagement.support.patch.patchempty.LeafEntitySubB;
@@ -44,8 +44,8 @@ public class ErManagementPatchEmptyDBTests
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-empty;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -65,7 +65,7 @@ public class ErManagementPatchEmptyDBTests
             dbClasses.add(LeafEntitySubA.class);
             dbClasses.add(LeafEntitySubB.class);
             dbClasses.add(RootEntity.class);
-            ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
 
             int id = 35;
             RootEntity entity = createRootEntityWithoutNullValues(id);
@@ -98,7 +98,7 @@ public class ErManagementPatchEmptyDBTests
         dbClasses.add(LeafEntitySubA.class);
         dbClasses.add(LeafEntitySubB.class);
         dbClasses.add(RootEntity.class);
-        ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
 
         int id = 35;
         RootEntity entity = createRootEntityWithoutNullValues(id);
@@ -124,7 +124,7 @@ public class ErManagementPatchEmptyDBTests
         dbClasses.add(LeafEntitySubA.class);
         dbClasses.add(LeafEntitySubB.class);
         dbClasses.add(RootEntity.class);
-        ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
 
         int id = 35;
         RootEntity entity = createRootEntityWithoutNullValues(id);
@@ -151,9 +151,9 @@ public class ErManagementPatchEmptyDBTests
         dbClasses.add(LeafEntitySubB.class);
         dbClasses.add(RootEntity.class);
 
-        ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
         
-        ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
     }
 
     private void assertTwoRootEntitiesEquals(RootEntity entityA, RootEntity entityB)

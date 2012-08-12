@@ -18,31 +18,30 @@ import java.util.Collection;
  * Date: Sep 25, 2010
  * Time: 8:27:07 PM
  */
-public class ERDataManager implements IERDataManager
+public class PersistRetrievalLayer
 {
-    private ERDataRetrievalManager erDataRetrievalManager;
-    private ERDataPersistManager erDataPersistManager;
+    private RetrievalOperationLayer retrievalOperationLayer;
+    private PersistOperationLayer persistOperationLayer;
 
-    public ERDataManager(IDBLayer dbLayer,IERLayerStatistics statistics,IERLayerConfig config)
+    public PersistRetrievalLayer(IDBLayer dbLayer, IDbGateStatistics statistics, IDbGateConfig config)
     {
-        this.erDataRetrievalManager = new ERDataRetrievalManager(dbLayer,statistics,config);
-        this.erDataPersistManager = new ERDataPersistManager(dbLayer,statistics,config);
+        this.retrievalOperationLayer = new RetrievalOperationLayer(dbLayer,statistics,config);
+        this.persistOperationLayer = new PersistOperationLayer(dbLayer,statistics,config);
     }
 
     public void load(IReadOnlyEntity roEntity, ResultSet rs, Connection con) throws RetrievalException
     {
-        erDataRetrievalManager.load(roEntity,rs,con);
+        retrievalOperationLayer.load(roEntity,rs,con);
     }
 
     public void save(IEntity entity,Connection con ) throws PersistException
     {
-        erDataPersistManager.save(entity,con);
+        persistOperationLayer.save(entity,con);
     }
 
-    @Override
     public Collection select(ISelectionQuery query,Connection con ) throws RetrievalException
     {
-        return erDataRetrievalManager.select(query,con);
+        return retrievalOperationLayer.select(query,con);
     }
 
     public void clearCache()
@@ -50,7 +49,6 @@ public class ERDataManager implements IERDataManager
         CacheManager.clear();
     }
 
-    @Override
     public void registerEntity(Class type, String tableName, Collection<IField> fields)
     {
         CacheManager.register(type, tableName, fields);

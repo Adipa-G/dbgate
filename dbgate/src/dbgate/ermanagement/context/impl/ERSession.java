@@ -4,7 +4,7 @@ import dbgate.IReadOnlyEntity;
 import dbgate.ermanagement.context.IERSession;
 import dbgate.ermanagement.context.IEntityFieldValueList;
 import dbgate.ermanagement.context.ITypeFieldValueList;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
+import dbgate.ermanagement.impl.utils.OperationUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ public class ERSession implements IERSession
     {
         for (IEntityFieldValueList existingEntity : entityFieldValueList)
         {
-            if (ERDataManagerUtils.isTypeKeyEquals(typeKeyFieldList,existingEntity))
+            if (OperationUtils.isTypeKeyEquals(typeKeyFieldList, existingEntity))
             {
                 return  existingEntity.getEntity();
             }

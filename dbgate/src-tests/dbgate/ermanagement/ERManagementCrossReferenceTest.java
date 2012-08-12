@@ -1,7 +1,7 @@
 package dbgate.ermanagement;
 
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.crossreference.CrossReferenceTestOne2ManyEntity;
 import dbgate.ermanagement.support.persistant.crossreference.CrossReferenceTestOne2OneEntity;
 import dbgate.ermanagement.support.persistant.crossreference.CrossReferenceTestRootEntity;
@@ -57,8 +57,8 @@ public class ERManagementCrossReferenceTest
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-cross-reference;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -72,7 +72,7 @@ public class ERManagementCrossReferenceTest
     {
         if (DBConnector.getSharedInstance() != null)
         {
-            ERLayer.getSharedInstance().clearCache();
+            DbGate.getSharedInstance().clearCache();
         }
     }
 
@@ -81,7 +81,7 @@ public class ERManagementCrossReferenceTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -119,7 +119,7 @@ public class ERManagementCrossReferenceTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;

@@ -6,7 +6,7 @@ import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
-import dbgate.ermanagement.impl.ERDataRetrievalManager;
+import dbgate.ermanagement.impl.RetrievalOperationLayer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -22,17 +22,17 @@ import java.sql.Connection;
  */
 public class ChildLoadInterceptor implements MethodInterceptor
 {
-    private ERDataRetrievalManager erDataRetrievalManager;
+    private RetrievalOperationLayer retrievalOperationLayer;
     private IReadOnlyEntity parentRoEntity;
     private Class applicableParentType;
     private IRelation relation;
     private boolean intercepted;
     private Connection connection;
 
-    public ChildLoadInterceptor(ERDataRetrievalManager erDataRetrievalManager, IReadOnlyEntity parentRoEntity,
+    public ChildLoadInterceptor(RetrievalOperationLayer retrievalOperationLayer, IReadOnlyEntity parentRoEntity,
                                 Class applicableParentType,Connection connection, IRelation relation)
     {
-        this.erDataRetrievalManager = erDataRetrievalManager;
+        this.retrievalOperationLayer = retrievalOperationLayer;
         this.parentRoEntity = parentRoEntity;
         this.applicableParentType = applicableParentType;
         this.connection = connection;
@@ -54,7 +54,7 @@ public class ChildLoadInterceptor implements MethodInterceptor
                     connection = DBConnector.getSharedInstance().getConnection();
                     newConnection = true;
                 }
-                erDataRetrievalManager.loadChildrenFromRelation(parentRoEntity,applicableParentType,connection,relation,true);
+                retrievalOperationLayer.loadChildrenFromRelation(parentRoEntity,applicableParentType,connection,relation,true);
             }
             finally
             {

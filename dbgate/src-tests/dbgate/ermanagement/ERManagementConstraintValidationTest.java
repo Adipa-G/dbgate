@@ -3,7 +3,7 @@ package dbgate.ermanagement;
 import dbgate.EntityStatus;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.constraint.*;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
@@ -57,8 +57,8 @@ public class ERManagementConstraintValidationTest
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-constraint;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -72,7 +72,7 @@ public class ERManagementConstraintValidationTest
     {
         if (DBConnector.getSharedInstance() != null)
         {
-            ERLayer.getSharedInstance().clearCache();
+            DbGate.getSharedInstance().clearCache();
         }
     }
 
@@ -81,7 +81,7 @@ public class ERManagementConstraintValidationTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -355,7 +355,7 @@ public class ERManagementConstraintValidationTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -443,7 +443,7 @@ public class ERManagementConstraintValidationTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;

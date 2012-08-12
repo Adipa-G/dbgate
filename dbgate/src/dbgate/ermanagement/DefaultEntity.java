@@ -3,7 +3,7 @@ package dbgate.ermanagement;
 import dbgate.IEntity;
 import dbgate.EntityStatus;
 import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.impl.utils.MiscUtils;
 
 import java.sql.Connection;
@@ -35,7 +35,7 @@ public class DefaultEntity extends DefaultReadOnlyEntity implements IEntity
 
     public void persist(Connection con) throws PersistException
     {
-        ERLayer.getSharedInstance().save(this,con);
+        DbGate.getSharedInstance().save(this,con);
     }
 
     public void _modify()

@@ -343,7 +343,8 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     }
 
     @Override
-    protected String createCreateForeginKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonForeignKeyGroup foreignKeyGroup)
+    protected String createCreateForeignKeyQuery(MetaComparisonTableGroup tableGroup,
+                                                 MetaComparisonForeignKeyGroup foreignKeyGroup)
     {
         MetaTable requiredTable = tableGroup.getRequiredItem();
         MetaForeignKey metaForeignKey = foreignKeyGroup.getRequiredItem();
@@ -394,7 +395,8 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     }
 
     @Override
-    protected String createDropForeginKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonForeignKeyGroup foreignKeyGroup)
+    protected String createDropForeignKeyQuery(MetaComparisonTableGroup tableGroup,
+                                               MetaComparisonForeignKeyGroup foreignKeyGroup)
     {
         MetaTable requiredTable = tableGroup.getExistingItem();
         MetaForeignKey metaForeignKey = foreignKeyGroup.getExistingItem();

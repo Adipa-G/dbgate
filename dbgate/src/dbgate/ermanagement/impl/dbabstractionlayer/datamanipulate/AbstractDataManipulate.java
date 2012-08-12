@@ -26,7 +26,7 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.orderby.IAbstractOrderBy;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.AbstractSelectionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
+import dbgate.ermanagement.impl.utils.OperationUtils;
 import dbgate.ermanagement.query.*;
 
 import java.sql.*;
@@ -224,7 +224,7 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(" AND ");
             }
-            sb.append(ERDataManagerUtils.findColumnByAttribute(entityInfo.getColumns(),mapping.getToField()).getColumnName());
+            sb.append(OperationUtils.findColumnByAttribute(entityInfo.getColumns(), mapping.getToField()).getColumnName());
             sb.append("= ?");
         }
 

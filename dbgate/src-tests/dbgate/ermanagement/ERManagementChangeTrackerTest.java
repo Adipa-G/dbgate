@@ -1,7 +1,7 @@
 package dbgate.ermanagement;
 
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.changetracker.ChangeTrackerTestOne2ManyEntity;
 import dbgate.ermanagement.support.persistant.changetracker.ChangeTrackerTestOne2OneEntity;
 import dbgate.ermanagement.support.persistant.changetracker.ChangeTrackerTestRootEntity;
@@ -56,7 +56,7 @@ public class ERManagementChangeTrackerTest
             con.close();
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-change-tracker;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
         }
         catch (Exception ex)
         {
@@ -70,7 +70,7 @@ public class ERManagementChangeTrackerTest
     {
         if (DBConnector.getSharedInstance() != null)
         {
-            ERLayer.getSharedInstance().clearCache();
+            DbGate.getSharedInstance().clearCache();
         }
     }
 
@@ -79,7 +79,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -117,7 +117,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -157,7 +157,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -195,7 +195,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -234,7 +234,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -273,7 +273,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -313,7 +313,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -353,7 +353,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -396,7 +396,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -439,7 +439,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
             Connection connection = connector.getConnection();
 
             int id = 45;
@@ -485,7 +485,7 @@ public class ERManagementChangeTrackerTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
             Connection connection = connector.getConnection();
 
             int id = 45;

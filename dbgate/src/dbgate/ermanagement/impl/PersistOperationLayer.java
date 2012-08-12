@@ -18,8 +18,8 @@ import dbgate.ermanagement.exceptions.persist.DataUpdatedFromAnotherSourceExcept
 import dbgate.ermanagement.exceptions.persist.IncorrectStatusException;
 import dbgate.ermanagement.exceptions.persist.IntegrityConstraintViolationException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
-import dbgate.ermanagement.impl.utils.ERSessionUtils;
+import dbgate.ermanagement.impl.utils.OperationUtils;
+import dbgate.ermanagement.impl.utils.SessionUtils;
 import dbgate.ermanagement.impl.utils.MiscUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
 
@@ -40,9 +40,9 @@ import java.util.logging.Logger;
  * Date: Apr 3, 2011
  * Time: 3:26:54 PM
  */
-public class ERDataPersistManager extends ERDataCommonManager
+public class PersistOperationLayer extends BaseOperationLayer
 {
-    public ERDataPersistManager(IDBLayer dbLayer, IERLayerStatistics statistics, IERLayerConfig config)
+    public PersistOperationLayer(IDBLayer dbLayer, IDbGateStatistics statistics, IDbGateConfig config)
     {
         super(dbLayer, statistics, config);
     }
@@ -51,7 +51,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     {
         try
         {
-            ERSessionUtils.initSession(entity);
+            SessionUtils.initSession(entity);
             trackAndCommitChanges(entity, con);
 
             Stack<EntityInfo> entityInfoStack = new Stack<>();
@@ -69,7 +69,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             }
 
             entity.setStatus(EntityStatus.UNMODIFIED);
-            ERSessionUtils.destroySession(entity);
+            SessionUtils.destroySession(entity);
         } catch (Exception e)
         {
             Logger.getLogger(config.getLoggerName()).log(Level.SEVERE, e.getMessage(), e);
@@ -100,8 +100,8 @@ public class ERDataPersistManager extends ERDataCommonManager
         Collection<ITypeFieldValueList> currentChildren = getChildEntityValueListExcludingDeletedStatusItems(
                 entity);
         validateForChildDeletion(entity, currentChildren);
-        Collection<ITypeFieldValueList> deletedChildren = ERDataManagerUtils.findDeletedChildren(originalChildren,
-                                                                                                 currentChildren);
+        Collection<ITypeFieldValueList> deletedChildren = OperationUtils.findDeletedChildren(originalChildren,
+                                                                                             currentChildren);
         deleteOrphanChildren(con, deletedChildren);
     }
 
@@ -121,7 +121,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                 continue;
             }
             if (isProxyObject(entity, relation)) continue;
-            Collection<IEntity> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
+            Collection<IEntity> childObjects = OperationUtils.getRelationEntities(entity, relation);
             if (childObjects != null)
             {
                 if (relation.isNonIdentifyingRelation())
@@ -135,7 +135,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             }
         }
 
-        ITypeFieldValueList fieldValues = ERDataManagerUtils.extractEntityTypeFieldValues(entity, type);
+        ITypeFieldValueList fieldValues = OperationUtils.extractEntityTypeFieldValues(entity, type);
         if (entity.getStatus() == EntityStatus.UNMODIFIED)
         {
             //do nothing
@@ -151,7 +151,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                     throw new DataUpdatedFromAnotherSourceException(String.format(
                             "The type %s updated from another transaction", type));
                 }
-                ERDataManagerUtils.incrementVersion(fieldValues);
+                OperationUtils.incrementVersion(fieldValues);
                 setValues(entity, fieldValues);
             }
             update(entity, fieldValues, type, con);
@@ -164,7 +164,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             throw new IncorrectStatusException(message);
         }
 
-        fieldValues = ERDataManagerUtils.extractEntityTypeFieldValues(entity, type);
+        fieldValues = OperationUtils.extractEntityTypeFieldValues(entity, type);
         IEntityContext entityContext = entity.getContext();
         if (entityContext != null)
         {
@@ -172,7 +172,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             entityContext.getChangeTracker().getFields().addAll(fieldValues.getFieldValues());
         }
 
-        ERSessionUtils.addToSession(entity, ERDataManagerUtils.extractEntityKeyValues(entity));
+        SessionUtils.addToSession(entity, OperationUtils.extractEntityKeyValues(entity));
 
 
         for (IRelation relation : dbRelations)
@@ -185,22 +185,22 @@ public class ERDataPersistManager extends ERDataCommonManager
 
             if (isProxyObject(entity, relation)) continue;
 
-            Collection<IEntity> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
+            Collection<IEntity> childObjects = OperationUtils.getRelationEntities(entity, relation);
             if (childObjects != null)
             {
                 setRelationObjectKeyValues(fieldValues, type, relation.getRelatedObjectType(), childObjects, relation);
                 for (IEntity fieldObject : childObjects)
                 {
-                    IEntityFieldValueList childEntityKeyList = ERDataManagerUtils.extractEntityKeyValues(fieldObject);
-                    if (ERSessionUtils.existsInSession(entity, childEntityKeyList))
+                    IEntityFieldValueList childEntityKeyList = OperationUtils.extractEntityKeyValues(fieldObject);
+                    if (SessionUtils.existsInSession(entity, childEntityKeyList))
                     {
                         continue;
                     }
-                    ERSessionUtils.transferSession(entity, fieldObject);
+                    SessionUtils.transferSession(entity, fieldObject);
                     if (fieldObject.getStatus() != EntityStatus.DELETED) //deleted items are already deleted
                     {
                         fieldObject.persist(con);
-                        ERSessionUtils.addToSession(entity, childEntityKeyList);
+                        SessionUtils.addToSession(entity, childEntityKeyList);
                     }
                 }
             }
@@ -282,7 +282,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             if (values.size() == 0)
                 return;
 
-            keys = ERDataManagerUtils.extractEntityKeyValues(entity).getFieldValues();
+            keys = OperationUtils.extractEntityKeyValues(entity).getFieldValues();
             Collection<IColumn> keysAndModified = new ArrayList<IColumn>();
             for (EntityFieldValue fieldValue : values)
             {
@@ -424,7 +424,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         Collection<IColumn> columns = entityInfo.getColumns();
         for (RelationColumnMapping mapping : relation.getTableColumnMappings())
         {
-            IColumn matchColumn = ERDataManagerUtils.findColumnByAttribute(columns, mapping.getFromField());
+            IColumn matchColumn = OperationUtils.findColumnByAttribute(columns, mapping.getFromField());
             EntityFieldValue fieldValue = valueTypeList.getFieldValue(matchColumn.getAttributeName());
 
             if (fieldValue != null)
@@ -449,8 +449,8 @@ public class ERDataPersistManager extends ERDataCommonManager
         while (entityInfo != null)
         {
             Collection<IColumn> subLevelColumns = entityInfo.getColumns();
-            IColumn subLevelMatchedColumn = ERDataManagerUtils.findColumnByAttribute(subLevelColumns,
-                                                                                       mapping.getToField());
+            IColumn subLevelMatchedColumn = OperationUtils.findColumnByAttribute(subLevelColumns,
+                                                                                 mapping.getToField());
 
             if (subLevelMatchedColumn != null)
             {
@@ -493,8 +493,8 @@ public class ERDataPersistManager extends ERDataCommonManager
         while (parentInfo != null)
         {
             Collection<IColumn> parentColumns = parentInfo.getColumns();
-            IColumn parentMatchedColumn = ERDataManagerUtils.findColumnByAttribute(parentColumns,
-                                                                                     mapping.getFromField());
+            IColumn parentMatchedColumn = OperationUtils.findColumnByAttribute(parentColumns,
+                                                                               mapping.getFromField());
             if (parentMatchedColumn != null)
             {
                 foundOnce = true;
@@ -513,15 +513,15 @@ public class ERDataPersistManager extends ERDataCommonManager
         while (childInfo != null)
         {
             Collection<IColumn> subLevelColumns = childInfo.getColumns();
-            IColumn childMatchedColumn = ERDataManagerUtils.findColumnByAttribute(subLevelColumns,
-                                                                                    mapping.getToField());
+            IColumn childMatchedColumn = OperationUtils.findColumnByAttribute(subLevelColumns,
+                                                                              mapping.getToField());
 
             if (childMatchedColumn != null)
             {
                 foundOnce = true;
                 for (IReadOnlyEntity dbObject : childObjects)
                 {
-                    ITypeFieldValueList fieldValueList = ERDataManagerUtils
+                    ITypeFieldValueList fieldValueList = OperationUtils
                             .extractEntityTypeFieldValues(dbObject, childInfo.getEntityType());
                     EntityFieldValue childFieldValue = fieldValueList
                             .getFieldValue(childMatchedColumn.getAttributeName());
@@ -616,8 +616,8 @@ public class ERDataPersistManager extends ERDataCommonManager
                                                                                   con, relation);
                 for (IReadOnlyEntity childEntity : children)
                 {
-                    ITypeFieldValueList valueTypeList = ERDataManagerUtils.extractRelationKeyValues(childEntity,
-                                                                                                    relation);
+                    ITypeFieldValueList valueTypeList = OperationUtils.extractRelationKeyValues(childEntity,
+                                                                                                relation);
                     if (valueTypeList != null)
                     {
                         entityContext.getChangeTracker().getChildEntityKeys().add(valueTypeList);
@@ -731,7 +731,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         Collection<IColumn> typeColumns = entityInfo.getColumns();
-        ITypeFieldValueList currentValues = ERDataManagerUtils.extractEntityTypeFieldValues(entity, type);
+        ITypeFieldValueList currentValues = OperationUtils.extractEntityTypeFieldValues(entity, type);
         Collection<EntityFieldValue> modifiedColumns = new ArrayList<EntityFieldValue>();
 
         for (IColumn typeColumn : typeColumns)
@@ -759,7 +759,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     {
         Object versionValue = null;
 
-        ITypeFieldValueList keyFieldValueList = ERDataManagerUtils.extractEntityTypeKeyValues(entity, type);
+        ITypeFieldValueList keyFieldValueList = OperationUtils.extractEntityTypeKeyValues(entity, type);
         PreparedStatement ps = createRetrievalPreparedStatement(keyFieldValueList, con);
         ResultSet rs = null;
         try
@@ -787,7 +787,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     {
         ITypeFieldValueList fieldValueList = null;
 
-        ITypeFieldValueList keyFieldValueList = ERDataManagerUtils.extractEntityTypeKeyValues(entity, type);
+        ITypeFieldValueList keyFieldValueList = OperationUtils.extractEntityTypeKeyValues(entity, type);
         PreparedStatement ps = createRetrievalPreparedStatement(keyFieldValueList, con);
         ResultSet rs = null;
         try
