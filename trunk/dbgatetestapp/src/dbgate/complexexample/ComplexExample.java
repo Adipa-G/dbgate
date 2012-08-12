@@ -1,17 +1,16 @@
 package dbgate.complexexample;
 
 import dbgate.ExampleBase;
-import dbgate.ServerDBClass;
 import dbgate.complexexample.entities.order.ItemTransaction;
 import dbgate.complexexample.entities.order.ItemTransactionCharge;
 import dbgate.complexexample.entities.order.Transaction;
 import dbgate.complexexample.entities.product.Product;
 import dbgate.complexexample.entities.product.Service;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
+import dbgate.utility.DBMgtUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,7 +37,7 @@ public class ComplexExample extends ExampleBase
         product.setUnitPrice(54D);
         Connection con = connector.getConnection();
         product.persist(con);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
         return product;
     }
 
@@ -50,7 +49,7 @@ public class ComplexExample extends ExampleBase
         service.setHourlyRate(65D);
         Connection con = connector.getConnection();
         service.persist(con);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
         return service;
     }
 
@@ -80,22 +79,22 @@ public class ComplexExample extends ExampleBase
 
         Connection con = connector.getConnection();
         transaction.persist(con);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
         return transaction;
     }
 
     public void patch() throws DBPatchingException, SQLException
     {
         Connection con = connector.getConnection();
-        Collection<ServerDBClass> entities = new ArrayList<ServerDBClass>();
-        entities.add(new Transaction());
-        entities.add(new ItemTransaction(new Transaction()));
-        entities.add(new ItemTransactionCharge(new ItemTransaction(new Transaction())));
-        entities.add(new Product());
-        entities.add(new Service());
-        ERLayer.getSharedInstance().patchDataBase(con,entities,false);
+        Collection<Class> entityTypes = new ArrayList<Class>();
+        entityTypes.add(Transaction.class);
+        entityTypes.add(ItemTransaction.class);
+        entityTypes.add(ItemTransactionCharge.class);
+        entityTypes.add(Product.class);
+        entityTypes.add(Service.class);
+        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public Transaction retrieve(int id) throws SQLException,RetrievalException
@@ -110,9 +109,9 @@ public class ComplexExample extends ExampleBase
             entity = new Transaction();
             entity.retrieve(rs,con);
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(rs);
+        DBMgtUtility.close(ps);
+        DBMgtUtility.close(con);
         return entity;
     }
 

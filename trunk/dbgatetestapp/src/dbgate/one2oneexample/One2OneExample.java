@@ -1,15 +1,14 @@
 package dbgate.one2oneexample;
 
 import dbgate.ExampleBase;
-import dbgate.ServerDBClass;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
 import dbgate.one2oneexample.entities.One2OneChildEntityA;
 import dbgate.one2oneexample.entities.One2OneChildEntityB;
 import dbgate.one2oneexample.entities.One2OneParentEntity;
+import dbgate.utility.DBMgtUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -54,13 +53,13 @@ public class One2OneExample extends ExampleBase
     public void patch() throws DBPatchingException, SQLException
     {
         Connection con = connector.getConnection();
-        Collection<ServerDBClass> entities = new ArrayList<ServerDBClass>();
-        entities.add(createEntityWithChildA());
-        entities.add(new One2OneChildEntityA());
-        entities.add(new One2OneChildEntityB());
-        ERLayer.getSharedInstance().patchDataBase(con,entities,false);
+        Collection<Class> entityTypes = new ArrayList<Class>();
+        entityTypes.add(One2OneParentEntity.class);
+        entityTypes.add(One2OneChildEntityA.class);
+        entityTypes.add(One2OneChildEntityB.class);
+        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public void persistWithA() throws PersistException, SQLException
@@ -69,7 +68,7 @@ public class One2OneExample extends ExampleBase
         One2OneParentEntity entity = createEntityWithChildA();
         entity.persist(con);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public void persistWithB() throws PersistException, SQLException
@@ -78,7 +77,7 @@ public class One2OneExample extends ExampleBase
         One2OneParentEntity entity = createEntityWithChildB();
         entity.persist(con);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public One2OneParentEntity retrieve(int id) throws SQLException,RetrievalException
@@ -93,9 +92,9 @@ public class One2OneExample extends ExampleBase
             entity = new One2OneParentEntity();
             entity.retrieve(rs,con);
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(rs);
+        DBMgtUtility.close(ps);
+        DBMgtUtility.close(con);
         return entity;
     }
 

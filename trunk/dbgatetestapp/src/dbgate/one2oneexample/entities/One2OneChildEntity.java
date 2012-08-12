@@ -1,13 +1,14 @@
 package dbgate.one2oneexample.entities;
 
-import dbgate.ermanagement.DefaultServerDBClass;
+
+import dbgate.DefaultEntity;
 
 /**
  * Date: Mar 30, 2011
  * Time: 8:51:25 PM
  */
 
-public abstract class One2OneChildEntity extends DefaultServerDBClass
+public abstract class One2OneChildEntity extends DefaultEntity
 {
     public abstract String getName();
 

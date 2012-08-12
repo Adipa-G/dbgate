@@ -1,14 +1,14 @@
 package dbgate.inheritanceexample;
 
 import dbgate.ExampleBase;
-import dbgate.ServerDBClass;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
-import dbgate.inheritanceexample.entities.SubEntity;
-import dbgate.simpleexample.entities.SimpleEntity;
+import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
+import dbgate.inheritanceexample.entities.BottomEntity;
+import dbgate.inheritanceexample.entities.MiddleEntity;
+import dbgate.inheritanceexample.entities.TopEntity;
+import dbgate.utility.DBMgtUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,9 +25,9 @@ public class InheritanceExample extends ExampleBase
 {
     private int id = 43;
 
-    public SubEntity createEntity()
+    public BottomEntity createEntity()
     {
-        SubEntity entity = new SubEntity();
+        BottomEntity entity = new BottomEntity();
         entity.setId(id);
         entity.setSuperName("Super");
         entity.setMiddleName("Middle");
@@ -38,37 +38,39 @@ public class InheritanceExample extends ExampleBase
     public void patch() throws DBPatchingException, SQLException
     {
         Connection con = connector.getConnection();
-        Collection<ServerDBClass> entities = new ArrayList<ServerDBClass>();
-        entities.add(createEntity());
-        ERLayer.getSharedInstance().patchDataBase(con,entities,false);
+        Collection<Class> entityTypes = new ArrayList<Class>();
+        entityTypes.add(TopEntity.class);
+        entityTypes.add(BottomEntity.class);
+        entityTypes.add(MiddleEntity.class);
+        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public void persist() throws PersistException, SQLException
     {
         Connection con = connector.getConnection();
-        SubEntity entity = createEntity();
+        BottomEntity entity = createEntity();
         entity.persist(con);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
-    public SubEntity retrieve() throws SQLException,RetrievalException
+    public BottomEntity retrieve() throws SQLException,RetrievalException
     {
         Connection con = connector.getConnection();
         PreparedStatement ps = con.prepareStatement("select * from sub_entity where id = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
-        SubEntity entity = null;
+        BottomEntity entity = null;
         if (rs.next())
         {
-            entity = new SubEntity();
+            entity = new BottomEntity();
             entity.retrieve(rs,con);
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(rs);
+        DBMgtUtility.close(ps);
+        DBMgtUtility.close(con);
         return entity;
     }
 
@@ -94,7 +96,7 @@ public class InheritanceExample extends ExampleBase
         }
         try
         {
-            SubEntity entity = inheritanceExample.retrieve();
+            BottomEntity entity = inheritanceExample.retrieve();
             System.out.println("entity.SuperName = " + entity.getSuperName());
             System.out.println("entity.MiddleName = " + entity.getMiddleName());
             System.out.println("entity.SubName = " + entity.getSubName());

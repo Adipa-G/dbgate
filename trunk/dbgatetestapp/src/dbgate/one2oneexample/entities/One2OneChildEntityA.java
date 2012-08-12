@@ -1,18 +1,19 @@
 package dbgate.one2oneexample.entities;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.*;
+import dbgate.ColumnInfo;
+import dbgate.ColumnType;
+import dbgate.TableInfo;
 
 /**
  * Date: Mar 30, 2011
  * Time: 8:47:46 PM
  */
-@DBTableInfo(tableName = "child_entity_a")
+@TableInfo(tableName = "child_entity_a")
 public class One2OneChildEntityA extends One2OneChildEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int parentId;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
 

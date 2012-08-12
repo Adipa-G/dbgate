@@ -1,8 +1,6 @@
 package dbgate.one2manyexample.entities;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.*;
-
+import dbgate.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,12 +9,12 @@ import java.util.Collection;
  * Date: Mar 30, 2011
  * Time: 8:46:20 PM
  */
-@DBTableInfo(tableName = "parent_entity")
-public class One2ManyParentEntity extends DefaultServerDBClass
+@TableInfo(tableName = "parent_entity")
+public class One2ManyParentEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int id;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
     @ForeignKeyInfoList(infoList = {
         @ForeignKeyInfo(name = "parent2childA"

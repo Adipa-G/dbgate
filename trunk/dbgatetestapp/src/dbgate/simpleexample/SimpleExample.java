@@ -1,14 +1,13 @@
 package dbgate.simpleexample;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.ExampleBase;
-import dbgate.ServerDBClass;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.exceptions.DBPatchingException;
-import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.PersistException;
+import dbgate.exceptions.RetrievalException;
 import dbgate.simpleexample.entities.SimpleEntity;
+import dbgate.utility.DBMgtUtility;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,11 +35,11 @@ public class SimpleExample extends ExampleBase
     public void patch() throws DBPatchingException, SQLException
     {
         Connection con = connector.getConnection();
-        Collection<ServerDBClass> entities = new ArrayList<ServerDBClass>();
-        entities.add(createEntity());
-        ERLayer.getSharedInstance().patchDataBase(con,entities,false);
+        Collection<Class> entityTypes = new ArrayList<Class>();
+        entityTypes.add(SimpleEntity.class);
+        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public void persist(SimpleEntity entity) throws PersistException, SQLException
@@ -48,7 +47,7 @@ public class SimpleExample extends ExampleBase
         Connection con = connector.getConnection();
         entity.persist(con);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public SimpleEntity retrieve() throws SQLException,RetrievalException
@@ -63,9 +62,9 @@ public class SimpleExample extends ExampleBase
             entity = new SimpleEntity();
             entity.retrieve(rs,con);
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(rs);
+        DBMgtUtility.close(ps);
+        DBMgtUtility.close(con);
         return entity;
     }
 
@@ -100,7 +99,7 @@ public class SimpleExample extends ExampleBase
             entity = simpleExample.retrieve();
             System.out.println("entity.Name = " + entity.getName());
 
-            entity.setStatus(DBClassStatus.DELETED);
+            entity.setStatus(EntityStatus.DELETED);
             simpleExample.persist(entity);
             entity = simpleExample.retrieve();
             System.out.println("entity = " + entity);

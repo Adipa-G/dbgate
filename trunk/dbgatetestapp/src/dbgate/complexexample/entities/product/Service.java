@@ -1,17 +1,17 @@
 package dbgate.complexexample.entities.product;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
+import dbgate.ColumnInfo;
+import dbgate.ColumnType;
+import dbgate.TableInfo;
 
 /**
  * Date: Mar 31, 2011
  * Time: 9:46:42 PM
  */
-@DBTableInfo(tableName = "product_service")
+@TableInfo(tableName = "product_service")
 public class Service extends Item
 {
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE)
+    @ColumnInfo(columnType = ColumnType.DOUBLE)
     private double hourlyRate;
 
     public double getHourlyRate()
