@@ -1,4 +1,4 @@
-package dbgate.ermanagement.impl.utils;
+package dbgate.ermanagement.ermapper.utils;
 
 import dbgate.IEntity;
 import dbgate.EntityStatus;

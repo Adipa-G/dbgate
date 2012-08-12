@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.impl.DbGate;
+import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.patch.patchtabledifferences.FourColumnEntity;
 import dbgate.support.patch.patchtabledifferences.ThreeColumnEntity;
 import dbgate.support.patch.patchtabledifferences.ThreeColumnTypeDifferentEntity;

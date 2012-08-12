@@ -1,7 +1,7 @@
 package dbgate;
 
 import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.impl.DbGate;
+import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.constraint.*;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;

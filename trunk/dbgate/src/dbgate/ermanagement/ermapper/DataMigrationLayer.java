@@ -1,4 +1,4 @@
-package dbgate.ermanagement.impl;
+package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
 import dbgate.utility.DBMgtUtility;
@@ -12,7 +12,7 @@ import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.CompareUtil
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.IMetaComparisonGroup;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.datastructures.*;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.support.MetaQueryHolder;
-import dbgate.ermanagement.impl.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

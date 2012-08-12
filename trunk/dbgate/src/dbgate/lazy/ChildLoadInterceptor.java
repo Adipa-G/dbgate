@@ -6,7 +6,7 @@ import dbgate.IRelation;
 import dbgate.utility.DBMgtUtility;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
-import dbgate.ermanagement.impl.RetrievalOperationLayer;
+import dbgate.ermanagement.ermapper.RetrievalOperationLayer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 

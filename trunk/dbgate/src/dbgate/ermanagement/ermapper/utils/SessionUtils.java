@@ -1,4 +1,4 @@
-package dbgate.ermanagement.impl.utils;
+package dbgate.ermanagement.ermapper.utils;
 
 import dbgate.IReadOnlyEntity;
 import dbgate.context.IEntityFieldValueList;

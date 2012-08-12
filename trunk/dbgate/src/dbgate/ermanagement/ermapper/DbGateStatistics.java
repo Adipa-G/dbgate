@@ -1,4 +1,4 @@
-package dbgate.ermanagement.impl;
+package dbgate.ermanagement.ermapper;
 
 import dbgate.IDbGateStatistics;
 

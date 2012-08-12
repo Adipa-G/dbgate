@@ -23,7 +23,7 @@ import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.orderby.Abstr
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.orderby.IAbstractOrderBy;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.AbstractSelectionFactory;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
-import dbgate.ermanagement.impl.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
 import dbgate.ermanagement.query.*;
 
 import java.sql.*;

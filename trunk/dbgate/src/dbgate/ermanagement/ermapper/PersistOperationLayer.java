@@ -1,4 +1,4 @@
-package dbgate.ermanagement.impl;
+package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
 import dbgate.utility.DBMgtUtility;
@@ -17,10 +17,10 @@ import dbgate.exceptions.persist.DataUpdatedFromAnotherSourceException;
 import dbgate.exceptions.persist.IncorrectStatusException;
 import dbgate.exceptions.persist.IntegrityConstraintViolationException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.utils.OperationUtils;
-import dbgate.ermanagement.impl.utils.SessionUtils;
-import dbgate.ermanagement.impl.utils.MiscUtils;
-import dbgate.ermanagement.impl.utils.ReflectionUtils;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.SessionUtils;
+import dbgate.ermanagement.ermapper.utils.MiscUtils;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
