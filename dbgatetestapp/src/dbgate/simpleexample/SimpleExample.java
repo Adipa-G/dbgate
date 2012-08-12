@@ -1,8 +1,9 @@
 package dbgate.simpleexample;
 
-import dbgate.EntityStatus;
-import dbgate.ExampleBase;
+import dbgate.*;
 import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.ermanagement.query.SelectionQuery;
+import dbgate.ermanagement.query.expr.ConditionExpr;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
@@ -68,6 +69,19 @@ public class SimpleExample extends ExampleBase
         return entity;
     }
 
+    public SimpleEntity retrieveWithQuery() throws SQLException,RetrievalException
+    {
+        Connection con = connector.getConnection();
+        ISelectionQuery query = new SelectionQuery()
+                .from(QueryFrom.type(SimpleEntity.class))
+                .select(QuerySelection.type(SimpleEntity.class));
+
+        Collection entities = query.toList(con);
+        DBMgtUtility.close(con);
+
+        return (SimpleEntity)((Object[])entities.iterator().next())[0];
+    }
+
     public static void main(String[] args)
     {
         SimpleExample simpleExample = new SimpleExample();
@@ -91,7 +105,7 @@ public class SimpleExample extends ExampleBase
         }
         try
         {
-            SimpleEntity entity = simpleExample.retrieve();
+            SimpleEntity entity = simpleExample.retrieveWithQuery();
             System.out.println("entity.Name = " + entity.getName());
 
             entity.setName("Updated");
