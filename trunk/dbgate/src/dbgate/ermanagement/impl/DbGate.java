@@ -7,8 +7,8 @@ import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
 import dbgate.exceptions.common.DBConnectorNotInitializedException;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.dbabstractionlayer.LayerFactory;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.LayerFactory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

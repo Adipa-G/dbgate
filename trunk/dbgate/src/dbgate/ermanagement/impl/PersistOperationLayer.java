@@ -16,7 +16,7 @@ import dbgate.exceptions.common.StatementPreparingException;
 import dbgate.exceptions.persist.DataUpdatedFromAnotherSourceException;
 import dbgate.exceptions.persist.IncorrectStatusException;
 import dbgate.exceptions.persist.IntegrityConstraintViolationException;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.utils.OperationUtils;
 import dbgate.ermanagement.impl.utils.SessionUtils;
 import dbgate.ermanagement.impl.utils.MiscUtils;

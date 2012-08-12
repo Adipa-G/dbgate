@@ -6,7 +6,7 @@ import dbgate.IRelation;
 import dbgate.IField;
 import dbgate.exceptions.common.MethodNotFoundException;
 import dbgate.exceptions.query.QueryBuildingException;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

@@ -4,7 +4,7 @@ import dbgate.*;
 import dbgate.caches.CacheManager;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
