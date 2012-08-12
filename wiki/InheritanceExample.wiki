@@ -5,17 +5,17 @@
 This demonstrates inheritance capability of the library using 3 level inheritance structure.
 
 = Details =
-===Super class===
+===Top class===
 {{{
-@DBTableInfo(tableName = "super_entity")
-public class SuperEntity extends DefaultServerDBClass
+@TableInfo(tableName = "top_entity")
+public class TopEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true,subClassCommonColumn = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true,subClassCommonColumn = true)
     private int id;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String superName;
 
-    public SuperEntity()
+    public TopEntity()
     {
     }
 
@@ -43,10 +43,10 @@ public class SuperEntity extends DefaultServerDBClass
 
 ===Middle Class===
 {{{
-@DBTableInfo(tableName = "middle_entity")
-public class MiddleEntity extends SuperEntity
+@TableInfo(tableName = "middle_entity")
+public class MiddleEntity extends TopEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String middleName;
 
     public MiddleEntity()
@@ -63,18 +63,17 @@ public class MiddleEntity extends SuperEntity
         this.middleName = middleName;
     }
 }
-
 }}}
 
-===Base Class===
+===Bottom Class===
 {{{
-@DBTableInfo(tableName = "sub_entity")
-public class SubEntity extends MiddleEntity
+@TableInfo(tableName = "bottom_entity")
+public class BottomEntity extends MiddleEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String subName;
 
-    public SubEntity()
+    public BottomEntity()
     {
     }
 
@@ -98,9 +97,9 @@ public class InheritanceExample extends ExampleBase
 {
     private int id = 43;
 
-    public SubEntity createEntity()
+    public BottomEntity createEntity()
     {
-        SubEntity entity = new SubEntity();
+        BottomEntity entity = new BottomEntity();
         entity.setId(id);
         entity.setSuperName("Super");
         entity.setMiddleName("Middle");
@@ -111,37 +110,39 @@ public class InheritanceExample extends ExampleBase
     public void patch() throws DBPatchingException, SQLException
     {
         Connection con = connector.getConnection();
-        Collection<ServerDBClass> entities = new ArrayList<ServerDBClass>();
-        entities.add(createEntity());
-        ERLayer.getSharedInstance().patchDataBase(con,entities,false);
+        Collection<Class> entityTypes = new ArrayList<Class>();
+        entityTypes.add(TopEntity.class);
+        entityTypes.add(BottomEntity.class);
+        entityTypes.add(MiddleEntity.class);
+        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public void persist() throws PersistException, SQLException
     {
         Connection con = connector.getConnection();
-        SubEntity entity = createEntity();
+        BottomEntity entity = createEntity();
         entity.persist(con);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
-    public SubEntity retrieve() throws SQLException,RetrievalException
+    public BottomEntity retrieve() throws SQLException,RetrievalException
     {
         Connection con = connector.getConnection();
         PreparedStatement ps = con.prepareStatement("select * from sub_entity where id = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
-        SubEntity entity = null;
+        BottomEntity entity = null;
         if (rs.next())
         {
-            entity = new SubEntity();
+            entity = new BottomEntity();
             entity.retrieve(rs,con);
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(rs);
+        DBMgtUtility.close(ps);
+        DBMgtUtility.close(con);
         return entity;
     }
 
@@ -167,7 +168,7 @@ public class InheritanceExample extends ExampleBase
         }
         try
         {
-            SubEntity entity = inheritanceExample.retrieve();
+            BottomEntity entity = inheritanceExample.retrieve();
             System.out.println("entity.SuperName = " + entity.getSuperName());
             System.out.println("entity.MiddleName = " + entity.getMiddleName());
             System.out.println("entity.SubName = " + entity.getSubName());

@@ -7,12 +7,12 @@ This demonstrates no of features working together, with reverse relationships an
 = Details =
 ===Item class===
 {{{
-@DBTableInfo(tableName = "product_item")
-public abstract class Item extends DefaultServerDBClass
+@TableInfo(tableName = "product_item")
+public abstract class Item extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true,subClassCommonColumn = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true,subClassCommonColumn = true)
     private int itemId;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     public Item()
@@ -43,12 +43,12 @@ public abstract class Item extends DefaultServerDBClass
 
 ===Product Class===
 {{{
-@DBTableInfo(tableName = "product_product")
+@TableInfo(tableName = "product_product")
 public class Product extends Item
 {
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE)
+    @ColumnInfo(columnType = ColumnType.DOUBLE)
     private double unitPrice;
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE,nullable = true)
+    @ColumnInfo(columnType = ColumnType.DOUBLE,nullable = true)
     private Double bulkUnitPrice;
 
     public double getUnitPrice()
@@ -75,10 +75,10 @@ public class Product extends Item
 
 ===Service Class===
 {{{
-@DBTableInfo(tableName = "product_service")
+@TableInfo(tableName = "product_service")
 public class Service extends Item
 {
-    @DBColumnInfo(columnType = DBColumnType.DOUBLE)
+    @ColumnInfo(columnType = ColumnType.DOUBLE)
     private double hourlyRate;
 
     public double getHourlyRate()
@@ -95,12 +95,12 @@ public class Service extends Item
 
 ===Transaction Class===
 {{{
-@DBTableInfo(tableName = "order_transaction")
-public class Transaction extends DefaultServerDBClass
+@TableInfo(tableName = "order_transaction")
+public class Transaction extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int transactionId;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
     @ForeignKeyInfo(name = "tx2item_tx"
                 ,relatedObjectType = ItemTransaction.class
@@ -148,14 +148,14 @@ public class Transaction extends DefaultServerDBClass
 
 ===ItemTransaction Class===
 {{{
-@DBTableInfo(tableName = "order_item_transaction")
-public class ItemTransaction  extends DefaultServerDBClass
+@TableInfo(tableName = "order_item_transaction")
+public class ItemTransaction  extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int transactionId;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER)
+    @ColumnInfo(columnType = ColumnType.INTEGER)
     private int itemId;
     @ForeignKeyInfoList(infoList = {
     @ForeignKeyInfo(name = "item_tx2product"
@@ -260,16 +260,16 @@ public class ItemTransaction  extends DefaultServerDBClass
 
 ===ItemTransactionCharge Class===
 {{{
-@DBTableInfo(tableName = "order_item_transaction_charge")
-public class ItemTransactionCharge  extends DefaultServerDBClass
+@TableInfo(tableName = "order_item_transaction_charge")
+public class ItemTransactionCharge  extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int transactionId;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int chargeIndex;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String chargeCode;
     @ForeignKeyInfo(name = "item_tx_charge2tx_rev"
                 ,relatedObjectType = Transaction.class
@@ -373,7 +373,7 @@ public class ComplexExample extends ExampleBase
         product.setUnitPrice(54D);
         Connection con = connector.getConnection();
         product.persist(con);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
         return product;
     }
 
@@ -385,7 +385,7 @@ public class ComplexExample extends ExampleBase
         service.setHourlyRate(65D);
         Connection con = connector.getConnection();
         service.persist(con);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
         return service;
     }
 
@@ -415,22 +415,22 @@ public class ComplexExample extends ExampleBase
 
         Connection con = connector.getConnection();
         transaction.persist(con);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
         return transaction;
     }
 
     public void patch() throws DBPatchingException, SQLException
     {
         Connection con = connector.getConnection();
-        Collection<ServerDBClass> entities = new ArrayList<ServerDBClass>();
-        entities.add(new Transaction());
-        entities.add(new ItemTransaction(new Transaction()));
-        entities.add(new ItemTransactionCharge(new ItemTransaction(new Transaction())));
-        entities.add(new Product());
-        entities.add(new Service());
-        ERLayer.getSharedInstance().patchDataBase(con,entities,false);
+        Collection<Class> entityTypes = new ArrayList<Class>();
+        entityTypes.add(Transaction.class);
+        entityTypes.add(ItemTransaction.class);
+        entityTypes.add(ItemTransactionCharge.class);
+        entityTypes.add(Product.class);
+        entityTypes.add(Service.class);
+        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
         con.commit();
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(con);
     }
 
     public Transaction retrieve(int id) throws SQLException,RetrievalException
@@ -445,9 +445,9 @@ public class ComplexExample extends ExampleBase
             entity = new Transaction();
             entity.retrieve(rs,con);
         }
-        DBMgmtUtility.close(rs);
-        DBMgmtUtility.close(ps);
-        DBMgmtUtility.close(con);
+        DBMgtUtility.close(rs);
+        DBMgtUtility.close(ps);
+        DBMgtUtility.close(con);
         return entity;
     }
 
