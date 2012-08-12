@@ -1,7 +1,7 @@
 package dbgate.ermanagement;
 
-import dbgate.DBClassStatus;
-import dbgate.ServerDBClass;
+import dbgate.IEntity;
+import dbgate.EntityStatus;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.impl.utils.MiscUtils;
@@ -14,21 +14,21 @@ import java.sql.Connection;
  * Date: Oct 2, 2010
  * Time: 9:26:28 PM
  */
-public class DefaultServerDBClass extends DefaultServerRODBClass implements ServerDBClass
+public class DefaultEntity extends DefaultReadOnlyEntity implements IEntity
 {
-    protected DBClassStatus status;
+    protected EntityStatus status;
 
-    public DefaultServerDBClass()
+    public DefaultEntity()
     {
-        status = DBClassStatus.NEW;
+        status = EntityStatus.NEW;
     }
 
-    public DBClassStatus getStatus()
+    public EntityStatus getStatus()
     {
         return status;
     }
 
-    public void setStatus(DBClassStatus status)
+    public void setStatus(EntityStatus status)
     {
         this.status = status;
     }

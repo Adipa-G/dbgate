@@ -19,7 +19,7 @@ import java.sql.ResultSet;
  * read only class
  */
 
-public interface ServerRODBClass extends IRODBClass, Serializable
+public interface IReadOnlyEntity extends IReadOnlyClientEntity, Serializable
 {
     void retrieve(ResultSet rs, Connection con) throws RetrievalException;
 

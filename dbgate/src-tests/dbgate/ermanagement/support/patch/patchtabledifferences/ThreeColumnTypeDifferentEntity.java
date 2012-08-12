@@ -1,9 +1,9 @@
 package dbgate.ermanagement.support.patch.patchtabledifferences;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
-import dbgate.ermanagement.DefaultServerDBClass;
+import dbgate.ColumnType;
+import dbgate.ermanagement.ColumnInfo;
+import dbgate.ermanagement.TableInfo;
+import dbgate.ermanagement.DefaultEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,14 +11,14 @@ import dbgate.ermanagement.DefaultServerDBClass;
  * Date: Oct 16, 2011
  * Time: 8:44:23 AM
  */
-@DBTableInfo(tableName = "table_change_test_entity")
-public class ThreeColumnTypeDifferentEntity extends DefaultServerDBClass
+@TableInfo(tableName = "table_change_test_entity")
+public class ThreeColumnTypeDifferentEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR,size = 255)
+    @ColumnInfo(columnType = ColumnType.VARCHAR,size = 255)
     private String name;
 
     public int getIdCol()

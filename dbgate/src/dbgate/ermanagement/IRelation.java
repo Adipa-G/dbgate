@@ -6,7 +6,7 @@ package dbgate.ermanagement;
  * Date: Sep 22, 2010
  * Time: 12:50:23 PM
  */
-public interface IDBRelation extends IField
+public interface IRelation extends IField
 {
     String getRelationshipName();
 
@@ -16,9 +16,9 @@ public interface IDBRelation extends IField
 
     void setRelatedObjectType(Class relatedObjectType);
 
-    DBRelationColumnMapping[] getTableColumnMappings();
+    RelationColumnMapping[] getTableColumnMappings();
 
-    void setTableColumnMappings(DBRelationColumnMapping[] tableColumnMappings);
+    void setTableColumnMappings(RelationColumnMapping[] tableColumnMappings);
 
     ReferentialRuleType getUpdateRule();
 

@@ -1,9 +1,9 @@
 package dbgate.ermanagement.support.persistant.inheritancetest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
-import dbgate.ermanagement.DefaultServerDBClass;
+import dbgate.ColumnType;
+import dbgate.ermanagement.ColumnInfo;
+import dbgate.ermanagement.TableInfo;
+import dbgate.ermanagement.DefaultEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,12 +11,12 @@ import dbgate.ermanagement.DefaultServerDBClass;
  * Date: Sep 26, 2010
  * Time: 12:23:11 PM
  */
-@DBTableInfo(tableName = "inheritance_test_super")
-public class InheritanceTestSuperEntityAnnotations extends DefaultServerDBClass implements IInheritanceTestSuperEntity
+@TableInfo(tableName = "inheritance_test_super")
+public class InheritanceTestSuperEntityAnnotations extends DefaultEntity implements IInheritanceTestSuperEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true,subClassCommonColumn = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true,subClassCommonColumn = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     public InheritanceTestSuperEntityAnnotations()

@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.ServerDBClass;
+import dbgate.IEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.ServerDBClass;
  * Date: Sep 26, 2010
  * Time: 11:51:19 AM
  */
-public interface ITreeTestOne2ManyEntity  extends ServerDBClass
+public interface ITreeTestOne2ManyEntity  extends IEntity
 {
     int getIdCol();
 

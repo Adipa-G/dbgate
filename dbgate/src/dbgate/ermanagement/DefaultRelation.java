@@ -6,19 +6,19 @@ package dbgate.ermanagement;
  * Date: Sep 22, 2010
  * Time: 1:06:27 PM
  */
-public class DefaultDBRelation extends AbstractDBRelation
+public class DefaultRelation extends AbstractRelation
 {
-    public DefaultDBRelation(String attributeName, String relationshipName
-            , Class relatedObjectType, DBRelationColumnMapping[] tableColumnMappings)
+    public DefaultRelation(String attributeName, String relationshipName
+            , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings)
     {
         super(attributeName, relationshipName
                 , relatedObjectType, tableColumnMappings);
     }
 
-    public DefaultDBRelation(String attributeName, String relationshipName
-            ,Class relatedObjectType, DBRelationColumnMapping[] tableColumnMappings
+    public DefaultRelation(String attributeName, String relationshipName
+            , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings
             , ReferentialRuleType updateRule, ReferentialRuleType deleteRule
-            , boolean reverseRelationship, boolean nonIdentifyingRelation,boolean lazy)
+            , boolean reverseRelationship, boolean nonIdentifyingRelation, boolean lazy)
     {
         super(attributeName, relationshipName, relatedObjectType
                 , tableColumnMappings, updateRule, deleteRule

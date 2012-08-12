@@ -1,9 +1,9 @@
 package dbgate.ermanagement.support.persistant.lazy;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
-import dbgate.ermanagement.DefaultServerDBClass;
+import dbgate.ColumnType;
+import dbgate.ermanagement.ColumnInfo;
+import dbgate.ermanagement.TableInfo;
+import dbgate.ermanagement.DefaultEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,14 +11,14 @@ import dbgate.ermanagement.DefaultServerDBClass;
  * Date: Sep 26, 2010
  * Time: 12:23:11 PM
  */
-@DBTableInfo(tableName = "lazy_test_one2many")
-public class LazyOne2ManyEntity extends DefaultServerDBClass
+@TableInfo(tableName = "lazy_test_one2many")
+public class LazyOne2ManyEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     public LazyOne2ManyEntity()

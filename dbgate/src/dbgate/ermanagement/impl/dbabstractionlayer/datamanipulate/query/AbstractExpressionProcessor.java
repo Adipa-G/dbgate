@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query;
 
-import dbgate.ermanagement.IDBColumn;
-import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.IColumn;
+import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
@@ -33,14 +33,14 @@ public class AbstractExpressionProcessor
         return sql;
     }
 
-    public IDBColumn getColumn(FieldSegment segment)
+    public IColumn getColumn(FieldSegment segment)
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(segment.getType());
-        Collection<IDBColumn> columns = entityInfo.getColumns();
+        Collection<IColumn> columns = entityInfo.getColumns();
 
         if (columns != null)
         {
-            for (IDBColumn column : columns)
+            for (IColumn column : columns)
             {
                 if (column.getAttributeName().equals(segment.getField()))
                 {
@@ -51,14 +51,14 @@ public class AbstractExpressionProcessor
         return null;
     }
 
-    public IDBRelation getRelation(Class typeFrom,Class typeTo)
+    public IRelation getRelation(Class typeFrom,Class typeTo)
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(typeFrom);
-        Collection<IDBRelation> relations = entityInfo.getRelations();
+        Collection<IRelation> relations = entityInfo.getRelations();
 
         if (relations != null)
         {
-            for (IDBRelation relation : relations)
+            for (IRelation relation : relations)
             {
                 if (relation.getRelatedObjectType() == typeTo)
                 {
@@ -78,7 +78,7 @@ public class AbstractExpressionProcessor
             tableAlias = fieldSegment.getTypeAlias();
         }
         tableAlias = (tableAlias == null)?"" : tableAlias + ".";
-        IDBColumn column = getColumn(fieldSegment);
+        IColumn column = getColumn(fieldSegment);
 
         if (column != null)
         {

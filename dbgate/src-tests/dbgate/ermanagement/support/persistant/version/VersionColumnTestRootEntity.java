@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.version;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 
 import java.util.ArrayList;
@@ -12,14 +12,14 @@ import java.util.Collection;
  * Date: Sep 26, 2010
  * Time: 11:47:59 AM
  */
-@DBTableInfo(tableName = "version_test_root")
-public class VersionColumnTestRootEntity extends DefaultServerDBClass
+@TableInfo(tableName = "version_test_root")
+public class VersionColumnTestRootEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.VERSION)
+    @ColumnInfo(columnType = ColumnType.VERSION)
     private int version;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"

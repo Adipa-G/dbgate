@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.ermanagement.context.IEntityContext;
 import dbgate.ermanagement.exceptions.PersistException;
 import dbgate.ermanagement.exceptions.RetrievalException;
@@ -18,7 +18,7 @@ import java.util.Collection;
  */
 public class TreeTestRootEntityExt implements ITreeTestRootEntity
 {
-    private DBClassStatus status;
+    private EntityStatus status;
     private int idCol;
     private String name;
     private Collection<ITreeTestOne2ManyEntity> one2ManyEntities;
@@ -26,7 +26,7 @@ public class TreeTestRootEntityExt implements ITreeTestRootEntity
 
     public TreeTestRootEntityExt()
     {
-        status = DBClassStatus.NEW;
+        status = EntityStatus.NEW;
     }
 
     public int getIdCol()
@@ -69,12 +69,12 @@ public class TreeTestRootEntityExt implements ITreeTestRootEntity
         this.one2OneEntity = one2OneEntity;
     }
 
-    public DBClassStatus getStatus()
+    public EntityStatus getStatus()
     {
         return status;
     }
 
-    public void setStatus(DBClassStatus status)
+    public void setStatus(EntityStatus status)
     {
         this.status = status;
     }

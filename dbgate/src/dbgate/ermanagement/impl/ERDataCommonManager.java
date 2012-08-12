@@ -1,9 +1,9 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.DBClassStatus;
+import dbgate.IEntity;
+import dbgate.EntityStatus;
 import dbgate.DbGateException;
-import dbgate.ServerDBClass;
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
@@ -67,7 +67,7 @@ public abstract class ERDataCommonManager
             String message = String.format("SQL Exception while trying create prepared statement for sql %s",query);
             throw new StatementPreparingException(message,ex);
         }
-        Collection<IDBColumn> keys = entityInfo.getKeys();
+        Collection<IColumn> keys = entityInfo.getKeys();
 
         StringBuilder logSb = new StringBuilder();
         boolean showQuery = config.isShowQueries();
@@ -76,7 +76,7 @@ public abstract class ERDataCommonManager
             logSb.append(query);
         }
         int i = 0;
-        for (IDBColumn key : keys)
+        for (IColumn key : keys)
         {
             Object fieldValue = keyValueList.getFieldValue(key.getAttributeName()).getValue();
             if (showQuery)
@@ -102,8 +102,8 @@ public abstract class ERDataCommonManager
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
 
         ITypeFieldValueList valueTypeList = new EntityTypeFieldValueList(type);
-        Collection<IDBColumn> dbColumns = entityInfo.getColumns();
-        for (IDBColumn dbColumn : dbColumns)
+        Collection<IColumn> dbColumns = entityInfo.getColumns();
+        for (IColumn dbColumn : dbColumns)
         {
             Object value = dbLayer.getDataManipulate().readFromResultSet(rs,dbColumn);
             valueTypeList.getFieldValues().add(new EntityFieldValue(value,dbColumn));
@@ -111,7 +111,7 @@ public abstract class ERDataCommonManager
         return valueTypeList;
     }
 
-    protected static void setValues(ServerRODBClass roEntity, ITypeFieldValueList values) throws DbGateException
+    protected static void setValues(IReadOnlyEntity roEntity, ITypeFieldValueList values) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(roEntity);
 
@@ -130,19 +130,19 @@ public abstract class ERDataCommonManager
         }
     }
 
-    protected static Collection<ITypeFieldValueList> getChildEntityValueListExcludingDeletedStatusItems(ServerDBClass parentEntity)
+    protected static Collection<ITypeFieldValueList> getChildEntityValueListExcludingDeletedStatusItems(IEntity parentEntity)
         throws DbGateException
     {
         return getChildEntityValueList(parentEntity,false);
     }
 
-    protected static Collection<ITypeFieldValueList> getChildEntityValueListIncludingDeletedStatusItems(ServerDBClass parentEntity)
+    protected static Collection<ITypeFieldValueList> getChildEntityValueListIncludingDeletedStatusItems(IEntity parentEntity)
         throws DbGateException
     {
         return getChildEntityValueList(parentEntity,true);
     }
 
-    protected static Collection<ITypeFieldValueList> getChildEntityValueList(ServerDBClass parentEntity,boolean takeDeleted)
+    protected static Collection<ITypeFieldValueList> getChildEntityValueList(IEntity parentEntity,boolean takeDeleted)
             throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(parentEntity);
@@ -150,8 +150,8 @@ public abstract class ERDataCommonManager
 
         while (entityInfo != null)
         {
-            Collection<IDBRelation> typeRelations = entityInfo.getRelations();
-            for (IDBRelation typeRelation : typeRelations)
+            Collection<IRelation> typeRelations = entityInfo.getRelations();
+            for (IRelation typeRelation : typeRelations)
             {
                 if (typeRelation.isReverseRelationship())
                 {
@@ -163,15 +163,15 @@ public abstract class ERDataCommonManager
                     continue;
                 }
 
-                Collection<ServerDBClass> childEntities = ERDataManagerUtils.getRelationEntities(parentEntity,typeRelation);
-                for (ServerDBClass childEntity : childEntities)
+                Collection<IEntity> childEntities = ERDataManagerUtils.getRelationEntities(parentEntity,typeRelation);
+                for (IEntity childEntity : childEntities)
                 {
-                    if (parentEntity.getStatus() == DBClassStatus.DELETED
+                    if (parentEntity.getStatus() == EntityStatus.DELETED
                             && typeRelation.getDeleteRule() == ReferentialRuleType.CASCADE)
                     {
-                        childEntity.setStatus(DBClassStatus.DELETED);
+                        childEntity.setStatus(EntityStatus.DELETED);
                     }
-                    if (childEntity.getStatus() == DBClassStatus.DELETED && !takeDeleted)
+                    if (childEntity.getStatus() == EntityStatus.DELETED && !takeDeleted)
                     {
                         continue;
                     }
@@ -188,7 +188,7 @@ public abstract class ERDataCommonManager
         return existingEntityChildRelations;
     }
 
-    protected static boolean isProxyObject(ServerDBClass entity, IDBRelation relation) throws DbGateException
+    protected static boolean isProxyObject(IEntity entity, IRelation relation) throws DbGateException
     {
         if (relation.isLazy())
         {
@@ -218,8 +218,8 @@ public abstract class ERDataCommonManager
         return false;
     }
 
-    protected Collection<ServerRODBClass> readRelationChildrenFromDb(ServerRODBClass entity,Class type
-            ,Connection con,IDBRelation relation) throws DbGateException
+    protected Collection<IReadOnlyEntity> readRelationChildrenFromDb(IReadOnlyEntity entity,Class type
+            ,Connection con,IRelation relation) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         Class childType = relation.getRelatedObjectType();
@@ -228,7 +228,7 @@ public abstract class ERDataCommonManager
         String query = entityInfo.getRelationObjectLoad(dbLayer,relation);
 
         ArrayList<String> fields = new ArrayList<String>();
-        for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
+        for (RelationColumnMapping mapping : relation.getTableColumnMappings())
         {
             fields.add(mapping.getFromField());
         }
@@ -249,11 +249,11 @@ public abstract class ERDataCommonManager
         {
             logSb.append(query);
         }
-        Collection<IDBColumn> dbColumns = entityInfo.getColumns();
+        Collection<IColumn> dbColumns = entityInfo.getColumns();
         for (int i = 0; i < fields.size(); i++)
         {
             String field = fields.get(i);
-            IDBColumn matchColumn = ERDataManagerUtils.findColumnByAttribute(dbColumns, field);
+            IColumn matchColumn = ERDataManagerUtils.findColumnByAttribute(dbColumns, field);
 
             if (matchColumn != null)
             {
@@ -283,14 +283,14 @@ public abstract class ERDataCommonManager
         return executeAndReadFromPreparedStatement(entity, con, ps, childType);
     }
 
-    private Collection<ServerRODBClass> executeAndReadFromPreparedStatement(ServerRODBClass entity, Connection con,
+    private Collection<IReadOnlyEntity> executeAndReadFromPreparedStatement(IReadOnlyEntity entity, Connection con,
                                                                             PreparedStatement ps, Class childType)
             throws DbGateException
     {
         ResultSet rs = null;
         EntityInfo entityInfo = CacheManager.getEntityInfo(childType);
-        Collection<IDBColumn> childKeys = null;
-        Collection<ServerRODBClass> data = new ArrayList<ServerRODBClass>();
+        Collection<IColumn> childKeys = null;
+        Collection<IReadOnlyEntity> data = new ArrayList<IReadOnlyEntity>();
 
         try
         {
@@ -302,7 +302,7 @@ public abstract class ERDataCommonManager
                     childKeys = entityInfo.getKeys();
                 }
                 ITypeFieldValueList childTypeKeyList = new EntityTypeFieldValueList(childType);
-                for (IDBColumn childKey : childKeys)
+                for (IColumn childKey : childKeys)
                 {
                     Object value = dbLayer.getDataManipulate().readFromResultSet(rs,childKey);
                     childTypeKeyList.getFieldValues().add(new EntityFieldValue(value,childKey));
@@ -313,7 +313,7 @@ public abstract class ERDataCommonManager
                     continue;
                 }
 
-                ServerRODBClass rodbClass = (ServerRODBClass) ReflectionUtils.createInstance(childType);
+                IReadOnlyEntity rodbClass = (IReadOnlyEntity) ReflectionUtils.createInstance(childType);
                 ERSessionUtils.transferSession(entity,rodbClass);
                 rodbClass.retrieve(rs,con);
                 data.add(rodbClass);

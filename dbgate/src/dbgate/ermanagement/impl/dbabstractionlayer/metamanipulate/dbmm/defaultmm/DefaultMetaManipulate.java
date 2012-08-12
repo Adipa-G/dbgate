@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultmm;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
@@ -37,15 +37,15 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     @Override
     protected void fillDataMappings(Connection con) throws MetaDataException
     {
-        columnTypeMapItems.add(new ColumnTypeMapItem("INTEGER",DBColumnType.INTEGER,"0"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR",DBColumnType.BOOLEAN,"true"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("FLOAT",DBColumnType.FLOAT,"0"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR",DBColumnType.CHAR,"' '"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("DATE",DBColumnType.DATE,"1981/10/12"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("DOUBLE",DBColumnType.DOUBLE,"0"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("BIGINT",DBColumnType.LONG,"0"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("TIMESTAMP",DBColumnType.TIMESTAMP,"1981/10/12"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR",DBColumnType.VARCHAR,"''"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("INTEGER", ColumnType.INTEGER,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR", ColumnType.BOOLEAN,"true"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("FLOAT", ColumnType.FLOAT,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("CHAR", ColumnType.CHAR,"' '"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("DATE", ColumnType.DATE,"1981/10/12"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("DOUBLE", ColumnType.DOUBLE,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("BIGINT", ColumnType.LONG,"0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("TIMESTAMP", ColumnType.TIMESTAMP,"1981/10/12"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR", ColumnType.VARCHAR,"''"));
     }
 
     @Override
@@ -169,8 +169,8 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
             }
             sb.append(metaColumn.getName());
             sb.append(" ");
-            if (metaColumn.getColumnType() == DBColumnType.CHAR
-                    || metaColumn.getColumnType() == DBColumnType.VARCHAR)
+            if (metaColumn.getColumnType() == ColumnType.CHAR
+                    || metaColumn.getColumnType() == ColumnType.VARCHAR)
             {
                 sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
                 sb.append("(");
@@ -219,8 +219,8 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
         sb.append(" ADD ");
         sb.append(metaColumn.getName());
         sb.append(" ");
-        if (metaColumn.getColumnType() == DBColumnType.CHAR
-                || metaColumn.getColumnType() == DBColumnType.VARCHAR)
+        if (metaColumn.getColumnType() == ColumnType.CHAR
+                || metaColumn.getColumnType() == ColumnType.VARCHAR)
         {
             sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
             sb.append("(");
@@ -280,8 +280,8 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
         sb.append(" ALTER ");
         sb.append(metaColumn.getName());
         sb.append(" SET DATA TYPE ");
-        if (metaColumn.getColumnType() == DBColumnType.CHAR
-                || metaColumn.getColumnType() == DBColumnType.VARCHAR)
+        if (metaColumn.getColumnType() == ColumnType.CHAR
+                || metaColumn.getColumnType() == ColumnType.VARCHAR)
         {
             sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
             sb.append("(");

@@ -1,8 +1,8 @@
 package dbgate.ermanagement.support.persistant.inheritancetest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.AbstractManagedDBClass;
-import dbgate.ermanagement.DefaultDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.AbstractManagedEntity;
+import dbgate.ermanagement.DefaultColumn;
 import dbgate.ermanagement.IField;
 import dbgate.ermanagement.support.persistant.treetest.ITreeTestOne2OneEntity;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * Date: Sep 26, 2010
  * Time: 12:23:11 PM
  */
-public class InheritanceTestSuperEntityFields extends AbstractManagedDBClass implements ITreeTestOne2OneEntity
+public class InheritanceTestSuperEntityFields extends AbstractManagedEntity implements ITreeTestOne2OneEntity
 {
     private int idCol;
     private String name;
@@ -54,10 +54,10 @@ public class InheritanceTestSuperEntityFields extends AbstractManagedDBClass imp
         Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
         ArrayList<IField> dbColumns = new ArrayList<IField>();
 
-        DefaultDBColumn idCol = new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER);
+        DefaultColumn idCol = new DefaultColumn("idCol",true,false, ColumnType.INTEGER);
         idCol.setSubClassCommonColumn(true);
         dbColumns.add(idCol);
-        dbColumns.add(new DefaultDBColumn("name",DBColumnType.VARCHAR));
+        dbColumns.add(new DefaultColumn("name", ColumnType.VARCHAR));
 
         map.put(InheritanceTestSuperEntityFields.class,dbColumns);
         return map;

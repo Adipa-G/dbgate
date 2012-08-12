@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.featureintegration.order;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.support.persistant.featureintegration.product.Item;
 import dbgate.ermanagement.support.persistant.featureintegration.product.Product;
@@ -13,14 +13,14 @@ import java.util.Collection;
  * Date: Mar 31, 2011
  * Time: 9:59:13 PM
  */
-@DBTableInfo(tableName = "order_item_transaction")
-public class ItemTransaction  extends DefaultServerDBClass
+@TableInfo(tableName = "order_item_transaction")
+public class ItemTransaction  extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int transactionId;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER)
+    @ColumnInfo(columnType = ColumnType.INTEGER)
     private int itemId;
     @ForeignKeyInfoList(infoList = {
     @ForeignKeyInfo(name = "item_tx2product"

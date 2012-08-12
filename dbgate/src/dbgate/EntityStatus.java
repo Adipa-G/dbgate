@@ -6,7 +6,7 @@ package dbgate;
  * Date: Sep 22, 2010
  * Time: 11:36:02 AM
  */
-public enum DBClassStatus
+public enum EntityStatus
 {
     NEW,
     MODIFIED,

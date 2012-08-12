@@ -1,7 +1,7 @@
 package dbgate.ermanagement.support.persistant.columntest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DefaultDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.DefaultColumn;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -22,25 +22,25 @@ public class ColumnTestExtFactory
 
         if (type == ColumnTestEntityExts.class)
         {
-            dbColumns.add(new DefaultDBColumn("idCol","id_col",true, DBColumnType.INTEGER,true,new PrimaryKeyGenerator()));
-            dbColumns.add(new DefaultDBColumn("longNotNull",DBColumnType.LONG));
-            dbColumns.add(new DefaultDBColumn("longNull",DBColumnType.LONG,true));
-            dbColumns.add(new DefaultDBColumn("booleanNotNull",DBColumnType.BOOLEAN));
-            dbColumns.add(new DefaultDBColumn("booleanNull",DBColumnType.BOOLEAN,true));
-            dbColumns.add(new DefaultDBColumn("charNotNull",DBColumnType.CHAR));
-            dbColumns.add(new DefaultDBColumn("charNull",DBColumnType.CHAR,true));
-            dbColumns.add(new DefaultDBColumn("intNotNull",DBColumnType.INTEGER));
-            dbColumns.add(new DefaultDBColumn("intNull",DBColumnType.INTEGER,true));
-            dbColumns.add(new DefaultDBColumn("dateNotNull",DBColumnType.DATE));
-            dbColumns.add(new DefaultDBColumn("dateNull",DBColumnType.DATE,true));
-            dbColumns.add(new DefaultDBColumn("doubleNotNull",DBColumnType.DOUBLE));
-            dbColumns.add(new DefaultDBColumn("doubleNull",DBColumnType.DOUBLE,true));
-            dbColumns.add(new DefaultDBColumn("floatNotNull",DBColumnType.FLOAT));
-            dbColumns.add(new DefaultDBColumn("floatNull",DBColumnType.FLOAT,true));
-            dbColumns.add(new DefaultDBColumn("timestampNotNull",DBColumnType.TIMESTAMP));
-            dbColumns.add(new DefaultDBColumn("timestampNull",DBColumnType.TIMESTAMP,true));
-            dbColumns.add(new DefaultDBColumn("varcharNotNull",DBColumnType.VARCHAR));
-            dbColumns.add(new DefaultDBColumn("varcharNull",DBColumnType.VARCHAR,true));
+            dbColumns.add(new DefaultColumn("idCol","id_col",true, ColumnType.INTEGER,true,new PrimaryKeyGenerator()));
+            dbColumns.add(new DefaultColumn("longNotNull", ColumnType.LONG));
+            dbColumns.add(new DefaultColumn("longNull", ColumnType.LONG,true));
+            dbColumns.add(new DefaultColumn("booleanNotNull", ColumnType.BOOLEAN));
+            dbColumns.add(new DefaultColumn("booleanNull", ColumnType.BOOLEAN,true));
+            dbColumns.add(new DefaultColumn("charNotNull", ColumnType.CHAR));
+            dbColumns.add(new DefaultColumn("charNull", ColumnType.CHAR,true));
+            dbColumns.add(new DefaultColumn("intNotNull", ColumnType.INTEGER));
+            dbColumns.add(new DefaultColumn("intNull", ColumnType.INTEGER,true));
+            dbColumns.add(new DefaultColumn("dateNotNull", ColumnType.DATE));
+            dbColumns.add(new DefaultColumn("dateNull", ColumnType.DATE,true));
+            dbColumns.add(new DefaultColumn("doubleNotNull", ColumnType.DOUBLE));
+            dbColumns.add(new DefaultColumn("doubleNull", ColumnType.DOUBLE,true));
+            dbColumns.add(new DefaultColumn("floatNotNull", ColumnType.FLOAT));
+            dbColumns.add(new DefaultColumn("floatNull", ColumnType.FLOAT,true));
+            dbColumns.add(new DefaultColumn("timestampNotNull", ColumnType.TIMESTAMP));
+            dbColumns.add(new DefaultColumn("timestampNull", ColumnType.TIMESTAMP,true));
+            dbColumns.add(new DefaultColumn("varcharNotNull", ColumnType.VARCHAR));
+            dbColumns.add(new DefaultColumn("varcharNull", ColumnType.VARCHAR,true));
         }
 
         return dbColumns;

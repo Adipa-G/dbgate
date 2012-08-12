@@ -1,7 +1,7 @@
 package dbgate.ermanagement.support.persistant.inheritancetest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DefaultDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.DefaultColumn;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class InheritanceTestSubEntityBFields extends InheritanceTestSuperEntityF
         Map<Class,Collection<IField>> map = super.getFieldInfo();
         ArrayList<IField> dbColumns = new ArrayList<IField>();
 
-        dbColumns.add(new DefaultDBColumn("nameB",DBColumnType.VARCHAR));
+        dbColumns.add(new DefaultColumn("nameB", ColumnType.VARCHAR));
 
         map.put(InheritanceTestSubEntityBFields.class,dbColumns);
         return map;

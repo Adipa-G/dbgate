@@ -1,7 +1,7 @@
 package dbgate.ermanagement.support.persistant.columntest;
 
 import dbgate.DateWrapper;
-import dbgate.ServerDBClass;
+import dbgate.IEntity;
 import dbgate.TimeStampWrapper;
 
 /**
@@ -10,7 +10,7 @@ import dbgate.TimeStampWrapper;
  * Date: Sep 26, 2010
  * Time: 12:07:41 AM
  */
-public interface IColumnTestEntity extends ServerDBClass
+public interface IColumnTestEntity extends IEntity
 {
     int getIdCol();
 

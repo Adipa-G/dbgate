@@ -47,7 +47,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         super(dbLayer, statistics, config);
     }
 
-    public void save(ServerDBClass entity, Connection con) throws PersistException
+    public void save(IEntity entity, Connection con) throws PersistException
     {
         try
         {
@@ -68,7 +68,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                 saveForType(entity, entityInfo.getEntityType(), con);
             }
 
-            entity.setStatus(DBClassStatus.UNMODIFIED);
+            entity.setStatus(EntityStatus.UNMODIFIED);
             ERSessionUtils.destroySession(entity);
         } catch (Exception e)
         {
@@ -77,35 +77,35 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private void trackAndCommitChanges(ServerDBClass serverDBClass, Connection con) throws DbGateException
+    private void trackAndCommitChanges(IEntity entity, Connection con) throws DbGateException
     {
-        IEntityContext entityContext = serverDBClass.getContext();
+        IEntityContext entityContext = entity.getContext();
         Collection<ITypeFieldValueList> originalChildren;
 
         if (entityContext != null)
         {
             if (config.isAutoTrackChanges())
             {
-                if (checkForModification(serverDBClass, con, entityContext))
+                if (checkForModification(entity, con, entityContext))
                 {
-                    MiscUtils.modify(serverDBClass);
+                    MiscUtils.modify(entity);
                 }
             }
             originalChildren = entityContext.getChangeTracker().getChildEntityKeys();
         } else
         {
-            originalChildren = getChildEntityValueListIncludingDeletedStatusItems(serverDBClass);
+            originalChildren = getChildEntityValueListIncludingDeletedStatusItems(entity);
         }
 
         Collection<ITypeFieldValueList> currentChildren = getChildEntityValueListExcludingDeletedStatusItems(
-                serverDBClass);
-        validateForChildDeletion(serverDBClass, currentChildren);
+                entity);
+        validateForChildDeletion(entity, currentChildren);
         Collection<ITypeFieldValueList> deletedChildren = ERDataManagerUtils.findDeletedChildren(originalChildren,
                                                                                                  currentChildren);
         deleteOrphanChildren(con, deletedChildren);
     }
 
-    private void saveForType(ServerDBClass entity, Class type, Connection con) throws DbGateException
+    private void saveForType(IEntity entity, Class type, Connection con) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         if (entityInfo == null)
@@ -113,20 +113,20 @@ public class ERDataPersistManager extends ERDataCommonManager
             return;
         }
 
-        Collection<IDBRelation> dbRelations = entityInfo.getRelations();
-        for (IDBRelation relation : dbRelations)
+        Collection<IRelation> dbRelations = entityInfo.getRelations();
+        for (IRelation relation : dbRelations)
         {
             if (relation.isReverseRelationship())
             {
                 continue;
             }
             if (isProxyObject(entity, relation)) continue;
-            Collection<ServerDBClass> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
+            Collection<IEntity> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
             if (childObjects != null)
             {
                 if (relation.isNonIdentifyingRelation())
                 {
-                    for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
+                    for (RelationColumnMapping mapping : relation.getTableColumnMappings())
                     {
                         setParentRelationFieldsForNonIdentifyingRelations(entity, relation.getRelatedObjectType(),
                                                                           childObjects, mapping);
@@ -136,13 +136,13 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
 
         ITypeFieldValueList fieldValues = ERDataManagerUtils.extractEntityTypeFieldValues(entity, type);
-        if (entity.getStatus() == DBClassStatus.UNMODIFIED)
+        if (entity.getStatus() == EntityStatus.UNMODIFIED)
         {
             //do nothing
-        } else if (entity.getStatus() == DBClassStatus.NEW)
+        } else if (entity.getStatus() == EntityStatus.NEW)
         {
             insert(entity, fieldValues, type, con);
-        } else if (entity.getStatus() == DBClassStatus.MODIFIED)
+        } else if (entity.getStatus() == EntityStatus.MODIFIED)
         {
             if (config.isCheckVersion())
             {
@@ -155,7 +155,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                 setValues(entity, fieldValues);
             }
             update(entity, fieldValues, type, con);
-        } else if (entity.getStatus() == DBClassStatus.DELETED)
+        } else if (entity.getStatus() == EntityStatus.DELETED)
         {
             delete(fieldValues, type, con);
         } else
@@ -175,7 +175,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         ERSessionUtils.addToSession(entity, ERDataManagerUtils.extractEntityKeyValues(entity));
 
 
-        for (IDBRelation relation : dbRelations)
+        for (IRelation relation : dbRelations)
         {
             if (relation.isReverseRelationship()
                     || relation.isNonIdentifyingRelation())
@@ -185,11 +185,11 @@ public class ERDataPersistManager extends ERDataCommonManager
 
             if (isProxyObject(entity, relation)) continue;
 
-            Collection<ServerDBClass> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
+            Collection<IEntity> childObjects = ERDataManagerUtils.getRelationEntities(entity, relation);
             if (childObjects != null)
             {
                 setRelationObjectKeyValues(fieldValues, type, relation.getRelatedObjectType(), childObjects, relation);
-                for (ServerDBClass fieldObject : childObjects)
+                for (IEntity fieldObject : childObjects)
                 {
                     IEntityFieldValueList childEntityKeyList = ERDataManagerUtils.extractEntityKeyValues(fieldObject);
                     if (ERSessionUtils.existsInSession(entity, childEntityKeyList))
@@ -197,7 +197,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                         continue;
                     }
                     ERSessionUtils.transferSession(entity, fieldObject);
-                    if (fieldObject.getStatus() != DBClassStatus.DELETED) //deleted items are already deleted
+                    if (fieldObject.getStatus() != EntityStatus.DELETED) //deleted items are already deleted
                     {
                         fieldObject.persist(con);
                         ERSessionUtils.addToSession(entity, childEntityKeyList);
@@ -207,7 +207,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private void insert(ServerDBClass entity, ITypeFieldValueList valueTypeList, Class type, Connection con)
+    private void insert(IEntity entity, ITypeFieldValueList valueTypeList, Class type, Connection con)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
@@ -227,7 +227,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             int i = 0;
             for (EntityFieldValue fieldValue : valueTypeList.getFieldValues())
             {
-                IDBColumn dbColumn = fieldValue.getDbColumn();
+                IColumn dbColumn = fieldValue.getDbColumn();
                 Object columnValue = null;
 
                 if (dbColumn.isReadFromSequence()
@@ -267,7 +267,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private void update(ServerDBClass entity, ITypeFieldValueList valueTypeList, Class type, Connection con)
+    private void update(IEntity entity, ITypeFieldValueList valueTypeList, Class type, Connection con)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
@@ -283,7 +283,7 @@ public class ERDataPersistManager extends ERDataCommonManager
                 return;
 
             keys = ERDataManagerUtils.extractEntityKeyValues(entity).getFieldValues();
-            Collection<IDBColumn> keysAndModified = new ArrayList<IDBColumn>();
+            Collection<IColumn> keysAndModified = new ArrayList<IColumn>();
             for (EntityFieldValue fieldValue : values)
             {
                 keysAndModified.add(fieldValue.getDbColumn());
@@ -417,14 +417,14 @@ public class ERDataPersistManager extends ERDataCommonManager
     }
 
     private void setRelationObjectKeyValues(ITypeFieldValueList valueTypeList, Class type, Class childType,
-                                            Collection<ServerDBClass> childObjects
-            , IDBRelation relation) throws DbGateException
+                                            Collection<IEntity> childObjects
+            , IRelation relation) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
-        Collection<IDBColumn> columns = entityInfo.getColumns();
-        for (DBRelationColumnMapping mapping : relation.getTableColumnMappings())
+        Collection<IColumn> columns = entityInfo.getColumns();
+        for (RelationColumnMapping mapping : relation.getTableColumnMappings())
         {
-            IDBColumn matchColumn = ERDataManagerUtils.findColumnByAttribute(columns, mapping.getFromField());
+            IColumn matchColumn = ERDataManagerUtils.findColumnByAttribute(columns, mapping.getFromField());
             EntityFieldValue fieldValue = valueTypeList.getFieldValue(matchColumn.getAttributeName());
 
             if (fieldValue != null)
@@ -440,7 +440,7 @@ public class ERDataPersistManager extends ERDataCommonManager
     }
 
     private void setChildPrimaryKeys(EntityFieldValue parentFieldValue, Class childType
-            , Collection<ServerDBClass> childObjects, DBRelationColumnMapping mapping) throws DbGateException
+            , Collection<IEntity> childObjects, RelationColumnMapping mapping) throws DbGateException
     {
         boolean foundOnce = false;
         EntityInfo parentEntityInfo = CacheManager.getEntityInfo(childType);
@@ -448,15 +448,15 @@ public class ERDataPersistManager extends ERDataCommonManager
 
         while (entityInfo != null)
         {
-            Collection<IDBColumn> subLevelColumns = entityInfo.getColumns();
-            IDBColumn subLevelMatchedColumn = ERDataManagerUtils.findColumnByAttribute(subLevelColumns,
+            Collection<IColumn> subLevelColumns = entityInfo.getColumns();
+            IColumn subLevelMatchedColumn = ERDataManagerUtils.findColumnByAttribute(subLevelColumns,
                                                                                        mapping.getToField());
 
             if (subLevelMatchedColumn != null)
             {
                 foundOnce = true;
                 Method setter = parentEntityInfo.getSetter(subLevelMatchedColumn);
-                for (ServerRODBClass dbObject : childObjects)
+                for (IReadOnlyEntity dbObject : childObjects)
                 {
                     ReflectionUtils.setValue(setter, dbObject, parentFieldValue.getValue());
                 }
@@ -472,10 +472,10 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private void setParentRelationFieldsForNonIdentifyingRelations(ServerDBClass parentEntity, Class childType
-            , Collection<ServerDBClass> childObjects, DBRelationColumnMapping mapping) throws DbGateException
+    private void setParentRelationFieldsForNonIdentifyingRelations(IEntity parentEntity, Class childType
+            , Collection<IEntity> childObjects, RelationColumnMapping mapping) throws DbGateException
     {
-        ServerRODBClass firstObject = null;
+        IReadOnlyEntity firstObject = null;
         if (childObjects.size() > 0)
         {
             firstObject = childObjects.iterator().next();
@@ -492,8 +492,8 @@ public class ERDataPersistManager extends ERDataCommonManager
         boolean foundOnce = false;
         while (parentInfo != null)
         {
-            Collection<IDBColumn> parentColumns = parentInfo.getColumns();
-            IDBColumn parentMatchedColumn = ERDataManagerUtils.findColumnByAttribute(parentColumns,
+            Collection<IColumn> parentColumns = parentInfo.getColumns();
+            IColumn parentMatchedColumn = ERDataManagerUtils.findColumnByAttribute(parentColumns,
                                                                                      mapping.getFromField());
             if (parentMatchedColumn != null)
             {
@@ -512,14 +512,14 @@ public class ERDataPersistManager extends ERDataCommonManager
         foundOnce = false;
         while (childInfo != null)
         {
-            Collection<IDBColumn> subLevelColumns = childInfo.getColumns();
-            IDBColumn childMatchedColumn = ERDataManagerUtils.findColumnByAttribute(subLevelColumns,
+            Collection<IColumn> subLevelColumns = childInfo.getColumns();
+            IColumn childMatchedColumn = ERDataManagerUtils.findColumnByAttribute(subLevelColumns,
                                                                                     mapping.getToField());
 
             if (childMatchedColumn != null)
             {
                 foundOnce = true;
-                for (ServerRODBClass dbObject : childObjects)
+                for (IReadOnlyEntity dbObject : childObjects)
                 {
                     ITypeFieldValueList fieldValueList = ERDataManagerUtils
                             .extractEntityTypeFieldValues(dbObject, childInfo.getEntityType());
@@ -538,7 +538,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private void validateForChildDeletion(ServerDBClass currentEntity, Collection<ITypeFieldValueList> currentChildren)
+    private void validateForChildDeletion(IEntity currentEntity, Collection<ITypeFieldValueList> currentChildren)
     throws IntegrityConstraintViolationException
     {
         for (ITypeFieldValueList keyValueList : currentChildren)
@@ -546,7 +546,7 @@ public class ERDataPersistManager extends ERDataCommonManager
             EntityRelationFieldValueList entityRelationKeyValueList = (EntityRelationFieldValueList) keyValueList;
             if (entityRelationKeyValueList.getRelation().getDeleteRule() == ReferentialRuleType.RESTRICT
                     && !entityRelationKeyValueList.getRelation().isReverseRelationship()
-                    && currentEntity.getStatus() == DBClassStatus.DELETED)
+                    && currentEntity.getStatus() == EntityStatus.DELETED)
             {
                 throw new IntegrityConstraintViolationException(String.format(
                         "Cannot delete child object %s as restrict constraint in place"
@@ -555,7 +555,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private boolean checkForModification(ServerDBClass entity, Connection con, IEntityContext entityContext)
+    private boolean checkForModification(IEntity entity, Connection con, IEntityContext entityContext)
     throws DbGateException
     {
         if (!entityContext.getChangeTracker().isValid())
@@ -566,8 +566,8 @@ public class ERDataPersistManager extends ERDataCommonManager
         EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
         while (entityInfo != null)
         {
-            Collection<IDBColumn> subLevelColumns = entityInfo.getColumns();
-            for (IDBColumn subLevelColumn : subLevelColumns)
+            Collection<IColumn> subLevelColumns = entityInfo.getColumns();
+            for (IColumn subLevelColumn : subLevelColumns)
             {
                 if (subLevelColumn.isKey())
                 {
@@ -591,11 +591,11 @@ public class ERDataPersistManager extends ERDataCommonManager
         return false;
     }
 
-    private void fillChangeTrackerValues(ServerDBClass entity, Connection con, IEntityContext entityContext)
+    private void fillChangeTrackerValues(IEntity entity, Connection con, IEntityContext entityContext)
     throws DbGateException
     {
-        if (entity.getStatus() == DBClassStatus.NEW
-                || entity.getStatus() == DBClassStatus.DELETED)
+        if (entity.getStatus() == EntityStatus.NEW
+                || entity.getStatus() == EntityStatus.DELETED)
         {
             return;
         }
@@ -609,12 +609,12 @@ public class ERDataPersistManager extends ERDataCommonManager
                 entityContext.getChangeTracker().getFields().add(fieldValue);
             }
 
-            Collection<IDBRelation> dbRelations = entityInfo.getRelations();
-            for (IDBRelation relation : dbRelations)
+            Collection<IRelation> dbRelations = entityInfo.getRelations();
+            for (IRelation relation : dbRelations)
             {
-                Collection<ServerRODBClass> children = readRelationChildrenFromDb(entity, entityInfo.getEntityType(),
+                Collection<IReadOnlyEntity> children = readRelationChildrenFromDb(entity, entityInfo.getEntityType(),
                                                                                   con, relation);
-                for (ServerRODBClass childEntity : children)
+                for (IReadOnlyEntity childEntity : children)
                 {
                     ITypeFieldValueList valueTypeList = ERDataManagerUtils.extractRelationKeyValues(childEntity,
                                                                                                     relation);
@@ -677,14 +677,14 @@ public class ERDataPersistManager extends ERDataCommonManager
         }
     }
 
-    private boolean versionValidated(ServerRODBClass entity, Class type, Connection con)
+    private boolean versionValidated(IReadOnlyEntity entity, Class type, Connection con)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
-        Collection<IDBColumn> typeColumns = entityInfo.getColumns();
-        for (IDBColumn typeColumn : typeColumns)
+        Collection<IColumn> typeColumns = entityInfo.getColumns();
+        for (IColumn typeColumn : typeColumns)
         {
-            if (typeColumn.getColumnType() == DBColumnType.VERSION)
+            if (typeColumn.getColumnType() == ColumnType.VERSION)
             {
                 Object classValue = extractCurrentVersionValue(entity, typeColumn, type, con);
                 EntityFieldValue originalFieldValue = entity.getContext().getChangeTracker().getFieldValue(
@@ -698,7 +698,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         if (config.isUpdateChangedColumnsOnly())
         {
             Collection<EntityFieldValue> modified = getModifiedFieldValues(entity, type);
-            typeColumns = new ArrayList<IDBColumn>();
+            typeColumns = new ArrayList<IColumn>();
             for (EntityFieldValue fieldValue : modified)
             {
                 typeColumns.add(fieldValue.getDbColumn());
@@ -710,7 +710,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         {
             return false;
         }
-        for (IDBColumn typeColumn : typeColumns)
+        for (IColumn typeColumn : typeColumns)
         {
             EntityFieldValue classFieldValue = fieldValueList.getFieldValue(typeColumn.getAttributeName());
             EntityFieldValue originalFieldValue = entity.getContext() != null ? entity.getContext().getChangeTracker().getFieldValue(
@@ -726,15 +726,15 @@ public class ERDataPersistManager extends ERDataCommonManager
         return true;
     }
 
-    private Collection<EntityFieldValue> getModifiedFieldValues(ServerRODBClass entity, Class type)
+    private Collection<EntityFieldValue> getModifiedFieldValues(IReadOnlyEntity entity, Class type)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
-        Collection<IDBColumn> typeColumns = entityInfo.getColumns();
+        Collection<IColumn> typeColumns = entityInfo.getColumns();
         ITypeFieldValueList currentValues = ERDataManagerUtils.extractEntityTypeFieldValues(entity, type);
         Collection<EntityFieldValue> modifiedColumns = new ArrayList<EntityFieldValue>();
 
-        for (IDBColumn typeColumn : typeColumns)
+        for (IColumn typeColumn : typeColumns)
         {
             if (typeColumn.isKey())
                 continue;
@@ -753,7 +753,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         return modifiedColumns;
     }
 
-    private Object extractCurrentVersionValue(ServerRODBClass entity, IDBColumn versionColumn, Class type,
+    private Object extractCurrentVersionValue(IReadOnlyEntity entity, IColumn versionColumn, Class type,
                                               Connection con)
     throws DbGateException
     {
@@ -782,7 +782,7 @@ public class ERDataPersistManager extends ERDataCommonManager
         return versionValue;
     }
 
-    private ITypeFieldValueList extractCurrentRowValues(ServerRODBClass entity, Class type, Connection con)
+    private ITypeFieldValueList extractCurrentRowValues(IReadOnlyEntity entity, Class type, Connection con)
     throws DbGateException
     {
         ITypeFieldValueList fieldValueList = null;

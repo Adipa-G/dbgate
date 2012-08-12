@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.dbutility.DBMgmtUtility;
 import dbgate.ermanagement.ReferentialRuleType;
 import dbgate.ermanagement.exceptions.migration.MetaDataException;
@@ -101,7 +101,7 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     protected abstract String createDropForeginKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonForeignKeyGroup foreignKeyGroup);
 
     @Override
-    public DBColumnType mapColumnTypeNameToType(String columnTypeName)
+    public ColumnType mapColumnTypeNameToType(String columnTypeName)
     {
         for (ColumnTypeMapItem typeMapItem : columnTypeMapItems)
         {
@@ -114,7 +114,7 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     }
 
     @Override
-    public String mapColumnTypeToTypeName(DBColumnType columnTypeId)
+    public String mapColumnTypeToTypeName(ColumnType columnTypeId)
     {
         for (ColumnTypeMapItem typeMapItem : columnTypeMapItems)
         {
@@ -127,7 +127,7 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     }
 
     @Override
-    public String getDefaultValueForType(DBColumnType columnTypeId)
+    public String getDefaultValueForType(ColumnType columnTypeId)
     {
         for (ColumnTypeMapItem typeMapItem : columnTypeMapItems)
         {

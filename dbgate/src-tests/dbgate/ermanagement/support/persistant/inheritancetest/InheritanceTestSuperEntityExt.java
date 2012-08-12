@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.inheritancetest;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.ermanagement.context.IEntityContext;
 import dbgate.ermanagement.support.persistant.treetest.ITreeTestOne2OneEntity;
 
@@ -12,13 +12,13 @@ import dbgate.ermanagement.support.persistant.treetest.ITreeTestOne2OneEntity;
  */
 public abstract class InheritanceTestSuperEntityExt implements ITreeTestOne2OneEntity
 {
-    private DBClassStatus status;
+    private EntityStatus status;
     private int idCol;
     private String name;
 
     public InheritanceTestSuperEntityExt()
     {
-        status = DBClassStatus.NEW;
+        status = EntityStatus.NEW;
     }
 
     public int getIdCol()
@@ -41,12 +41,12 @@ public abstract class InheritanceTestSuperEntityExt implements ITreeTestOne2OneE
         this.name = name;
     }
 
-    public DBClassStatus getStatus()
+    public EntityStatus getStatus()
     {
         return status;
     }
 
-    public void setStatus(DBClassStatus status)
+    public void setStatus(EntityStatus status)
     {
         this.status = status;
     }

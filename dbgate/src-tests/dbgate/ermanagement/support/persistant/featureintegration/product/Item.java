@@ -1,20 +1,20 @@
 package dbgate.ermanagement.support.persistant.featureintegration.product;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
-import dbgate.ermanagement.DefaultServerDBClass;
+import dbgate.ColumnType;
+import dbgate.ermanagement.ColumnInfo;
+import dbgate.ermanagement.TableInfo;
+import dbgate.ermanagement.DefaultEntity;
 
 /**
  * Date: Mar 31, 2011
  * Time: 9:45:55 PM
  */
-@DBTableInfo(tableName = "product_item")
-public abstract class Item extends DefaultServerDBClass
+@TableInfo(tableName = "product_item")
+public abstract class Item extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true,subClassCommonColumn = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true,subClassCommonColumn = true)
     private int itemId;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     public Item()

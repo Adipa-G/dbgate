@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context.impl;
 
-import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.context.EntityFieldValue;
 import dbgate.ermanagement.context.ITypeFieldValueList;
 
@@ -13,16 +13,16 @@ import java.util.Collection;
  */
 public class EntityRelationFieldValueList implements ITypeFieldValueList
 {
-    private IDBRelation relation;
+    private IRelation relation;
     private Collection<EntityFieldValue> fieldValues;
 
-    public EntityRelationFieldValueList(IDBRelation relation)
+    public EntityRelationFieldValueList(IRelation relation)
     {
         this.relation = relation;
         fieldValues = new ArrayList<EntityFieldValue>();
     }
 
-    public IDBRelation getRelation()
+    public IRelation getRelation()
     {
         return relation;
     }

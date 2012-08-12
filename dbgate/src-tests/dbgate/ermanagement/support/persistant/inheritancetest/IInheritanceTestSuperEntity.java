@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.inheritancetest;
 
-import dbgate.ServerDBClass;
+import dbgate.IEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,7 @@ import dbgate.ServerDBClass;
  * Date: Oct 2, 2010
  * Time: 4:23:25 PM
  */
-public interface IInheritanceTestSuperEntity extends ServerDBClass
+public interface IInheritanceTestSuperEntity extends IEntity
 {
     int getIdCol();
 

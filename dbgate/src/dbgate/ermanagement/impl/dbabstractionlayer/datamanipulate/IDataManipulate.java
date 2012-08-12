@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate;
 
-import dbgate.ermanagement.IDBColumn;
-import dbgate.ermanagement.IDBRelation;
+import dbgate.ermanagement.IColumn;
+import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
 import dbgate.ermanagement.exceptions.common.StatementExecutionException;
@@ -22,19 +22,19 @@ import java.util.Collection;
  */
 public interface IDataManipulate
 {
-    String createLoadQuery(String tableName, Collection<IDBColumn> dbColumns);
+    String createLoadQuery(String tableName, Collection<IColumn> dbColumns);
 
-    String createInsertQuery(String tableName, Collection<IDBColumn> dbColumns);
+    String createInsertQuery(String tableName, Collection<IColumn> dbColumns);
 
-    String createUpdateQuery(String tableName, Collection<IDBColumn> dbColumns);
+    String createUpdateQuery(String tableName, Collection<IColumn> dbColumns);
 
-    String createDeleteQuery(String tableName, Collection<IDBColumn> dbColumns);
+    String createDeleteQuery(String tableName, Collection<IColumn> dbColumns);
 
-    String createRelatedObjectsLoadQuery(IDBRelation relation);
+    String createRelatedObjectsLoadQuery(IRelation relation);
 
-    Object readFromResultSet(ResultSet rs, IDBColumn dbColumn) throws ReadFromResultSetException;
+    Object readFromResultSet(ResultSet rs, IColumn dbColumn) throws ReadFromResultSetException;
 
-    void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IDBColumn dbColumn)
+    void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IColumn dbColumn)
         throws StatementPreparingException;
 
     ResultSet createResultSet(Connection con, QueryExecInfo execInfo)

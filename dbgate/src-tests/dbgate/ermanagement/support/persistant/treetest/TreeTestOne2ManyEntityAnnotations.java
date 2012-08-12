@@ -1,9 +1,9 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DBColumnInfo;
-import dbgate.ermanagement.DBTableInfo;
-import dbgate.ermanagement.DefaultServerDBClass;
+import dbgate.ColumnType;
+import dbgate.ermanagement.ColumnInfo;
+import dbgate.ermanagement.TableInfo;
+import dbgate.ermanagement.DefaultEntity;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,14 +11,14 @@ import dbgate.ermanagement.DefaultServerDBClass;
  * Date: Sep 26, 2010
  * Time: 12:23:11 PM
  */
-@DBTableInfo(tableName = "tree_test_one2many")
-public class TreeTestOne2ManyEntityAnnotations extends DefaultServerDBClass implements ITreeTestOne2ManyEntity
+@TableInfo(tableName = "tree_test_one2many")
+public class TreeTestOne2ManyEntityAnnotations extends DefaultEntity implements ITreeTestOne2ManyEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
     public TreeTestOne2ManyEntityAnnotations()

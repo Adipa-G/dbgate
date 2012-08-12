@@ -1,6 +1,6 @@
 package dbgate.utility;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.utility.support.LeafEntity;
 import dbgate.utility.support.RootEntity;
 import junit.framework.Assert;
@@ -31,12 +31,12 @@ public class StatusUtilityTests
         rootEntity.setLeafEntityNotNull(leafEntityNotNull);
         rootEntity.setLeafEntityNull(null);
 
-        StatusUtility.setStatus(rootEntity, DBClassStatus.MODIFIED);
+        StatusUtility.setStatus(rootEntity, EntityStatus.MODIFIED);
 
-        Assert.assertEquals(rootEntity.getStatus(), DBClassStatus.MODIFIED);
-        Assert.assertEquals(leafEntityA.getStatus(), DBClassStatus.MODIFIED);
-        Assert.assertEquals(leafEntityB.getStatus(), DBClassStatus.MODIFIED);
-        Assert.assertEquals(leafEntityNotNull.getStatus(), DBClassStatus.MODIFIED);
+        Assert.assertEquals(rootEntity.getStatus(), EntityStatus.MODIFIED);
+        Assert.assertEquals(leafEntityA.getStatus(), EntityStatus.MODIFIED);
+        Assert.assertEquals(leafEntityB.getStatus(), EntityStatus.MODIFIED);
+        Assert.assertEquals(leafEntityNotNull.getStatus(), EntityStatus.MODIFIED);
     }
 
     @Test
@@ -56,15 +56,15 @@ public class StatusUtilityTests
 
         boolean unModifiedRoot = StatusUtility.isModified(rootEntity);
 
-        rootEntity.setStatus(DBClassStatus.MODIFIED);
+        rootEntity.setStatus(EntityStatus.MODIFIED);
         boolean modifiedRoot = StatusUtility.isModified(rootEntity);
 
-        rootEntity.setStatus(DBClassStatus.UNMODIFIED);
-        leafEntityA.setStatus(DBClassStatus.NEW);
+        rootEntity.setStatus(EntityStatus.UNMODIFIED);
+        leafEntityA.setStatus(EntityStatus.NEW);
         boolean modifiedLeafCollection = StatusUtility.isModified(rootEntity);
 
-        leafEntityA.setStatus(DBClassStatus.UNMODIFIED);
-        leafEntityNotNull.setStatus(DBClassStatus.DELETED);
+        leafEntityA.setStatus(EntityStatus.UNMODIFIED);
+        leafEntityNotNull.setStatus(EntityStatus.DELETED);
         boolean modifiedLeafSubEntity = StatusUtility.isModified(rootEntity);
 
         Assert.assertFalse(unModifiedRoot);

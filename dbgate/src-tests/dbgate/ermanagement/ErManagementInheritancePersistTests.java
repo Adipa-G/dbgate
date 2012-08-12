@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.DBClassStatus;
+import dbgate.EntityStatus;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.impl.ERLayer;
 import dbgate.ermanagement.support.persistant.inheritancetest.*;
@@ -209,10 +209,10 @@ public class ErManagementInheritancePersistTests
 
                 loadedEntityA.setName("typeA-changed-name");
                 loadedEntityA.setNameA("changed-nameA");
-                loadedEntityA.setStatus(DBClassStatus.MODIFIED);
+                loadedEntityA.setStatus(EntityStatus.MODIFIED);
                 loadedEntityB.setName("typeB-changed-name");
                 loadedEntityB.setNameB("changed-nameB");
-                loadedEntityB.setStatus(DBClassStatus.MODIFIED);
+                loadedEntityB.setStatus(EntityStatus.MODIFIED);
 
                 connection = connector.getConnection();
                 loadedEntityA.persist(connection);
@@ -292,10 +292,10 @@ public class ErManagementInheritancePersistTests
 
                 loadedEntityA.setName("typeA-changed-name");
                 loadedEntityA.setNameA("changed-nameA");
-                loadedEntityA.setStatus(DBClassStatus.DELETED);
+                loadedEntityA.setStatus(EntityStatus.DELETED);
                 loadedEntityB.setName("typeB-changed-name");
                 loadedEntityB.setNameB("changed-nameB");
-                loadedEntityB.setStatus(DBClassStatus.DELETED);
+                loadedEntityB.setStatus(EntityStatus.DELETED);
 
                 connection = connector.getConnection();
                 loadedEntityA.persist(connection);

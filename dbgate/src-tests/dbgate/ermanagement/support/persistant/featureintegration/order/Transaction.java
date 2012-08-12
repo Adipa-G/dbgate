@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.featureintegration.order;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 
 import java.util.ArrayList;
@@ -10,12 +10,12 @@ import java.util.Collection;
  * Date: Mar 31, 2011
  * Time: 9:55:15 PM
  */
-@DBTableInfo(tableName = "order_transaction")
-public class Transaction extends DefaultServerDBClass
+@TableInfo(tableName = "order_transaction")
+public class Transaction extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int transactionId;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
     @ForeignKeyInfo(name = "tx2item_tx"
                 ,relatedObjectType = ItemTransaction.class

@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.ServerDBClass;
-import dbgate.ServerRODBClass;
+import dbgate.IEntity;
+import dbgate.IReadOnlyEntity;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.*;
 import dbgate.ermanagement.caches.CacheManager;
@@ -54,14 +54,14 @@ public class ERLayer implements IERLayer
         config.setLoggerName("ER-LAYER");
     }
 
-    public void load(ServerRODBClass serverRODBClass, ResultSet rs, Connection con) throws RetrievalException
+    public void load(IReadOnlyEntity readOnlyEntity, ResultSet rs, Connection con) throws RetrievalException
     {
-        erDataManager.load(serverRODBClass, rs, con);
+        erDataManager.load(readOnlyEntity, rs, con);
     }
 
-    public void save(ServerDBClass serverDBClass, Connection con) throws PersistException
+    public void save(IEntity entity, Connection con) throws PersistException
     {
-        erDataManager.save(serverDBClass, con);
+        erDataManager.save(entity, con);
     }
 
     @Override

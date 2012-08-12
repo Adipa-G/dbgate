@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context;
 
-import dbgate.ermanagement.IDBColumn;
+import dbgate.ermanagement.IColumn;
 
 /**
  * Date: Mar 23, 2011
@@ -9,13 +9,13 @@ import dbgate.ermanagement.IDBColumn;
 public class EntityFieldValue
 {
     private Object value;
-    private IDBColumn dbColumn;
+    private IColumn dbColumn;
 
     public EntityFieldValue()
     {
     }
 
-    public EntityFieldValue(Object value, IDBColumn dbColumn)
+    public EntityFieldValue(Object value, IColumn dbColumn)
     {
         this.value = value;
         this.dbColumn = dbColumn;
@@ -36,12 +36,12 @@ public class EntityFieldValue
         this.value = value;
     }
 
-    public IDBColumn getDbColumn()
+    public IColumn getDbColumn()
     {
         return dbColumn;
     }
 
-    public void setDbColumn(IDBColumn dbColumn)
+    public void setDbColumn(IColumn dbColumn)
     {
         this.dbColumn = dbColumn;
     }

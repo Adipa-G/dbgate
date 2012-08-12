@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.ISelectionQuery;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.query.expr.segments.*;
@@ -55,13 +55,13 @@ class BaseExpr
         return addSegment(segment);
     }
 
-    protected BaseExpr value(DBColumnType type,Object value) throws ExpressionParsingException
+    protected BaseExpr value(ColumnType type,Object value) throws ExpressionParsingException
     {
         ValueSegment segment = new ValueSegment(type,value);
         return addSegment(segment);
     }
 
-    protected BaseExpr values(DBColumnType type,Object... values) throws ExpressionParsingException
+    protected BaseExpr values(ColumnType type,Object... values) throws ExpressionParsingException
     {
         ValueSegment segment = new ValueSegment(type,values);
         return addSegment(segment);

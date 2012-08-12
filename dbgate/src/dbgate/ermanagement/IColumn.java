@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,11 +8,11 @@ import dbgate.DBColumnType;
  * Date: Jul 5, 2008
  * Time: 1:42:05 PM
  */
-public interface IDBColumn extends IField
+public interface IColumn extends IField
 {
-    DBColumnType getColumnType();
+    ColumnType getColumnType();
 
-    void setColumnType(DBColumnType type);
+    void setColumnType(ColumnType type);
 
     int getSize();
 

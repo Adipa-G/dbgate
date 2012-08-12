@@ -1,8 +1,8 @@
 package dbgate.utility;
 
 
-import dbgate.DBClassStatus;
-import dbgate.IDBClass;
+import dbgate.EntityStatus;
+import dbgate.IClientEntity;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,13 +13,13 @@ public class StatusUtility
 {
     private static final String fmt = "%24s: %s%n";
 
-    public static void setStatus(IDBClass dbClass, DBClassStatus status)
+    public static void setStatus(IClientEntity dbClass, EntityStatus status)
     {
-        Collection<IDBClass> usedItems = new ArrayList<IDBClass>();
+        Collection<IClientEntity> usedItems = new ArrayList<IClientEntity>();
         setStatus(usedItems,dbClass,status);
     }
 
-    private static void setStatus(Collection<IDBClass> usedItems,IDBClass dbClass, DBClassStatus status)
+    private static void setStatus(Collection<IClientEntity> usedItems,IClientEntity dbClass, EntityStatus status)
     {
         if (dbClass == null || usedItems.contains(dbClass))
         {
@@ -46,15 +46,15 @@ public class StatusUtility
                             Collection collection = (Collection) object;
                             for (Object o : collection)
                             {
-                                if (o instanceof IDBClass)
+                                if (o instanceof IClientEntity)
                                 {
-                                    setStatus(usedItems,(IDBClass) o, status);
+                                    setStatus(usedItems,(IClientEntity) o, status);
                                 }
                             }
                         }
-                        else if (object instanceof IDBClass)
+                        else if (object instanceof IClientEntity)
                         {
-                            setStatus(usedItems,(IDBClass) object, status);
+                            setStatus(usedItems,(IClientEntity) object, status);
                         }
                     }
                 }
@@ -94,18 +94,18 @@ public class StatusUtility
             }
 
         }
-        else if ( !( obO instanceof IDBClass) )
+        else if ( !( obO instanceof IClientEntity) )
         {
             return false;
         }
 
-        if ( ( obO instanceof IDBClass) )
+        if ( ( obO instanceof IClientEntity) )
         {
-            IDBClass dbClass = (IDBClass) obO;
+            IClientEntity dbClass = (IClientEntity) obO;
 
-            modified = dbClass.getStatus() == DBClassStatus.DELETED
-                    || dbClass.getStatus() == DBClassStatus.NEW
-                    || dbClass.getStatus() == DBClassStatus.MODIFIED;
+            modified = dbClass.getStatus() == EntityStatus.DELETED
+                    || dbClass.getStatus() == EntityStatus.NEW
+                    || dbClass.getStatus() == EntityStatus.MODIFIED;
             if ( modified )
             {
                 return modified;
@@ -135,7 +135,7 @@ public class StatusUtility
                                     }
                                 }
                             }
-                            else if (object instanceof IDBClass)
+                            else if (object instanceof IClientEntity)
                             {
                                 return isModified(alreadyChecked,object);
                             }
@@ -151,9 +151,9 @@ public class StatusUtility
         return modified;
     }
 
-    public static Collection<IDBClass> getImmidiateChildrenAndClear(IDBClass dbClass)
+    public static Collection<IClientEntity> getImmidiateChildrenAndClear(IClientEntity dbClass)
     {
-        Collection<IDBClass> childs = new ArrayList<IDBClass>();
+        Collection<IClientEntity> children = new ArrayList<IClientEntity>();
 
         Class objectClass = dbClass.getClass();
         Method[] methods = objectClass.getMethods();
@@ -173,16 +173,16 @@ public class StatusUtility
                             Collection collection = (Collection) object;
                             for (Object o : collection)
                             {
-                                if (o instanceof IDBClass)
+                                if (o instanceof IClientEntity)
                                 {
-                                    childs.add((IDBClass) o);
+                                    children.add((IClientEntity) o);
                                 }
                             }
                             collection.clear();
                         }
-                        else if (object instanceof IDBClass)
+                        else if (object instanceof IClientEntity)
                         {
-                            childs.add((IDBClass) object);
+                            children.add((IClientEntity) object);
                             String setterName = method.getName().replace("get","set");
                             Method setter = objectClass.getMethod(setterName,method.getReturnType());
                             if (setter != null)
@@ -192,7 +192,7 @@ public class StatusUtility
                             else
                             {
                                 //read only property
-                                setStatus((IDBClass) object, DBClassStatus.UNMODIFIED);
+                                setStatus((IClientEntity) object, EntityStatus.UNMODIFIED);
                             }
                         }
                     }
@@ -204,6 +204,6 @@ public class StatusUtility
             }
         }
 
-        return childs;
+        return children;
     }
 }

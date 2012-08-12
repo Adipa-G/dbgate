@@ -6,12 +6,12 @@ package dbgate.ermanagement;
  * Date: Sep 26, 2010
  * Time: 5:19:58 PM
  */
-public class DBRelationColumnMapping
+public class RelationColumnMapping
 {
     private String fromField;
     private String toField;
 
-    public DBRelationColumnMapping(String fromField, String toField)
+    public RelationColumnMapping(String fromField, String toField)
     {
         this.fromField = fromField;
         this.toField = toField;

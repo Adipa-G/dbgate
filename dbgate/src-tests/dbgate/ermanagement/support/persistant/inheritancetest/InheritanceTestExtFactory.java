@@ -1,7 +1,7 @@
 package dbgate.ermanagement.support.persistant.inheritancetest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.DefaultDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.DefaultColumn;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -22,24 +22,24 @@ public class InheritanceTestExtFactory
 
         if (type == InheritanceTestSuperEntityExt.class)
         {
-            DefaultDBColumn idCol = new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER);
+            DefaultColumn idCol = new DefaultColumn("idCol",true,false, ColumnType.INTEGER);
             idCol.setSubClassCommonColumn(true);
             fields.add(idCol);
-            fields.add(new DefaultDBColumn("name",DBColumnType.VARCHAR));
+            fields.add(new DefaultColumn("name", ColumnType.VARCHAR));
         }
         else if (type == InheritanceTestSubEntityAExt.class)
         {
-            DefaultDBColumn idCol = new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER);
+            DefaultColumn idCol = new DefaultColumn("idCol",true,false, ColumnType.INTEGER);
             idCol.setSubClassCommonColumn(true);
             fields.add(idCol);
-            fields.add(new DefaultDBColumn("nameA",DBColumnType.VARCHAR));
+            fields.add(new DefaultColumn("nameA", ColumnType.VARCHAR));
         }
         else if (type == InheritanceTestSubEntityBExt.class)
         {
-            DefaultDBColumn idCol = new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER);
+            DefaultColumn idCol = new DefaultColumn("idCol",true,false, ColumnType.INTEGER);
             idCol.setSubClassCommonColumn(true);
             fields.add(idCol);
-            fields.add(new DefaultDBColumn("nameB",DBColumnType.VARCHAR));
+            fields.add(new DefaultColumn("nameB", ColumnType.VARCHAR));
         }
         return fields;
     }

@@ -1,6 +1,6 @@
 package dbgate.ermanagement.support.persistant.crossreference;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.*;
 
 /**
@@ -9,14 +9,14 @@ import dbgate.ermanagement.*;
  * Date: Sep 26, 2010
  * Time: 12:23:11 PM
  */
-@DBTableInfo(tableName = "cross_reference_test_one2many")
-public class CrossReferenceTestOne2ManyEntity extends DefaultServerDBClass
+@TableInfo(tableName = "cross_reference_test_one2many")
+public class CrossReferenceTestOne2ManyEntity extends DefaultEntity
 {
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
-    @DBColumnInfo(columnType = DBColumnType.INTEGER,key = true)
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @DBColumnInfo(columnType = DBColumnType.VARCHAR)
+    @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
     @ForeignKeyInfo(name = "fk_one2manyent2root"
             ,relatedObjectType = CrossReferenceTestRootEntity.class

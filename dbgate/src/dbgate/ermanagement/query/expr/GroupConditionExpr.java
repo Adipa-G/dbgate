@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query.expr;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;
 
 /**
@@ -30,13 +30,13 @@ public class GroupConditionExpr extends BaseExpr
     }
 
     @Override
-    public GroupConditionExpr value(DBColumnType type, Object value) throws ExpressionParsingException
+    public GroupConditionExpr value(ColumnType type, Object value) throws ExpressionParsingException
     {
         return (GroupConditionExpr)super.value(type, value);
     }
 
     @Override
-    public GroupConditionExpr values(DBColumnType type, Object... values) throws ExpressionParsingException
+    public GroupConditionExpr values(ColumnType type, Object... values) throws ExpressionParsingException
     {
         return (GroupConditionExpr)super.values(type,values);
     }

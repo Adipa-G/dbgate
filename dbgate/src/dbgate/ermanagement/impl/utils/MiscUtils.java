@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.utils;
 
-import dbgate.DBClassStatus;
-import dbgate.ServerDBClass;
+import dbgate.IEntity;
+import dbgate.EntityStatus;
 
 /**
  * Date: Mar 24, 2011
@@ -9,11 +9,11 @@ import dbgate.ServerDBClass;
  */
 public class MiscUtils
 {
-    public static void modify(ServerDBClass serverDBClass)
+    public static void modify(IEntity entity)
     {
-        if (serverDBClass.getStatus() == DBClassStatus.UNMODIFIED)
+        if (entity.getStatus() == EntityStatus.UNMODIFIED)
         {
-            serverDBClass.setStatus(DBClassStatus.MODIFIED);
+            entity.setStatus(EntityStatus.MODIFIED);
         }
     }
 }

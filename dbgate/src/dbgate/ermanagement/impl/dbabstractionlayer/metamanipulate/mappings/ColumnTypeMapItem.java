@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.mappings;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 
 import java.sql.Types;
 
@@ -13,20 +13,20 @@ import java.sql.Types;
 public class ColumnTypeMapItem
 {
     private String name;
-    private DBColumnType columnType;
+    private ColumnType columnType;
     private String defaultNonNullValue;
 
     public ColumnTypeMapItem()
     {
     }
 
-    public ColumnTypeMapItem(String name, DBColumnType id)
+    public ColumnTypeMapItem(String name, ColumnType id)
     {
         this.name = name;
         columnType = id;
     }
 
-    public ColumnTypeMapItem(String name, DBColumnType columnType, String defaultNonNullValue)
+    public ColumnTypeMapItem(String name, ColumnType columnType, String defaultNonNullValue)
     {
         this(name,columnType);
         this.defaultNonNullValue = defaultNonNullValue;
@@ -42,12 +42,12 @@ public class ColumnTypeMapItem
         this.name = name;
     }
 
-    public DBColumnType getColumnType()
+    public ColumnType getColumnType()
     {
         return columnType;
     }
 
-    public void setColumnType(DBColumnType columnType)
+    public void setColumnType(ColumnType columnType)
     {
         this.columnType = columnType;
     }
@@ -69,55 +69,55 @@ public class ColumnTypeMapItem
 //            case Types.ARRAY:
 //                break;
             case Types.BIGINT:
-                columnType = DBColumnType.LONG;
+                columnType = ColumnType.LONG;
                 break;
 //            case Types.BINARY:
 //                break;
 //            case Types.BIT:
-//                columnType = DBColumnType.BOOLEAN;
+//                columnType = ColumnType.BOOLEAN;
 //                break;
 //            case Types.BLOB:
 //                break;
 //            case Types.TINYINT:
-//                columnType = DBColumnType.INTEGER;
+//                columnType = ColumnType.INTEGER;
 //                break;
 //            case Types.SMALLINT:
-//                columnType = DBColumnType.INTEGER;
+//                columnType = ColumnType.INTEGER;
 //                break;
             case Types.INTEGER:
-                columnType = DBColumnType.INTEGER;
+                columnType = ColumnType.INTEGER;
                 break;
             case Types.FLOAT:
-                columnType = DBColumnType.FLOAT;
+                columnType = ColumnType.FLOAT;
                 break;
 //            case Types.REAL:
-//                columnType = DBColumnType.FLOAT;
+//                columnType = ColumnType.FLOAT;
 //                break;
             case Types.DOUBLE:
-                columnType = DBColumnType.DOUBLE;
+                columnType = ColumnType.DOUBLE;
                 break;
 //            case Types.NUMERIC:
-//                columnType = DBColumnType.DOUBLE;
+//                columnType = ColumnType.DOUBLE;
 //                break;
             case Types.DECIMAL:
-                columnType = DBColumnType.DOUBLE;
+                columnType = ColumnType.DOUBLE;
                 break;
             case Types.CHAR:
-                columnType = DBColumnType.BOOLEAN;
+                columnType = ColumnType.BOOLEAN;
                 break;
             case Types.VARCHAR:
-                columnType = DBColumnType.VARCHAR;
+                columnType = ColumnType.VARCHAR;
                 break;
 //            case Types.LONGVARCHAR:
-//                columnType = DBColumnType.VARCHAR;
+//                columnType = ColumnType.VARCHAR;
 //                break;
             case Types.DATE:
-                columnType = DBColumnType.DATE;
+                columnType = ColumnType.DATE;
                 break;
 //            case Types.TIME:
 //                break;
             case Types.TIMESTAMP:
-                columnType = DBColumnType.TIMESTAMP;
+                columnType = ColumnType.TIMESTAMP;
                 break;
 //            case Types.VARBINARY:
 //                break;
@@ -134,25 +134,25 @@ public class ColumnTypeMapItem
 //            case Types.STRUCT:
 //                break;
 //            case Types.CLOB:
-//                columnType = DBColumnType.VARCHAR;
+//                columnType = ColumnType.VARCHAR;
 //                break;
 //            case Types.REF:
 //                break;
 //            case Types.DATALINK:
 //                break;
             case Types.BOOLEAN:
-                columnType = DBColumnType.BOOLEAN;
+                columnType = ColumnType.BOOLEAN;
                 break;
 //            case Types.ROWID:
 //                break;
             case Types.NCHAR:
-                columnType = DBColumnType.CHAR;
+                columnType = ColumnType.CHAR;
                 break;
 //            case Types.NVARCHAR:
-//                columnType = DBColumnType.VARCHAR;
+//                columnType = ColumnType.VARCHAR;
 //                break;
 //            case Types.LONGNVARCHAR:
-//                columnType = DBColumnType.VARCHAR;
+//                columnType = ColumnType.VARCHAR;
 //                break;
 //            case Types.NCLOB:
 //                break;

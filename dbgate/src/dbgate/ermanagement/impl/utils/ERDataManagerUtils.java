@@ -1,11 +1,11 @@
 package dbgate.ermanagement.impl.utils;
 
-import dbgate.DBColumnType;
+import dbgate.ColumnType;
 import dbgate.DbGateException;
-import dbgate.ServerDBClass;
-import dbgate.ServerRODBClass;
-import dbgate.ermanagement.IDBColumn;
-import dbgate.ermanagement.IDBRelation;
+import dbgate.IEntity;
+import dbgate.IReadOnlyEntity;
+import dbgate.ermanagement.IColumn;
+import dbgate.ermanagement.IRelation;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.context.EntityFieldValue;
@@ -26,83 +26,83 @@ import java.util.Collection;
  */
 public class ERDataManagerUtils
 {
-    public static Collection<ServerDBClass> getRelationEntities(ServerDBClass rootEntity, IDBRelation relation) throws DbGateException
+    public static Collection<IEntity> getRelationEntities(IEntity rootEntity, IRelation relation) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(rootEntity);
         Method getter = entityInfo.getGetter(relation.getAttributeName());
         Object value = ReflectionUtils.getValue(getter,rootEntity);
 
-        Collection<ServerDBClass> treeEntities = new ArrayList<>();
+        Collection<IEntity> treeEntities = new ArrayList<>();
         if (value instanceof Collection)
         {
             Collection collection = (Collection) value;
             for (Object o : collection)
             {
-                if (o instanceof ServerDBClass
+                if (o instanceof IEntity
                         && ReflectionUtils.isSubClassOf(o.getClass(),relation.getRelatedObjectType()))
                 {
-                    treeEntities.add((ServerDBClass) o);
+                    treeEntities.add((IEntity) o);
                 }
             }
         }
-        else if (value instanceof ServerDBClass
+        else if (value instanceof IEntity
                         && ReflectionUtils.isSubClassOf(value.getClass(),relation.getRelatedObjectType()))
         {
-            treeEntities.add((ServerDBClass) value);
+            treeEntities.add((IEntity) value);
         }
         return treeEntities;
     }
 
-    public static IEntityFieldValueList extractEntityKeyValues(ServerRODBClass entity) throws DbGateException
+    public static IEntityFieldValueList extractEntityKeyValues(IReadOnlyEntity entity) throws DbGateException
     {
         EntityFieldValueList valueList = null;
-        if (entity instanceof ServerDBClass)
+        if (entity instanceof IEntity)
         {
             valueList = new EntityFieldValueList(entity);
-            ServerDBClass entityDbClass = (ServerDBClass) entity;
+            IEntity entityDbClass = (IEntity) entity;
             valueList.getFieldValues().addAll(extractValues(entityDbClass,true,entity.getClass()));
         }
         return valueList;
     }
 
-    public static ITypeFieldValueList extractEntityTypeFieldValues(ServerRODBClass entity, Class type) throws DbGateException
+    public static ITypeFieldValueList extractEntityTypeFieldValues(IReadOnlyEntity entity, Class type) throws DbGateException
     {
         EntityTypeFieldValueList valueList = null;
-        if (entity instanceof ServerDBClass)
+        if (entity instanceof IEntity)
         {
             valueList = new EntityTypeFieldValueList(type);
-            ServerDBClass entityDbClass = (ServerDBClass) entity;
+            IEntity entityDbClass = (IEntity) entity;
             valueList.getFieldValues().addAll(extractValues(entityDbClass,false,type));
         }
         return valueList;
     }
 
-    public static ITypeFieldValueList extractEntityTypeKeyValues(ServerRODBClass entity, Class type) throws DbGateException
+    public static ITypeFieldValueList extractEntityTypeKeyValues(IReadOnlyEntity entity, Class type) throws DbGateException
     {
         EntityTypeFieldValueList valueList = null;
-        if (entity instanceof ServerDBClass)
+        if (entity instanceof IEntity)
         {
             valueList = new EntityTypeFieldValueList(type);
-            ServerDBClass entityDbClass = (ServerDBClass) entity;
+            IEntity entityDbClass = (IEntity) entity;
             valueList.getFieldValues().addAll(extractValues(entityDbClass,true,type));
         }
         return valueList;
     }
 
-    public static ITypeFieldValueList extractRelationKeyValues(ServerRODBClass child,IDBRelation relation)
+    public static ITypeFieldValueList extractRelationKeyValues(IReadOnlyEntity child,IRelation relation)
             throws DbGateException
     {
         EntityRelationFieldValueList valueList = null;
-        if (child instanceof ServerDBClass)
+        if (child instanceof IEntity)
         {
             valueList = new EntityRelationFieldValueList(relation);
-            ServerDBClass childDbClass = (ServerDBClass) child;
+            IEntity childDbClass = (IEntity) child;
             valueList.getFieldValues().addAll(extractValues(childDbClass,true,null));
         }
         return valueList;
     }
 
-    private static Collection<EntityFieldValue> extractValues(ServerDBClass entity,boolean key,Class typeToLoad)
+    private static Collection<EntityFieldValue> extractValues(IEntity entity,boolean key,Class typeToLoad)
             throws DbGateException
     {
         Collection<EntityFieldValue> entityFieldValues = new ArrayList<>();
@@ -117,8 +117,8 @@ public class ERDataManagerUtils
                 continue;
             }
 
-            Collection<IDBColumn> subLevelColumns = entityInfo.getColumns();
-            for (IDBColumn subLevelColumn : subLevelColumns)
+            Collection<IColumn> subLevelColumns = entityInfo.getColumns();
+            for (IColumn subLevelColumn : subLevelColumns)
             {
                 if (!key || (subLevelColumn.isKey() && key))
                 {
@@ -194,9 +194,9 @@ public class ERDataManagerUtils
         return true;
     }
 
-    public static IDBColumn findColumnByAttribute(Collection<IDBColumn> columns,String attribute)
+    public static IColumn findColumnByAttribute(Collection<IColumn> columns,String attribute)
     {
-        for (IDBColumn column : columns)
+        for (IColumn column : columns)
         {
             if (column.getAttributeName().equalsIgnoreCase(attribute))
             {
@@ -210,7 +210,7 @@ public class ERDataManagerUtils
     {
         for (EntityFieldValue fieldValue : fieldValues.getFieldValues())
         {
-            if (fieldValue.getDbColumn().getColumnType() == DBColumnType.VERSION)
+            if (fieldValue.getDbColumn().getColumnType() == ColumnType.VERSION)
             {
                 Integer version = Integer.parseInt(fieldValue.getValue().toString());
                 version++;

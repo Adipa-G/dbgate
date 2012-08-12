@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ServerDBClass;
+import dbgate.IEntity;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  * Date: Jul 5, 2008
  * Time: 2:56:37 PM
  */
-public interface IManagedDBClass extends IManagedRODBClass, ServerDBClass
+public interface IManagedEntity extends IManagedReadOnlyEntity, IEntity
 {
     Map<Class,String> getTableNames();
 }

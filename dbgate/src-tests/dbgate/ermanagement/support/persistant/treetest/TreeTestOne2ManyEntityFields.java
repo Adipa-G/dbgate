@@ -1,8 +1,8 @@
 package dbgate.ermanagement.support.persistant.treetest;
 
-import dbgate.DBColumnType;
-import dbgate.ermanagement.AbstractManagedDBClass;
-import dbgate.ermanagement.DefaultDBColumn;
+import dbgate.ColumnType;
+import dbgate.ermanagement.AbstractManagedEntity;
+import dbgate.ermanagement.DefaultColumn;
 import dbgate.ermanagement.IField;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Map;
  * Date: Sep 26, 2010
  * Time: 12:23:11 PM
  */
-public class TreeTestOne2ManyEntityFields extends AbstractManagedDBClass implements ITreeTestOne2ManyEntity
+public class TreeTestOne2ManyEntityFields extends AbstractManagedEntity implements ITreeTestOne2ManyEntity
 {
     private int idCol;
     private int indexNo;
@@ -64,9 +64,9 @@ public class TreeTestOne2ManyEntityFields extends AbstractManagedDBClass impleme
         Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
         ArrayList<IField> dbColumns = new ArrayList<IField>();
 
-        dbColumns.add(new DefaultDBColumn("idCol",true,false,DBColumnType.INTEGER));
-        dbColumns.add(new DefaultDBColumn("indexNo",true,false,DBColumnType.INTEGER));
-        dbColumns.add(new DefaultDBColumn("name",DBColumnType.VARCHAR));
+        dbColumns.add(new DefaultColumn("idCol",true,false, ColumnType.INTEGER));
+        dbColumns.add(new DefaultColumn("indexNo",true,false, ColumnType.INTEGER));
+        dbColumns.add(new DefaultColumn("name", ColumnType.VARCHAR));
 
         map.put(this.getClass(),dbColumns);
         return map;

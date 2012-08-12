@@ -1,6 +1,6 @@
 package dbgate.ermanagement;
 
-import dbgate.ServerRODBClass;
+import dbgate.IReadOnlyEntity;
 
 import java.util.Collection;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
  * Date: Sep 6, 2009
  * Time: 5:45:24 PM
  */
-public interface IManagedRODBClass extends ServerRODBClass
+public interface IManagedReadOnlyEntity extends IReadOnlyEntity
 {
     Map<Class,Collection<IField>> getFieldInfo();
 }

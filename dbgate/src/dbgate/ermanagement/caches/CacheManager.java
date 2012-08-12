@@ -1,6 +1,6 @@
 package dbgate.ermanagement.caches;
 
-import dbgate.IRODBClass;
+import dbgate.IReadOnlyClientEntity;
 import dbgate.ermanagement.IERLayerConfig;
 import dbgate.ermanagement.IField;
 import dbgate.ermanagement.caches.impl.EntityInfo;
@@ -28,7 +28,7 @@ public class CacheManager
         return entityInfoCache.getEntityInfo(type);
     }
 
-    public static EntityInfo getEntityInfo(IRODBClass entity)
+    public static EntityInfo getEntityInfo(IReadOnlyClientEntity entity)
     {
         return entityInfoCache.getEntityInfo(entity);
     }
