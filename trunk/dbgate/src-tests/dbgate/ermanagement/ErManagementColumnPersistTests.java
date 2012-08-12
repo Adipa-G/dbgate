@@ -4,7 +4,7 @@ import dbgate.EntityStatus;
 import dbgate.DateWrapper;
 import dbgate.TimeStampWrapper;
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.columntest.*;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -64,8 +64,8 @@ public class ErManagementColumnPersistTests
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-column-persist;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -79,7 +79,7 @@ public class ErManagementColumnPersistTests
     {
         if (DBConnector.getSharedInstance() != null)
         {
-            ERLayer.getSharedInstance().clearCache();
+            DbGate.getSharedInstance().clearCache();
         }
     }
 
@@ -120,7 +120,7 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
@@ -211,7 +211,7 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
@@ -314,7 +314,7 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
@@ -441,7 +441,7 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
@@ -568,7 +568,7 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
@@ -695,7 +695,7 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
@@ -820,7 +820,7 @@ public class ErManagementColumnPersistTests
             Connection connection = connector.getConnection();
 
             Class type = ColumnTestEntityExts.class;
-            ERLayer.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);

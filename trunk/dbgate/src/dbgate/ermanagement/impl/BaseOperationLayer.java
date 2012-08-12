@@ -17,8 +17,8 @@ import dbgate.ermanagement.exceptions.common.NoMatchingColumnFoundException;
 import dbgate.ermanagement.exceptions.common.ReadFromResultSetException;
 import dbgate.ermanagement.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
-import dbgate.ermanagement.impl.utils.ERSessionUtils;
+import dbgate.ermanagement.impl.utils.OperationUtils;
+import dbgate.ermanagement.impl.utils.SessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
 import net.sf.cglib.proxy.Enhancer;
 
@@ -37,13 +37,13 @@ import java.util.logging.Logger;
  * Date: Apr 3, 2011
  * Time: 3:38:35 PM
  */
-public abstract class ERDataCommonManager
+public abstract class BaseOperationLayer
 {
     protected IDBLayer dbLayer;
-    protected IERLayerStatistics statistics;
-    protected IERLayerConfig config;
+    protected IDbGateStatistics statistics;
+    protected IDbGateConfig config;
 
-    public ERDataCommonManager(IDBLayer dbLayer,IERLayerStatistics statistics, IERLayerConfig config)
+    public BaseOperationLayer(IDBLayer dbLayer, IDbGateStatistics statistics, IDbGateConfig config)
     {
         this.dbLayer = dbLayer;
         this.statistics = statistics;
@@ -163,7 +163,7 @@ public abstract class ERDataCommonManager
                     continue;
                 }
 
-                Collection<IEntity> childEntities = ERDataManagerUtils.getRelationEntities(parentEntity,typeRelation);
+                Collection<IEntity> childEntities = OperationUtils.getRelationEntities(parentEntity, typeRelation);
                 for (IEntity childEntity : childEntities)
                 {
                     if (parentEntity.getStatus() == EntityStatus.DELETED
@@ -175,7 +175,8 @@ public abstract class ERDataCommonManager
                     {
                         continue;
                     }
-                    ITypeFieldValueList childKeyValueList =  ERDataManagerUtils.extractRelationKeyValues(childEntity,typeRelation);
+                    ITypeFieldValueList childKeyValueList =  OperationUtils.extractRelationKeyValues(childEntity,
+                                                                                                     typeRelation);
                     if (childKeyValueList != null)
                     {
                         existingEntityChildRelations.add(childKeyValueList);
@@ -253,7 +254,7 @@ public abstract class ERDataCommonManager
         for (int i = 0; i < fields.size(); i++)
         {
             String field = fields.get(i);
-            IColumn matchColumn = ERDataManagerUtils.findColumnByAttribute(dbColumns, field);
+            IColumn matchColumn = OperationUtils.findColumnByAttribute(dbColumns, field);
 
             if (matchColumn != null)
             {
@@ -307,19 +308,19 @@ public abstract class ERDataCommonManager
                     Object value = dbLayer.getDataManipulate().readFromResultSet(rs,childKey);
                     childTypeKeyList.getFieldValues().add(new EntityFieldValue(value,childKey));
                 }
-                if (ERSessionUtils.existsInSession(entity, childTypeKeyList))
+                if (SessionUtils.existsInSession(entity, childTypeKeyList))
                 {
-                    data.add(ERSessionUtils.getFromSession(entity,childTypeKeyList));
+                    data.add(SessionUtils.getFromSession(entity, childTypeKeyList));
                     continue;
                 }
 
                 IReadOnlyEntity rodbClass = (IReadOnlyEntity) ReflectionUtils.createInstance(childType);
-                ERSessionUtils.transferSession(entity,rodbClass);
+                SessionUtils.transferSession(entity, rodbClass);
                 rodbClass.retrieve(rs,con);
                 data.add(rodbClass);
 
-                IEntityFieldValueList childEntityKeyList = ERDataManagerUtils.extractEntityKeyValues(rodbClass);
-                ERSessionUtils.addToSession(entity,childEntityKeyList);
+                IEntityFieldValueList childEntityKeyList = OperationUtils.extractEntityKeyValues(rodbClass);
+                SessionUtils.addToSession(entity, childEntityKeyList);
             }
         }
         catch (SQLException ex)

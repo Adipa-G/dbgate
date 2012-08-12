@@ -4,7 +4,7 @@ package dbgate.ermanagement;
  * Date: Mar 22, 2011
  * Time: 10:32:05 PM
  */
-public interface IERLayerStatistics
+public interface IDbGateStatistics
 {
     void reset();
 

@@ -12,7 +12,7 @@ import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.Compar
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.compare.IMetaComparisonGroup;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.datastructures.*;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.support.MetaQueryHolder;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
+import dbgate.ermanagement.impl.utils.OperationUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,13 +28,13 @@ import java.util.logging.Logger;
  * Date: Oct 2, 2010
  * Time: 11:03:02 PM
  */
-public class ERMetaDataManager
+public class DataMigrationLayer
 {
     private IDBLayer dbLayer;
-    private IERLayerStatistics statistics;
-    private IERLayerConfig config;
+    private IDbGateStatistics statistics;
+    private IDbGateConfig config;
 
-    public ERMetaDataManager(IDBLayer dbLayer,IERLayerStatistics statistics,IERLayerConfig config)
+    public DataMigrationLayer(IDBLayer dbLayer, IDbGateStatistics statistics, IDbGateConfig config)
     {
         this.dbLayer = dbLayer;
         this.statistics = statistics;
@@ -183,8 +183,9 @@ public class ERMetaDataManager
             foreignKey.setToTable(relatedEntityInfo.getTableName());
             for (RelationColumnMapping mapping : relation.getTableColumnMappings())
             {
-                String fromCol = ERDataManagerUtils.findColumnByAttribute(entityInfo.getColumns(),mapping.getFromField()).getColumnName();
-                String toCol = ERDataManagerUtils.findColumnByAttribute(relatedEntityInfo.getColumns(),mapping.getToField()).getColumnName();
+                String fromCol = OperationUtils.findColumnByAttribute(entityInfo.getColumns(), mapping.getFromField()).getColumnName();
+                String toCol = OperationUtils.findColumnByAttribute(relatedEntityInfo.getColumns(),
+                                                                    mapping.getToField()).getColumnName();
                 foreignKey.getColumnMappings().add(new MetaForeignKeyColumnMapping(fromCol,toCol));
             }
             foreignKey.setDeleteRule(relation.getDeleteRule());

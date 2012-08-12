@@ -1,7 +1,7 @@
 package dbgate.ermanagement.caches;
 
 import dbgate.IReadOnlyClientEntity;
-import dbgate.ermanagement.IERLayerConfig;
+import dbgate.ermanagement.IDbGateConfig;
 import dbgate.ermanagement.IField;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.caches.impl.EntityInfoCache;
@@ -18,7 +18,7 @@ public class CacheManager
 {
     private static IEntityInfoCache entityInfoCache;
 
-    public static void init(IERLayerConfig config)
+    public static void init(IDbGateConfig config)
     {
         entityInfoCache = new EntityInfoCache(config);
     }

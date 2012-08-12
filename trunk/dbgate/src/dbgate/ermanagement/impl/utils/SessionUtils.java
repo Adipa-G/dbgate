@@ -11,7 +11,7 @@ import dbgate.ermanagement.context.impl.ERSession;
  * Date: Apr 3, 2011
  * Time: 2:58:38 PM
  */
-public class ERSessionUtils
+public class SessionUtils
 {
     public static void initSession(IReadOnlyEntity roEntity)
     {

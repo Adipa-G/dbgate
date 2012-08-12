@@ -2,7 +2,7 @@ package dbgate.ermanagement;
 
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.version.*;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
@@ -59,8 +59,8 @@ public class ERManagementVersionTest
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-version;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(true);
         }
         catch (Exception ex)
         {
@@ -74,9 +74,9 @@ public class ERManagementVersionTest
     {
         if (DBConnector.getSharedInstance() != null)
         {
-            ERLayer.getSharedInstance().clearCache();
+            DbGate.getSharedInstance().clearCache();
         }
-        ERLayer.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(false);
+        DbGate.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(false);
     }
 
     @Test
@@ -168,7 +168,7 @@ public class ERManagementVersionTest
     {
         try
         {
-            ERLayer.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(true);
+            DbGate.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(true);
             Connection connection = connector.getConnection();
 
             int id = 95;

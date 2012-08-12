@@ -2,7 +2,7 @@ package dbgate.ermanagement;
 
 import dbgate.EntityStatus;
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.treetest.*;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -64,8 +64,8 @@ public class ErManagementTreePersistTests
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-tree-persist;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -77,21 +77,21 @@ public class ErManagementTreePersistTests
     @Before
     public void beforeEach()
     {
-        ERLayer.getSharedInstance().clearCache();
+        DbGate.getSharedInstance().clearCache();
     }
 
     private void registerForExternal()
     {
         Class objType = TreeTestRootEntityExt.class;
-        ERLayer.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        DbGate.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2OneEntityExt.class;
-        ERLayer.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        DbGate.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2ManyEntityExt.class;
-        ERLayer.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        DbGate.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
     }
 

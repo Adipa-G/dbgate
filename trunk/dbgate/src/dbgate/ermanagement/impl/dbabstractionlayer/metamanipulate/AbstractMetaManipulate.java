@@ -29,17 +29,17 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
 {
     protected ArrayList<ColumnTypeMapItem> columnTypeMapItems;
     protected ArrayList<ReferentialRuleTypeMapItem> referentialRuleTypeMapItems;
-    private IDBLayer dbLayer;
+    protected IDBLayer dbLayer;
 
     public AbstractMetaManipulate(IDBLayer dbLayer)
     {
         this.dbLayer = dbLayer;
-        columnTypeMapItems = new ArrayList<ColumnTypeMapItem>();
-        referentialRuleTypeMapItems = new ArrayList<ReferentialRuleTypeMapItem>();
+        columnTypeMapItems = new ArrayList<>();
+        referentialRuleTypeMapItems = new ArrayList<>();
     }
 
     @Override
-    public void initialize(Connection con)  throws MetaDataException
+    public void initialize(Connection con) throws MetaDataException
     {
         fillDataMappings(con);
         fillReferentialRuleMappings(con);
@@ -47,7 +47,7 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
 
     protected void fillDataMappings(Connection con) throws MetaDataException
     {
-        DatabaseMetaData metaData = null;
+        DatabaseMetaData metaData;
         try
         {
             metaData = con.getMetaData();
@@ -60,18 +60,17 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
                 columnTypeMapItems.add(mapItem);
             }
             DBMgmtUtility.close(resultSet);
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             e.printStackTrace();
-            throw new MetaDataException(e.getMessage(),e);
+            throw new MetaDataException(e.getMessage(), e);
         }
     }
 
     protected void fillReferentialRuleMappings(Connection con)
     {
-        referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.CASCADE,"0"));
-        referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.RESTRICT,"1"));
+        referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.CASCADE, "0"));
+        referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.RESTRICT, "1"));
     }
 
     protected abstract void extractColumnData(DatabaseMetaData metaData, MetaTable table) throws SQLException;
@@ -86,19 +85,26 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
 
     protected abstract String createAlterTableQuery(MetaComparisonTableGroup tableGroup);
 
-    protected abstract String createCreateColumnQuery(MetaComparisonTableGroup tableGroup, MetaComparisonColumnGroup columnGroup);
+    protected abstract String createCreateColumnQuery(MetaComparisonTableGroup tableGroup,
+                                                      MetaComparisonColumnGroup columnGroup);
 
-    protected abstract String createDropColumnQuery(MetaComparisonTableGroup tableGroup, MetaComparisonColumnGroup columnGroup);
+    protected abstract String createDropColumnQuery(MetaComparisonTableGroup tableGroup,
+                                                    MetaComparisonColumnGroup columnGroup);
 
-    protected abstract String createAlterColumnQuery(MetaComparisonTableGroup tableGroup, MetaComparisonColumnGroup columnGroup);
+    protected abstract String createAlterColumnQuery(MetaComparisonTableGroup tableGroup,
+                                                     MetaComparisonColumnGroup columnGroup);
 
-    protected abstract String createCreatePrimaryKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonPrimaryKeyGroup primaryKeyGroup);
+    protected abstract String createCreatePrimaryKeyQuery(MetaComparisonTableGroup tableGroup,
+                                                          MetaComparisonPrimaryKeyGroup primaryKeyGroup);
 
-    protected abstract String createDropPrimaryKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonPrimaryKeyGroup primaryKeyGroup);
+    protected abstract String createDropPrimaryKeyQuery(MetaComparisonTableGroup tableGroup,
+                                                        MetaComparisonPrimaryKeyGroup primaryKeyGroup);
 
-    protected abstract String createCreateForeginKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonForeignKeyGroup foreignKeyGroup);
+    protected abstract String createCreateForeignKeyQuery(MetaComparisonTableGroup tableGroup,
+                                                          MetaComparisonForeignKeyGroup foreignKeyGroup);
 
-    protected abstract String createDropForeginKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonForeignKeyGroup foreignKeyGroup);
+    protected abstract String createDropForeignKeyQuery(MetaComparisonTableGroup tableGroup,
+                                                        MetaComparisonForeignKeyGroup foreignKeyGroup);
 
     @Override
     public ColumnType mapColumnTypeNameToType(String columnTypeName)
@@ -155,11 +161,11 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     @Override
     public Collection<IMetaItem> getMetaData(Connection con) throws MetaDataException
     {
-        Collection<IMetaItem> metaItems = new ArrayList<IMetaItem>();
+        Collection<IMetaItem> metaItems = new ArrayList<>();
         try
         {
             DatabaseMetaData metaData = con.getMetaData();
-            ResultSet tableResultSet = metaData.getTables(null,null,null,new String[]{"TABLE"});
+            ResultSet tableResultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
             while (tableResultSet.next())
             {
                 //table
@@ -174,11 +180,10 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
                 extractForeignKeyData(metaData, table);
             }
             DBMgmtUtility.close(tableResultSet);
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             e.printStackTrace();
-            throw new MetaDataException(e.getMessage(),e);
+            throw new MetaDataException(e.getMessage(), e);
         }
         return metaItems;
     }
@@ -186,40 +191,45 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     @Override
     public Collection<MetaQueryHolder> createDbPathSQL(IMetaComparisonGroup metaComparisonGroup)
     {
-        Collection<MetaQueryHolder> holders = new ArrayList<MetaQueryHolder>();
+        Collection<MetaQueryHolder> holders = new ArrayList<>();
         if (metaComparisonGroup instanceof MetaComparisonTableGroup)
         {
             MetaComparisonTableGroup tableGroup = (MetaComparisonTableGroup) metaComparisonGroup;
             if (metaComparisonGroup._shouldCreateInDB())
             {
                 String query = createCreateTableQuery(tableGroup);
-                holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_TABLE,MetaQueryHolder.OPERATION_TYPE_ADD,query));
+                holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_TABLE, MetaQueryHolder.OPERATION_TYPE_ADD,
+                                                query));
             }
             if (metaComparisonGroup._shouldDeleteFromDB())
             {
                 String query = createDropTableQuery(tableGroup);
-                holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_TABLE,MetaQueryHolder.OPERATION_TYPE_DELETE,query));
+                holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_TABLE,
+                                                MetaQueryHolder.OPERATION_TYPE_DELETE, query));
             }
             if (metaComparisonGroup._shouldAlterInDB())
             {
                 String query = createAlterTableQuery(tableGroup);
-                holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_TABLE,MetaQueryHolder.OPERATION_TYPE_ALTER,query));
+                holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_TABLE, MetaQueryHolder.OPERATION_TYPE_ALTER,
+                                                query));
             }
 
             if (tableGroup.getPrimaryKey() != null)
             {
-                MetaComparisonPrimaryKeyGroup primaryKeyGroup =  tableGroup.getPrimaryKey();
+                MetaComparisonPrimaryKeyGroup primaryKeyGroup = tableGroup.getPrimaryKey();
                 if (primaryKeyGroup._shouldCreateInDB()
                         || primaryKeyGroup._shouldAlterInDB())
                 {
-                    String query = createCreatePrimaryKeyQuery(tableGroup,primaryKeyGroup);
-                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_PRIMARY_KEY,MetaQueryHolder.OPERATION_TYPE_ADD,query));
+                    String query = createCreatePrimaryKeyQuery(tableGroup, primaryKeyGroup);
+                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_PRIMARY_KEY,
+                                                    MetaQueryHolder.OPERATION_TYPE_ADD, query));
                 }
                 if (tableGroup._shouldDeleteFromDB()
                         || primaryKeyGroup._shouldAlterInDB())
                 {
-                    String query = createDropPrimaryKeyQuery(tableGroup,primaryKeyGroup);
-                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_PRIMARY_KEY,MetaQueryHolder.OPERATION_TYPE_DELETE,query));
+                    String query = createDropPrimaryKeyQuery(tableGroup, primaryKeyGroup);
+                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_PRIMARY_KEY,
+                                                    MetaQueryHolder.OPERATION_TYPE_DELETE, query));
                 }
             }
 
@@ -227,18 +237,21 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
             {
                 if (comparisonColumnGroup._shouldCreateInDB())
                 {
-                    String query = createCreateColumnQuery(tableGroup,comparisonColumnGroup);
-                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_COLUMN,MetaQueryHolder.OPERATION_TYPE_ADD,query));
+                    String query = createCreateColumnQuery(tableGroup, comparisonColumnGroup);
+                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_COLUMN,
+                                                    MetaQueryHolder.OPERATION_TYPE_ADD, query));
                 }
                 if (comparisonColumnGroup._shouldDeleteFromDB())
                 {
-                    String query = createDropColumnQuery(tableGroup,comparisonColumnGroup);
-                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_COLUMN,MetaQueryHolder.OPERATION_TYPE_DELETE,query));
+                    String query = createDropColumnQuery(tableGroup, comparisonColumnGroup);
+                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_COLUMN,
+                                                    MetaQueryHolder.OPERATION_TYPE_DELETE, query));
                 }
                 if (comparisonColumnGroup._shouldAlterInDB())
                 {
-                    String query = createAlterColumnQuery(tableGroup,comparisonColumnGroup);
-                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_COLUMN,MetaQueryHolder.OPERATION_TYPE_ALTER,query));
+                    String query = createAlterColumnQuery(tableGroup, comparisonColumnGroup);
+                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_COLUMN,
+                                                    MetaQueryHolder.OPERATION_TYPE_ALTER, query));
                 }
             }
 
@@ -247,14 +260,16 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
                 if (foreignKeyGroup._shouldCreateInDB()
                         || foreignKeyGroup._shouldAlterInDB())
                 {
-                    String query = createCreateForeginKeyQuery(tableGroup,foreignKeyGroup);
-                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_FOREIGN_KEY,MetaQueryHolder.OPERATION_TYPE_ADD,query));
+                    String query = createCreateForeignKeyQuery(tableGroup, foreignKeyGroup);
+                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_FOREIGN_KEY,
+                                                    MetaQueryHolder.OPERATION_TYPE_ADD, query));
                 }
                 if (tableGroup._shouldDeleteFromDB()
                         || foreignKeyGroup._shouldAlterInDB())
                 {
-                    String query = createDropForeginKeyQuery(tableGroup,foreignKeyGroup);
-                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_FOREIGN_KEY,MetaQueryHolder.OPERATION_TYPE_DELETE,query));
+                    String query = createDropForeignKeyQuery(tableGroup, foreignKeyGroup);
+                    holders.add(new MetaQueryHolder(MetaQueryHolder.OBJECT_TYPE_FOREIGN_KEY,
+                                                    MetaQueryHolder.OPERATION_TYPE_DELETE, query));
                 }
             }
         }
@@ -266,6 +281,6 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     public boolean Equals(IMetaItem iMetaItemA, IMetaItem iMetaItemB)
     {
         return (iMetaItemA.getItemType() == iMetaItemB.getItemType()
-                        && iMetaItemA.getName().equalsIgnoreCase(iMetaItemB.getName()));
+                && iMetaItemA.getName().equalsIgnoreCase(iMetaItemB.getName()));
     }
 }

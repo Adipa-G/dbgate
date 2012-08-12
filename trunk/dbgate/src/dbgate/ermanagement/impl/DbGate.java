@@ -22,30 +22,30 @@ import java.util.Collection;
  * Date: Jul 5, 2008
  * Time: 3:34:56 PM
  */
-public class ERLayer implements IERLayer
+public class DbGate implements IDbGate
 {
-    private static IERLayer erLayer;
+    private static IDbGate erLayer;
 
-    private IERDataManager erDataManager;
-    private ERMetaDataManager erMetaDataManager;
-    private IERLayerConfig config;
-    private IERLayerStatistics statistics;
+    private PersistRetrievalLayer persistRetrievalLayer;
+    private DataMigrationLayer dataMigrationLayer;
+    private IDbGateConfig config;
+    private IDbGateStatistics statistics;
 
-    private ERLayer() throws DBConnectorNotInitializedException
+    private DbGate() throws DBConnectorNotInitializedException
     {
         if (DBConnector.getSharedInstance() == null)
         {
             throw new DBConnectorNotInitializedException("The DBConnector is not initialized");
         }
         int dbType = DBConnector.getSharedInstance().getDbType();
-        this.config = new ERLayerConfig();
-        this.statistics = new ERLayerStatistics();
+        this.config = new DbGateConfig();
+        this.statistics = new DbGateStatistics();
         initializeDefaults();
 
         IDBLayer dbLayer = LayerFactory.createLayer(dbType);
         CacheManager.init(config);
-        erDataManager = new ERDataManager(dbLayer,statistics,config);
-        erMetaDataManager = new ERMetaDataManager(dbLayer,statistics,config);
+        persistRetrievalLayer = new PersistRetrievalLayer(dbLayer,statistics,config);
+        dataMigrationLayer = new DataMigrationLayer(dbLayer,statistics,config);
     }
 
     private void initializeDefaults()
@@ -56,54 +56,54 @@ public class ERLayer implements IERLayer
 
     public void load(IReadOnlyEntity readOnlyEntity, ResultSet rs, Connection con) throws RetrievalException
     {
-        erDataManager.load(readOnlyEntity, rs, con);
+        persistRetrievalLayer.load(readOnlyEntity, rs, con);
     }
 
     public void save(IEntity entity, Connection con) throws PersistException
     {
-        erDataManager.save(entity, con);
+        persistRetrievalLayer.save(entity, con);
     }
 
     @Override
     public Collection select(ISelectionQuery query,Connection con ) throws RetrievalException
     {
-        return erDataManager.select(query,con);
+        return persistRetrievalLayer.select(query,con);
     }
 
     public void patchDataBase(Connection con, Collection<Class> entityTypes, boolean dropAll) throws DBPatchingException
     {
-        erMetaDataManager.patchDataBase(con, entityTypes, dropAll);
+        dataMigrationLayer.patchDataBase(con, entityTypes, dropAll);
     }
 
     public void clearCache()
     {
-        erDataManager.clearCache();
+        persistRetrievalLayer.clearCache();
     }
 
     @Override
     public void registerEntity(Class type, String tableName, Collection<IField> fields)
     {
-        erDataManager.registerEntity(type, tableName, fields);
+        persistRetrievalLayer.registerEntity(type, tableName, fields);
     }
 
-    public IERLayerConfig getConfig()
+    public IDbGateConfig getConfig()
     {
         return config;
     }
 
     @Override
-    public IERLayerStatistics getStatistics()
+    public IDbGateStatistics getStatistics()
     {
         return statistics;
     }
 
-    public static IERLayer getSharedInstance()
+    public static IDbGate getSharedInstance()
     {
         if (erLayer == null)
         {
             try
             {
-                erLayer = new ERLayer();
+                erLayer = new DbGate();
             }
             catch (DBConnectorNotInitializedException e)
             {

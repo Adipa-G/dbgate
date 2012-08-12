@@ -26,9 +26,9 @@ import java.util.logging.Logger;
 public class EntityInfoCache implements IEntityInfoCache
 {
     private final static HashMap<Class,EntityInfo> cache = new HashMap<>();
-    private IERLayerConfig config;
+    private IDbGateConfig config;
 
-    public EntityInfoCache(IERLayerConfig config)
+    public EntityInfoCache(IDbGateConfig config)
     {
         this.config = config;
     }

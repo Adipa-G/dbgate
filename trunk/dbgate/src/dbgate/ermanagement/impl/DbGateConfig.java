@@ -1,12 +1,12 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.ermanagement.IERLayerConfig;
+import dbgate.ermanagement.IDbGateConfig;
 
 /**
  * Date: Mar 22, 2011
  * Time: 10:27:49 PM
  */
-public class ERLayerConfig implements IERLayerConfig
+public class DbGateConfig implements IDbGateConfig
 {
     private boolean autoTrackChanges;
     private boolean showQueries;
@@ -15,7 +15,7 @@ public class ERLayerConfig implements IERLayerConfig
     private boolean updateChangedColumnsOnly;
     private String loggerName;
 
-    public ERLayerConfig()
+    public DbGateConfig()
     {
         autoTrackChanges = true;
         showQueries = true;

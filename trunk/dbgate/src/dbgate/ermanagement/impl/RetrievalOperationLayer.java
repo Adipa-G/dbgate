@@ -19,8 +19,8 @@ import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.QueryExecParam;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
-import dbgate.ermanagement.impl.utils.ERDataManagerUtils;
-import dbgate.ermanagement.impl.utils.ERSessionUtils;
+import dbgate.ermanagement.impl.utils.OperationUtils;
+import dbgate.ermanagement.impl.utils.SessionUtils;
 import dbgate.ermanagement.impl.utils.ReflectionUtils;
 import dbgate.ermanagement.lazy.ChildLoadInterceptor;
 import net.sf.cglib.proxy.Enhancer;
@@ -41,9 +41,9 @@ import java.util.logging.Logger;
  * Date: Apr 3, 2011
  * Time: 3:05:38 PM
  */
-public class ERDataRetrievalManager extends ERDataCommonManager
+public class RetrievalOperationLayer extends BaseOperationLayer
 {
-    public ERDataRetrievalManager(IDBLayer dbLayer,IERLayerStatistics statistics, IERLayerConfig config)
+    public RetrievalOperationLayer(IDBLayer dbLayer, IDbGateStatistics statistics, IDbGateConfig config)
     {
         super(dbLayer,statistics,config);
     }
@@ -106,9 +106,9 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         }
         try
         {
-            ERSessionUtils.initSession(roEntity);
+            SessionUtils.initSession(roEntity);
             loadFromDb(roEntity, rs, con);
-            ERSessionUtils.destroySession(roEntity);
+            SessionUtils.destroySession(roEntity);
         }
         catch (Exception e)
         {
@@ -133,8 +133,8 @@ public class ERDataRetrievalManager extends ERDataCommonManager
                 ResultSet superRs = null;
                 try
                 {
-                    ITypeFieldValueList keyValueList = ERDataManagerUtils.extractEntityTypeKeyValues(roEntity,
-                                                                                                     entityInfo.getEntityType());
+                    ITypeFieldValueList keyValueList = OperationUtils.extractEntityTypeKeyValues(roEntity,
+                                                                                                 entityInfo.getEntityType());
                     superPs = createRetrievalPreparedStatement(keyValueList,con);
                     superRs = superPs.executeQuery();
                     if (superRs.next())
@@ -170,7 +170,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         IEntityContext entityContext = entity.getContext();
         ITypeFieldValueList valueTypeList = readValues(type,rs);
         setValues(entity, valueTypeList);
-        ERSessionUtils.addToSession(entity,ERDataManagerUtils.extractEntityKeyValues(entity));
+        SessionUtils.addToSession(entity, OperationUtils.extractEntityKeyValues(entity));
 
         if (entityContext != null)
         {
@@ -214,7 +214,7 @@ public class ERDataRetrievalManager extends ERDataCommonManager
         {
             for (IReadOnlyEntity childEntity : children)
             {
-                ITypeFieldValueList valueTypeList = ERDataManagerUtils.extractRelationKeyValues(childEntity,relation);
+                ITypeFieldValueList valueTypeList = OperationUtils.extractRelationKeyValues(childEntity, relation);
                 if (valueTypeList != null)
                 {
                     entityContext.getChangeTracker().getChildEntityKeys().add(valueTypeList);

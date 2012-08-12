@@ -24,7 +24,7 @@ import java.util.Collection;
  * Date: Mar 24, 2011
  * Time: 10:14:22 PM
  */
-public class ERDataManagerUtils
+public class OperationUtils
 {
     public static Collection<IEntity> getRelationEntities(IEntity rootEntity, IRelation relation) throws DbGateException
     {

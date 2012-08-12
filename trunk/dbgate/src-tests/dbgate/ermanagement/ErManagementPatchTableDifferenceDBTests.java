@@ -1,7 +1,7 @@
 package dbgate.ermanagement;
 
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.patch.patchtabledifferences.FourColumnEntity;
 import dbgate.ermanagement.support.patch.patchtabledifferences.ThreeColumnEntity;
 import dbgate.ermanagement.support.patch.patchtabledifferences.ThreeColumnTypeDifferentEntity;
@@ -39,8 +39,8 @@ public class ErManagementPatchTableDifferenceDBTests
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-table-difference;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -57,14 +57,14 @@ public class ErManagementPatchTableDifferenceDBTests
             Connection connection = connector.getConnection();
             Collection<Class> dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnEntity.class);
-            ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
 
             connection = connector.getConnection();
             dbClasses = new ArrayList<>();
             dbClasses.add(FourColumnEntity.class);
-            ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
+            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
             connection.close();
 
@@ -91,14 +91,14 @@ public class ErManagementPatchTableDifferenceDBTests
             Connection connection = connector.getConnection();
             Collection<Class> dbClasses = new ArrayList<>();
             dbClasses.add(FourColumnEntity.class);
-            ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
 
             connection = connector.getConnection();
             dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnEntity.class);
-            ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
+            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
             connection.close();
 
@@ -138,7 +138,7 @@ public class ErManagementPatchTableDifferenceDBTests
             Connection connection = connector.getConnection();
             Collection<Class> dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnEntity.class);
-            ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,true);
+            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
             connection.commit();
             connection.close();
 
@@ -161,7 +161,7 @@ public class ErManagementPatchTableDifferenceDBTests
             connection = connector.getConnection();
             dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnTypeDifferentEntity.class);
-            ERLayer.getSharedInstance().patchDataBase(connection,dbClasses,false);
+            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,false);
             connection.commit();
             connection.close();
 

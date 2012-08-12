@@ -2,7 +2,7 @@ package dbgate.ermanagement;
 
 import dbgate.EntityStatus;
 import dbgate.dbutility.DBConnector;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.support.persistant.inheritancetest.*;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -62,8 +62,8 @@ public class ErManagementInheritancePersistTests
 
             connector = new DBConnector("jdbc:derby:memory:unit-testing-inheritance-persist;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            ERLayer.getSharedInstance().getConfig().setCheckVersion(false);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -75,15 +75,15 @@ public class ErManagementInheritancePersistTests
     private void registerForExternal()
     {
         Class objType = InheritanceTestSuperEntityExt.class;
-        ERLayer.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        DbGate.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityAExt.class;
-        ERLayer.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        DbGate.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityBExt.class;
-        ERLayer.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        DbGate.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
     }
 
@@ -91,7 +91,7 @@ public class ErManagementInheritancePersistTests
     public void beforeEach()
     {
 
-        ERLayer.getSharedInstance().clearCache();
+        DbGate.getSharedInstance().clearCache();
     }
 
     @Test
@@ -124,7 +124,7 @@ public class ErManagementInheritancePersistTests
 
                 Connection connection = connector.getConnection();
 
-                ERLayer.getSharedInstance().clearCache();
+                DbGate.getSharedInstance().clearCache();
                 if (type == TYPE_EXTERNAL)
                 {
                     registerForExternal();
@@ -187,7 +187,7 @@ public class ErManagementInheritancePersistTests
 
                 Connection connection = connector.getConnection();
 
-                ERLayer.getSharedInstance().clearCache();
+                DbGate.getSharedInstance().clearCache();
                 if (type == TYPE_EXTERNAL)
                 {
                     registerForExternal();
@@ -270,7 +270,7 @@ public class ErManagementInheritancePersistTests
 
                 Connection connection = connector.getConnection();
 
-                ERLayer.getSharedInstance().clearCache();
+                DbGate.getSharedInstance().clearCache();
                 if (type == TYPE_EXTERNAL)
                 {
                     registerForExternal();

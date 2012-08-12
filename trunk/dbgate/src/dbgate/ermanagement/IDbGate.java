@@ -16,7 +16,7 @@ import java.util.Collection;
  * Date: Oct 2, 2010
  * Time: 11:08:29 PM
  */
-public interface IERLayer
+public interface IDbGate
 {
     void load(IReadOnlyEntity readOnlyEntity, ResultSet rs, Connection con) throws RetrievalException;
 
@@ -30,7 +30,7 @@ public interface IERLayer
 
     void registerEntity(Class type,String tableName,Collection<IField> fields);
 
-    IERLayerConfig getConfig();
+    IDbGateConfig getConfig();
 
-    IERLayerStatistics getStatistics();
+    IDbGateStatistics getStatistics();
 }

@@ -3,7 +3,7 @@ package dbgate.ermanagement;
 import dbgate.ColumnType;
 import dbgate.dbutility.DBConnector;
 import dbgate.ermanagement.exceptions.PersistException;
-import dbgate.ermanagement.impl.ERLayer;
+import dbgate.ermanagement.impl.DbGate;
 import dbgate.ermanagement.query.*;
 import dbgate.ermanagement.query.expr.ConditionExpr;
 import dbgate.ermanagement.query.expr.GroupConditionExpr;
@@ -74,7 +74,7 @@ public class ERManagementQueryBasicTest
 
             connector = new DBConnector("jdbc:derby:memory:init-testing-query-basic;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
 
-            ERLayer.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
         }
         catch (Exception ex)
         {
@@ -88,7 +88,7 @@ public class ERManagementQueryBasicTest
     {
         if (DBConnector.getSharedInstance() != null)
         {
-            ERLayer.getSharedInstance().clearCache();
+            DbGate.getSharedInstance().clearCache();
         }
     }
 

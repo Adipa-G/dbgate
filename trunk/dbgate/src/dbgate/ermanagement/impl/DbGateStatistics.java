@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.ermanagement.IERLayerStatistics;
+import dbgate.ermanagement.IDbGateStatistics;
 
 import java.util.HashMap;
 
@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Time: 7:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ERLayerStatistics implements IERLayerStatistics
+public class DbGateStatistics implements IDbGateStatistics
 {
     private int globalSelectCount;
     private int globalInsertCount;
@@ -23,7 +23,7 @@ public class ERLayerStatistics implements IERLayerStatistics
     private HashMap<Class,Integer> updateCount;
     private HashMap<Class,Integer> deleteCount;
 
-    public ERLayerStatistics()
+    public DbGateStatistics()
     {
         reset();
     }
