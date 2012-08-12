@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.dbmm.defaultmm;
 
 import dbgate.ColumnType;
-import dbgate.dbutility.DBMgmtUtility;
+import dbgate.utility.DBMgtUtility;
 import dbgate.ermanagement.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.impl.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.impl.dbabstractionlayer.metamanipulate.AbstractMetaManipulate;
@@ -61,7 +61,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
             column.setColumnType(mapColumnTypeNameToType(columnResultSet.getString("TYPE_NAME")));
             column.setNull(columnResultSet.getBoolean("NULLABLE"));
         }
-        DBMgmtUtility.close(columnResultSet);
+        DBMgtUtility.close(columnResultSet);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
                 table.getPrimaryKey().getColumnNames().add(keyColMap.get(comparable));
             }
         }
-        DBMgmtUtility.close(primaryKeyResultSet);
+        DBMgtUtility.close(primaryKeyResultSet);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
                 foreignKey.getColumnMappings().add(new MetaForeignKeyColumnMapping(fromCol,toCol));
             }
         }
-        DBMgmtUtility.close(foreignKeyResultSet);
+        DBMgtUtility.close(foreignKeyResultSet);
     }
     
     @Override

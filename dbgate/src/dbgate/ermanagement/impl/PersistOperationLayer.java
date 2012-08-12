@@ -1,8 +1,7 @@
 package dbgate.ermanagement.impl;
 
 import dbgate.*;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.*;
+import dbgate.utility.DBMgtUtility;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.context.EntityFieldValue;
@@ -263,7 +262,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             throw new StatementPreparingException(message, ex);
         } finally
         {
-            DBMgmtUtility.close(ps);
+            DBMgtUtility.close(ps);
         }
     }
 
@@ -355,7 +354,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             throw new StatementPreparingException(message, ex);
         } finally
         {
-            DBMgmtUtility.close(ps);
+            DBMgtUtility.close(ps);
         }
     }
 
@@ -412,7 +411,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             throw new StatementPreparingException(message, ex);
         } finally
         {
-            DBMgmtUtility.close(ps);
+            DBMgtUtility.close(ps);
         }
     }
 
@@ -666,8 +665,8 @@ public class PersistOperationLayer extends BaseOperationLayer
                 throw new StatementExecutionException(message, ex);
             } finally
             {
-                DBMgmtUtility.close(rs);
-                DBMgmtUtility.close(ps);
+                DBMgtUtility.close(rs);
+                DBMgtUtility.close(ps);
             }
 
             if (recordExists)
@@ -776,8 +775,8 @@ public class PersistOperationLayer extends BaseOperationLayer
             throw new StatementExecutionException(message, ex);
         } finally
         {
-            DBMgmtUtility.close(rs);
-            DBMgmtUtility.close(ps);
+            DBMgtUtility.close(rs);
+            DBMgtUtility.close(ps);
         }
         return versionValue;
     }
@@ -804,8 +803,8 @@ public class PersistOperationLayer extends BaseOperationLayer
             throw new StatementExecutionException(message, ex);
         } finally
         {
-            DBMgmtUtility.close(rs);
-            DBMgmtUtility.close(ps);
+            DBMgtUtility.close(rs);
+            DBMgtUtility.close(ps);
         }
         return fieldValueList;
     }

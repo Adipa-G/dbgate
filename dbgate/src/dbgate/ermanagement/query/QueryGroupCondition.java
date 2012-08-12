@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQueryGroupCondition;
+import dbgate.IQueryGroupCondition;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractExpressionGroupCondition;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractGroupConditionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.groupcondition.AbstractSqlQueryGroupCondition;

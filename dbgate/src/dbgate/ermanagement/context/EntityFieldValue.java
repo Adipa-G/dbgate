@@ -1,6 +1,6 @@
 package dbgate.ermanagement.context;
 
-import dbgate.ermanagement.IColumn;
+import dbgate.IColumn;
 
 /**
  * Date: Mar 23, 2011

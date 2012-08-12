@@ -1,9 +1,9 @@
 package dbgate.ermanagement.lazy;
 
+import dbgate.DBConnector;
 import dbgate.IReadOnlyEntity;
-import dbgate.dbutility.DBConnector;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.IRelation;
+import dbgate.IRelation;
+import dbgate.utility.DBMgtUtility;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.impl.RetrievalOperationLayer;
@@ -60,7 +60,7 @@ public class ChildLoadInterceptor implements MethodInterceptor
             {
                 if (newConnection)
                 {
-                    DBMgmtUtility.close(connection);
+                    DBMgtUtility.close(connection);
                     connection = null;
                 }
             }

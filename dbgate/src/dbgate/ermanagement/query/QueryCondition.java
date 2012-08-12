@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQueryCondition;
+import dbgate.IQueryCondition;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractConditionFactory;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractExpressionCondition;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.condition.AbstractSqlQueryCondition;

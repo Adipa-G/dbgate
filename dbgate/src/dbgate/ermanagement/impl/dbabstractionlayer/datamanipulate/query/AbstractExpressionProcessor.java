@@ -1,7 +1,7 @@
 package dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query;
 
-import dbgate.ermanagement.IColumn;
-import dbgate.ermanagement.IRelation;
+import dbgate.IColumn;
+import dbgate.IRelation;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.exceptions.ExpressionParsingException;

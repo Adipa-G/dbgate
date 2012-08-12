@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.ermanagement.IDbGateStatistics;
+import dbgate.IDbGateStatistics;
 
 import java.util.HashMap;
 

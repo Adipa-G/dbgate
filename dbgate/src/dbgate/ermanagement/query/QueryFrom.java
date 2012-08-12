@@ -1,7 +1,7 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.IQueryFrom;
-import dbgate.ermanagement.ISelectionQuery;
+import dbgate.IQueryFrom;
+import dbgate.ISelectionQuery;
 import dbgate.ermanagement.impl.dbabstractionlayer.datamanipulate.query.from.*;
 
 /**

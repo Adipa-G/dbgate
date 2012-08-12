@@ -1,8 +1,8 @@
 package dbgate.ermanagement.caches;
 
+import dbgate.IDbGateConfig;
+import dbgate.IField;
 import dbgate.IReadOnlyClientEntity;
-import dbgate.ermanagement.IDbGateConfig;
-import dbgate.ermanagement.IField;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.caches.impl.EntityInfoCache;
 import dbgate.ermanagement.exceptions.SequenceGeneratorInitializationException;

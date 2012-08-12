@@ -1,6 +1,6 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.*;
+import dbgate.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

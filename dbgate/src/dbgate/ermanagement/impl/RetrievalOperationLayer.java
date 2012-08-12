@@ -1,11 +1,7 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.IEntity;
-import dbgate.EntityStatus;
-import dbgate.DbGateException;
-import dbgate.IReadOnlyEntity;
-import dbgate.dbutility.DBMgmtUtility;
-import dbgate.ermanagement.*;
+import dbgate.*;
+import dbgate.utility.DBMgtUtility;
 import dbgate.ermanagement.caches.CacheManager;
 import dbgate.ermanagement.caches.impl.EntityInfo;
 import dbgate.ermanagement.context.IEntityContext;
@@ -93,7 +89,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         }
         finally
         {
-            DBMgmtUtility.close(rs);
+            DBMgtUtility.close(rs);
         }
     }
 
@@ -156,8 +152,8 @@ public class RetrievalOperationLayer extends BaseOperationLayer
                 }
                 finally
                 {
-                    DBMgmtUtility.close(superRs);
-                    DBMgmtUtility.close(superPs);
+                    DBMgtUtility.close(superRs);
+                    DBMgtUtility.close(superPs);
                 }
             }
             entityInfo = entityInfo.getSuperEntityInfo();

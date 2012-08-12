@@ -1,6 +1,6 @@
 package dbgate.ermanagement.impl;
 
-import dbgate.ermanagement.IDbGateConfig;
+import dbgate.IDbGateConfig;
 
 /**
  * Date: Mar 22, 2011
