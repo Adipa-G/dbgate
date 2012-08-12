@@ -1,4 +1,4 @@
-package dbgate.ermanagement.impl;
+package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
 import dbgate.utility.DBMgtUtility;
@@ -13,9 +13,9 @@ import dbgate.exceptions.common.NoMatchingColumnFoundException;
 import dbgate.exceptions.common.ReadFromResultSetException;
 import dbgate.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.impl.utils.OperationUtils;
-import dbgate.ermanagement.impl.utils.SessionUtils;
-import dbgate.ermanagement.impl.utils.ReflectionUtils;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.SessionUtils;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.Method;

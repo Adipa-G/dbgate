@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.impl.DbGate;
+import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.crossreference.CrossReferenceTestOne2ManyEntity;
 import dbgate.support.persistant.crossreference.CrossReferenceTestOne2OneEntity;
 import dbgate.support.persistant.crossreference.CrossReferenceTestRootEntity;

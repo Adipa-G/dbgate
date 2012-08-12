@@ -1,4 +1,4 @@
-package dbgate.ermanagement.impl;
+package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
 import dbgate.ermanagement.query.IQuerySelection;
@@ -16,9 +16,9 @@ import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecParam;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
-import dbgate.ermanagement.impl.utils.OperationUtils;
-import dbgate.ermanagement.impl.utils.SessionUtils;
-import dbgate.ermanagement.impl.utils.ReflectionUtils;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.SessionUtils;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 import dbgate.lazy.ChildLoadInterceptor;
 import net.sf.cglib.proxy.Enhancer;
 

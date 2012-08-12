@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.impl.DbGate;
+import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.lazy.LazyOne2ManyEntity;
 import dbgate.support.persistant.lazy.LazyOne2OneEntity;
 import dbgate.support.persistant.lazy.LazyRootEntity;

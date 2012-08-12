@@ -6,7 +6,7 @@ import dbgate.TimeStampWrapper;
 import dbgate.context.IEntityContext;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
-import dbgate.ermanagement.impl.DbGate;
+import dbgate.ermanagement.ermapper.DbGate;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -1,6 +1,6 @@
 package dbgate;
 
-import dbgate.ermanagement.impl.DbGate;
+import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.columntest.*;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;

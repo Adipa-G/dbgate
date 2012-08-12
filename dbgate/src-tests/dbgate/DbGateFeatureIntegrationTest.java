@@ -2,7 +2,7 @@ package dbgate;
 
 import dbgate.utility.DBMgtUtility;
 import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.impl.DbGate;
+import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.featureintegration.order.ItemTransaction;
 import dbgate.support.persistant.featureintegration.order.ItemTransactionCharge;
 import dbgate.support.persistant.featureintegration.order.Transaction;

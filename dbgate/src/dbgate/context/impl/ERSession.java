@@ -4,7 +4,7 @@ import dbgate.IReadOnlyEntity;
 import dbgate.context.IERSession;
 import dbgate.context.IEntityFieldValueList;
 import dbgate.context.ITypeFieldValueList;
-import dbgate.ermanagement.impl.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
