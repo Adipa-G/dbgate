@@ -1,0 +1,118 @@
+#summary DbGate Queries
+DbGate provides a strong object query language, which minimizes usage of magic string eventually maximizing the maintainability of the code, db gate query is made out of different sections
+
+ # Select
+ # From
+ # Join
+ # Where
+ # GroupBy
+ # OrderBy
+ # Having
+
+Each of these sections are directly correspond to their sql counterparts
+
+=Structure=
+This is the structure of a given query (note that the order of the sections is not important)
+{{{
+    ISelectionQuery query = new SelectionQuery()
+                                .select(QuerySelection.<expression>)
+                                .from(QueryFrom.<expression>)
+                                .join(QueryJoin.<expression>)
+                                .where(QueryCondition.<expression>)
+                                .groupBy(QueryGroup.<expression>)
+                                .orderBy(QueryOrderBy.<expression>)
+                                .having(QueryGroupCondition.<expression>);
+
+    Collection results = query.toList(databaseConnection);
+}}}
+
+=Expressions=
+To enable greater flexibility DbGate offers expression builders so that custom expressions can be build. Depending on the section some of the expressions will not be supported.
+
+{{{
+    //simple between using expression builder
+    <section restriction>Expr.build()
+        .field(Entity.class, "id").between().values(ColumnType.INTEGER,35,55)
+
+    //complex condition using expression builder
+   <section restriction>Expr.build()
+        .and
+        (
+            <section restriction>Expr.build()
+                .field(Entity.class, "id").in().values(ColumnType.INTEGER, 35, 55)
+            ,<section restriction>Expr.build()
+                .field(Entity.class, "id").eq().value(ColumnType.INTEGER, 55)
+        )
+        .or()
+        .field(Entity.class, "id").eq().value(ColumnType.INTEGER,45)
+}}}
+
+==Supported Expression Types==
+ * field -> denotes a field of an entity
+ * value -> denotes a constant
+ * values -> denotes a list of values
+ * query -> denotes a sub query
+ * sum -> sum operation
+ * count -> count operation
+ * custFunc -> sql function
+ * eq -> equals
+ * ge -> greater than or equals
+ * gt -> greater than
+ * le -> less than or equals
+ * lt -> less than
+ * neq -> not equals
+ * like -> sql like operator
+ * between -> self explanatory
+ * in -> self explanatory
+ * exists -> self explanatory
+ * notExists -> self explanatory
+ * and -> simple and outer options available simple and would add another condition to the current expression, outer and option could be used to join to expressions into one
+ * or -> same as and operation
+
+All the expression types cannot be combined as desired, it has to form a logical expression in order to achieve a valid output
+{{{
+    .field(Entity.class, "id").sum().ge.value(ColumnType.INTEGER, 55)
+}}}
+is a valid expression while
+{{{
+    .field(Entity.class, "id").sum().ge.field(Entity.class, "id2")
+}}}
+is not
+
+
+=Selection=
+Following options are available
+ * rawSql -> use a sql to do the selection
+ * type -> directly fetch an entity
+ * query -> uses a sub query to fetch data
+ * expression -> use a expression built using SelectExpr
+ * field -> same as the expression builder field
+ * sum -> same as the expression builder sum
+ * count -> same as the expression builder count
+ * custFunction -> same as the expression builder custFunction
+
+==From==
+ * rawSql -> use a sql to select from
+ * type -> use an entity type, so that from is the table associated with the entity type
+ * query -> use a query, to select from
+ * queryUnion -> use a union of queries, to select from
+
+==Join==
+ * rawSql -> use a sql to join tables
+ * type -> join with another entity type, there are many options available, if two entities has a relationship it would fetch the join condition automatically and there is option to manually specify conditions if required
+
+==Where==
+ * rawSql -> use a sql to specify the limiting conditions
+ * expression -> build a logical expression using expression builder to provide the limiting conditions
+
+==GroupBy==
+ * rawSql -> use a sql to specify grouping
+ * field -> use a field to group
+
+==OrderBy==
+ * rawSql -> use a sql to specify the ordering
+ * field -> use a field to order by
+
+==Having==
+ * rawSql -> use a sql to specify the grouping conditions
+ * expression -> build a logical expression using expression builder to provide the grouping conditions
