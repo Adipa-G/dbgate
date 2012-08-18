@@ -61,9 +61,21 @@ class BaseExpr
         return addSegment(segment);
     }
 
+    protected BaseExpr value(Object value) throws ExpressionParsingException
+    {
+        ValueSegment segment = new ValueSegment(value);
+        return addSegment(segment);
+    }
+
     protected BaseExpr values(ColumnType type,Object... values) throws ExpressionParsingException
     {
         ValueSegment segment = new ValueSegment(type,values);
+        return addSegment(segment);
+    }
+
+    protected BaseExpr values(Object... values) throws ExpressionParsingException
+    {
+        ValueSegment segment = new ValueSegment(values);
         return addSegment(segment);
     }
 

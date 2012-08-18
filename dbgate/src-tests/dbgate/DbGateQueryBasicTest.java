@@ -148,8 +148,7 @@ public class DbGateQueryBasicTest
             int count = 0;
             for (Object result : results)
             {
-                Object[] resultArray = (Object[]) result;
-                String name = (String) resultArray[0];
+                String name = (String) result;
 
                 for (QueryBasicEntity basicEntity : basicEntities)
                 {
@@ -263,8 +262,7 @@ public class DbGateQueryBasicTest
             Assert.assertTrue(results.size() == 4);
             for (Object result : results)
             {
-                Object[] resultArray = (Object[]) result;
-                QueryBasicEntity loadedEntity = (QueryBasicEntity) resultArray[0];
+                QueryBasicEntity loadedEntity = (QueryBasicEntity) result;
 
                 QueryBasicEntity orgEntity = getById(loadedEntity.getIdCol());
                 Assert.assertEquals(loadedEntity.getName(),orgEntity.getName());
@@ -339,8 +337,7 @@ public class DbGateQueryBasicTest
             int index = 0;
             for (Object result : results)
             {
-                Object[] resultArray = (Object[]) result;
-                String name = (String) resultArray[0];
+                String name = (String) result;
 
                 Assert.assertTrue(basicEntityNames[index++].equals(name));
             }
@@ -352,39 +349,38 @@ public class DbGateQueryBasicTest
         }
     }
 
-//    @Test
-//    public void queryBasic_select_withFieldSelectionWithoutClass_shouldSelectColumn()
-//    {
-//        try
-//        {
-//            Connection connection = connector.getConnection();
-//            createTestData(connection);
-//            connection.commit();
-//            connection.close();
-//
-//            connection = connector.getConnection();
-//
-//            ISelectionQuery query = new SelectionQuery()
-//                    .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
-//                    .select(QuerySelection.field("name","name1"));
-//
-//            Collection results = query.toList(connection);
-//            Assert.assertTrue(results.size() == 4);
-//            int index = 0;
-//            for (Object result : results)
-//            {
-//                Object[] resultArray = (Object[]) result;
-//                String name = (String) resultArray[0];
-//
-//                Assert.assertTrue(basicEntityNames[index++].equals(name));
-//            }
-//        }
-//        catch (Exception e)
-//        {
-//            Assert.fail(e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
+    @Test
+    public void queryBasic_select_withFieldSelectionWithoutClass_shouldSelectColumn()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
+                    .select(QuerySelection.field("name","name1"));
+
+            Collection results = query.toList(connection);
+            Assert.assertTrue(results.size() == 4);
+            int index = 0;
+            for (Object result : results)
+            {
+                String name = (String) result;
+
+                Assert.assertTrue(basicEntityNames[index++].equals(name));
+            }
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void queryBasic_select_withSumSelection_shouldSelectSum()
@@ -411,9 +407,7 @@ public class DbGateQueryBasicTest
             }
             for (Object result : results)
             {
-                Object[] resultArray = (Object[]) result;
-                int resultSum = (Integer) resultArray[0];
-
+                int resultSum = (Integer) result;
                 Assert.assertTrue(sum == resultSum);
             }
         }
@@ -444,9 +438,7 @@ public class DbGateQueryBasicTest
             Assert.assertTrue(results.size() == 1);
             for (Object result : results)
             {
-                Object[] resultArray = (Object[]) result;
-                int resultCount = (Integer) resultArray[0];
-
+                int resultCount = (Integer) result;
                 Assert.assertTrue(resultCount == 4);
             }
         }
@@ -477,9 +469,7 @@ public class DbGateQueryBasicTest
             Assert.assertTrue(results.size() == 1);
             for (Object result : results)
             {
-                Object[] resultArray = (Object[]) result;
-                int resultCount = (Integer) resultArray[0];
-
+                int resultCount = (Integer) result;
                 Assert.assertTrue(resultCount == 4);
             }
         }
@@ -574,8 +564,7 @@ public class DbGateQueryBasicTest
             int index = 0;
             for (Object result : results)
             {
-                Object[] resultArray = (Object[]) result;
-                String name = (String) resultArray[0];
+                String name = (String)result;
 
                 if (index < 4)
                 {
@@ -637,6 +626,33 @@ public class DbGateQueryBasicTest
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").eq().value(ColumnType.INTEGER,35)))
+                    .select(QuerySelection.type(QueryBasicEntity.class));
+
+            Collection results = query.toList(connection);
+            hasIds(results, 35);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void queryBasic_condition_withEqExpression_withValueWithoutType_shouldSelectMatching()
+    {
+        try
+        {
+            Connection connection = connector.getConnection();
+            createTestData(connection);
+            connection.commit();
+            connection.close();
+
+            connection = connector.getConnection();
+            ISelectionQuery query = new SelectionQuery()
+                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .where(QueryCondition.expression(ConditionExpr.build()
+                        .field(QueryBasicEntity.class, "idCol").eq().value(35)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);
@@ -912,7 +928,7 @@ public class DbGateQueryBasicTest
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
-                        .field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,35,55)))
+                        .field(QueryBasicEntity.class, "idCol").in().values(35,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
             Collection results = query.toList(connection);

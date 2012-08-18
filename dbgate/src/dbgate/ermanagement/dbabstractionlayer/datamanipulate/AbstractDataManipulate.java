@@ -385,99 +385,27 @@ public class AbstractDataManipulate implements IDataManipulate
     {
         try
         {
+            Object objToSet = obj;
             switch (columnType)
             {
-                case BOOLEAN:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex, Types.BOOLEAN);
-                    }
-                    else
-                    {
-                        ps.setBoolean(parameterIndex,(Boolean)obj);
-                    }
-                    break;
                 case CHAR:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.VARCHAR);
-                    }
-                    else
-                    {
-                        ps.setString(parameterIndex,obj.toString());
-                    }
+                    objToSet = obj != null ? obj.toString() : null;
                     break;
                 case DATE:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.DATE);
-                    }
-                    else
-                    {
-                        ps.setDate(parameterIndex,((DateWrapper)obj)._getSQLDate());
-                    }
-                    break;
-                case DOUBLE:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.DOUBLE);
-                    }
-                    else
-                    {
-                        ps.setDouble(parameterIndex,(Double)obj);
-                    }
-                    break;
-                case FLOAT:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.FLOAT);
-                    }
-                    else
-                    {
-                        ps.setFloat(parameterIndex,(Float)obj);
-                    }
-                    break;
-                case INTEGER:
-                case VERSION:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.INTEGER);
-                    }
-                    else
-                    {
-                        ps.setInt(parameterIndex,(Integer)obj);
-                    }
-                    break;
-                case LONG:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.BIGINT);
-                    }
-                    else
-                    {
-                        ps.setLong(parameterIndex,(Long)obj);
-                    }
+                    objToSet = obj != null ? ((DateWrapper)obj)._getSQLDate() : null;
                     break;
                 case TIMESTAMP:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.TIMESTAMP);
-                    }
-                    else
-                    {
-                        ps.setTimestamp(parameterIndex,((TimeStampWrapper)obj)._getSQLTimeStamp());
-                    }
+                    objToSet = obj != null ? ((TimeStampWrapper)obj)._getSQLTimeStamp() : null;
                     break;
-                case VARCHAR:
-                    if (canBeNull && obj == null)
-                    {
-                        ps.setNull(parameterIndex,Types.VARCHAR);
-                    }
-                    else
-                    {
-                        ps.setString(parameterIndex,obj.toString());
-                    }
-                    break;
+            }
+            int sqlType = ColumnType.getSqlType(columnType);
+            if (canBeNull && objToSet == null)
+            {
+                ps.setNull(parameterIndex,sqlType);
+            }
+            else
+            {
+                ps.setObject(parameterIndex,objToSet,sqlType);
             }
         }
         catch (SQLException ex)

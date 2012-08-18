@@ -36,9 +36,21 @@ public class GroupConditionExpr extends BaseExpr
     }
 
     @Override
+    protected GroupConditionExpr value(Object value) throws ExpressionParsingException
+    {
+        return (GroupConditionExpr)super.value(value);
+    }
+
+    @Override
     public GroupConditionExpr values(ColumnType type, Object... values) throws ExpressionParsingException
     {
         return (GroupConditionExpr)super.values(type,values);
+    }
+
+    @Override
+    protected GroupConditionExpr values(Object... values) throws ExpressionParsingException
+    {
+        return (GroupConditionExpr)super.values(values);
     }
 
     @Override

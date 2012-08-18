@@ -3,6 +3,8 @@ package dbgate.ermanagement.query.expr.segments;
 import dbgate.ColumnType;
 import dbgate.exceptions.ExpressionParsingException;
 
+import java.lang.reflect.Array;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -19,6 +21,17 @@ public class ValueSegment extends BaseSegment
     {
         this.type = type;
         this.value = value;
+    }
+
+    public ValueSegment(Object value)
+    {
+        this.value = value;
+        Class valueClass = value.getClass();
+        if (valueClass.isArray())
+        {
+            valueClass = ((Object[])value)[0].getClass();
+        }
+        this.type = ColumnType.getColumnType(valueClass);
     }
 
     @Override
