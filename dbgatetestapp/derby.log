@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-2012-08-12 11:00:45.804 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-0139-1a7e-4209-000006d35488 
+2012-08-18 17:22:44.397 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.6.1.0 - (938214): instance a816c00e-0139-3ac2-1fc4-000006d35200 
 on database directory memory:Y:\dev\java\community\dbgate\trunk\dbgatetestapp\testdb   with class loader sun.misc.Launcher$AppClassLoader@40735f45
 
 Database Class Loader started - derby.database.classpath=''
 
-2012-08-12 11:00:46.797 GMT:
-Shutting down instance a816c00e-0139-1a7e-4209-000006d35488 with class loader sun.misc.Launcher$AppClassLoader@40735f45 
+2012-08-18 17:22:45.438 GMT:
+Shutting down instance a816c00e-0139-3ac2-1fc4-000006d35200 with class loader sun.misc.Launcher$AppClassLoader@40735f45 
 ----------------------------------------------------------------
