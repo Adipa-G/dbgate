@@ -34,13 +34,13 @@ public class A extends DefaultEntity
 ==1. {{{@TableInfo}}}==
 This one defines the relationship with table to the entity class
 ===properties==
-tableName -> name of the table this class is related with
+  * tableName -> name of the table this class is related with
 
 ==2. {{{@ColumnInfo}}}==
 Links a property of a class with the database table column
 ===properties===
-columnType -> defines data type of the column
-columnName -> name of the column if not defined the column name will be auto calculated as camel case underscore of the field name (column name of field 'bankAccount' will be 'bank_account')
+  * columnType -> defines data type of the column
+  * columnName -> name of the column if not defined the column name will be auto calculated as camel case underscore of the field name (column name of field 'bankAccount' will be 'bank_account')
 key -> define if the column is a key (default is false)
 nullable -> define if the column supports nulls (default is false)
 subClassCommonColumn -> when it comes to the inheritance, this defines if this field is present in both the super class and the subclass (this is often useful for define keys shared among super and sub classes, default value is false)
@@ -64,6 +64,4 @@ relatedObjectType -> defines the type of the related entity;
 reverseRelation -> this has to true, when the relationship is defined from child to parent. (default value is false)
 nonIdentifyingRelation -> has to set to true if the relationship is not parent to child or vise versa. (default value is false)
 lazy -> defines if this is allowed to load lazily
-
-
 
