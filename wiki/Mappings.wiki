@@ -1,0 +1,69 @@
+#Different methods of mapping entities
+There are three distinctive methods to map the object model with database.
+
+# Use annotations
+# Manual registration
+# Using a abstract superclass and override methods
+
+=Use annotations=
+{{{
+@TableInfo(tableName = "a") //1
+public class A extends DefaultEntity
+{
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true) //2
+    private int id;
+    @ForeignKeyInfoList(infoList = {                           //3
+        @ForeignKeyInfo(name = "a2b"                            //4
+                    ,relatedObjectType = B.class
+                    ,updateRule = ReferentialRuleType.RESTRICT
+                    ,deleteRule = ReferentialRuleType.CASCADE
+                    ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "id",toField = "parentId")})
+        ,
+        @ForeignKeyInfo(name = "a2c"
+                    ,relatedObjectType = C.class
+                    ,updateRule = ReferentialRuleType.RESTRICT
+                    ,deleteRule = ReferentialRuleType.CASCADE
+                    ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "id",toField = "parentId")})
+    })
+    private Collection<Object> childEntities;
+
+    //getters and setters
+}
+}}}
+
+==1. {{{@TableInfo}}}==
+This one defines the relationship with table to the entity class
+===properties==
+tableName -> name of the table this class is related with
+
+==2. {{{@ColumnInfo}}}==
+Links a property of a class with the database table column
+===properties===
+columnType -> defines data type of the column
+columnName -> name of the column if not defined the column name will be auto calculated as camel case underscore of the field name (column name of field 'bankAccount' will be 'bank_account')
+key -> define if the column is a key (default is false)
+nullable -> define if the column supports nulls (default is false)
+subClassCommonColumn -> when it comes to the inheritance, this defines if this field is present in both the super class and the subclass (this is often useful for define keys shared among super and sub classes, default value is false)
+size -> describes the length of the column (default length is 20).
+readFromSequence -> this is used for key columns so that if the key value is automatically generated using a sequence (default false);
+sequenceGeneratorClassName -> defines the name of the sequence generator class (implementation of ISequenceGenerator)
+
+==3. {{{ForeignKeyInfoList}}}==
+Defines a list of foreign keys to a single field.
+===properties===
+infoList -> list of foreign keys
+
+==4. {{{@ForeignKeyInfo}}}==
+Defines a relationship between two tables
+===properties===
+name -> name of the foreign key
+columnMappings -> which fields of the entities are related (this use list of {{{ForeignKeyColumnMapping}}}, where each defines relationship between two fields of two classes, fromField -> defines the related field of the parent entity, toField -> defines the related field of child entity )
+updateRule -> this is used to generate database metadata, and used this as the update rule when key of the parent changed (default value is ReferentialRuleType.RESTRICT)
+deleteRule -> defines the behaviour of the database when the parent object deleted (default value is ReferentialRuleType.CASCADE)
+relatedObjectType -> defines the type of the related entity;
+reverseRelation -> this has to true, when the relationship is defined from child to parent. (default value is false)
+nonIdentifyingRelation -> has to set to true if the relationship is not parent to child or vise versa. (default value is false)
+lazy -> defines if this is allowed to load lazily
+
+
+
