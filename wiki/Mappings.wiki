@@ -2,10 +2,11 @@
 There are three distinctive methods to map the object model with database.
 
  # Use annotations
- # Manual registration
  # Using a abstract superclass and override methods
+ # Manual registration
 
 =Use annotations=
+This is the most preferred/easiest way to define the relationships
 {{{
 @TableInfo(tableName = "a") //1
 public class A extends DefaultEntity
@@ -26,6 +27,24 @@ public class A extends DefaultEntity
                     ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "id",toField = "parentId")})
     })
     private Collection<Object> childEntities;
+
+    //getters and setters
+}
+
+@TableInfo(tableName = "b")
+public class B extends DefaultEntity
+{
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
+    private int parentId;
+
+    //getters and setters
+}
+
+@TableInfo(tableName = "c")
+public class C extends DefaultEntity
+{
+    @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
+    private int parentId;
 
     //getters and setters
 }
@@ -58,9 +77,160 @@ Defines a relationship between two tables
  ===properties===
   * name -> name of the foreign key
   * columnMappings -> which fields of the entities are related (this use list of {{{ForeignKeyColumnMapping}}}, where each defines relationship between two fields of two classes, fromField -> defines the related field of the parent entity, toField -> defines the related field of child entity )
-  * updateRule -> this is used to generate database metadata, and used this as the update rule when key of the parent changed (default value is ReferentialRuleType.RESTRICT)
-  * deleteRule -> defines the behaviour of the database when the parent object deleted (default value is ReferentialRuleType.CASCADE)
+  * updateRule -> this is used to generate database metadata, and used this as the update rule when key of the parent changed (default value is {{{ReferentialRuleType.RESTRICT}}})
+  * deleteRule -> defines the behaviour of the database when the parent object deleted (default value is {{{ReferentialRuleType.CASCADE}}})
   * relatedObjectType -> defines the type of the related entity;
   * reverseRelation -> this has to true, when the relationship is defined from child to parent. (default value is false)
   * nonIdentifyingRelation -> has to set to true if the relationship is not parent to child or vise versa. (default value is false)
   * lazy -> defines if this is allowed to load lazily
+
+=Using a abstract superclass and override methods=
+{{{
+public class A extends AbstractManagedEntity
+{
+    private int id;
+    private Collection<Object> childEntities;
+
+    //getters and setters
+
+    public Map<Class,String> getTableNames()  //1
+    {
+        Map<Class,String> map = new HashMap<Class, String>();
+        map.put(this.getClass(),"a");
+        return map;
+    }
+
+    public Map<Class,Collection<IField>> getFieldInfo()  //2
+    {
+        Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
+        ArrayList<IField> dbColumns = new ArrayList<IField>();
+
+        dbColumns.add(new DefaultColumn("id",true,false, ColumnType.INTEGER));  //3
+        dbColumns.add(new DefaultRelation("one2ManyEntities","a2b"                    //4
+                , B.class,new RelationColumnMapping[]{new RelationColumnMapping("id","parentId")}));
+        dbColumns.add(new DefaultRelation("one2ManyEntities","a2c"
+                , C.class,new RelationColumnMapping[]{new RelationColumnMapping("id","parentId")}));
+
+        map.put(this.getClass(),dbColumns);
+        return map;
+    }
+}
+
+public class B extends AbstractManagedEntity
+{
+    private int parentId;
+
+    //getters and setters
+
+    public Map<Class,String> getTableNames()
+    {
+        Map<Class,String> map = new HashMap<Class, String>();
+        map.put(this.getClass(),"b");
+        return map;
+    }
+
+    public Map<Class,Collection<IField>> getFieldInfo()
+    {
+        Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
+        ArrayList<IField> dbColumns = new ArrayList<IField>();
+
+        dbColumns.add(new DefaultColumn("parentId",true,false, ColumnType.INTEGER));
+
+        map.put(this.getClass(),dbColumns);
+        return map;
+    }
+}
+
+public class C extends AbstractManagedEntity
+{
+    private int parentId;
+
+    //getters and setters
+
+    public Map<Class,String> getTableNames()
+    {
+        Map<Class,String> map = new HashMap<Class, String>();
+        map.put(this.getClass(),"c");
+        return map;
+    }
+
+    public Map<Class,Collection<IField>> getFieldInfo()
+    {
+        Map<Class,Collection<IField>> map = new HashMap<Class, Collection<IField>>();
+        ArrayList<IField> dbColumns = new ArrayList<IField>();
+
+        dbColumns.add(new DefaultColumn("parentId",true,false, ColumnType.INTEGER));
+
+        map.put(this.getClass(),dbColumns);
+        return map;
+    }
+}
+}}}
+
+==1. {{{public Map<Class,String> getTableNames()}}}==
+this method returns map of the class with table names (it uses a map when it comes to inheritance it has to contain many entity class to table mapping pairs)
+
+==2. {{{public Map<Class,Collection<IField>> getFieldInfo()}}}==
+this method returns list of fields (columns/relationships) as a map against the class it's mapped (uses a map for the same reason it used a map for table names)
+
+==3. {{{DefaultColumn}}} or any implementation of {{{IColumn}}}
+same as {{{@ColumnInfo}}}, and the parameters are the same
+
+==4. {{{DefaultRelation}}} or any implementation of {{{IRelation}}}
+same as {{{@ForeignKeyInfo}}}, and the parameters are the same
+
+=Manual registration=
+{{{
+public class A implements IEntity
+{
+    private EntityStatus status;
+    private EntityContext context;
+    private int id;
+    private Collection<Object> childEntities;
+
+    public A()
+    {
+        context = new EntityContext();
+        status = EntityStatus.NEW;
+    }
+
+    //getters and setters
+
+    public EntityStatus getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(EntityStatus status)
+    {
+        this.status = status;
+    }
+
+    public void persist(Connection con) throws PersistException
+    {
+        DbGate.getSharedInstance().save(this,con);
+    }
+
+    public void retrieve(ResultSet rs, Connection con) throws RetrievalException
+    {
+        DbGate.getSharedInstance().load(this,rs,con);
+    }
+
+    public IEntityContext getContext()
+    {
+        return context;
+    }
+}
+
+//somewhere in the startup
+ArrayList<IField> dbColumns = new ArrayList<IField>();
+dbColumns.add(new DefaultColumn("id",true,false, ColumnType.INTEGER));  //3
+dbColumns.add(new DefaultRelation("one2ManyEntities","a2b"                    //4
+        , B.class,new RelationColumnMapping[]{new RelationColumnMapping("id","parentId")}));
+dbColumns.add(new DefaultRelation("one2ManyEntities","a2c"
+        , C.class,new RelationColumnMapping[]{new RelationColumnMapping("id","parentId")}));
+
+DbGate.getSharedInstance().registerEntity(objType, "a", dbColumns)
+}}}
+
+this is more of the same as using the abstract class, other than the registration happens somewhere in the application startup, and the information does not have to defined in the entity itself
