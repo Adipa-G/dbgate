@@ -150,7 +150,7 @@ public class SimpleExample extends ExampleBase
         Collection entities = query.toList(con);
         DBMgtUtility.close(con);
 
-        return (SimpleEntity)((Object[])entities.iterator().next())[0];
+        return (SimpleEntity)entities.iterator().next();
     }
 
     public static void main(String[] args)
