@@ -47,7 +47,7 @@ To enable greater flexibility DbGate offers expression builders so that custom e
         .field(Entity.class, "id").eq().value(ColumnType.INTEGER,45)
 }}}
 
-==Supported Expression Types==
+==Supported Expressions==
  * field -> denotes a field of an entity
  * value -> denotes a constant
  * values -> denotes a list of values
