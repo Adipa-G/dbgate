@@ -1,13 +1,13 @@
 #summary DbGate Queries
 DbGate provides a strong object query language, which minimizes usage of magic string eventually maximizing the maintainability of the code, db gate query is made out of different sections
 
- # Select
- # From
- # Join
- # Where
- # GroupBy
- # OrderBy
- # Having
+ # {{{select}}}
+ # {{{from}}}
+ # {{{join}}}
+ # {{{where}}}
+ # {{{groupBy}}}
+ # {{{orderBy}}}
+ # {{{having}}}
 
 Each of these sections are directly correspond to their sql counterparts
 
@@ -80,7 +80,7 @@ is a valid expression while
 is not
 
 
-=Selection=
+={{{selection}}}=
 Following options are available
  * rawSql -> use a sql to do the selection
  * type -> directly fetch an entity
@@ -91,28 +91,28 @@ Following options are available
  * count -> same as the expression builder count
  * custFunction -> same as the expression builder custFunction
 
-==From==
+=={{{from}}}==
  * rawSql -> use a sql to select from
  * type -> use an entity type, so that from is the table associated with the entity type
  * query -> use a query, to select from
  * queryUnion -> use a union of queries, to select from
 
-==Join==
+=={{{join}}}==
  * rawSql -> use a sql to join tables
  * type -> join with another entity type, there are many options available, if two entities has a relationship it would fetch the join condition automatically and there is option to manually specify conditions if required
 
-==Where==
+=={{{where}}}==
  * rawSql -> use a sql to specify the limiting conditions
  * expression -> build a logical expression using expression builder to provide the limiting conditions
 
-==GroupBy==
+=={{{groupBy}}}==
  * rawSql -> use a sql to specify grouping
  * field -> use a field to group
 
-==OrderBy==
+=={{{orderBy}}}==
  * rawSql -> use a sql to specify the ordering
  * field -> use a field to order by
 
-==Having==
+=={{{having}}}==
  * rawSql -> use a sql to specify the grouping conditions
  * expression -> build a logical expression using expression builder to provide the grouping conditions
