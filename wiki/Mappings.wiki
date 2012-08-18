@@ -1,4 +1,4 @@
-#Different methods of mapping entities
+#summary Different methods of mapping entities
 There are three distinctive methods to map the object model with database.
 
 # Use annotations
@@ -64,4 +64,3 @@ relatedObjectType -> defines the type of the related entity;
 reverseRelation -> this has to true, when the relationship is defined from child to parent. (default value is false)
 nonIdentifyingRelation -> has to set to true if the relationship is not parent to child or vise versa. (default value is false)
 lazy -> defines if this is allowed to load lazily
-
