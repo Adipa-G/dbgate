@@ -24,25 +24,26 @@ public class AbstractExpressionProcessor
     {
     }
 
-    private String appendAlias(String sql,FieldSegment fieldSegment)
+    public IColumn getColumn(FieldSegment segment,QueryBuildInfo buildInfo)
     {
-        if (fieldSegment.getAlias() != null && fieldSegment.getAlias().length() > 0)
-        {
-            return sql + " AS " + fieldSegment.getAlias() + " ";
-        }
-        return sql;
+        Class fieldType = getFieldType(segment,buildInfo);
+        Collection<IColumn> columns = findColumnsForType(fieldType);
+        return findColumn(segment.getField(), columns);
     }
 
-    public IColumn getColumn(FieldSegment segment)
+    private Collection<IColumn> findColumnsForType(Class fieldType)
     {
-        EntityInfo entityInfo = CacheManager.getEntityInfo(segment.getType());
-        Collection<IColumn> columns = entityInfo.getColumns();
+        EntityInfo entityInfo = CacheManager.getEntityInfo(fieldType);
+        return entityInfo.getColumns();
+    }
 
+    private static IColumn findColumn(String field, Collection<IColumn> columns)
+    {
         if (columns != null)
         {
             for (IColumn column : columns)
             {
-                if (column.getAttributeName().equals(segment.getField()))
+                if (column.getAttributeName().equals(field))
                 {
                     return column;
                 }
@@ -71,14 +72,15 @@ public class AbstractExpressionProcessor
 
     public String getFieldName(FieldSegment fieldSegment, boolean withAlias, QueryBuildInfo buildInfo)
     {
-        String tableAlias = buildInfo.getAlias(fieldSegment.getType());
+        Class fieldSegmentType = getFieldType(fieldSegment,buildInfo);
+        String tableAlias = buildInfo.getAlias(fieldSegmentType);
         if (fieldSegment.getTypeAlias() != null
                 && !fieldSegment.getTypeAlias().isEmpty())
         {
             tableAlias = fieldSegment.getTypeAlias();
         }
         tableAlias = (tableAlias == null)?"" : tableAlias + ".";
-        IColumn column = getColumn(fieldSegment);
+        IColumn column = getColumn(fieldSegment,buildInfo);
 
         if (column != null)
         {
@@ -93,6 +95,41 @@ public class AbstractExpressionProcessor
         {
             return "<incorrect column for " + fieldSegment.getField() + ">";
         }
+    }
+
+    private Class getFieldType(FieldSegment segment, QueryBuildInfo buildInfo)
+    {
+        if (segment.getType() != null)
+        {
+            return segment.getType();
+        }
+        else
+        {
+            Collection<Object> values =  buildInfo.aliases.values();
+            for (Object value : values)
+            {
+                if (value instanceof Class)
+                {
+                    Class targetType = (Class) value;
+                    Collection<IColumn> columns = findColumnsForType(targetType);
+                    IColumn column = findColumn(segment.getField(), columns);
+                    if (column != null)
+                    {
+                        return targetType;
+                    }
+                }
+            }
+            return null;
+        }
+    }
+
+    private String appendAlias(String sql,FieldSegment fieldSegment)
+    {
+        if (fieldSegment.getAlias() != null && fieldSegment.getAlias().length() > 0)
+        {
+            return sql + " AS " + fieldSegment.getAlias() + " ";
+        }
+        return sql;
     }
 
     public String getGroupFunction(GroupFunctionSegment groupSegment, boolean withAlias, QueryBuildInfo buildInfo)

@@ -66,19 +66,26 @@ public class RetrievalOperationLayer extends BaseOperationLayer
 
             rs = dbLayer.getDataManipulate().createResultSet(con,execInfo);
 
-            Collection retList = new ArrayList();
+            Collection<Object> retList = new ArrayList<>();
             Collection<IQuerySelection> selections = query.getStructure().getSelectList();
 
             while (rs.next())
             {
                 int count = 0;
-                Object[]  rowObjects = new Object[selections.size()];
+                Object  rowObject = selections.size() > 1 ? new Object[selections.size()] : null;
                 for (IQuerySelection selection : selections)
                 {
                     Object loaded = ((IAbstractSelection)selection).retrieve(rs,con,buildInfo);
-                    rowObjects[count++] = loaded;
+                    if (selections.size() > 1)
+                    {
+                        ((Object[])rowObject)[count++] = loaded;
+                    }
+                    else
+                    {
+                        rowObject = loaded;
+                    }
                 }
-                retList.add(rowObjects);
+                retList.add(rowObject);
             }
 
             return retList;

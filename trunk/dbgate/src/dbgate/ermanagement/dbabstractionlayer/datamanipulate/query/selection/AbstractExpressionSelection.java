@@ -86,7 +86,7 @@ public class AbstractExpressionSelection implements IAbstractSelection
                         fieldSegment = (FieldSegment) rootSegment;
                     }
                     String alias = fieldSegment.getAlias();
-                    column = alias != null && alias.length() > 0? alias : processor.getColumn(fieldSegment).getColumnName();
+                    column = alias != null && alias.length() > 0? alias : processor.getColumn(fieldSegment,buildInfo).getColumnName();
                     break;
                 case QUERY:
                     QuerySegment querySegment = (QuerySegment) rootSegment;

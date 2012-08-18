@@ -37,9 +37,21 @@ public class ConditionExpr extends BaseExpr
     }
 
     @Override
+    public ConditionExpr value(Object value) throws ExpressionParsingException
+    {
+        return (ConditionExpr)super.value(value);
+    }
+
+    @Override
     public ConditionExpr values(ColumnType type, Object... values) throws ExpressionParsingException
     {
         return (ConditionExpr)super.value(type, values);
+    }
+
+    @Override
+    public ConditionExpr values(Object... values) throws ExpressionParsingException
+    {
+        return (ConditionExpr)super.values(values);
     }
 
     @Override
