@@ -178,7 +178,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
 
         if (entityContext != null)
         {
-            entityContext.getChangeTracker().getFields().addAll(valueTypeList.getFieldValues());
+            entityContext.getChangeTracker().addFields(valueTypeList.getFieldValues());
         }
 
         Collection<IRelation> dbRelations = entityInfo.getRelations();
@@ -221,7 +221,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
                 ITypeFieldValueList valueTypeList = OperationUtils.extractRelationKeyValues(childEntity, relation);
                 if (valueTypeList != null)
                 {
-                    entityContext.getChangeTracker().getChildEntityKeys().add(valueTypeList);
+                    entityContext.getChangeTracker().addChildEntityKey(valueTypeList);
                 }
             }
         }

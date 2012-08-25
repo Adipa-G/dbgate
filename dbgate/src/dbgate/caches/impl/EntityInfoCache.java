@@ -81,6 +81,7 @@ public class EntityInfoCache implements IEntityInfoCache
         {
             EntityInfo immediateSuperEntityInfo = cache.get(immediateSuper);
             subEntityInfo.setSuperEntityInfo(immediateSuperEntityInfo);
+            immediateSuperEntityInfo.getSubEntityInfo().add(subEntityInfo);
         }
 
         synchronized (cache)
@@ -122,9 +123,11 @@ public class EntityInfoCache implements IEntityInfoCache
         Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{IReadOnlyEntity.class});
         for (Class regType : typeList)
         {
-            if (cache.containsKey(regType))
+            if (subEntity != null && cache.containsKey(regType))
             {
-                subEntity.setSuperEntityInfo(cache.get(regType));
+                EntityInfo superEntityInfo = cache.get(regType);
+                subEntity.setSuperEntityInfo(superEntityInfo);
+                superEntityInfo.getSubEntityInfo().add(subEntity);
                 continue;
             }
 
@@ -139,6 +142,7 @@ public class EntityInfoCache implements IEntityInfoCache
                 if (subEntity != null)
                 {
                     subEntity.setSuperEntityInfo(entityInfo);
+                    entityInfo.getSubEntityInfo().add(subEntity);
                 }
                 entityInfoMap.put(regType,entityInfo);
                 subEntity = entityInfo;

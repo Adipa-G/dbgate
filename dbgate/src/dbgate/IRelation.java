@@ -6,7 +6,7 @@ package dbgate;
  * Date: Sep 22, 2010
  * Time: 12:50:23 PM
  */
-public interface IRelation extends IField
+public interface IRelation extends IField,Cloneable
 {
     String getRelationshipName();
 
@@ -39,4 +39,6 @@ public interface IRelation extends IField
     boolean isLazy();
 
     void setLazy(boolean lazy);
+
+    IRelation clone();
 }
