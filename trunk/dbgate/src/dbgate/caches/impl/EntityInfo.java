@@ -25,6 +25,7 @@ public class EntityInfo
     private Class entityType;
     private String tableName;
     private EntityInfo superEntityInfo;
+    private Collection<EntityInfo> subEntityInfo;
 
     private final HashMap<String,Method> methodMap;
     private final Collection<IColumn> columns;
@@ -34,6 +35,7 @@ public class EntityInfo
     public EntityInfo(Class entityType)
     {
         this.entityType = entityType;
+        this.subEntityInfo = new ArrayList<>();
         this.columns = new ArrayList<>();
         this.relations = new ArrayList<>();
         this.methodMap = new HashMap<>();
@@ -63,6 +65,11 @@ public class EntityInfo
     public void setSuperEntityInfo(EntityInfo superEntityInfo)
     {
         this.superEntityInfo = superEntityInfo;
+    }
+
+    public Collection<EntityInfo> getSubEntityInfo()
+    {
+        return subEntityInfo;
     }
 
     public Collection<IColumn> getColumns()

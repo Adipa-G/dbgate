@@ -6,6 +6,8 @@ import dbgate.context.ITypeFieldValueList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Date: Mar 23, 2011
@@ -18,20 +20,43 @@ public class ChangeTracker implements IChangeTracker
 
     public ChangeTracker()
     {
-        fields = new ArrayList<EntityFieldValue>();
-        childEntityRelationKeys = new ArrayList<ITypeFieldValueList>();
+        fields = new CopyOnWriteArrayList<>();
+        childEntityRelationKeys = new CopyOnWriteArrayList<>();
     }
 
     @Override
     public Collection<EntityFieldValue> getFields()
     {
-        return fields;
+        return Collections.unmodifiableCollection(fields);
+    }
+
+    @Override
+    public void addFields(Collection<EntityFieldValue> entityFieldValues)
+    {
+        for (EntityFieldValue field : entityFieldValues)
+        {
+            EntityFieldValue existing =  getFieldValue(field.getAttributeName());
+            if (existing != null)
+            {
+                existing.setValue(field.getValue());
+            }
+            else
+            {
+                this.fields.add(field);
+            }
+        }
     }
 
     @Override
     public Collection<ITypeFieldValueList> getChildEntityKeys()
     {
-        return childEntityRelationKeys;
+        return Collections.unmodifiableCollection(childEntityRelationKeys);
+    }
+
+    @Override
+    public void addChildEntityKey(ITypeFieldValueList childEntityKey)
+    {
+        childEntityRelationKeys.add(childEntityKey);
     }
 
     @Override

@@ -167,8 +167,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         IEntityContext entityContext = entity.getContext();
         if (entityContext != null)
         {
-            entityContext.getChangeTracker().getFields().clear();
-            entityContext.getChangeTracker().getFields().addAll(fieldValues.getFieldValues());
+            entityContext.getChangeTracker().addFields(fieldValues.getFieldValues());
         }
 
         SessionUtils.addToSession(entity, OperationUtils.extractEntityKeyValues(entity));
@@ -603,10 +602,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         while (entityInfo != null)
         {
             ITypeFieldValueList values = extractCurrentRowValues(entity, entityInfo.getEntityType(), con);
-            for (EntityFieldValue fieldValue : values.getFieldValues())
-            {
-                entityContext.getChangeTracker().getFields().add(fieldValue);
-            }
+            entityContext.getChangeTracker().addFields(values.getFieldValues());
 
             Collection<IRelation> dbRelations = entityInfo.getRelations();
             for (IRelation relation : dbRelations)

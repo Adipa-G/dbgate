@@ -1,6 +1,8 @@
 package dbgate;
 
+import dbgate.context.impl.ChangeTracker;
 import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 import dbgate.support.persistant.changetracker.ChangeTrackerTestOne2ManyEntity;
 import dbgate.support.persistant.changetracker.ChangeTrackerTestOne2OneEntity;
 import dbgate.support.persistant.changetracker.ChangeTrackerTestRootEntity;
@@ -9,7 +11,9 @@ import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
@@ -130,8 +134,15 @@ public class DbGateChangeTrackerTest
             connection = connector.getConnection();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
             loadEntityWithId(connection,loadedEntity,id);
-            loadedEntity.getContext().getChangeTracker().getFields().clear();
-            loadedEntity.getContext().getChangeTracker().getChildEntityKeys().clear();
+
+            Field fieldsField = ChangeTracker.class.getDeclaredField("fields");
+            Field entityRelationKeysField = ChangeTracker.class.getDeclaredField("childEntityRelationKeys");
+            Object changeTracker = loadedEntity.getContext().getChangeTracker();
+            Collection fields = (Collection) ReflectionUtils.getFieldValue(fieldsField,changeTracker);
+            fields.clear();
+            Collection childEntityKeys = (Collection) ReflectionUtils.getFieldValue(entityRelationKeysField,changeTracker);
+            childEntityKeys.clear();
+
             loadedEntity.setName("Changed-Name");
             loadedEntity.persist(connection);
             connection.commit();

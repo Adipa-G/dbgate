@@ -23,8 +23,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -142,7 +141,7 @@ public abstract class BaseOperationLayer
             throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(parentEntity);
-        Collection<ITypeFieldValueList> existingEntityChildRelations = new ArrayList<ITypeFieldValueList>();
+        Collection<ITypeFieldValueList> existingEntityChildRelations = new ArrayList<>();
 
         while (entityInfo != null)
         {
@@ -218,66 +217,108 @@ public abstract class BaseOperationLayer
     protected Collection<IReadOnlyEntity> readRelationChildrenFromDb(IReadOnlyEntity entity,Class type
             ,Connection con,IRelation relation) throws DbGateException
     {
-        EntityInfo entityInfo = CacheManager.getEntityInfo(type);
-        Class childType = relation.getRelatedObjectType();
+        Collection<IReadOnlyEntity> retrievedEntities = new ArrayList<>();
+        Collection<Class> childTypesToProcess = getChildTypesToProcess(relation);
 
-        StringBuilder logSb = new StringBuilder();
-        String query = entityInfo.getRelationObjectLoad(dbLayer,relation);
+        int index = 0;
+        for (Class childType : childTypesToProcess)
+        {
+            index++;
+            IRelation effectiveRelation = relation.clone();
+            effectiveRelation.setRelatedObjectType(childType);
+            effectiveRelation.setRelationshipName(relation.getRelationshipName() + "_" + index);
 
-        ArrayList<String> fields = new ArrayList<String>();
-        for (RelationColumnMapping mapping : relation.getTableColumnMappings())
-        {
-            fields.add(mapping.getFromField());
-        }
+            EntityInfo entityInfo = CacheManager.getEntityInfo(type);
+            StringBuilder logSb = new StringBuilder();
+            String query = entityInfo.getRelationObjectLoad(dbLayer,effectiveRelation);
 
-        PreparedStatement ps;
-        try
-        {
-            ps = con.prepareStatement(query);
-        }
-        catch (SQLException ex)
-        {
-            String message = String.format("SQL Exception while trying create prepared statement for sql %s",query);
-            throw new StatementPreparingException(message,ex);
-        }
-
-        boolean showQuery = config.isShowQueries();
-        if (showQuery)
-        {
-            logSb.append(query);
-        }
-        Collection<IColumn> dbColumns = entityInfo.getColumns();
-        for (int i = 0; i < fields.size(); i++)
-        {
-            String field = fields.get(i);
-            IColumn matchColumn = OperationUtils.findColumnByAttribute(dbColumns, field);
-
-            if (matchColumn != null)
+            ArrayList<String> fields = new ArrayList<String>();
+            for (RelationColumnMapping mapping : effectiveRelation.getTableColumnMappings())
             {
-                Method getter = entityInfo.getGetter(matchColumn.getAttributeName());
-                Object fieldValue = ReflectionUtils.getValue(getter,entity);
+                fields.add(mapping.getFromField());
+            }
 
-                if (showQuery)
+            PreparedStatement ps;
+            try
+            {
+                ps = con.prepareStatement(query);
+            }
+            catch (SQLException ex)
+            {
+                String message = String.format("SQL Exception while trying create prepared statement for sql %s",query);
+                throw new StatementPreparingException(message,ex);
+            }
+
+            boolean showQuery = config.isShowQueries();
+            if (showQuery)
+            {
+                logSb.append(query);
+            }
+            Collection<IColumn> dbColumns = entityInfo.getColumns();
+            for (int i = 0; i < fields.size(); i++)
+            {
+                String field = fields.get(i);
+                IColumn matchColumn = OperationUtils.findColumnByAttribute(dbColumns, field);
+
+                if (matchColumn != null)
                 {
-                    logSb.append(" ,").append(matchColumn.getColumnName()).append("=").append(fieldValue);
+                    Method getter = entityInfo.getGetter(matchColumn.getAttributeName());
+                    Object fieldValue = ReflectionUtils.getValue(getter,entity);
+
+                    if (showQuery)
+                    {
+                        logSb.append(" ,").append(matchColumn.getColumnName()).append("=").append(fieldValue);
+                    }
+                    dbLayer.getDataManipulate().setToPreparedStatement(ps,fieldValue,i+1,matchColumn);
                 }
-                dbLayer.getDataManipulate().setToPreparedStatement(ps,fieldValue,i+1,matchColumn);
+                else
+                {
+                    String message = String.format("The field %s does not have a matching field in the object %s", field,entity.getClass().getName());
+                    throw new NoMatchingColumnFoundException(message);
+                }
             }
-            else
+            if (showQuery)
             {
-                String message = String.format("The field %s does not have a matching field in the object %s", field,entity.getClass().getName());
-                throw new NoMatchingColumnFoundException(message);
+                Logger.getLogger(config.getLoggerName()).info(logSb.toString());
+            }
+            if (config.isEnableStatistics())
+            {
+                statistics.registerSelect(childType);
+            }
+            Collection<IReadOnlyEntity> retrievedEntitiesForType = executeAndReadFromPreparedStatement(entity, con, ps, childType);
+            retrievedEntities.addAll(retrievedEntitiesForType);
+        }
+        return retrievedEntities;
+    }
+
+    private List<Class> getChildTypesToProcess(IRelation relation)
+    {
+        List<Class> childTypesToProcess = new ArrayList<>();
+        Class childType = relation.getRelatedObjectType();
+        EntityInfo childEntityInfo = CacheManager.getEntityInfo(childType);
+
+        if (childEntityInfo.getSubEntityInfo().size() > 0)
+        {
+            for (EntityInfo entityInfo : childEntityInfo.getSubEntityInfo())
+            {
+                childTypesToProcess.add(entityInfo.getEntityType());
             }
         }
-        if (showQuery)
+        else
         {
-            Logger.getLogger(config.getLoggerName()).info(logSb.toString());
+            childTypesToProcess.add(childType);
         }
-        if (config.isEnableStatistics())
+
+        Collections.sort(childTypesToProcess, new Comparator<Class>()
         {
-            statistics.registerSelect(childType);
-        }
-        return executeAndReadFromPreparedStatement(entity, con, ps, childType);
+            @Override
+            public int compare(Class o1, Class o2)
+            {
+                return o1.getCanonicalName().compareTo(o2.getCanonicalName());
+            }
+        });
+
+        return childTypesToProcess;
     }
 
     private Collection<IReadOnlyEntity> executeAndReadFromPreparedStatement(IReadOnlyEntity entity, Connection con,

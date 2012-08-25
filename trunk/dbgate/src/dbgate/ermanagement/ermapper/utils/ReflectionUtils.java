@@ -1,8 +1,10 @@
 package dbgate.ermanagement.ermapper.utils;
 
 import dbgate.exceptions.common.EntityInstantiationException;
+import dbgate.exceptions.common.FieldValueExtractionException;
 import dbgate.exceptions.common.MethodInvocationException;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,6 +129,21 @@ public class ReflectionUtils
             String message = String.format("Exception while trying to create an instance of type %s"
                     ,type.getClass().getCanonicalName());
             throw new EntityInstantiationException(message,ex);
+        }
+    }
+
+    public static Object getFieldValue(Field field,Object target) throws FieldValueExtractionException
+    {
+        try
+        {
+            field.setAccessible(true);
+            return field.get(target);
+        }
+        catch (Exception ex)
+        {
+            String message = String.format("Exception while trying to extract field value of %s of entity %s"
+                    ,field,target.getClass().getCanonicalName());
+            throw new FieldValueExtractionException(message,ex);
         }
     }
 }

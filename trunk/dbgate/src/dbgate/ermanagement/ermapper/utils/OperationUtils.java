@@ -119,6 +119,10 @@ public class OperationUtils
             {
                 if (!key || (subLevelColumn.isKey() && key))
                 {
+                    if (AlreadyHasTheColumnAdded(entityFieldValues,subLevelColumn))
+                    {
+                        continue;
+                    }
                     Method getter = parentEntityInfo.getGetter(subLevelColumn.getAttributeName());
                     Object value = ReflectionUtils.getValue(getter,entity);
 
@@ -129,6 +133,18 @@ public class OperationUtils
         }
 
         return entityFieldValues;
+    }
+
+    private static boolean AlreadyHasTheColumnAdded(Collection<EntityFieldValue> entityFieldValues,IColumn column)
+    {
+        for (EntityFieldValue fieldValue : entityFieldValues)
+        {
+            if (fieldValue.getDbColumn().getAttributeName().equals(column.getAttributeName()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Collection<ITypeFieldValueList> findDeletedChildren(Collection<ITypeFieldValueList> startListRelation

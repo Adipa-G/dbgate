@@ -149,4 +149,18 @@ public abstract class AbstractRelation implements IRelation
     {
         this.lazy = lazy;
     }
+
+    @Override
+    public IRelation clone()
+    {
+        try
+        {
+            return (IRelation) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

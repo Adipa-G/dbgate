@@ -12,7 +12,11 @@ public interface IChangeTracker
 {
     Collection<EntityFieldValue> getFields();
 
+    void addFields(Collection<EntityFieldValue> fields);
+
     Collection<ITypeFieldValueList> getChildEntityKeys();
+
+    void addChildEntityKey(ITypeFieldValueList childEntityKey);
 
     EntityFieldValue getFieldValue(String attributeName);
 
