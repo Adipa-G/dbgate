@@ -1,9 +1,8 @@
 package dbgate.ermanagement.dbabstractionlayer.metamanipulate;
 
 import dbgate.ColumnType;
+import dbgate.ITransaction;
 import dbgate.ReferentialRuleType;
-import dbgate.utility.DBMgtUtility;
-import dbgate.exceptions.migration.MetaDataException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.*;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.datastructures.IMetaItem;
@@ -11,8 +10,9 @@ import dbgate.ermanagement.dbabstractionlayer.metamanipulate.datastructures.Meta
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.mappings.ColumnTypeMapItem;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.mappings.ReferentialRuleTypeMapItem;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.support.MetaQueryHolder;
+import dbgate.exceptions.migration.MetaDataException;
+import dbgate.utility.DBMgtUtility;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,18 +39,18 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     }
 
     @Override
-    public void initialize(Connection con) throws MetaDataException
+    public void initialize(ITransaction tx) throws MetaDataException
     {
-        fillDataMappings(con);
-        fillReferentialRuleMappings(con);
+        fillDataMappings(tx);
+        fillReferentialRuleMappings(tx);
     }
 
-    protected void fillDataMappings(Connection con) throws MetaDataException
+    protected void fillDataMappings(ITransaction tx) throws MetaDataException
     {
         DatabaseMetaData metaData;
         try
         {
-            metaData = con.getMetaData();
+            metaData = tx.getConnection().getMetaData();
             ResultSet resultSet = metaData.getTypeInfo();
             while (resultSet.next())
             {
@@ -67,7 +67,7 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
         }
     }
 
-    protected void fillReferentialRuleMappings(Connection con)
+    protected void fillReferentialRuleMappings(ITransaction tx)
     {
         referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.CASCADE, "0"));
         referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.RESTRICT, "1"));
@@ -159,12 +159,12 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     }
 
     @Override
-    public Collection<IMetaItem> getMetaData(Connection con) throws MetaDataException
+    public Collection<IMetaItem> getMetaData(ITransaction tx) throws MetaDataException
     {
         Collection<IMetaItem> metaItems = new ArrayList<>();
         try
         {
-            DatabaseMetaData metaData = con.getMetaData();
+            DatabaseMetaData metaData = tx.getConnection().getMetaData();
             ResultSet tableResultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
             while (tableResultSet.next())
             {

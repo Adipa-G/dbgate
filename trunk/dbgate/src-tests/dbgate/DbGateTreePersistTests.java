@@ -1,6 +1,5 @@
 package dbgate;
 
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.treetest.*;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -24,7 +23,7 @@ public class DbGateTreePersistTests
     public static final int TYPE_FIELD = 2;
     public static final int TYPE_EXTERNAL = 3;
 
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -60,11 +59,11 @@ public class DbGateTreePersistTests
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-tree-persist;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-tree-persist;","org.apache.derby.jdbc.EmbeddedDriver",
+                                        DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -76,21 +75,21 @@ public class DbGateTreePersistTests
     @Before
     public void beforeEach()
     {
-        DbGate.getSharedInstance().clearCache();
+        connector.getDbGate().clearCache();
     }
 
     private void registerForExternal()
     {
         Class objType = TreeTestRootEntityExt.class;
-        DbGate.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2OneEntityExt.class;
-        DbGate.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2ManyEntityExt.class;
-        DbGate.getSharedInstance().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
     }
 
@@ -99,18 +98,18 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_ANNOTATION);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             boolean compareResult = compareEntities(rootEntity,loadedEntity);
             Assert.assertTrue(compareResult);
@@ -127,18 +126,18 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_FIELD);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             boolean compareResult = compareEntities(rootEntity,loadedEntity);
             Assert.assertTrue(compareResult);
@@ -155,20 +154,20 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             registerForExternal();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_EXTERNAL);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityExt();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             boolean compareResult = compareEntities(rootEntity,loadedEntity);
             Assert.assertTrue(compareResult);
@@ -185,18 +184,18 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_ANNOTATION);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             loadedEntity.setName("changed-name");
             loadedEntity.setStatus(EntityStatus.MODIFIED);
@@ -207,14 +206,14 @@ public class DbGateTreePersistTests
             one2ManyEntity.setName("changed-one2many");
             one2ManyEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity reLoadedEntity = new TreeTestRootEntityAnnotations();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             boolean compareResult = compareEntities(loadedEntity,reLoadedEntity);
             Assert.assertTrue(compareResult);
@@ -231,18 +230,18 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_FIELD);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             loadedEntity.setName("changed-name");
             loadedEntity.setStatus(EntityStatus.MODIFIED);
@@ -253,14 +252,14 @@ public class DbGateTreePersistTests
             one2ManyEntity.setName("changed-one2many");
             one2ManyEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity reLoadedEntity = new TreeTestRootEntityFields();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             boolean compareResult = compareEntities(loadedEntity,reLoadedEntity);
             Assert.assertTrue(compareResult);
@@ -277,20 +276,20 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             registerForExternal();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_EXTERNAL);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityExt();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             loadedEntity.setName("changed-name");
             loadedEntity.setStatus(EntityStatus.MODIFIED);
@@ -301,14 +300,14 @@ public class DbGateTreePersistTests
             one2ManyEntity.setName("changed-one2many");
             one2ManyEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity reLoadedEntity = new TreeTestRootEntityExt();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             boolean compareResult = compareEntities(loadedEntity,reLoadedEntity);
             Assert.assertTrue(compareResult);
@@ -325,32 +324,32 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_ANNOTATION);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             loadedEntity.setName("changed-name");
             loadedEntity.setStatus(EntityStatus.DELETED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity reLoadedEntity = new TreeTestRootEntityAnnotations();
-            boolean loaded = loadEntityWithId(connection,reLoadedEntity,id);
-            boolean existsOne2one = existsOne2OneChild(connection,id);
-            boolean existsOne2many = existsOne2ManyChild(connection,id);
-            connection.close();
+            boolean loaded = loadEntityWithId(tx,reLoadedEntity,id);
+            boolean existsOne2one = existsOne2OneChild(tx,id);
+            boolean existsOne2many = existsOne2ManyChild(tx,id);
+            tx.close();
 
             Assert.assertFalse(loaded);
             Assert.assertFalse(existsOne2one);
@@ -368,32 +367,32 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_FIELD);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             loadedEntity.setName("changed-name");
             loadedEntity.setStatus(EntityStatus.DELETED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity reLoadedEntity = new TreeTestRootEntityFields();
-            boolean loaded = loadEntityWithId(connection,reLoadedEntity,id);
-            boolean existsOne2one = existsOne2OneChild(connection,id);
-            boolean existsOne2many = existsOne2ManyChild(connection,id);
-            connection.close();
+            boolean loaded = loadEntityWithId(tx,reLoadedEntity,id);
+            boolean existsOne2one = existsOne2OneChild(tx,id);
+            boolean existsOne2many = existsOne2ManyChild(tx,id);
+            tx.close();
 
             Assert.assertFalse(loaded);
             Assert.assertFalse(existsOne2one);
@@ -411,34 +410,34 @@ public class DbGateTreePersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             registerForExternal();
 
             int id = 35;
             ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_EXTERNAL);
-            rootEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity loadedEntity = new TreeTestRootEntityExt();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             loadedEntity.setName("changed-name");
             loadedEntity.setStatus(EntityStatus.DELETED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ITreeTestRootEntity reLoadedEntity = new TreeTestRootEntityExt();
-            boolean loaded = loadEntityWithId(connection,reLoadedEntity,id);
-            boolean existsOne2one = existsOne2OneChild(connection,id);
-            boolean existsOne2many = existsOne2ManyChild(connection,id);
-            connection.close();
+            boolean loaded = loadEntityWithId(tx,reLoadedEntity,id);
+            boolean existsOne2one = existsOne2OneChild(tx,id);
+            boolean existsOne2many = existsOne2ManyChild(tx,id);
+            tx.close();
 
             Assert.assertFalse(loaded);
             Assert.assertFalse(existsOne2one);
@@ -451,16 +450,16 @@ public class DbGateTreePersistTests
         }
     }
 
-    private boolean loadEntityWithId(Connection connection, ITreeTestRootEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, ITreeTestRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from tree_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from tree_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -469,11 +468,11 @@ public class DbGateTreePersistTests
         return loaded;
     }
 
-    private boolean existsOne2OneChild(Connection connection,int id) throws SQLException
+    private boolean existsOne2OneChild(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from tree_test_one2one where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from tree_test_one2one where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -486,11 +485,11 @@ public class DbGateTreePersistTests
         return exists;
     }
 
-    private boolean existsOne2ManyChild(Connection connection,int id) throws SQLException
+    private boolean existsOne2ManyChild(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from tree_test_one2many where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from tree_test_one2many where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())

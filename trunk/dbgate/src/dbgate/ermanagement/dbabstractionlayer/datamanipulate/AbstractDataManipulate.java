@@ -3,10 +3,6 @@ package dbgate.ermanagement.dbabstractionlayer.datamanipulate;
 import dbgate.*;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
-import dbgate.exceptions.ExpressionParsingException;
-import dbgate.exceptions.common.ReadFromResultSetException;
-import dbgate.exceptions.common.StatementExecutionException;
-import dbgate.exceptions.common.StatementPreparingException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.condition.AbstractConditionFactory;
@@ -25,6 +21,10 @@ import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.Abs
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.ermapper.utils.OperationUtils;
 import dbgate.ermanagement.query.*;
+import dbgate.exceptions.ExpressionParsingException;
+import dbgate.exceptions.common.ReadFromResultSetException;
+import dbgate.exceptions.common.StatementExecutionException;
+import dbgate.exceptions.common.StatementPreparingException;
 
 import java.sql.*;
 import java.util.*;
@@ -416,7 +416,7 @@ public class AbstractDataManipulate implements IDataManipulate
     }
 
     @Override
-    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo) throws StatementPreparingException,StatementExecutionException
+    public ResultSet createResultSet(ITransaction tx, final QueryExecInfo execInfo) throws StatementPreparingException,StatementExecutionException
     {
         try
         {
@@ -427,11 +427,11 @@ public class AbstractDataManipulate implements IDataManipulate
 
             if (storedProcedure)
             {
-                ps = con.prepareCall(execInfo.getSql());
+                ps = tx.getConnection().prepareCall(execInfo.getSql());
             }
             else
             {
-                ps = con.prepareStatement(execInfo.getSql());
+                ps = tx.getConnection().prepareStatement(execInfo.getSql());
             }
 
             List<QueryExecParam> params = execInfo.getParams();

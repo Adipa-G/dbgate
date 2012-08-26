@@ -1,12 +1,12 @@
 package dbgate;
 
-import dbgate.ermanagement.query.IQueryOrderBy;
-import dbgate.ermanagement.query.QueryOrderByExpressionType;
-import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.orderby.AbstractExpressionOrderBy;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.orderby.AbstractOrderByFactory;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.orderby.AbstractSqlQueryOrderBy;
+import dbgate.ermanagement.query.IQueryOrderBy;
+import dbgate.ermanagement.query.QueryOrderByExpressionType;
 import dbgate.ermanagement.query.expr.OrderByExpr;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

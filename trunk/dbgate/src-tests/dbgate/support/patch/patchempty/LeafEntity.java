@@ -1,10 +1,6 @@
 package dbgate.support.patch.patchempty;
 
 import dbgate.*;
-import dbgate.AbstractManagedEntity;
-import dbgate.DefaultColumn;
-import dbgate.IColumn;
-import dbgate.IField;
 
 import java.util.ArrayList;
 import java.util.Collection;

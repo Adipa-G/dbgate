@@ -1,7 +1,6 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection;
 
-import dbgate.exceptions.ExpressionParsingException;
-import dbgate.exceptions.RetrievalException;
+import dbgate.ITransaction;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
@@ -11,8 +10,9 @@ import dbgate.ermanagement.query.expr.segments.FieldSegment;
 import dbgate.ermanagement.query.expr.segments.GroupFunctionSegment;
 import dbgate.ermanagement.query.expr.segments.ISegment;
 import dbgate.ermanagement.query.expr.segments.QuerySegment;
+import dbgate.exceptions.ExpressionParsingException;
+import dbgate.exceptions.RetrievalException;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
@@ -67,7 +67,7 @@ public class AbstractExpressionSelection implements IAbstractSelection
     }
 
     @Override
-    public Object retrieve(ResultSet rs, Connection con, QueryBuildInfo buildInfo) throws RetrievalException
+    public Object retrieve(ResultSet rs, ITransaction tx, QueryBuildInfo buildInfo) throws RetrievalException
     {
         try
         {

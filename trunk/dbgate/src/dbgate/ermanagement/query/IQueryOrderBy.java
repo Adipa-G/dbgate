@@ -1,7 +1,5 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.query.QueryOrderByExpressionType;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa

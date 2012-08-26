@@ -1,12 +1,9 @@
 package dbgate.caches.impl;
 
 import dbgate.*;
-import dbgate.IColumn;
-import dbgate.IRelation;
-import dbgate.IField;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.exceptions.common.MethodNotFoundException;
 import dbgate.exceptions.query.QueryBuildingException;
-import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

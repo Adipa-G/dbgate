@@ -1,8 +1,7 @@
 package dbgate.ermanagement.dbabstractionlayer.metamanipulate.dbmm.defaultmm;
 
 import dbgate.ColumnType;
-import dbgate.utility.DBMgtUtility;
-import dbgate.exceptions.migration.MetaDataException;
+import dbgate.ITransaction;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.AbstractMetaManipulate;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;
@@ -11,8 +10,9 @@ import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.MetaCompari
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.MetaComparisonTableGroup;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.datastructures.*;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.mappings.ColumnTypeMapItem;
+import dbgate.exceptions.migration.MetaDataException;
+import dbgate.utility.DBMgtUtility;
 
-import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +35,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     }
 
     @Override
-    protected void fillDataMappings(Connection con) throws MetaDataException
+    protected void fillDataMappings(ITransaction tx) throws MetaDataException
     {
         columnTypeMapItems.add(new ColumnTypeMapItem("INTEGER", ColumnType.INTEGER,"0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("CHAR", ColumnType.BOOLEAN,"true"));

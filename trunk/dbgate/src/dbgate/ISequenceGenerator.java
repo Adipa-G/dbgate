@@ -1,7 +1,5 @@
 package dbgate;
 
-import java.sql.Connection;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -10,5 +8,5 @@ import java.sql.Connection;
  */
 public interface ISequenceGenerator
 {
-    abstract Object getNextSequenceValue(Connection con);
+    abstract Object getNextSequenceValue(ITransaction tx);
 }

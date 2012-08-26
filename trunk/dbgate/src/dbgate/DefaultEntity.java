@@ -1,10 +1,7 @@
 package dbgate;
 
-import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.ermanagement.ermapper.utils.MiscUtils;
-
-import java.sql.Connection;
+import dbgate.exceptions.PersistException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,9 +28,9 @@ public class DefaultEntity extends DefaultReadOnlyEntity implements IEntity
         this.status = status;
     }
 
-    public void persist(Connection con) throws PersistException
+    public void persist(ITransaction tx) throws PersistException
     {
-        DbGate.getSharedInstance().save(this,con);
+        tx.getDbGate().save(this,tx);
     }
 
     public void _modify()

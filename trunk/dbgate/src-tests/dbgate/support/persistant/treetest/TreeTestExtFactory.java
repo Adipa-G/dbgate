@@ -1,10 +1,6 @@
 package dbgate.support.persistant.treetest;
 
 import dbgate.*;
-import dbgate.RelationColumnMapping;
-import dbgate.DefaultColumn;
-import dbgate.DefaultRelation;
-import dbgate.IField;
 
 import java.util.ArrayList;
 import java.util.Collection;

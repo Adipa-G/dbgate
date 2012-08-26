@@ -1,11 +1,11 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.condition;
 
-import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QueryConditionExpressionType;
 import dbgate.ermanagement.query.expr.ConditionExpr;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

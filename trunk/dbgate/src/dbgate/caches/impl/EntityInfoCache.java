@@ -2,9 +2,9 @@ package dbgate.caches.impl;
 
 import dbgate.*;
 import dbgate.caches.IEntityInfoCache;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 import dbgate.exceptions.SequenceGeneratorInitializationException;
 import dbgate.exceptions.common.EntityRegistrationException;
-import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

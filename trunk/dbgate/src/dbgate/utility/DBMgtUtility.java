@@ -1,6 +1,7 @@
 package dbgate.utility;
 
 import dbgate.GeneralLogger;
+import dbgate.ITransaction;
 
 import java.sql.*;
 import java.util.logging.Level;
@@ -26,6 +27,24 @@ public class DBMgtUtility
                 }
             }
             catch (SQLException ex)
+            {
+                GeneralLogger.getLogger().log(Level.SEVERE,ex.getMessage(),ex);
+            }
+        }
+    }
+
+    public static void close(ITransaction tx)
+    {
+        if (tx != null)
+        {
+            try
+            {
+                if (!tx.isClosed())
+                {
+                    tx.close();
+                }
+            }
+            catch (Exception ex)
             {
                 GeneralLogger.getLogger().log(Level.SEVERE,ex.getMessage(),ex);
             }

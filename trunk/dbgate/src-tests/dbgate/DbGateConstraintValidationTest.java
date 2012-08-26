@@ -1,7 +1,6 @@
 package dbgate;
 
 import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.constraint.*;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
@@ -17,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class DbGateConstraintValidationTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -53,10 +52,11 @@ public class DbGateConstraintValidationTest
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-constraint;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-constraint;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -68,10 +68,7 @@ public class DbGateConstraintValidationTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -79,34 +76,34 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestReverseRootEntity entity = new ConstraintTestReverseRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2OneEntity one2OneEntity = new ConstraintTestOne2OneEntity();
             one2OneEntity .setIdCol(id);
             one2OneEntity .setName("Child-Org-Name");
-            one2OneEntity .persist(connection);
-            connection.commit();
-            connection.close();
+            one2OneEntity .persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity, id);
             loadedEntity.getOne2OneEntity().setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2OneChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2OneChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertTrue(hasOneToOne);
             Assert.assertTrue(hasRoot);
@@ -123,35 +120,35 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestReverseRootEntity entity = new ConstraintTestReverseRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2ManyEntity one2ManyEntity = new ConstraintTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
-            one2ManyEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            one2ManyEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity,id);
             ConstraintTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToMany = existsOne2ManyChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToMany = existsOne2ManyChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertTrue(hasOneToMany);
             Assert.assertTrue(hasRoot);
@@ -168,33 +165,33 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestReverseRootEntity entity = new ConstraintTestReverseRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2OneEntity one2OneEntity = new ConstraintTestOne2OneEntity();
             one2OneEntity.setIdCol(id);
             one2OneEntity.setName("Child-Org-Name");
-            one2OneEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            one2OneEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2OneChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2OneChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertTrue(hasOneToOne);
             Assert.assertFalse(hasRoot);
@@ -211,34 +208,34 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestReverseRootEntity entity = new ConstraintTestReverseRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2ManyEntity one2ManyEntity = new ConstraintTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
-            one2ManyEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            one2ManyEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestReverseRootEntity loadedEntity = new ConstraintTestReverseRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToMany = existsOne2ManyChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToMany = existsOne2ManyChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertTrue(hasOneToMany);
             Assert.assertFalse(hasRoot);
@@ -253,55 +250,55 @@ public class DbGateConstraintValidationTest
     @Test(expected = PersistException.class)
     public void constraintValidation_deleteRootWithOneToOneChild_WithRestrictConstraint_shouldThrowException() throws Exception
     {
-        Connection connection = connector.getConnection();
+        ITransaction tx = connector.createTransaction();
 
         int id = 45;
         ConstraintTestDeleteRestrictRootEntity entity = new ConstraintTestDeleteRestrictRootEntity();
         entity.setIdCol(id);
         entity.setName("Org-Name");
-        entity.persist(connection);
+        entity.persist(tx);
 
         ConstraintTestOne2OneEntity one2OneEntity = new ConstraintTestOne2OneEntity();
         one2OneEntity.setIdCol(id);
         one2OneEntity.setName("Child-Org-Name");
-        one2OneEntity.persist(connection);
-        connection.commit();
-        connection.close();
+        one2OneEntity.persist(tx);
+        tx.commit();
+        tx.close();
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         ConstraintTestDeleteRestrictRootEntity loadedEntity = new ConstraintTestDeleteRestrictRootEntity();
-        loadEntityWithId(connection,loadedEntity,id);
+        loadEntityWithId(tx,loadedEntity,id);
         loadedEntity.setStatus(EntityStatus.DELETED);
-        loadedEntity.persist(connection);
-        connection.commit();
-        connection.close();
+        loadedEntity.persist(tx);
+        tx.commit();
+        tx.close();
     }
     
     @Test(expected = PersistException.class)
     public void constraintValidation_deleteRootWithOneToManyChild_WithRestrictConstraint_shouldThrowException() throws Exception
     {
-        Connection connection = connector.getConnection();
+        ITransaction tx = connector.createTransaction();
 
         int id = 45;
         ConstraintTestDeleteRestrictRootEntity entity = new ConstraintTestDeleteRestrictRootEntity();
         entity.setIdCol(id);
         entity.setName("Org-Name");
-        entity.persist(connection);
+        entity.persist(tx);
 
         ConstraintTestOne2ManyEntity one2ManyEntity = new ConstraintTestOne2ManyEntity();
         one2ManyEntity.setIdCol(id);
         one2ManyEntity.setName("Child-Org-Name");
-        one2ManyEntity.persist(connection);
-        connection.commit();
-        connection.close();
+        one2ManyEntity.persist(tx);
+        tx.commit();
+        tx.close();
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         ConstraintTestDeleteRestrictRootEntity loadedEntity = new ConstraintTestDeleteRestrictRootEntity();
-        loadEntityWithId(connection,loadedEntity,id);
+        loadEntityWithId(tx,loadedEntity,id);
         loadedEntity.setStatus(EntityStatus.DELETED);
-        loadedEntity.persist(connection);
-        connection.commit();
-        connection.close();
+        loadedEntity.persist(tx);
+        tx.commit();
+        tx.close();
     }
     
     @Test
@@ -309,34 +306,34 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestDeleteCascadeRootEntity entity = new ConstraintTestDeleteCascadeRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2ManyEntity one2ManyEntity = new ConstraintTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
-            one2ManyEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            one2ManyEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity,id);
             loadedEntity.getOne2ManyEntities().iterator().next().setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToMany = existsOne2ManyChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToMany = existsOne2ManyChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToMany);
             Assert.assertTrue(hasRoot);
@@ -353,34 +350,34 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestDeleteCascadeRootEntity entity = new ConstraintTestDeleteCascadeRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2OneEntity one2ManyEntity = new ConstraintTestOne2OneEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setName("Child-Org-Name");
-            one2ManyEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            one2ManyEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity, id);
             loadedEntity.getOne2OneEntity().setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2ManyChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2ManyChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToOne);
             Assert.assertTrue(hasRoot);
@@ -397,34 +394,34 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestDeleteCascadeRootEntity entity = new ConstraintTestDeleteCascadeRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2ManyEntity one2ManyEntity = new ConstraintTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
-            one2ManyEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            one2ManyEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToMany = existsOne2ManyChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToMany = existsOne2ManyChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToMany);
             Assert.assertFalse(hasRoot);
@@ -441,34 +438,34 @@ public class DbGateConstraintValidationTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ConstraintTestDeleteCascadeRootEntity entity = new ConstraintTestDeleteCascadeRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
+            entity.persist(tx);
 
             ConstraintTestOne2OneEntity one2ManyEntity = new ConstraintTestOne2OneEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setName("Child-Org-Name");
-            one2ManyEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            one2ManyEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ConstraintTestDeleteCascadeRootEntity loadedEntity = new ConstraintTestDeleteCascadeRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2ManyChild(connection,id);
-            boolean hasRoot = existsRoot(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2ManyChild(tx,id);
+            boolean hasRoot = existsRoot(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToOne);
             Assert.assertFalse(hasRoot);
@@ -480,16 +477,16 @@ public class DbGateConstraintValidationTest
         }
     }
 
-    private boolean loadEntityWithId(Connection connection, ConstraintTestReverseRootEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, ConstraintTestReverseRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from constraint_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from constraint_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -498,16 +495,16 @@ public class DbGateConstraintValidationTest
         return loaded;
     }
     
-    private boolean loadEntityWithId(Connection connection, ConstraintTestDeleteRestrictRootEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, ConstraintTestDeleteRestrictRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from constraint_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from constraint_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -516,16 +513,16 @@ public class DbGateConstraintValidationTest
         return loaded;
     }
     
-    private boolean loadEntityWithId(Connection connection, ConstraintTestDeleteCascadeRootEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, ConstraintTestDeleteCascadeRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from constraint_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from constraint_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -534,11 +531,11 @@ public class DbGateConstraintValidationTest
         return loaded;
     }
     
-    private boolean existsRoot(Connection connection,int id) throws SQLException
+    private boolean existsRoot(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from constraint_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from constraint_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -551,11 +548,11 @@ public class DbGateConstraintValidationTest
         return exists;
     }
 
-    private boolean existsOne2OneChild(Connection connection,int id) throws SQLException
+    private boolean existsOne2OneChild(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from constraint_test_one2one where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from constraint_test_one2one where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -568,11 +565,11 @@ public class DbGateConstraintValidationTest
         return exists;
     }
 
-    private boolean existsOne2ManyChild(Connection connection,int id) throws SQLException
+    private boolean existsOne2ManyChild(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from constraint_test_one2many where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from constraint_test_one2many where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())

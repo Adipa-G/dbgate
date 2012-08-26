@@ -2,11 +2,10 @@ package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
 import dbgate.caches.CacheManager;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
-import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Collection;
 
@@ -27,19 +26,19 @@ public class PersistRetrievalLayer
         this.persistOperationLayer = new PersistOperationLayer(dbLayer,statistics,config);
     }
 
-    public void load(IReadOnlyEntity roEntity, ResultSet rs, Connection con) throws RetrievalException
+    public void load(IReadOnlyEntity roEntity, ResultSet rs, ITransaction tx) throws RetrievalException
     {
-        retrievalOperationLayer.load(roEntity,rs,con);
+        retrievalOperationLayer.load(roEntity,rs,tx);
     }
 
-    public void save(IEntity entity,Connection con ) throws PersistException
+    public void save(IEntity entity,ITransaction tx ) throws PersistException
     {
-        persistOperationLayer.save(entity,con);
+        persistOperationLayer.save(entity,tx);
     }
 
-    public Collection select(ISelectionQuery query,Connection con ) throws RetrievalException
+    public Collection select(ISelectionQuery query,ITransaction tx ) throws RetrievalException
     {
-        return retrievalOperationLayer.select(query,con);
+        return retrievalOperationLayer.select(query,tx);
     }
 
     public void clearCache()

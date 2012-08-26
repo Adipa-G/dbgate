@@ -1,6 +1,5 @@
 package dbgate;
 
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.columntest.*;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class DbGateColumnPersistTests
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -58,10 +57,11 @@ public class DbGateColumnPersistTests
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-column-persist;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-column-persist;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -73,10 +73,7 @@ public class DbGateColumnPersistTests
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -84,20 +81,20 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity entity = new ColumnTestEntityFields();
             createEntityWithNonNullValues(entity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             assertTwoEntitiesEquals(entity,loadedEntity);
         }
@@ -113,24 +110,24 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity entity = new ColumnTestEntityExts();
             createEntityWithNonNullValues(entity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             assertTwoEntitiesEquals(entity,loadedEntity);
         }
@@ -146,20 +143,20 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity entity = new ColumnTestEntityAnnotations();
             createEntityWithNonNullValues(entity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             assertTwoEntitiesEquals(entity,loadedEntity);
         }
@@ -175,20 +172,20 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity entity = new ColumnTestEntityFields();
             createEntityWithNullValues(entity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             assertTwoEntitiesEquals(entity,loadedEntity);
         }
@@ -204,24 +201,24 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity entity = new ColumnTestEntityExts();
             createEntityWithNullValues(entity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             assertTwoEntitiesEquals(entity,loadedEntity);
         }
@@ -237,20 +234,20 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity entity = new ColumnTestEntityAnnotations();
             createEntityWithNullValues(entity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             assertTwoEntitiesEquals(entity,loadedEntity);
         }
@@ -266,32 +263,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id =(Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id =(Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
             createEntityWithNonNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNonNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -307,36 +304,36 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
             createEntityWithNonNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNonNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -352,32 +349,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
             createEntityWithNonNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNonNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -393,32 +390,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
             createEntityWithNonNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -434,36 +431,36 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
             createEntityWithNonNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -479,32 +476,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
             createEntityWithNonNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -520,32 +517,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNonNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -561,36 +558,36 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNonNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -606,32 +603,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNonNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -647,32 +644,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id =(Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id =(Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -688,36 +685,36 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -733,32 +730,32 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
             updateEntityWithNullValues(loadedEntity);
             loadedEntity.setStatus(EntityStatus.MODIFIED);
 
-            connection = connector.getConnection();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             assertTwoEntitiesEquals(loadedEntity,reLoadedEntity);
         }
@@ -774,30 +771,30 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityFields();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityFields();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             loadedEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityFields();
-            boolean  loaded = loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            boolean  loaded = loadEntityWithId(tx,reLoadedEntity,id);
+            tx.close();
 
             Assert.assertFalse(loaded);
         }
@@ -813,34 +810,34 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            DbGate.getSharedInstance().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityExts();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityExts();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             loadedEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityExts();
-            boolean  loaded = loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            boolean  loaded = loadEntityWithId(tx,reLoadedEntity,id);
+            tx.close();
 
             Assert.assertFalse(loaded);
         }
@@ -856,30 +853,30 @@ public class DbGateColumnPersistTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
-            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(connection);
+            int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
             IColumnTestEntity newEntity = new ColumnTestEntityAnnotations();
             createEntityWithNullValues(newEntity);
-            newEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            newEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity loadedEntity = new ColumnTestEntityAnnotations();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity, id);
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             loadedEntity.setStatus(EntityStatus.DELETED);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             IColumnTestEntity reLoadedEntity = new ColumnTestEntityAnnotations();
-            boolean loaded = loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            boolean loaded = loadEntityWithId(tx,reLoadedEntity,id);
+            tx.close();
 
             Assert.assertFalse(loaded);
         }
@@ -890,16 +887,16 @@ public class DbGateColumnPersistTests
         }
     }
 
-    private boolean loadEntityWithId(Connection connection, IColumnTestEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, IColumnTestEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from column_test_entity where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from column_test_entity where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();

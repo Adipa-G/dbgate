@@ -1,7 +1,7 @@
 package dbgate.utility.support.dbutility;
 
-import dbgate.*;
 import dbgate.AbstractManagedEntity;
+import dbgate.ColumnType;
 import dbgate.DefaultColumn;
 import dbgate.IField;
 

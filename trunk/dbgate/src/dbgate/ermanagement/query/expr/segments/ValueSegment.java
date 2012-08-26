@@ -3,8 +3,6 @@ package dbgate.ermanagement.query.expr.segments;
 import dbgate.ColumnType;
 import dbgate.exceptions.ExpressionParsingException;
 
-import java.lang.reflect.Array;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa

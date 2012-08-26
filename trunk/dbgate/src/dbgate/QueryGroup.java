@@ -1,12 +1,12 @@
 package dbgate;
 
-import dbgate.ermanagement.query.IQueryGroup;
-import dbgate.ermanagement.query.QueryGroupExpressionType;
-import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.group.AbstractExpressionGroup;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.group.AbstractGroupFactory;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.group.AbstractSqlQueryGroup;
+import dbgate.ermanagement.query.IQueryGroup;
+import dbgate.ermanagement.query.QueryGroupExpressionType;
 import dbgate.ermanagement.query.expr.GroupExpr;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

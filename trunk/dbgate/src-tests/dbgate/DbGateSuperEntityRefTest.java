@@ -1,17 +1,13 @@
 package dbgate;
 
-import dbgate.ermanagement.ermapper.DbGate;
-import dbgate.exceptions.PersistException;
 import dbgate.support.persistant.superentityrefinheritance.*;
 import dbgate.utility.DBMgtUtility;
-import net.sf.cglib.proxy.Enhancer;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 /**
@@ -20,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class DbGateSuperEntityRefTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -86,9 +82,10 @@ public class DbGateSuperEntityRefTest
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-super_entity_ref_test;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-super_entity_ref_test;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
         }
         catch (Exception ex)
         {
@@ -100,10 +97,7 @@ public class DbGateSuperEntityRefTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -111,20 +105,20 @@ public class DbGateSuperEntityRefTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             SuperEntityRefRootEntity entity = createDefaultRootEntity(id,1,0,true,false);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             SuperEntityRefRootEntity entityReloaded = new SuperEntityRefRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             verifyEquals(entity,entityReloaded);
         }
@@ -140,20 +134,20 @@ public class DbGateSuperEntityRefTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             SuperEntityRefRootEntity entity = createDefaultRootEntity(id,0,1,false,true);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             SuperEntityRefRootEntity entityReloaded = new SuperEntityRefRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             verifyEquals(entity,entityReloaded);
         }
@@ -169,20 +163,20 @@ public class DbGateSuperEntityRefTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             SuperEntityRefRootEntity entity = createDefaultRootEntity(id,10,0,true,false);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             SuperEntityRefRootEntity entityReloaded = new SuperEntityRefRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             verifyEquals(entity,entityReloaded);
         }
@@ -198,20 +192,20 @@ public class DbGateSuperEntityRefTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             SuperEntityRefRootEntity entity = createDefaultRootEntity(id,0,10,false,true);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             SuperEntityRefRootEntity entityReloaded = new SuperEntityRefRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             verifyEquals(entity,entityReloaded);
         }
@@ -227,20 +221,20 @@ public class DbGateSuperEntityRefTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             SuperEntityRefRootEntity entity = createDefaultRootEntity(id,10,10,true,false);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             SuperEntityRefRootEntity entityReloaded = new SuperEntityRefRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             verifyEquals(entity,entityReloaded);
         }
@@ -256,20 +250,20 @@ public class DbGateSuperEntityRefTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             SuperEntityRefRootEntity entity = createDefaultRootEntity(id,0,0,false,false);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             SuperEntityRefRootEntity entityReloaded = new SuperEntityRefRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             verifyEquals(entity,entityReloaded);
         }
@@ -338,7 +332,7 @@ public class DbGateSuperEntityRefTest
         }
     }
 
-    private SuperEntityRefRootEntity createDefaultRootEntity(int id,int typeACount,int typeBCount,boolean one2OneIsA,boolean one2OneIsB) throws PersistException
+    private SuperEntityRefRootEntity createDefaultRootEntity(int id,int typeACount,int typeBCount,boolean one2OneIsA,boolean one2OneIsB) throws DbGateException
     {
         String entityText = String.format("Id->%s|A->%s|B->%s|OOA->%s|OOB->%s",id,typeACount,typeBCount,one2OneIsA,one2OneIsB);
         
@@ -363,9 +357,9 @@ public class DbGateSuperEntityRefTest
             rootEntity.setOne2OneEntity(createOne2One(false,entityText));
         }
 
-        Connection con = connector.getConnection();
-        rootEntity.persist(con);
-        DBMgtUtility.close(con);
+        ITransaction tx = connector.createTransaction();
+        rootEntity.persist(tx);
+        DBMgtUtility.close(tx);
         return rootEntity;
     }
 
@@ -406,16 +400,16 @@ public class DbGateSuperEntityRefTest
         return entity;
     }
 
-    private boolean loadWithColumnEntityWithId(Connection connection, SuperEntityRefRootEntity loadEntity,int id) throws Exception
+    private boolean loadWithColumnEntityWithId(ITransaction tx, SuperEntityRefRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from super_entity_ref_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from super_entity_ref_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();

@@ -1,11 +1,8 @@
 package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
-import dbgate.utility.DBMgtUtility;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
-import dbgate.exceptions.DBPatchingException;
-import dbgate.exceptions.SequenceGeneratorInitializationException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.IMetaManipulate;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.CompareUtility;
@@ -13,8 +10,10 @@ import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.IMetaCompar
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.datastructures.*;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.support.MetaQueryHolder;
 import dbgate.ermanagement.ermapper.utils.OperationUtils;
+import dbgate.exceptions.DBPatchingException;
+import dbgate.exceptions.SequenceGeneratorInitializationException;
+import dbgate.utility.DBMgtUtility;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +40,7 @@ public class DataMigrationLayer
         this.config = config;
     }
 
-    public void patchDataBase(Connection con, Collection<Class> entityTypes,boolean dropAll) throws DBPatchingException
+    public void patchDataBase(ITransaction tx, Collection<Class> entityTypes,boolean dropAll) throws DBPatchingException
     {
         try
         {
@@ -50,8 +49,8 @@ public class DataMigrationLayer
                 CacheManager.register(type);
             }
             
-            IMetaManipulate metaManipulate =  dbLayer.getMetaManipulate(con);
-            Collection<IMetaItem> existingItems = metaManipulate.getMetaData(con);
+            IMetaManipulate metaManipulate =  dbLayer.getMetaManipulate(tx);
+            Collection<IMetaItem> existingItems = metaManipulate.getMetaData(tx);
             Collection<IMetaItem> requiredItems = createMetaItemsFromDbClasses(entityTypes);
 
             ArrayList<MetaQueryHolder> queryHolders = new ArrayList<MetaQueryHolder>();
@@ -64,14 +63,14 @@ public class DataMigrationLayer
                 ArrayList<MetaQueryHolder> queryHoldersExisting = new ArrayList<MetaQueryHolder>();
                 for (IMetaComparisonGroup comparisonGroup : groupExisting)
                 {
-                    queryHoldersExisting.addAll(dbLayer.getMetaManipulate(con).createDbPathSQL(comparisonGroup));
+                    queryHoldersExisting.addAll(dbLayer.getMetaManipulate(tx).createDbPathSQL(comparisonGroup));
                 }
                 Collections.sort(queryHoldersExisting);
 
                 ArrayList<MetaQueryHolder> queryHoldersRequired = new ArrayList<MetaQueryHolder>();
                 for (IMetaComparisonGroup comparisonGroup : groupRequired)
                 {
-                    queryHoldersRequired.addAll(dbLayer.getMetaManipulate(con).createDbPathSQL(comparisonGroup));
+                    queryHoldersRequired.addAll(dbLayer.getMetaManipulate(tx).createDbPathSQL(comparisonGroup));
                 }
                 Collections.sort(queryHoldersRequired);
 
@@ -83,7 +82,7 @@ public class DataMigrationLayer
                 Collection<IMetaComparisonGroup> groups = CompareUtility.compare(metaManipulate,existingItems,requiredItems);
                 for (IMetaComparisonGroup comparisonGroup : groups)
                 {
-                    queryHolders.addAll(dbLayer.getMetaManipulate(con).createDbPathSQL(comparisonGroup));
+                    queryHolders.addAll(dbLayer.getMetaManipulate(tx).createDbPathSQL(comparisonGroup));
                 }
                 Collections.sort(queryHolders);
             }
@@ -95,7 +94,7 @@ public class DataMigrationLayer
 
                 Logger.getLogger(config.getLoggerName()).info(holder.getQueryString());
 
-                PreparedStatement ps = con.prepareStatement(holder.getQueryString());
+                PreparedStatement ps = tx.getConnection().prepareStatement(holder.getQueryString());
                 ps.execute();
                 DBMgtUtility.close(ps);
 

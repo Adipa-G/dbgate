@@ -1,13 +1,13 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection;
 
 import dbgate.IReadOnlyEntity;
-import dbgate.exceptions.ExpressionParsingException;
-import dbgate.exceptions.RetrievalException;
+import dbgate.ITransaction;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
+import dbgate.exceptions.ExpressionParsingException;
+import dbgate.exceptions.RetrievalException;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
@@ -49,12 +49,12 @@ public class AbstractTypeSelection implements IAbstractSelection
     }
 
     @Override
-    public Object retrieve(ResultSet rs, Connection con,QueryBuildInfo buildInfo) throws RetrievalException
+    public Object retrieve(ResultSet rs, ITransaction tx,QueryBuildInfo buildInfo) throws RetrievalException
     {
         try
         {
             IReadOnlyEntity instance = (IReadOnlyEntity)type.newInstance();
-            instance.retrieve(rs,con);
+            instance.retrieve(rs,tx);
             return instance;
         }
         catch (Exception ex)

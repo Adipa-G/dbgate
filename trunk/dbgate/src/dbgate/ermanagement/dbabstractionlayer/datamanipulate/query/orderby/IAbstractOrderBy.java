@@ -1,8 +1,8 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.orderby;
 
-import dbgate.ermanagement.query.IQueryOrderBy;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
+import dbgate.ermanagement.query.IQueryOrderBy;
 
 /**
  * Created by IntelliJ IDEA.

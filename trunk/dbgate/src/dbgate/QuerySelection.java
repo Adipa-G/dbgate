@@ -1,13 +1,13 @@
 package dbgate;
 
-import dbgate.ermanagement.query.IQuerySelection;
-import dbgate.ermanagement.query.QuerySelectionExpressionType;
-import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.AbstractExpressionSelection;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.AbstractSelectionFactory;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.AbstractSqlQuerySelection;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.AbstractTypeSelection;
+import dbgate.ermanagement.query.IQuerySelection;
+import dbgate.ermanagement.query.QuerySelectionExpressionType;
 import dbgate.ermanagement.query.expr.SelectExpr;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

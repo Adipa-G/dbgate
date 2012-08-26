@@ -1,16 +1,20 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.dbdm.oracledm;
 
 import dbgate.ColumnType;
-import dbgate.exceptions.common.StatementExecutionException;
-import dbgate.exceptions.common.StatementPreparingException;
+import dbgate.ITransaction;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecParam;
+import dbgate.exceptions.common.StatementExecutionException;
+import dbgate.exceptions.common.StatementPreparingException;
 import oracle.jdbc.driver.OracleCallableStatement;
 import oracle.jdbc.driver.OracleTypes;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +33,7 @@ public class OracleDataManipulate extends AbstractDataManipulate
     }
 
     @Override
-    public ResultSet createResultSet(Connection con, final QueryExecInfo execInfo)
+    public ResultSet createResultSet(ITransaction tx, final QueryExecInfo execInfo)
         throws StatementPreparingException,StatementExecutionException
     {
         try
@@ -41,11 +45,11 @@ public class OracleDataManipulate extends AbstractDataManipulate
 
             if (storedProcedure)
             {
-                ps = con.prepareCall(execInfo.getSql());
+                ps = tx.getConnection().prepareCall(execInfo.getSql());
             }
             else
             {
-                ps = con.prepareStatement(execInfo.getSql());
+                ps = tx.getConnection().prepareStatement(execInfo.getSql());
             }
 
             List<QueryExecParam> params = execInfo.getParams();

@@ -2,9 +2,9 @@ package dbgate.ermanagement.dbabstractionlayer.datamanipulate.dbdm.accessdm;
 
 import dbgate.ColumnType;
 import dbgate.IColumn;
-import dbgate.exceptions.common.ReadFromResultSetException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.AbstractDataManipulate;
+import dbgate.exceptions.common.ReadFromResultSetException;
 
 import java.sql.ResultSet;
 

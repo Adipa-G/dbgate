@@ -4,10 +4,10 @@ import dbgate.IColumn;
 import dbgate.IRelation;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
-import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecParam;
 import dbgate.ermanagement.query.expr.segments.*;
+import dbgate.exceptions.ExpressionParsingException;
 
 import java.util.Collection;
 

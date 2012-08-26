@@ -1,6 +1,5 @@
 package dbgate;
 
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.inheritancetest.*;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class DbGateIheritancePersistTests
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     public static final int TYPE_ANNOTATION = 1;
     public static final int TYPE_FIELD = 2;
@@ -58,11 +57,11 @@ public class DbGateIheritancePersistTests
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-inheritance-persist;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-inheritance-persist;","org.apache.derby.jdbc.EmbeddedDriver",
+                                        DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -74,15 +73,15 @@ public class DbGateIheritancePersistTests
     private void registerForExternal()
     {
         Class objType = InheritanceTestSuperEntityExt.class;
-        DbGate.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityAExt.class;
-        DbGate.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityBExt.class;
-        DbGate.getSharedInstance().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
     }
 
@@ -90,7 +89,7 @@ public class DbGateIheritancePersistTests
     public void beforeEach()
     {
 
-        DbGate.getSharedInstance().clearCache();
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -121,9 +120,9 @@ public class DbGateIheritancePersistTests
                         break;
                 }
 
-                Connection connection = connector.getConnection();
+                ITransaction tx = connector.createTransaction();
 
-                DbGate.getSharedInstance().clearCache();
+                connector.getDbGate().clearCache();
                 if (type == TYPE_EXTERNAL)
                 {
                     registerForExternal();
@@ -131,17 +130,17 @@ public class DbGateIheritancePersistTests
 
                 IInheritanceTestSuperEntity entityA = createObjectWithDataTypeA(idA,type);
                 IInheritanceTestSuperEntity entityB = createObjectWithDataTypeB(idB,type);
-                entityA.persist(connection);
-                entityB.persist(connection);
-                connection.commit();
-                connection.close();
+                entityA.persist(tx);
+                entityB.persist(tx);
+                tx.commit();
+                tx.close();
 
-                connection = connector.getConnection();
+                tx = connector.createTransaction();
                 IInheritanceTestSuperEntity loadedEntityA = createObjectEmptyTypeA(type);
                 IInheritanceTestSuperEntity loadedEntityB = createObjectEmptyTypeB(type);
-                loadEntityWithTypeA(connection,loadedEntityA,idA);
-                loadEntityWithTypeB(connection,loadedEntityB,idB);
-                connection.close();
+                loadEntityWithTypeA(tx,loadedEntityA,idA);
+                loadEntityWithTypeB(tx, loadedEntityB, idB);
+                tx.close();
 
                 boolean compareResult = compareEntities(entityA,loadedEntityA);
                 Assert.assertTrue(compareResult);
@@ -184,9 +183,9 @@ public class DbGateIheritancePersistTests
                         break;
                 }
 
-                Connection connection = connector.getConnection();
+                ITransaction tx = connector.createTransaction();
 
-                DbGate.getSharedInstance().clearCache();
+                connector.getDbGate().clearCache();
                 if (type == TYPE_EXTERNAL)
                 {
                     registerForExternal();
@@ -194,17 +193,17 @@ public class DbGateIheritancePersistTests
 
                 IInheritanceTestSuperEntity entityA = createObjectWithDataTypeA(idA,type);
                 IInheritanceTestSuperEntity entityB = createObjectWithDataTypeB(idB,type);
-                entityA.persist(connection);
-                entityB.persist(connection);
-                connection.commit();
-                connection.close();
+                entityA.persist(tx);
+                entityB.persist(tx);
+                tx.commit();
+                tx.close();
 
-                connection = connector.getConnection();
+                tx = connector.createTransaction();
                 IInheritanceTestSubEntityA loadedEntityA = createObjectEmptyTypeA(type);
                 IInheritanceTestSubEntityB loadedEntityB = createObjectEmptyTypeB(type);
-                loadEntityWithTypeA(connection,loadedEntityA,idA);
-                loadEntityWithTypeB(connection,loadedEntityB,idB);
-                connection.close();
+                loadEntityWithTypeA(tx, loadedEntityA,idA);
+                loadEntityWithTypeB(tx, loadedEntityB, idB);
+                tx.close();
 
                 loadedEntityA.setName("typeA-changed-name");
                 loadedEntityA.setNameA("changed-nameA");
@@ -213,18 +212,18 @@ public class DbGateIheritancePersistTests
                 loadedEntityB.setNameB("changed-nameB");
                 loadedEntityB.setStatus(EntityStatus.MODIFIED);
 
-                connection = connector.getConnection();
-                loadedEntityA.persist(connection);
-                loadedEntityB.persist(connection);
-                connection.close();
+                tx = connector.createTransaction();
+                loadedEntityA.persist(tx);
+                loadedEntityB.persist(tx);
+                tx.close();
 
-                connection = connector.getConnection();
+                tx = connector.createTransaction();
                 IInheritanceTestSubEntityA reLoadedEntityA = createObjectEmptyTypeA(type);
                 IInheritanceTestSubEntityB reLoadedEntityB = createObjectEmptyTypeB(type);
-                loadEntityWithTypeA(connection,reLoadedEntityA,idA);
-                loadEntityWithTypeB(connection,reLoadedEntityB,idB);
-                connection.close();
-                connection.close();
+                loadEntityWithTypeA(tx, reLoadedEntityA, idA);
+                loadEntityWithTypeB(tx,reLoadedEntityB,idB);
+                tx.close();
+                tx.close();
 
                 boolean compareResult = compareEntities(loadedEntityA,reLoadedEntityA);
                 Assert.assertTrue(compareResult);
@@ -267,9 +266,9 @@ public class DbGateIheritancePersistTests
                         break;
                 }
 
-                Connection connection = connector.getConnection();
+                ITransaction tx = connector.createTransaction();
 
-                DbGate.getSharedInstance().clearCache();
+                connector.getDbGate().clearCache();
                 if (type == TYPE_EXTERNAL)
                 {
                     registerForExternal();
@@ -277,17 +276,17 @@ public class DbGateIheritancePersistTests
 
                 IInheritanceTestSuperEntity entityA = createObjectWithDataTypeA(idA,type);
                 IInheritanceTestSuperEntity entityB = createObjectWithDataTypeB(idB,type);
-                entityA.persist(connection);
-                entityB.persist(connection);
-                connection.commit();
-                connection.close();
+                entityA.persist(tx);
+                entityB.persist(tx);
+                tx.commit();
+                tx.close();
 
-                connection = connector.getConnection();
+                tx = connector.createTransaction();
                 IInheritanceTestSubEntityA loadedEntityA = createObjectEmptyTypeA(type);
                 IInheritanceTestSubEntityB loadedEntityB = createObjectEmptyTypeB(type);
-                loadEntityWithTypeA(connection,loadedEntityA,idA);
-                loadEntityWithTypeB(connection,loadedEntityB,idB);
-                connection.close();
+                loadEntityWithTypeA(tx, loadedEntityA,idA);
+                loadEntityWithTypeB(tx, loadedEntityB, idB);
+                tx.close();
 
                 loadedEntityA.setName("typeA-changed-name");
                 loadedEntityA.setNameA("changed-nameA");
@@ -296,22 +295,22 @@ public class DbGateIheritancePersistTests
                 loadedEntityB.setNameB("changed-nameB");
                 loadedEntityB.setStatus(EntityStatus.DELETED);
 
-                connection = connector.getConnection();
-                loadedEntityA.persist(connection);
-                loadedEntityB.persist(connection);
-                connection.close();
+                tx = connector.createTransaction();
+                loadedEntityA.persist(tx);
+                loadedEntityB.persist(tx);
+                tx.close();
 
-                connection = connector.getConnection();
+                tx = connector.createTransaction();
                 IInheritanceTestSubEntityA reLoadedEntityA = createObjectEmptyTypeA(type);
                 IInheritanceTestSubEntityB reLoadedEntityB = createObjectEmptyTypeB(type);
-                boolean reLoadedA = loadEntityWithTypeA(connection,reLoadedEntityA,idA);
-                boolean existesSuperA = existsSuper(connection,idA);
-                boolean existesSubA = existsSubA(connection,idA);
-                boolean reLoadedB = loadEntityWithTypeB(connection,reLoadedEntityB,idB);
-                boolean existesSuperB = existsSuper(connection,idB);
-                boolean existesSubB = existsSubB(connection,idB);
-                connection.close();
-                connection.close();
+                boolean reLoadedA = loadEntityWithTypeA(tx,reLoadedEntityA,idA);
+                boolean existesSuperA = existsSuper(tx, idA);
+                boolean existesSubA = existsSubA(tx, idA);
+                boolean reLoadedB = loadEntityWithTypeB(tx, reLoadedEntityB, idB);
+                boolean existesSuperB = existsSuper(tx,idB);
+                boolean existesSubB = existsSubB(tx, idB);
+                tx.close();
+                tx.close();
 
                 Assert.assertFalse(reLoadedA);
                 Assert.assertFalse(existesSuperA);
@@ -328,16 +327,16 @@ public class DbGateIheritancePersistTests
         }
     }
 
-    private boolean loadEntityWithTypeA(Connection connection, IInheritanceTestSuperEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithTypeA(ITransaction tx, IInheritanceTestSuperEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from inheritance_test_suba where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from inheritance_test_suba where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -346,16 +345,16 @@ public class DbGateIheritancePersistTests
         return loaded;
     }
 
-    private boolean loadEntityWithTypeB(Connection connection, IInheritanceTestSuperEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithTypeB(ITransaction tx, IInheritanceTestSuperEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from inheritance_test_subb where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from inheritance_test_subb where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -364,11 +363,11 @@ public class DbGateIheritancePersistTests
         return loaded;
     }
 
-    private boolean existsSuper(Connection connection,int id) throws SQLException
+    private boolean existsSuper(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from inheritance_test_super where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from inheritance_test_super where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -381,11 +380,11 @@ public class DbGateIheritancePersistTests
         return exists;
     }
 
-    private boolean existsSubA(Connection connection,int id) throws SQLException
+    private boolean existsSubA(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from inheritance_test_suba where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from inheritance_test_suba where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -398,11 +397,11 @@ public class DbGateIheritancePersistTests
         return exists;
     }
 
-    private boolean existsSubB(Connection connection,int id) throws SQLException
+    private boolean existsSubB(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from inheritance_test_subb where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from inheritance_test_subb where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())

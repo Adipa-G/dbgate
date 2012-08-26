@@ -1,8 +1,6 @@
 package dbgate.ermanagement.ermapper.utils;
 
 import dbgate.*;
-import dbgate.IColumn;
-import dbgate.IRelation;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.context.EntityFieldValue;

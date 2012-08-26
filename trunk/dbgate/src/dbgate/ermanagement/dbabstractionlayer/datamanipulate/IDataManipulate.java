@@ -2,14 +2,14 @@ package dbgate.ermanagement.dbabstractionlayer.datamanipulate;
 
 import dbgate.IColumn;
 import dbgate.IRelation;
+import dbgate.ITransaction;
+import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
+import dbgate.ermanagement.query.QueryStructure;
 import dbgate.exceptions.ExpressionParsingException;
 import dbgate.exceptions.common.ReadFromResultSetException;
 import dbgate.exceptions.common.StatementExecutionException;
 import dbgate.exceptions.common.StatementPreparingException;
-import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
-import dbgate.ermanagement.query.QueryStructure;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Collection;
@@ -37,7 +37,7 @@ public interface IDataManipulate
     void setToPreparedStatement(PreparedStatement ps,Object obj,int parameterIndex, IColumn dbColumn)
         throws StatementPreparingException;
 
-    ResultSet createResultSet(Connection con, QueryExecInfo execInfo)
+    ResultSet createResultSet(ITransaction tx, QueryExecInfo execInfo)
         throws StatementPreparingException,StatementExecutionException;
 
     QueryBuildInfo processQuery(QueryBuildInfo buildInfo,QueryStructure structure) throws ExpressionParsingException;

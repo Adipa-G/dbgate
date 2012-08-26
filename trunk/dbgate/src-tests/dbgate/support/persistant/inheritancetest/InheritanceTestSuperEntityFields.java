@@ -1,7 +1,7 @@
 package dbgate.support.persistant.inheritancetest;
 
-import dbgate.*;
 import dbgate.AbstractManagedEntity;
+import dbgate.ColumnType;
 import dbgate.DefaultColumn;
 import dbgate.IField;
 import dbgate.support.persistant.treetest.ITreeTestOne2OneEntity;

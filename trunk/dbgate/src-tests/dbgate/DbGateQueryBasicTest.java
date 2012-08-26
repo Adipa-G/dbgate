@@ -1,11 +1,10 @@
 package dbgate;
 
-import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.ermapper.DbGate;
-import dbgate.ermanagement.query.*;
+import dbgate.ermanagement.query.SelectionQuery;
 import dbgate.ermanagement.query.expr.ConditionExpr;
 import dbgate.ermanagement.query.expr.GroupConditionExpr;
 import dbgate.ermanagement.query.expr.JoinExpr;
+import dbgate.exceptions.PersistException;
 import dbgate.support.query.basic.QueryBasicDetailsEntity;
 import dbgate.support.query.basic.QueryBasicEntity;
 import dbgate.support.query.basic.QueryBasicJoinEntity;
@@ -29,7 +28,7 @@ import java.util.logging.Logger;
  */
 public class DbGateQueryBasicTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
     private int[] basicEntityIds;
     private String[] basicEntityNames;
     private boolean[] hasOverrideChildren;
@@ -70,9 +69,10 @@ public class DbGateQueryBasicTest
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:init-testing-query-basic;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:init-testing-query-basic;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
         }
         catch (Exception ex)
         {
@@ -84,10 +84,7 @@ public class DbGateQueryBasicTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -95,18 +92,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .select(QuerySelection.rawSql("id_col"))
                     .select(QuerySelection.rawSql("name as name_col"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
 
             Assert.assertTrue(results.size() == 4);
             for (Object result : results)
@@ -131,18 +128,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .select(QuerySelection.rawSql("name as name_col"))
                     .distinct();
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
 
             Assert.assertTrue(results.size() == 2);
             int count = 0;
@@ -170,18 +167,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class))
                     .skip(1);
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, Arrays.copyOfRange(basicEntityIds,1,4));
         }
         catch (Exception e)
@@ -196,18 +193,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class))
                     .fetch(2);
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, Arrays.copyOfRange(basicEntityIds,0,2));
         }
         catch (Exception e)
@@ -222,18 +219,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class))
                     .skip(1).fetch(2);
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, Arrays.copyOfRange(basicEntityIds,1,3));
         }
         catch (Exception e)
@@ -248,17 +245,17 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
             for (Object result : results)
             {
@@ -280,12 +277,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery descriptionQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
@@ -297,7 +294,7 @@ public class DbGateQueryBasicTest
                     .select(QuerySelection.type(QueryBasicEntity.class))
                     .select(QuerySelection.query(descriptionQuery,"description"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
             for (Object result : results)
             {
@@ -321,18 +318,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "name", "name1"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
             int index = 0;
             for (Object result : results)
@@ -354,18 +351,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.field("name","name1"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
             int index = 0;
             for (Object result : results)
@@ -387,18 +384,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .select(QuerySelection.sum(QueryBasicEntity.class, "idCol", "id_sum"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 1);
             int sum = 0;
             for (QueryBasicEntity entity : basicEntities)
@@ -423,18 +420,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .select(QuerySelection.count(QueryBasicEntity.class, "idCol", "id_count"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 1);
             for (Object result : results)
             {
@@ -454,18 +451,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .select(QuerySelection.custFunction("Count",QueryBasicEntity.class, "idCol", "id_count"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 1);
             for (Object result : results)
             {
@@ -485,17 +482,17 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results,basicEntityIds);
         }
         catch (Exception e)
@@ -510,12 +507,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery from = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class));
@@ -524,7 +521,7 @@ public class DbGateQueryBasicTest
                     .from(QueryFrom.query(from,"qb1"))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results,basicEntityIds);
         }
         catch (Exception e)
@@ -539,12 +536,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery fromBasic = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
@@ -558,7 +555,7 @@ public class DbGateQueryBasicTest
                     .from(QueryFrom.queryUnion(true,fromBasic,fromDetails))
                     .select(QuerySelection.rawSql("name1"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
 
             Assert.assertTrue(results.size() == 6);
             int index = 0;
@@ -589,19 +586,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .where(QueryCondition.rawSql("id_col = 35"))
                     .where(QueryCondition.rawSql("name like 'Org-NameA'"))
                     .select(QuerySelection.rawSql("id_col,name"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35);
         }
         catch (Exception e)
@@ -616,19 +613,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").eq().value(ColumnType.INTEGER,35)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35);
         }
         catch (Exception e)
@@ -643,19 +640,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").eq().value(35)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35);
         }
         catch (Exception e)
@@ -670,19 +667,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").neq().value(ColumnType.INTEGER,35)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results,45,55,65);
         }
         catch (Exception e)
@@ -697,19 +694,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").gt().value(ColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 55, 65);
         }
         catch (Exception e)
@@ -724,19 +721,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").ge().value(ColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 45, 55, 65);
         }
         catch (Exception e)
@@ -751,19 +748,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").lt().value(ColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results,35);
         }
         catch (Exception e)
@@ -778,19 +775,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").le().value(ColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 45);
         }
         catch (Exception e)
@@ -805,19 +802,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "name").like().value(ColumnType.VARCHAR,"Org-NameA")))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
@@ -832,19 +829,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicDetailsEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicDetailsEntity.class, "name").neq().field(QueryBasicDetailsEntity.class, "description")))
                     .select(QuerySelection.type(QueryBasicDetailsEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 2);
         }
         catch (Exception e)
@@ -859,12 +856,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class, "qbd1"))
@@ -877,7 +874,7 @@ public class DbGateQueryBasicTest
                         .field(QueryBasicEntity.class, "idCol").gt().query(subQuery)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, Arrays.copyOfRange(basicEntityIds, 1, 4));
         }
         catch (Exception e)
@@ -892,19 +889,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").between().values(ColumnType.INTEGER,35,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
@@ -919,19 +916,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").in().values(35,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 55);
         }
         catch (Exception e)
@@ -946,12 +943,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
@@ -963,7 +960,7 @@ public class DbGateQueryBasicTest
                         .field(QueryBasicEntity.class,"idCol").in().query(subQuery)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results,basicEntityIds);
         }
         catch (Exception e)
@@ -978,12 +975,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
@@ -997,7 +994,7 @@ public class DbGateQueryBasicTest
                         .query(subQuery).exists()))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, basicEntityIds);
         }
         catch (Exception e)
@@ -1012,12 +1009,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
@@ -1031,7 +1028,7 @@ public class DbGateQueryBasicTest
                         .query(subQuery).notExists()))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 0);
         }
         catch (Exception e)
@@ -1046,12 +1043,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
@@ -1059,7 +1056,7 @@ public class DbGateQueryBasicTest
                         .and().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,45,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 55);
         }
         catch (Exception e)
@@ -1074,12 +1071,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
@@ -1088,7 +1085,7 @@ public class DbGateQueryBasicTest
                         .or().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,45,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
@@ -1103,12 +1100,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
@@ -1117,7 +1114,7 @@ public class DbGateQueryBasicTest
                         .and().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,45,55)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results,35,55);
         }
         catch (Exception e)
@@ -1132,12 +1129,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
@@ -1148,7 +1145,7 @@ public class DbGateQueryBasicTest
                         .or().field(QueryBasicEntity.class, "idCol").eq().value(ColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 45, 55);
         }
         catch (Exception e)
@@ -1163,12 +1160,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
@@ -1179,7 +1176,7 @@ public class DbGateQueryBasicTest
                         .or().field(QueryBasicEntity.class,"idCol").eq().value(ColumnType.INTEGER,45)))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
         }
         catch (Exception e)
@@ -1194,19 +1191,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .join(QueryJoin.rawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
                     .orderBy(QueryOrderBy.rawSql("qb1.name"))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, basicEntityIds);
         }
         catch (Exception e)
@@ -1221,18 +1218,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .join(QueryJoin.type(QueryBasicEntity.class,QueryBasicJoinEntity.class,"qbj1"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 65);
         }
         catch (Exception e)
@@ -1247,18 +1244,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicJoinEntity.class,"qbj1"))
                     .join(QueryJoin.type(QueryBasicJoinEntity.class,QueryBasicEntity.class,"qb1"))
                     .select(QuerySelection.field(QueryBasicJoinEntity.class, "idCol", null));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, 35, 65);
         }
         catch (Exception e)
@@ -1273,19 +1270,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .join(QueryJoin.type(QueryBasicEntity.class, QueryBasicJoinEntity.class, "qbj1",
                                          QueryJoinType.LEFT))
                     .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             hasIds(results, basicEntityIds);
         }
         catch (Exception e)
@@ -1300,12 +1297,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
                     .join(QueryJoin.type(QueryBasicEntity.class
@@ -1315,7 +1312,7 @@ public class DbGateQueryBasicTest
                             , "qbd1"))
                     .select(QuerySelection.field(QueryBasicDetailsEntity.class, "description", null));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
         }
         catch (Exception e)
@@ -1330,18 +1327,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .groupBy(QueryGroup.rawSql("name"))
                     .select(QuerySelection.rawSql("name"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 2);
         }
         catch (Exception e)
@@ -1356,18 +1353,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class, "qb"))
                     .groupBy(QueryGroup.field(QueryBasicEntity.class, "name"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "name", null));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 2);
         }
         catch (Exception e)
@@ -1382,19 +1379,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .groupBy(QueryGroup.rawSql("name"))
                     .having(QueryGroupCondition.rawSql("count(id_col)>1"))
                     .select(QuerySelection.rawSql("name"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 1);
         }
         catch (Exception e)
@@ -1409,12 +1406,12 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.type(QueryBasicEntity.class, "qb"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "name", null))
@@ -1424,7 +1421,7 @@ public class DbGateQueryBasicTest
                                 .field(QueryBasicEntity.class, "name").count().gt().value(ColumnType.INTEGER,1)
                     ));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 1);
         }
         catch (Exception e)
@@ -1439,18 +1436,18 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .orderBy(QueryOrderBy.rawSql("name"))
                     .select(QuerySelection.rawSql("name"));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
         }
         catch (Exception e)
@@ -1465,19 +1462,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "name"))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class,"idCol"))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
         }
         catch (Exception e)
@@ -1492,19 +1489,19 @@ public class DbGateQueryBasicTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            createTestData(connection);
-            connection.commit();
-            connection.close();
+            ITransaction tx = connector.createTransaction();
+            createTestData(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "name", QueryOrderType.DESCEND))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "idCol", QueryOrderType.DESCEND))
                     .select(QuerySelection.type(QueryBasicEntity.class));
 
-            Collection results = query.toList(connection);
+            Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
         }
         catch (Exception e)
@@ -1573,7 +1570,7 @@ public class DbGateQueryBasicTest
         return null;
     }
 
-    private void createTestData(Connection connection) throws PersistException
+    private void createTestData(ITransaction tx) throws PersistException
     {
         basicEntityIds = new int[]{35,45,55,65};
         basicEntityNames = new String[]{"Org-NameA","Org-NameA","Org-NameA","Org-NameB"};
@@ -1594,7 +1591,7 @@ public class DbGateQueryBasicTest
                 joinEntity.setOverrideDescription(entity.getName() + "Details");
                 entity.setJoinEntity(joinEntity);
             }
-            entity.persist(connection);
+            entity.persist(tx);
             basicEntities.add(entity);
         }
 
@@ -1617,7 +1614,7 @@ public class DbGateQueryBasicTest
             QueryBasicDetailsEntity detailsEntity = new QueryBasicDetailsEntity();
             detailsEntity.setName(basicEntityName);
             detailsEntity.setDescription(basicEntityName + "Details");
-            detailsEntity.persist(connection);
+            detailsEntity.persist(tx);
             detailsEntities.add(detailsEntity);
         }
     }

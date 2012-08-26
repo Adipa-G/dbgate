@@ -1,13 +1,11 @@
 package dbgate;
 
-import dbgate.utility.DBMgtUtility;
-import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.featureintegration.order.ItemTransaction;
 import dbgate.support.persistant.featureintegration.order.ItemTransactionCharge;
 import dbgate.support.persistant.featureintegration.order.Transaction;
 import dbgate.support.persistant.featureintegration.product.Product;
 import dbgate.support.persistant.featureintegration.product.Service;
+import dbgate.utility.DBMgtUtility;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
@@ -24,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class DbGateFeatureIntegrationTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -36,11 +34,12 @@ public class DbGateFeatureIntegrationTest
             Connection con = DriverManager.getConnection("jdbc:derby:memory:testing-feature_integreation;create=true");
             DBMgtUtility.close(con);
             
-            connector = new DBConnector("jdbc:derby:memory:testing-feature_integreation;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(true);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:testing-feature_integreation;","org.apache.derby.jdbc.EmbeddedDriver"
+                    ,DefaultTransactionFactory.DB_DERBY);
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setCheckVersion(true);
             
-            con = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Collection<Class> dbClassList = new ArrayList<>();
             dbClassList.add(ItemTransaction.class);
@@ -48,10 +47,9 @@ public class DbGateFeatureIntegrationTest
             dbClassList.add(Transaction.class);
             dbClassList.add(Product.class);
             dbClassList.add(Service.class);
-            DbGate.getSharedInstance().patchDataBase(con,dbClassList,true);
-
-            con.commit();
-            con.close();
+            connector.getDbGate().patchDataBase(tx,dbClassList,true);
+            tx.commit();
+            tx.close();
         }
         catch (Exception ex)
         {
@@ -63,10 +61,7 @@ public class DbGateFeatureIntegrationTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -83,9 +78,9 @@ public class DbGateFeatureIntegrationTest
             Transaction transaction = createDefaultTransaction(transId,product,service);
 
             Transaction loadedTransaction = new Transaction();
-            Connection connection = connector.getConnection();
-            loadWithId(connection,loadedTransaction,transId);
-            DBMgtUtility.close(connection);
+            ITransaction tx = connector.createTransaction();
+            loadWithId(tx,loadedTransaction,transId);
+            tx.close();
 
             verifyEquals(transaction, loadedTransaction);
         }
@@ -134,16 +129,16 @@ public class DbGateFeatureIntegrationTest
         Assert.assertEquals(loadedTransaction.getName(),transaction.getName());
     }
 
-    private boolean loadWithId(Connection connection, Transaction transaction,int id) throws Exception
+    private boolean loadWithId(ITransaction tx, Transaction transaction,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from order_transaction where transaction_id = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from order_transaction where transaction_id = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            transaction.retrieve(rs,connection);
+            transaction.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -152,31 +147,31 @@ public class DbGateFeatureIntegrationTest
         return loaded;
     }
 
-    public Product createDefaultProduct(int productId) throws PersistException
+    public Product createDefaultProduct(int productId) throws DbGateException
     {
         Product product = new Product();
         product.setItemId(productId);
         product.setName("Product");
         product.setUnitPrice(54D);
-        Connection con = connector.getConnection();
-        product.persist(con);
-        DBMgtUtility.close(con);
+        ITransaction tx = connector.createTransaction();
+        product.persist(tx);
+        DBMgtUtility.close(tx);
         return product;
     }
 
-    public Service createDefaultService(int serviceId) throws PersistException
+    public Service createDefaultService(int serviceId) throws DbGateException
     {
         Service service = new Service();
         service.setItemId(serviceId);
         service.setName("Service");
         service.setHourlyRate(65D);
-        Connection con = connector.getConnection();
-        service.persist(con);
-        DBMgtUtility.close(con);
+        ITransaction tx = connector.createTransaction();
+        service.persist(tx);
+        DBMgtUtility.close(tx);
         return service;
     }
 
-    public Transaction createDefaultTransaction(int transactionId,Product product,Service service) throws PersistException
+    public Transaction createDefaultTransaction(int transactionId,Product product,Service service) throws DbGateException
     {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);
@@ -200,7 +195,7 @@ public class DbGateFeatureIntegrationTest
         serviceTransactionCharge.setChargeCode("Service-Sell-Code");
         serviceTransaction.getItemTransactionCharges().add(serviceTransactionCharge);
 
-        Connection con = connector.getConnection();
+        ITransaction con = connector.createTransaction();
         transaction.persist(con);
         DBMgtUtility.close(con);
         return transaction;

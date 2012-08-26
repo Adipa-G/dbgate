@@ -1,9 +1,9 @@
 package dbgate.support.persistant.featureintegration.product;
 
-import dbgate.*;
 import dbgate.ColumnInfo;
-import dbgate.TableInfo;
+import dbgate.ColumnType;
 import dbgate.DefaultEntity;
+import dbgate.TableInfo;
 
 /**
  * Date: Mar 31, 2011

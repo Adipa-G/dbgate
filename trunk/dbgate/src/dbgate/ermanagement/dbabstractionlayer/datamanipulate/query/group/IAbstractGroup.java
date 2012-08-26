@@ -1,8 +1,8 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.group;
 
-import dbgate.ermanagement.query.IQueryGroup;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
+import dbgate.ermanagement.query.IQueryGroup;
 
 /**
  * Created by IntelliJ IDEA.

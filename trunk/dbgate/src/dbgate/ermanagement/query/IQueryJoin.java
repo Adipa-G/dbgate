@@ -1,7 +1,5 @@
 package dbgate.ermanagement.query;
 
-import dbgate.ermanagement.query.QueryJoinExpressionType;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa

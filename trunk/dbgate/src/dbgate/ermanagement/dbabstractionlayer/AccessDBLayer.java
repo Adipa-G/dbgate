@@ -1,12 +1,11 @@
 package dbgate.ermanagement.dbabstractionlayer;
 
-import dbgate.exceptions.migration.MetaDataException;
+import dbgate.ITransaction;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.IDataManipulate;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.dbdm.accessdm.AccessDataManipulate;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.IMetaManipulate;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.dbmm.defaultmm.DefaultMetaManipulate;
-
-import java.sql.Connection;
+import dbgate.exceptions.migration.MetaDataException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,10 +26,10 @@ public class AccessDBLayer extends AbstractDBLayer
     }
 
     @Override
-    protected IMetaManipulate createMetaManipulate(Connection con) throws MetaDataException
+    protected IMetaManipulate createMetaManipulate(ITransaction tx) throws MetaDataException
     {
         DefaultMetaManipulate defaultMetaManipulate = new DefaultMetaManipulate(this);
-        defaultMetaManipulate.initialize(con);
+        defaultMetaManipulate.initialize(tx);
         return defaultMetaManipulate;
     }
 }

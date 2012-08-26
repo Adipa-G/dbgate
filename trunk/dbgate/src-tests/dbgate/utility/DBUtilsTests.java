@@ -1,6 +1,7 @@
 package dbgate.utility;
 
-import dbgate.DBConnector;
+import dbgate.DefaultTransactionFactory;
+import dbgate.ITransaction;
 import junit.framework.Assert;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
@@ -21,6 +22,8 @@ import java.util.logging.Logger;
  */
 public class DBUtilsTests
 {
+    private static DefaultTransactionFactory transactionFactory;
+
     @BeforeClass
     public static void before()
     {
@@ -36,7 +39,8 @@ public class DBUtilsTests
             con.commit();
             con.close();
 
-            DBConnector connector = new DBConnector("jdbc:derby:memory:unit-testing-dbutility;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            transactionFactory = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-dbutility;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                                                DefaultTransactionFactory.DB_DERBY);
         }
         catch (Exception ex)
         {
@@ -50,7 +54,9 @@ public class DBUtilsTests
     {
         try
         {
-            Connection con = DBConnector.getSharedInstance().getConnection();
+            ITransaction transaction = transactionFactory.createTransaction();
+            Connection con = transaction.getConnection();
+
             PreparedStatement ps = con.prepareStatement("INSERT INTO ROOT_ENTITY VALUES (10,'TEN'),(20,'TWENTY'),(30,'THIRTY')");
             ps.execute();
 
@@ -68,11 +74,13 @@ public class DBUtilsTests
     {
         try
         {
-            Connection connection = DBConnector.getSharedInstance().getConnection();
-            Assert.assertTrue(!connection.isClosed());
-            connection.close();
+            ITransaction transaction = transactionFactory.createTransaction();
+            Connection con = transaction.getConnection();
+
+            Assert.assertTrue(!con.isClosed());
+            con.close();
         }
-        catch (SQLException e)
+        catch (Exception e)
         {
             Assert.fail(e.getMessage());
             e.printStackTrace();
@@ -84,7 +92,9 @@ public class DBUtilsTests
     {
         try
         {
-            Connection con = DBConnector.getSharedInstance().getConnection();
+            ITransaction transaction = transactionFactory.createTransaction();
+            Connection con = transaction.getConnection();
+
             PreparedStatement ps = con.prepareStatement("DELETE FROM ROOT_ENTITY");
             ps.execute();
 

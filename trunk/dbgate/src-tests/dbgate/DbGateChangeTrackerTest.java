@@ -1,7 +1,6 @@
 package dbgate;
 
 import dbgate.context.impl.ChangeTracker;
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 import dbgate.support.persistant.changetracker.ChangeTrackerTestOne2ManyEntity;
 import dbgate.support.persistant.changetracker.ChangeTrackerTestOne2OneEntity;
@@ -22,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class DbGateChangeTrackerTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -58,8 +57,9 @@ public class DbGateChangeTrackerTest
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-change-tracker;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-change-tracker;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
         }
         catch (Exception ex)
         {
@@ -71,10 +71,7 @@ public class DbGateChangeTrackerTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -82,29 +79,29 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setName("Changed-Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,reloadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reloadedEntity, id);
+            tx.close();
 
             Assert.assertEquals(loadedEntity.getName(),reloadedEntity.getName());
         }
@@ -120,20 +117,20 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity,id);
 
             Field fieldsField = ChangeTracker.class.getDeclaredField("fields");
             Field entityRelationKeysField = ChangeTracker.class.getDeclaredField("childEntityRelationKeys");
@@ -144,14 +141,14 @@ public class DbGateChangeTrackerTest
             childEntityKeys.clear();
 
             loadedEntity.setName("Changed-Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,reloadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reloadedEntity, id);
+            tx.close();
 
             Assert.assertEquals(loadedEntity.getName(),reloadedEntity.getName());
         }
@@ -167,29 +164,29 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setName("Changed-Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,reloadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reloadedEntity, id);
+            tx.close();
 
             Assert.assertEquals(entity.getName(),reloadedEntity.getName());
         }
@@ -205,8 +202,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -214,21 +211,21 @@ public class DbGateChangeTrackerTest
             entity.setName("Org-Name");
             entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setOne2OneEntity(null);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2OneChild(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2OneChild(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToOne);
         }
@@ -244,8 +241,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -253,21 +250,21 @@ public class DbGateChangeTrackerTest
             entity.setName("Org-Name");
             entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setOne2OneEntity(null);
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2OneChild(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2OneChild(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToOne);
         }
@@ -283,8 +280,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -292,22 +289,22 @@ public class DbGateChangeTrackerTest
             entity.setName("Org-Name");
             entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Child-Upd-Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity reLoadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             Assert.assertEquals(loadedEntity.getOne2OneEntity().getName(),reLoadedEntity.getOne2OneEntity().getName());
         }
@@ -323,8 +320,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -332,22 +329,22 @@ public class DbGateChangeTrackerTest
             entity.setName("Org-Name");
             entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Child-Upd-Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity reLoadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,reLoadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx, reLoadedEntity, id);
+            tx.close();
 
             Assert.assertEquals(entity.getOne2OneEntity().getName(),reLoadedEntity.getOne2OneEntity().getName());
         }
@@ -363,8 +360,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -376,21 +373,21 @@ public class DbGateChangeTrackerTest
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
             entity.getOne2ManyEntities().add(one2ManyEntity);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity,id);
             loadedEntity.getOne2ManyEntities().clear();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2ManyChild(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2ManyChild(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToOne);
         }
@@ -406,8 +403,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -419,21 +416,21 @@ public class DbGateChangeTrackerTest
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
             entity.getOne2ManyEntities().add(one2ManyEntity);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity,id);
             loadedEntity.getOne2ManyEntities().clear();
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            boolean hasOneToOne = existsOne2ManyChild(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            boolean hasOneToOne = existsOne2ManyChild(tx,id);
+            tx.close();
 
             Assert.assertFalse(hasOneToOne);
         }
@@ -449,8 +446,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -462,24 +459,24 @@ public class DbGateChangeTrackerTest
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
             entity.getOne2ManyEntities().add(one2ManyEntity);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity,id);
             ChangeTrackerTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Child-Upd-Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,reloadedEntity,id);
+            loadEntityWithId(tx, reloadedEntity, id);
             ChangeTrackerTestOne2ManyEntity reloadedOne2ManyEntity = reloadedEntity.getOne2ManyEntities().iterator().next();
-            connection.close();
+            tx.close();
 
             Assert.assertEquals(reloadedOne2ManyEntity.getName(),loadedOne2ManyEntity.getName());
         }
@@ -495,8 +492,8 @@ public class DbGateChangeTrackerTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
@@ -508,24 +505,24 @@ public class DbGateChangeTrackerTest
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
             entity.getOne2ManyEntities().add(one2ManyEntity);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
+            loadEntityWithId(tx,loadedEntity,id);
             ChangeTrackerTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Child-Upd-Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
-            loadEntityWithId(connection,reloadedEntity,id);
+            loadEntityWithId(tx, reloadedEntity, id);
             ChangeTrackerTestOne2ManyEntity reloadedOne2ManyEntity = reloadedEntity.getOne2ManyEntities().iterator().next();
-            connection.close();
+            tx.close();
 
             Assert.assertEquals(reloadedOne2ManyEntity.getName(),one2ManyEntity.getName());
         }
@@ -536,16 +533,16 @@ public class DbGateChangeTrackerTest
         }
     }
 
-    private boolean loadEntityWithId(Connection connection, ChangeTrackerTestRootEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, ChangeTrackerTestRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from change_tracker_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from change_tracker_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -554,11 +551,11 @@ public class DbGateChangeTrackerTest
         return loaded;
     }
 
-    private boolean existsOne2OneChild(Connection connection,int id) throws SQLException
+    private boolean existsOne2OneChild(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from change_tracker_test_one2one where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from change_tracker_test_one2one where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -571,11 +568,11 @@ public class DbGateChangeTrackerTest
         return exists;
     }
 
-    private boolean existsOne2ManyChild(Connection connection,int id) throws SQLException
+    private boolean existsOne2ManyChild(ITransaction tx,int id) throws SQLException
     {
         boolean exists = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from change_tracker_test_one2many where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from change_tracker_test_one2many where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())

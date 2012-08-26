@@ -1,7 +1,6 @@
 package dbgate;
 
 import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.version.*;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
@@ -17,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class DbGateVersionTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -56,10 +55,11 @@ public class DbGateVersionTest
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-version;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-version;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(true);
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setCheckVersion(true);
         }
         catch (Exception ex)
         {
@@ -71,11 +71,8 @@ public class DbGateVersionTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
-        DbGate.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(false);
+        connector.getDbGate().clearCache();
+        connector.getDbGate().getConfig().setUpdateChangedColumnsOnly(false);
     }
 
     @Test
@@ -83,20 +80,20 @@ public class DbGateVersionTest
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 35;
             VersionColumnTestRootEntity entity = new VersionColumnTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -110,20 +107,20 @@ public class DbGateVersionTest
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             VersionGeneralTestRootEntity entity = new VersionGeneralTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -135,31 +132,31 @@ public class DbGateVersionTest
     @Test(expected = PersistException.class)
     public void version_persistWithTwoChanges_WithoutUpdateChangedColumnsOnly_shouldThrowException() throws Exception
     {
-        Connection connection = connector.getConnection();
+        ITransaction tx = connector.createTransaction();
 
         int id = 85;
         VersionGeneralTestRootEntity entity = new VersionGeneralTestRootEntity();
         entity.setIdCol(id);
         entity.setName("Org-Name");
         entity.setVersion(1);
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         VersionGeneralTestRootEntity loadedEntityA = new VersionGeneralTestRootEntity();
         VersionGeneralTestRootEntity loadedEntityB = new VersionGeneralTestRootEntity();
-        loadWithoutVersionColumnEntityWithId(connection,loadedEntityA, entity.getIdCol());
-        loadWithoutVersionColumnEntityWithId(connection,loadedEntityB, entity.getIdCol());
-        connection.close();
+        loadWithoutVersionColumnEntityWithId(tx,loadedEntityA, entity.getIdCol());
+        loadWithoutVersionColumnEntityWithId(tx,loadedEntityB, entity.getIdCol());
+        tx.close();
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         loadedEntityA.setName("Mod Name");
-        loadedEntityA.persist(connection);
+        loadedEntityA.persist(tx);
         loadedEntityB.setVersion(loadedEntityB.getVersion() + 1);
-        loadedEntityB.persist(connection);
-        connection.commit();
-        connection.close();
+        loadedEntityB.persist(tx);
+        tx.commit();
+        tx.close();
     }
 
     @Test
@@ -167,32 +164,32 @@ public class DbGateVersionTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setUpdateChangedColumnsOnly(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setUpdateChangedColumnsOnly(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 95;
             VersionGeneralTestRootEntity entity = new VersionGeneralTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
             entity.setVersion(1);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             VersionGeneralTestRootEntity loadedEntityA = new VersionGeneralTestRootEntity();
             VersionGeneralTestRootEntity loadedEntityB = new VersionGeneralTestRootEntity();
-            loadWithoutVersionColumnEntityWithId(connection,loadedEntityA, entity.getIdCol());
-            loadWithoutVersionColumnEntityWithId(connection,loadedEntityB, entity.getIdCol());
-            connection.close();
+            loadWithoutVersionColumnEntityWithId(tx,loadedEntityA, entity.getIdCol());
+            loadWithoutVersionColumnEntityWithId(tx,loadedEntityB, entity.getIdCol());
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             loadedEntityA.setName("Mod Name");
-            loadedEntityA.persist(connection);
+            loadedEntityA.persist(tx);
             loadedEntityB.setVersion(loadedEntityB.getVersion() + 1);
-            loadedEntityB.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntityB.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -204,26 +201,26 @@ public class DbGateVersionTest
     @Test(expected = PersistException.class)
     public void version_rootUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection;
+        ITransaction tx;
         VersionColumnTestRootEntity entity = null;
         try
         {
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             int id = 55;
             entity = new VersionColumnTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             VersionColumnTestRootEntity loadedEntity = new VersionColumnTestRootEntity();
-            loadWithVersionColumnEntityWithId(connection, loadedEntity, id);
+            loadWithVersionColumnEntityWithId(tx, loadedEntity, id);
             loadedEntity.setName("New Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -231,37 +228,37 @@ public class DbGateVersionTest
             e.printStackTrace();
         }
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         entity.setName("New Name2");
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
     }
 
     @Test(expected = PersistException.class)
     public void version_rootUpdateFromAnotherTransaction_WithOutVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection;
+        ITransaction tx;
         VersionGeneralTestRootEntity entity = null;
 
         try
         {
             int id = 65;
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             entity = new VersionGeneralTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             VersionGeneralTestRootEntity loadedEntity = new VersionGeneralTestRootEntity();
-            loadWithoutVersionColumnEntityWithId(connection, loadedEntity, id);
+            loadWithoutVersionColumnEntityWithId(tx, loadedEntity, id);
             loadedEntity.setName("New Name");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -269,23 +266,23 @@ public class DbGateVersionTest
             e.printStackTrace();
         }
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         entity.setName("New Name2");
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
     }
 
     @Test(expected = PersistException.class)
     public void version_one2oneChildUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection;
+        ITransaction tx;
         VersionColumnTestRootEntity entity = null;
 
         try
         {
             int id = 55;
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             entity = new VersionColumnTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
@@ -294,17 +291,17 @@ public class DbGateVersionTest
             one2OneEntity.setName("One2One");
             entity.setOne2OneEntity(one2OneEntity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             VersionColumnTestRootEntity loadedEntity = new VersionColumnTestRootEntity();
-            loadWithVersionColumnEntityWithId(connection, loadedEntity, id);
+            loadWithVersionColumnEntityWithId(tx, loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Modified One2One");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -312,23 +309,23 @@ public class DbGateVersionTest
             e.printStackTrace();
         }
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         entity.getOne2OneEntity().setName("Modified2 One2One");
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
     }
 
     @Test(expected = PersistException.class)
     public void version_one2oneChildUpdateFromAnotherTransaction_WithoutVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection;
+        ITransaction tx;
         VersionGeneralTestRootEntity entity = null;
 
         try
         {
             int id = 55;
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             entity = new VersionGeneralTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
@@ -337,17 +334,17 @@ public class DbGateVersionTest
             one2OneEntity.setName("One2One");
             entity.setOne2OneEntity(one2OneEntity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             VersionGeneralTestRootEntity loadedEntity = new VersionGeneralTestRootEntity();
-            loadWithoutVersionColumnEntityWithId(connection, loadedEntity, id);
+            loadWithoutVersionColumnEntityWithId(tx, loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Modified One2One");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -355,23 +352,23 @@ public class DbGateVersionTest
             e.printStackTrace();
         }
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         entity.getOne2OneEntity().setName("Modified2 One2One");
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
     }
 
     @Test(expected = PersistException.class)
     public void version_one2manyChildUpdateFromAnotherTransaction_WithVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection;
+        ITransaction tx;
         VersionColumnTestRootEntity entity = null;
 
         try
         {
             int id = 55;
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             entity = new VersionColumnTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
@@ -381,18 +378,18 @@ public class DbGateVersionTest
             one2ManyEntity.setIndexNo(1);
             entity.getOne2ManyEntities().add(one2ManyEntity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             VersionColumnTestRootEntity loadedEntity = new VersionColumnTestRootEntity();
-            loadWithVersionColumnEntityWithId(connection, loadedEntity, id);
+            loadWithVersionColumnEntityWithId(tx, loadedEntity, id);
             VersionColumnTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Modified One2Many");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -400,24 +397,24 @@ public class DbGateVersionTest
             e.printStackTrace();
         }
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         VersionColumnTestOne2ManyEntity one2ManyEntity = entity.getOne2ManyEntities().iterator().next();
         one2ManyEntity.setName("Modified2 One2Many");
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
     }
 
     @Test(expected = PersistException.class)
     public void version_one2manyChildUpdateFromAnotherTransaction_WithoutVersionColumnEntity_shouldThrowException() throws Exception
     {
-        Connection connection;
+        ITransaction tx;
         VersionGeneralTestRootEntity entity = null;
 
         try
         {
             int id = 55;
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             entity = new VersionGeneralTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
@@ -427,18 +424,18 @@ public class DbGateVersionTest
             one2ManyEntity.setIndexNo(1);
             entity.getOne2ManyEntities().add(one2ManyEntity);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             VersionGeneralTestRootEntity loadedEntity = new VersionGeneralTestRootEntity();
-            loadWithoutVersionColumnEntityWithId(connection, loadedEntity, id);
+            loadWithoutVersionColumnEntityWithId(tx, loadedEntity, id);
             VersionGeneralTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Modified One2Many");
-            loadedEntity.persist(connection);
-            connection.commit();
-            connection.close();
+            loadedEntity.persist(tx);
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -446,25 +443,25 @@ public class DbGateVersionTest
             e.printStackTrace();
         }
 
-        connection = connector.getConnection();
+        tx = connector.createTransaction();
         VersionGeneralTestOne2ManyEntity one2ManyEntity = entity.getOne2ManyEntities().iterator().next();
         one2ManyEntity.setName("Modified2 One2Many");
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
     }
 
-    private boolean loadWithVersionColumnEntityWithId(Connection connection, VersionColumnTestRootEntity loadEntity,
+    private boolean loadWithVersionColumnEntityWithId(ITransaction tx, VersionColumnTestRootEntity loadEntity,
                                                       int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from version_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from version_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();
@@ -473,17 +470,17 @@ public class DbGateVersionTest
         return loaded;
     }
 
-    private boolean loadWithoutVersionColumnEntityWithId(Connection connection, VersionGeneralTestRootEntity loadEntity,
+    private boolean loadWithoutVersionColumnEntityWithId(ITransaction tx, VersionGeneralTestRootEntity loadEntity,
                                                          int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from version_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from version_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();

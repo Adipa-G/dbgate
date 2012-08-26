@@ -1,6 +1,5 @@
 package dbgate;
 
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.lazy.LazyOne2ManyEntity;
 import dbgate.support.persistant.lazy.LazyOne2OneEntity;
 import dbgate.support.persistant.lazy.LazyRootEntity;
@@ -20,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class DbGateLazyTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -56,9 +55,10 @@ public class DbGateLazyTest
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-lazy;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-lazy;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
         }
         catch (Exception ex)
         {
@@ -70,10 +70,7 @@ public class DbGateLazyTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -81,29 +78,29 @@ public class DbGateLazyTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            DbGate.getSharedInstance().getConfig().setEnableStatistics(true);
-            DbGate.getSharedInstance().getStatistics().reset();
+            ITransaction tx = connector.createTransaction();
+            connector.getDbGate().getConfig().setEnableStatistics(true);
+            connector.getDbGate().getStatistics().reset();
 
             int id = 35;
             LazyRootEntity entity = new LazyRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             LazyRootEntity entityReloaded = new LazyRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             boolean isEnhancedOneToMany = Enhancer.isEnhanced(entityReloaded.getOne2ManyEntities().getClass());
             boolean isEnhancedOneToOne = Enhancer.isEnhanced(entityReloaded.getOne2ManyEntities().getClass());
             Assert.assertTrue(isEnhancedOneToMany);
             Assert.assertTrue(isEnhancedOneToOne);
-            Assert.assertTrue(DbGate.getSharedInstance().getStatistics().getSelectQueryCount() == 0);
+            Assert.assertTrue(connector.getDbGate().getStatistics().getSelectQueryCount() == 0);
         }
         catch (Exception e)
         {
@@ -117,9 +114,9 @@ public class DbGateLazyTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            DbGate.getSharedInstance().getConfig().setEnableStatistics(true);
-            DbGate.getSharedInstance().getStatistics().reset();
+            ITransaction tx = connector.createTransaction();
+            connector.getDbGate().getConfig().setEnableStatistics(true);
+            connector.getDbGate().getStatistics().reset();
 
             int id = 35;
             LazyRootEntity entity = new LazyRootEntity();
@@ -139,13 +136,13 @@ public class DbGateLazyTest
             one2One.setName("One2One");
             entity.setOne2OneEntity(one2One);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             LazyRootEntity entityReloaded = new LazyRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
 
             Assert.assertTrue(entityReloaded.getOne2ManyEntities().size() == 2);
             Iterator<LazyOne2ManyEntity> iterator = entityReloaded.getOne2ManyEntities().iterator();
@@ -153,10 +150,10 @@ public class DbGateLazyTest
             Assert.assertTrue(iterator.next().getName().equals(one2Many2.getName()));
             Assert.assertTrue(entityReloaded.getOne2OneEntity() != null);
             Assert.assertTrue(entityReloaded.getOne2OneEntity().getName().equals(one2One.getName()));
-            Assert.assertTrue(DbGate.getSharedInstance().getStatistics().getSelectQueryCount() == 2);
+            Assert.assertTrue(connector.getDbGate().getStatistics().getSelectQueryCount() == 2);
 
-            connection.commit();
-            connection.close();
+            tx.commit();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -170,9 +167,9 @@ public class DbGateLazyTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            DbGate.getSharedInstance().getConfig().setEnableStatistics(true);
-            DbGate.getSharedInstance().getStatistics().reset();
+            ITransaction tx = connector.createTransaction();
+            connector.getDbGate().getConfig().setEnableStatistics(true);
+            connector.getDbGate().getStatistics().reset();
 
             int id = 35;
             LazyRootEntity entity = new LazyRootEntity();
@@ -192,15 +189,15 @@ public class DbGateLazyTest
             one2One.setName("One2One");
             entity.setOne2OneEntity(one2One);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             LazyRootEntity entityReloaded = new LazyRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
             Assert.assertTrue(entityReloaded.getOne2ManyEntities().size() == 2);
             Iterator<LazyOne2ManyEntity> iterator = entityReloaded.getOne2ManyEntities().iterator();
@@ -208,7 +205,7 @@ public class DbGateLazyTest
             Assert.assertTrue(iterator.next().getName().equals(one2Many2.getName()));
             Assert.assertTrue(entityReloaded.getOne2OneEntity() != null);
             Assert.assertTrue(entityReloaded.getOne2OneEntity().getName().equals(one2One.getName()));
-            Assert.assertTrue(DbGate.getSharedInstance().getStatistics().getSelectQueryCount() == 2);
+            Assert.assertTrue(connector.getDbGate().getStatistics().getSelectQueryCount() == 2);
         }
         catch (Exception e)
         {
@@ -222,9 +219,9 @@ public class DbGateLazyTest
     {
         try
         {
-            Connection connection = connector.getConnection();
-            DbGate.getSharedInstance().getConfig().setEnableStatistics(true);
-            DbGate.getSharedInstance().getStatistics().reset();
+            ITransaction tx = connector.createTransaction();
+            connector.getDbGate().getConfig().setEnableStatistics(true);
+            connector.getDbGate().getStatistics().reset();
 
             int id = 35;
             LazyRootEntity entity = new LazyRootEntity();
@@ -244,22 +241,22 @@ public class DbGateLazyTest
             one2One.setName("One2One");
             entity.setOne2OneEntity(one2One);
 
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             LazyRootEntity entityReloaded = new LazyRootEntity();
-            loadWithColumnEntityWithId(connection,entityReloaded,id);
-            connection.commit();
-            connection.close();
+            loadWithColumnEntityWithId(tx,entityReloaded,id);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            entityReloaded.persist(connection);
-            connection.commit();
-            connection.close();
+            tx = connector.createTransaction();
+            entityReloaded.persist(tx);
+            tx.commit();
+            tx.close();
 
-            Assert.assertTrue(DbGate.getSharedInstance().getStatistics().getSelectQueryCount() == 0);
+            Assert.assertTrue(connector.getDbGate().getStatistics().getSelectQueryCount() == 0);
         }
         catch (Exception e)
         {
@@ -269,16 +266,16 @@ public class DbGateLazyTest
     }
 
 
-    private boolean loadWithColumnEntityWithId(Connection connection, LazyRootEntity loadEntity,int id) throws Exception
+    private boolean loadWithColumnEntityWithId(ITransaction tx, LazyRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from lazy_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from lazy_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();

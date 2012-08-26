@@ -1,6 +1,5 @@
 package dbgate;
 
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.patch.patchtabledifferences.FourColumnEntity;
 import dbgate.support.patch.patchtabledifferences.ThreeColumnEntity;
 import dbgate.support.patch.patchtabledifferences.ThreeColumnTypeDifferentEntity;
@@ -12,7 +11,10 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -25,7 +27,7 @@ import java.util.logging.Logger;
  */
 public class DbGatePatchTableDifferenceDBTests
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -36,11 +38,11 @@ public class DbGatePatchTableDifferenceDBTests
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-table-difference;create=true");
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-table-difference;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-metadata-table-difference;","org.apache.derby.jdbc.EmbeddedDriver",
+                                        DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -54,27 +56,27 @@ public class DbGatePatchTableDifferenceDBTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
             Collection<Class> dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnEntity.class);
-            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
-            connection.commit();
-            connection.close();
+            connector.getDbGate().patchDataBase(tx,dbClasses,true);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             dbClasses = new ArrayList<>();
             dbClasses.add(FourColumnEntity.class);
-            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,false);
-            connection.commit();
-            connection.close();
+            connector.getDbGate().patchDataBase(tx, dbClasses, false);
+            tx.commit();
+            tx.close();
 
             int id = 35;
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             FourColumnEntity columnEntity = createFourColumnEntity(id);
-            columnEntity.persist(connection);
-            loadFourColumnEntityWithId(connection,id);
-            connection.close();
+            columnEntity.persist(tx);
+            loadFourColumnEntityWithId(tx, id);
+            tx.close();
         }
         catch (Exception e)
         {
@@ -88,34 +90,34 @@ public class DbGatePatchTableDifferenceDBTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
             Collection<Class> dbClasses = new ArrayList<>();
             dbClasses.add(FourColumnEntity.class);
-            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
-            connection.commit();
-            connection.close();
+            connector.getDbGate().patchDataBase(tx,dbClasses,true);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnEntity.class);
-            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,false);
-            connection.commit();
-            connection.close();
+            connector.getDbGate().patchDataBase(tx, dbClasses, false);
+            tx.commit();
+            tx.close();
 
             int id = 35;
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             FourColumnEntity columnEntity = createFourColumnEntity(id);
             try
             {
-                columnEntity.persist(connection);
+                columnEntity.persist(tx);
                 Assert.fail("object should not be able to persist");
             }
             catch (Exception ex)
             {
                 Assert.assertTrue(true);
             }
-            connection.close();
+            tx.close();
         }
         catch (Exception e)
         {
@@ -135,42 +137,42 @@ public class DbGatePatchTableDifferenceDBTests
                 sb.append("a");
             }
 
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
             Collection<Class> dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnEntity.class);
-            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
-            connection.commit();
-            connection.close();
+            connector.getDbGate().patchDataBase(tx,dbClasses,true);
+            tx.commit();
+            tx.close();
 
             int id = 34;
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             ThreeColumnEntity columnEntity = createThreeColumnEntity(id);
             columnEntity.setName(sb.toString());
             try
             {
-                columnEntity.persist(connection);
+                columnEntity.persist(tx);
                 Assert.fail("Object should not be able to persist");
             }
             catch (Exception ex)
             {
                 //eat it
             }
-            connection.close();
+            tx.close();
 
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             dbClasses = new ArrayList<>();
             dbClasses.add(ThreeColumnTypeDifferentEntity.class);
-            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,false);
-            connection.commit();
-            connection.close();
+            connector.getDbGate().patchDataBase(tx,dbClasses,false);
+            tx.commit();
+            tx.close();
 
             id = 35;
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             columnEntity = createThreeColumnEntity(id);
             columnEntity.setName(sb.toString());
-            columnEntity.persist(connection);
-            connection.close();
+            columnEntity.persist(tx);
+            tx.close();
         }
         catch (Exception e)
         {
@@ -179,21 +181,21 @@ public class DbGatePatchTableDifferenceDBTests
         }
     }
 
-    private FourColumnEntity loadFourColumnEntityWithId(Connection connection,int id) throws Exception
+    private FourColumnEntity loadFourColumnEntityWithId(ITransaction tx,int id) throws Exception
     {
         FourColumnEntity loadedEntity = null;
 
-        PreparedStatement ps = connection.prepareStatement("select * from table_change_test_entity where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from table_change_test_entity where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
             loadedEntity = new FourColumnEntity();
-            loadedEntity.retrieve(rs,connection);
+            loadedEntity.retrieve(rs,tx);
         }
         rs.close();
         ps.close();
-        connection.close();
+        tx.close();
 
         return loadedEntity;
     }
