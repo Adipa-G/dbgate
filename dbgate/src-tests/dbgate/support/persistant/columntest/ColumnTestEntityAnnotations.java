@@ -1,9 +1,6 @@
 package dbgate.support.persistant.columntest;
 
 import dbgate.*;
-import dbgate.ColumnInfo;
-import dbgate.TableInfo;
-import dbgate.DefaultEntity;
 
 /**
  * Created by IntelliJ IDEA.

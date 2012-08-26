@@ -1,8 +1,7 @@
 package dbgate.support.persistant.columntest;
 
 import dbgate.ISequenceGenerator;
-
-import java.sql.Connection;
+import dbgate.ITransaction;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +11,7 @@ import java.sql.Connection;
  */
 public class PrimaryKeyGenerator implements ISequenceGenerator
 {
-    public Object getNextSequenceValue(Connection con)
+    public Object getNextSequenceValue(ITransaction tx)
     {
         return 35;
     }

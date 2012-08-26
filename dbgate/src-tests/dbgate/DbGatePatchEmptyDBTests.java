@@ -1,7 +1,6 @@
 package dbgate;
 
 import dbgate.exceptions.PersistException;
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.patch.patchempty.LeafEntity;
 import dbgate.support.patch.patchempty.LeafEntitySubA;
 import dbgate.support.patch.patchempty.LeafEntitySubB;
@@ -14,7 +13,10 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,7 +30,7 @@ import java.util.logging.Logger;
  */
 public class DbGatePatchEmptyDBTests
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -39,11 +41,11 @@ public class DbGatePatchEmptyDBTests
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-empty;create=true");
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-metadata-empty;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-metadata-empty;","org.apache.derby.jdbc.EmbeddedDriver",
+                                        DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -57,25 +59,25 @@ public class DbGatePatchEmptyDBTests
     {
         try
         {
-            Connection connection = connector.getConnection();
+            ITransaction tx = connector.createTransaction();
 
             Collection<Class> dbClasses = new ArrayList<>();
             dbClasses.add(LeafEntitySubA.class);
             dbClasses.add(LeafEntitySubB.class);
             dbClasses.add(RootEntity.class);
-            DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
+            connector.getDbGate().patchDataBase(tx,dbClasses,true);
 
             int id = 35;
             RootEntity entity = createRootEntityWithoutNullValues(id);
             entity.getLeafEntities().add(createLeafEntityA(id,1));
             entity.getLeafEntities().add(createLeafEntityB(id,2));
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
-            RootEntity loadedEntity = loadRootEntityWithId(connection,id);
-            connection.close();
+            tx = connector.createTransaction();
+            RootEntity loadedEntity = loadRootEntityWithId(tx,id);
+            tx.close();
 
             assertTwoRootEntitiesEquals(entity,loadedEntity);
         }
@@ -90,25 +92,25 @@ public class DbGatePatchEmptyDBTests
     @Test(expected = PersistException.class)
     public void patchEmpty_patchDataBase_withEmptyDb_shouldCreatePrimaryKeys_shouldNotAbleToPutDuplicateData() throws Exception
     {
-        Connection connection = connector.getConnection();
+        ITransaction tx = connector.createTransaction();
 
         Collection<Class> dbClasses = new ArrayList<>();
         dbClasses.add(LeafEntitySubA.class);
         dbClasses.add(LeafEntitySubB.class);
         dbClasses.add(RootEntity.class);
-        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        connector.getDbGate().patchDataBase(tx,dbClasses,true);
 
         int id = 35;
         RootEntity entity = createRootEntityWithoutNullValues(id);
         entity.getLeafEntities().add(createLeafEntityA(id,1));
         entity.getLeafEntities().add(createLeafEntityB(id,1));
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
 
-        connection = connector.getConnection();
-        RootEntity loadedEntity = loadRootEntityWithId(connection,id);
-        connection.close();
+        tx = connector.createTransaction();
+        RootEntity loadedEntity = loadRootEntityWithId(tx,id);
+        tx.close();
 
         assertTwoRootEntitiesEquals(entity,loadedEntity);
     }
@@ -116,25 +118,25 @@ public class DbGatePatchEmptyDBTests
     @Test(expected = PersistException.class)
     public void patchEmpty_patchDataBase_withEmptyDb_shouldCreateForeignKeys_shouldNotAbleToInconsistantData() throws Exception
     {
-        Connection connection = connector.getConnection();
+        ITransaction tx = connector.createTransaction();
 
         Collection<Class> dbClasses = new ArrayList<>();
         dbClasses.add(LeafEntitySubA.class);
         dbClasses.add(LeafEntitySubB.class);
         dbClasses.add(RootEntity.class);
-        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        connector.getDbGate().patchDataBase(tx,dbClasses,true);
 
         int id = 35;
         RootEntity entity = createRootEntityWithoutNullValues(id);
         entity.getLeafEntities().add(createLeafEntityA(id + 1,1));
         entity.getLeafEntities().add(createLeafEntityB(id,1));
-        entity.persist(connection);
-        connection.commit();
-        connection.close();
+        entity.persist(tx);
+        tx.commit();
+        tx.close();
 
-        connection = connector.getConnection();
-        RootEntity loadedEntity = loadRootEntityWithId(connection,id);
-        connection.close();
+        tx = connector.createTransaction();
+        RootEntity loadedEntity = loadRootEntityWithId(tx,id);
+        tx.close();
 
         assertTwoRootEntitiesEquals(entity,loadedEntity);
     }
@@ -142,16 +144,16 @@ public class DbGatePatchEmptyDBTests
     @Test
     public void patchEmpty_patchDataBase_pathTwice_shouldNotThrowException() throws Exception
     {
-        Connection connection = connector.getConnection();
+        ITransaction tx = connector.createTransaction();
 
         Collection<Class> dbClasses = new ArrayList<>();
         dbClasses.add(LeafEntitySubA.class);
         dbClasses.add(LeafEntitySubB.class);
         dbClasses.add(RootEntity.class);
 
-        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        connector.getDbGate().patchDataBase(tx,dbClasses,true);
         
-        DbGate.getSharedInstance().patchDataBase(connection,dbClasses,true);
+        connector.getDbGate().patchDataBase(tx,dbClasses,true);
     }
 
     private void assertTwoRootEntitiesEquals(RootEntity entityA, RootEntity entityB)
@@ -201,21 +203,21 @@ public class DbGatePatchEmptyDBTests
         }
     }
 
-    private RootEntity loadRootEntityWithId(Connection connection,int id) throws Exception
+    private RootEntity loadRootEntityWithId(ITransaction tx,int id) throws Exception
     {
         RootEntity loadedEntity = null;
 
-        PreparedStatement ps = connection.prepareStatement("select * from root_entity where id_col = ?");
-        ps.setInt(1,id);
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from root_entity where id_col = ?");
+        ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
             loadedEntity = new RootEntity();
-            loadedEntity.retrieve(rs,connection);
+            loadedEntity.retrieve(rs,tx);
         }
         rs.close();
         ps.close();
-        connection.close();
+        tx.close();
 
         return loadedEntity;
     }

@@ -2,7 +2,6 @@ package dbgate.support.persistant.superentityrefinheritance;
 
 import dbgate.ColumnInfo;
 import dbgate.ColumnType;
-import dbgate.DefaultEntity;
 import dbgate.TableInfo;
 
 /**

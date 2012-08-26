@@ -1,9 +1,9 @@
 package dbgate.support.persistant.changetracker;
 
-import dbgate.*;
 import dbgate.ColumnInfo;
-import dbgate.TableInfo;
+import dbgate.ColumnType;
 import dbgate.DefaultEntity;
+import dbgate.TableInfo;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,10 +1,9 @@
 package dbgate.ermanagement.query;
 
-import dbgate.*;
+import dbgate.ISelectionQuery;
+import dbgate.ITransaction;
 import dbgate.exceptions.RetrievalException;
-import dbgate.ermanagement.ermapper.DbGate;
 
-import java.sql.Connection;
 import java.util.Collection;
 
 /**
@@ -21,9 +20,9 @@ public class SelectionQuery extends Query implements ISelectionQuery
     }
 
     @Override
-    public Collection toList(Connection con) throws RetrievalException
+    public Collection toList(ITransaction tx) throws RetrievalException
     {
-        return DbGate.getSharedInstance().select(this,con);
+        return tx.getDbGate().select(this,tx);
     }
 
     @Override

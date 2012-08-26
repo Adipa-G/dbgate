@@ -1,29 +1,28 @@
 package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
-import dbgate.ermanagement.query.IQuerySelection;
-import dbgate.utility.DBMgtUtility;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.context.IEntityContext;
 import dbgate.context.ITypeFieldValueList;
-import dbgate.exceptions.RetrievalException;
-import dbgate.exceptions.common.ReadFromResultSetException;
-import dbgate.exceptions.retrival.NoMatchingRecordFoundForSuperClassException;
-import dbgate.exceptions.retrival.NoSetterFoundToSetChildObjectListException;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecInfo;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.QueryExecParam;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.ermapper.utils.OperationUtils;
-import dbgate.ermanagement.ermapper.utils.SessionUtils;
 import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
+import dbgate.ermanagement.ermapper.utils.SessionUtils;
+import dbgate.ermanagement.query.IQuerySelection;
+import dbgate.exceptions.RetrievalException;
+import dbgate.exceptions.common.ReadFromResultSetException;
+import dbgate.exceptions.retrival.NoMatchingRecordFoundForSuperClassException;
+import dbgate.exceptions.retrival.NoSetterFoundToSetChildObjectListException;
 import dbgate.lazy.ChildLoadInterceptor;
+import dbgate.utility.DBMgtUtility;
 import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +44,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         super(dbLayer,statistics,config);
     }
 
-    public Collection select(ISelectionQuery query,Connection con ) throws RetrievalException
+    public Collection select(ISelectionQuery query,ITransaction tx ) throws RetrievalException
     {
         ResultSet rs = null;
         try
@@ -64,7 +63,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
                 Logger.getLogger(config.getLoggerName()).info(logSb.toString());
             }
 
-            rs = dbLayer.getDataManipulate().createResultSet(con,execInfo);
+            rs = dbLayer.getDataManipulate().createResultSet(tx,execInfo);
 
             Collection<Object> retList = new ArrayList<>();
             Collection<IQuerySelection> selections = query.getStructure().getSelectList();
@@ -75,7 +74,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
                 Object  rowObject = selections.size() > 1 ? new Object[selections.size()] : null;
                 for (IQuerySelection selection : selections)
                 {
-                    Object loaded = ((IAbstractSelection)selection).retrieve(rs,con,buildInfo);
+                    Object loaded = ((IAbstractSelection)selection).retrieve(rs,tx,buildInfo);
                     if (selections.size() > 1)
                     {
                         ((Object[])rowObject)[count++] = loaded;
@@ -101,7 +100,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         }
     }
 
-    public void load(IReadOnlyEntity roEntity, ResultSet rs, Connection con) throws RetrievalException
+    public void load(IReadOnlyEntity roEntity, ResultSet rs, ITransaction tx) throws RetrievalException
     {
         if (roEntity instanceof IEntity)
         {
@@ -111,7 +110,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         try
         {
             SessionUtils.initSession(roEntity);
-            loadFromDb(roEntity, rs, con);
+            loadFromDb(roEntity, rs, tx);
             SessionUtils.destroySession(roEntity);
         }
         catch (Exception e)
@@ -121,7 +120,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void loadFromDb(IReadOnlyEntity roEntity, ResultSet rs, Connection con) throws DbGateException
+    private void loadFromDb(IReadOnlyEntity roEntity, ResultSet rs, ITransaction tx) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(roEntity);
         while (entityInfo != null)
@@ -129,7 +128,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
             String tableName = entityInfo.getTableName();
             if (entityInfo.getEntityType() == roEntity.getClass() || tableName == null) //if i==0 that means it's base class and can use existing result set
             {
-                loadForType(roEntity, entityInfo.getEntityType(), rs, con);
+                loadForType(roEntity, entityInfo.getEntityType(), rs, tx);
             }
             else
             {
@@ -139,11 +138,11 @@ public class RetrievalOperationLayer extends BaseOperationLayer
                 {
                     ITypeFieldValueList keyValueList = OperationUtils.extractEntityTypeKeyValues(roEntity,
                                                                                                  entityInfo.getEntityType());
-                    superPs = createRetrievalPreparedStatement(keyValueList,con);
+                    superPs = createRetrievalPreparedStatement(keyValueList,tx);
                     superRs = superPs.executeQuery();
                     if (superRs.next())
                     {
-                        loadForType(roEntity,entityInfo.getEntityType(),superRs,con);
+                        loadForType(roEntity,entityInfo.getEntityType(),superRs,tx);
                     }
                     else
                     {
@@ -168,7 +167,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void loadForType(IReadOnlyEntity entity,Class type, ResultSet rs, Connection con) throws DbGateException
+    private void loadForType(IReadOnlyEntity entity,Class type, ResultSet rs, ITransaction tx) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         IEntityContext entityContext = entity.getContext();
@@ -184,12 +183,12 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         Collection<IRelation> dbRelations = entityInfo.getRelations();
         for (IRelation relation : dbRelations)
         {
-            loadChildrenFromRelation(entity, type, con,relation,false);
+            loadChildrenFromRelation(entity, type, tx,relation,false);
         }
     }
 
     public void loadChildrenFromRelation(IReadOnlyEntity parentRoEntity, Class type
-            , Connection con, IRelation relation,boolean lazy) throws DbGateException
+            , ITransaction tx, IRelation relation,boolean lazy) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         Method getter = entityInfo.getGetter(relation.getAttributeName());
@@ -203,7 +202,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
                 proxyType = ArrayList.class;
             }
             
-            Object proxy = Enhancer.create(proxyType, new ChildLoadInterceptor(this, parentRoEntity, type, con,
+            Object proxy = Enhancer.create(proxyType, new ChildLoadInterceptor(this, parentRoEntity, type, tx,
                                                                                relation));
             ReflectionUtils.setValue(setter, parentRoEntity, proxy);
             return;
@@ -212,7 +211,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         IEntityContext entityContext = parentRoEntity.getContext();
         Object value = ReflectionUtils.getValue(getter,parentRoEntity);
 
-        Collection<IReadOnlyEntity> children = readRelationChildrenFromDb(parentRoEntity,type,con,relation);
+        Collection<IReadOnlyEntity> children = readRelationChildrenFromDb(parentRoEntity,type,tx,relation);
         if (entityContext != null
                 && !relation.isReverseRelationship())
         {

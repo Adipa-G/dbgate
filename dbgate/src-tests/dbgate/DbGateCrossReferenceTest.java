@@ -1,6 +1,5 @@
 package dbgate;
 
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.support.persistant.crossreference.CrossReferenceTestOne2ManyEntity;
 import dbgate.support.persistant.crossreference.CrossReferenceTestOne2OneEntity;
 import dbgate.support.persistant.crossreference.CrossReferenceTestRootEntity;
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class DbGateCrossReferenceTest
 {
-    private static DBConnector connector;
+    private static DefaultTransactionFactory connector;
 
     @BeforeClass
     public static void before()
@@ -54,10 +53,11 @@ public class DbGateCrossReferenceTest
             con.commit();
             con.close();
 
-            connector = new DBConnector("jdbc:derby:memory:unit-testing-cross-reference;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-cross-reference;","org.apache.derby.jdbc.EmbeddedDriver",
+                                                      DefaultTransactionFactory.DB_DERBY);
 
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(false);
-            DbGate.getSharedInstance().getConfig().setCheckVersion(false);
+            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setCheckVersion(false);
         }
         catch (Exception ex)
         {
@@ -69,10 +69,7 @@ public class DbGateCrossReferenceTest
     @Before
     public void beforeEach()
     {
-        if (DBConnector.getSharedInstance() != null)
-        {
-            DbGate.getSharedInstance().clearCache();
-        }
+        connector.getDbGate().clearCache();
     }
 
     @Test
@@ -80,8 +77,8 @@ public class DbGateCrossReferenceTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             CrossReferenceTestRootEntity entity = new CrossReferenceTestRootEntity();
@@ -92,14 +89,14 @@ public class DbGateCrossReferenceTest
             one2OneEntity.setName("Child-Entity");
             one2OneEntity.setRootEntity(entity);
             entity.setOne2OneEntity(one2OneEntity);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             CrossReferenceTestRootEntity loadedEntity = new CrossReferenceTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             Assert.assertNotNull(loadedEntity);
             Assert.assertNotNull(loadedEntity.getOne2OneEntity());
@@ -118,8 +115,8 @@ public class DbGateCrossReferenceTest
     {
         try
         {
-            DbGate.getSharedInstance().getConfig().setAutoTrackChanges(true);
-            Connection connection = connector.getConnection();
+            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            ITransaction tx = connector.createTransaction();
 
             int id = 45;
             CrossReferenceTestRootEntity entity = new CrossReferenceTestRootEntity();
@@ -131,14 +128,14 @@ public class DbGateCrossReferenceTest
             one2ManyEntity.setName("Child-Entity");
             one2ManyEntity.setRootEntity(entity);
             entity.getOne2ManyEntities().add(one2ManyEntity);
-            entity.persist(connection);
-            connection.commit();
-            connection.close();
+            entity.persist(tx);
+            tx.commit();
+            tx.close();
 
-            connection = connector.getConnection();
+            tx = connector.createTransaction();
             CrossReferenceTestRootEntity loadedEntity = new CrossReferenceTestRootEntity();
-            loadEntityWithId(connection,loadedEntity,id);
-            connection.close();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
 
             Assert.assertNotNull(loadedEntity);
             Assert.assertTrue(loadedEntity.getOne2ManyEntities().size() == 1);
@@ -152,16 +149,16 @@ public class DbGateCrossReferenceTest
         }
     }
 
-    private boolean loadEntityWithId(Connection connection, CrossReferenceTestRootEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, CrossReferenceTestRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = connection.prepareStatement("select * from cross_reference_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from cross_reference_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
         {
-            loadEntity.retrieve(rs,connection);
+            loadEntity.retrieve(rs,tx);
             loaded = true;
         }
         rs.close();

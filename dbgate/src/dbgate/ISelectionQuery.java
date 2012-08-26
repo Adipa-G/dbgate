@@ -3,7 +3,6 @@ package dbgate;
 import dbgate.ermanagement.query.*;
 import dbgate.exceptions.RetrievalException;
 
-import java.sql.Connection;
 import java.util.Collection;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Collection;
  */
 public interface ISelectionQuery extends IQuery
 {
-    Collection toList(Connection con) throws RetrievalException;
+    Collection toList(ITransaction tx) throws RetrievalException;
 
     @Override
     ISelectionQuery from(IQueryFrom queryFrom);

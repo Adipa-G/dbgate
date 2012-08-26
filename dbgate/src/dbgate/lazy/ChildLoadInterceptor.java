@@ -1,9 +1,9 @@
 package dbgate.lazy;
 
-import dbgate.DBConnector;
 import dbgate.IReadOnlyEntity;
 import dbgate.IRelation;
-import dbgate.utility.DBMgtUtility;
+import dbgate.ITransaction;
+import dbgate.ITransactionFactory;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.ermanagement.ermapper.RetrievalOperationLayer;
@@ -11,7 +11,6 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,15 +26,17 @@ public class ChildLoadInterceptor implements MethodInterceptor
     private Class applicableParentType;
     private IRelation relation;
     private boolean intercepted;
-    private Connection connection;
+    private ITransactionFactory transactionFactory;
+    private ITransaction transaction;
 
     public ChildLoadInterceptor(RetrievalOperationLayer retrievalOperationLayer, IReadOnlyEntity parentRoEntity,
-                                Class applicableParentType,Connection connection, IRelation relation)
+                                Class applicableParentType,ITransaction transaction, IRelation relation)
     {
         this.retrievalOperationLayer = retrievalOperationLayer;
         this.parentRoEntity = parentRoEntity;
         this.applicableParentType = applicableParentType;
-        this.connection = connection;
+        this.transaction = transaction;
+        this.transactionFactory = transaction.getFactory();
         this.relation = relation;
     }
 
@@ -46,22 +47,22 @@ public class ChildLoadInterceptor implements MethodInterceptor
         if (!intercepted)
         {
             intercepted = true;
-            boolean newConnection = false;
+            boolean newTransaction = false;
             try
             {
-                if (connection == null || connection.isClosed())
+                if (transaction.isClosed())
                 {
-                    connection = DBConnector.getSharedInstance().getConnection();
-                    newConnection = true;
+                    transaction = transactionFactory.createTransaction();
+                    newTransaction = true;
                 }
-                retrievalOperationLayer.loadChildrenFromRelation(parentRoEntity,applicableParentType,connection,relation,true);
+                retrievalOperationLayer.loadChildrenFromRelation(parentRoEntity,applicableParentType,transaction,relation,true);
             }
             finally
             {
-                if (newConnection)
+                if (newTransaction)
                 {
-                    DBMgtUtility.close(connection);
-                    connection = null;
+                    transaction.close();
+                    transaction = null;
                 }
             }
 

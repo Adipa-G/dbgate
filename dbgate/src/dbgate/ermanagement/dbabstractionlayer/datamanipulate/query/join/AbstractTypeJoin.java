@@ -1,15 +1,15 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.join;
 
-import dbgate.RelationColumnMapping;
 import dbgate.IRelation;
 import dbgate.QueryJoinType;
-import dbgate.exceptions.ExpressionParsingException;
+import dbgate.RelationColumnMapping;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.AbstractExpressionProcessor;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.from.AbstractTypeFrom;
 import dbgate.ermanagement.query.QueryJoinExpressionType;
 import dbgate.ermanagement.query.expr.JoinExpr;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

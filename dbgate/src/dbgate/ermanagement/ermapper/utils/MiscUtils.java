@@ -1,7 +1,7 @@
 package dbgate.ermanagement.ermapper.utils;
 
-import dbgate.IEntity;
 import dbgate.EntityStatus;
+import dbgate.IEntity;
 
 /**
  * Date: Mar 24, 2011

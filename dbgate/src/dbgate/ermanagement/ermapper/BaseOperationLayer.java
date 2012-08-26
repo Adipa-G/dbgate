@@ -1,25 +1,24 @@
 package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
-import dbgate.utility.DBMgtUtility;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.context.EntityFieldValue;
 import dbgate.context.IEntityFieldValueList;
 import dbgate.context.ITypeFieldValueList;
 import dbgate.context.impl.EntityTypeFieldValueList;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
+import dbgate.ermanagement.ermapper.utils.SessionUtils;
 import dbgate.exceptions.common.MethodInvocationException;
 import dbgate.exceptions.common.NoMatchingColumnFoundException;
 import dbgate.exceptions.common.ReadFromResultSetException;
 import dbgate.exceptions.common.StatementPreparingException;
-import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.ermapper.utils.OperationUtils;
-import dbgate.ermanagement.ermapper.utils.SessionUtils;
-import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
+import dbgate.utility.DBMgtUtility;
 import net.sf.cglib.proxy.Enhancer;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +44,7 @@ public abstract class BaseOperationLayer
         this.config = config;
     }
 
-    protected PreparedStatement createRetrievalPreparedStatement(ITypeFieldValueList keyValueList, Connection con)
+    protected PreparedStatement createRetrievalPreparedStatement(ITypeFieldValueList keyValueList,ITransaction tx)
             throws DbGateException
     {
         Class targetType = keyValueList.getType();
@@ -55,7 +54,7 @@ public abstract class BaseOperationLayer
         PreparedStatement ps;
         try
         {
-            ps = con.prepareStatement(query);
+            ps = tx.getConnection().prepareStatement(query);
         }
         catch (SQLException ex)
         {
@@ -215,7 +214,7 @@ public abstract class BaseOperationLayer
     }
 
     protected Collection<IReadOnlyEntity> readRelationChildrenFromDb(IReadOnlyEntity entity,Class type
-            ,Connection con,IRelation relation) throws DbGateException
+            ,ITransaction tx,IRelation relation) throws DbGateException
     {
         Collection<IReadOnlyEntity> retrievedEntities = new ArrayList<>();
         Collection<Class> childTypesToProcess = getChildTypesToProcess(relation);
@@ -241,7 +240,7 @@ public abstract class BaseOperationLayer
             PreparedStatement ps;
             try
             {
-                ps = con.prepareStatement(query);
+                ps = tx.getConnection().prepareStatement(query);
             }
             catch (SQLException ex)
             {
@@ -285,7 +284,7 @@ public abstract class BaseOperationLayer
             {
                 statistics.registerSelect(childType);
             }
-            Collection<IReadOnlyEntity> retrievedEntitiesForType = executeAndReadFromPreparedStatement(entity, con, ps, childType);
+            Collection<IReadOnlyEntity> retrievedEntitiesForType = executeAndReadFromPreparedStatement(entity, tx, ps, childType);
             retrievedEntities.addAll(retrievedEntitiesForType);
         }
         return retrievedEntities;
@@ -321,7 +320,7 @@ public abstract class BaseOperationLayer
         return childTypesToProcess;
     }
 
-    private Collection<IReadOnlyEntity> executeAndReadFromPreparedStatement(IReadOnlyEntity entity, Connection con,
+    private Collection<IReadOnlyEntity> executeAndReadFromPreparedStatement(IReadOnlyEntity entity, ITransaction tx,
                                                                             PreparedStatement ps, Class childType)
             throws DbGateException
     {
@@ -353,7 +352,7 @@ public abstract class BaseOperationLayer
 
                 IReadOnlyEntity rodbClass = (IReadOnlyEntity) ReflectionUtils.createInstance(childType);
                 SessionUtils.transferSession(entity, rodbClass);
-                rodbClass.retrieve(rs,con);
+                rodbClass.retrieve(rs,tx);
                 data.add(rodbClass);
 
                 IEntityFieldValueList childEntityKeyList = OperationUtils.extractEntityKeyValues(rodbClass);

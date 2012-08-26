@@ -1,6 +1,6 @@
 package dbgate.ermanagement.dbabstractionlayer;
 
-import dbgate.DBConnector;
+import dbgate.DefaultTransactionFactory;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,11 +14,11 @@ public class LayerFactory
     {
         switch (dbType)
         {
-            case DBConnector.DB_ACCESS:
+            case DefaultTransactionFactory.DB_ACCESS:
                 return new AccessDBLayer();
-            case DBConnector.DB_ORACLE:
+            case DefaultTransactionFactory.DB_ORACLE:
                 return new OracleDBLayer();
-            case DBConnector.DB_MYSQL:
+            case DefaultTransactionFactory.DB_MYSQL:
                 return new MySqlDBLayer();
             default:
                 return new DefaultDBLayer();

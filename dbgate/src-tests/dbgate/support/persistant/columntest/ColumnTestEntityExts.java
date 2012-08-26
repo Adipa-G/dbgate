@@ -1,14 +1,13 @@
 package dbgate.support.persistant.columntest;
 
-import dbgate.EntityStatus;
 import dbgate.DateWrapper;
+import dbgate.EntityStatus;
+import dbgate.ITransaction;
 import dbgate.TimeStampWrapper;
 import dbgate.context.IEntityContext;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
-import dbgate.ermanagement.ermapper.DbGate;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
@@ -246,14 +245,14 @@ public class ColumnTestEntityExts implements IColumnTestEntity
         this.status = status;
     }
 
-    public void persist(Connection con) throws PersistException
+    public void persist(ITransaction tx) throws PersistException
     {
-        DbGate.getSharedInstance().save(this,con);
+        tx.getDbGate().save(this,tx);
     }
 
-    public void retrieve(ResultSet rs, Connection con) throws RetrievalException
+    public void retrieve(ResultSet rs, ITransaction tx) throws RetrievalException
     {
-        DbGate.getSharedInstance().load(this,rs,con);
+        tx.getDbGate().load(this,rs,tx);
     }
 
     public IEntityContext getContext()

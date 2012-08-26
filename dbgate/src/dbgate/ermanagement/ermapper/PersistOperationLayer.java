@@ -1,7 +1,6 @@
 package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
-import dbgate.utility.DBMgtUtility;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.context.EntityFieldValue;
@@ -9,6 +8,11 @@ import dbgate.context.IEntityContext;
 import dbgate.context.IEntityFieldValueList;
 import dbgate.context.ITypeFieldValueList;
 import dbgate.context.impl.EntityRelationFieldValueList;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.ermapper.utils.MiscUtils;
+import dbgate.ermanagement.ermapper.utils.OperationUtils;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
+import dbgate.ermanagement.ermapper.utils.SessionUtils;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.common.NoMatchingColumnFoundException;
 import dbgate.exceptions.common.StatementExecutionException;
@@ -16,14 +20,9 @@ import dbgate.exceptions.common.StatementPreparingException;
 import dbgate.exceptions.persist.DataUpdatedFromAnotherSourceException;
 import dbgate.exceptions.persist.IncorrectStatusException;
 import dbgate.exceptions.persist.IntegrityConstraintViolationException;
-import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.ermapper.utils.OperationUtils;
-import dbgate.ermanagement.ermapper.utils.SessionUtils;
-import dbgate.ermanagement.ermapper.utils.MiscUtils;
-import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
+import dbgate.utility.DBMgtUtility;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,12 +45,12 @@ public class PersistOperationLayer extends BaseOperationLayer
         super(dbLayer, statistics, config);
     }
 
-    public void save(IEntity entity, Connection con) throws PersistException
+    public void save(IEntity entity, ITransaction tx) throws PersistException
     {
         try
         {
             SessionUtils.initSession(entity);
-            trackAndCommitChanges(entity, con);
+            trackAndCommitChanges(entity, tx);
 
             Stack<EntityInfo> entityInfoStack = new Stack<>();
             EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
@@ -64,7 +63,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             while (!entityInfoStack.empty())
             {
                 entityInfo = entityInfoStack.pop();
-                saveForType(entity, entityInfo.getEntityType(), con);
+                saveForType(entity, entityInfo.getEntityType(), tx);
             }
 
             entity.setStatus(EntityStatus.UNMODIFIED);
@@ -76,7 +75,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void trackAndCommitChanges(IEntity entity, Connection con) throws DbGateException
+    private void trackAndCommitChanges(IEntity entity, ITransaction tx) throws DbGateException
     {
         IEntityContext entityContext = entity.getContext();
         Collection<ITypeFieldValueList> originalChildren;
@@ -85,7 +84,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         {
             if (config.isAutoTrackChanges())
             {
-                if (checkForModification(entity, con, entityContext))
+                if (checkForModification(entity, tx, entityContext))
                 {
                     MiscUtils.modify(entity);
                 }
@@ -101,10 +100,10 @@ public class PersistOperationLayer extends BaseOperationLayer
         validateForChildDeletion(entity, currentChildren);
         Collection<ITypeFieldValueList> deletedChildren = OperationUtils.findDeletedChildren(originalChildren,
                                                                                              currentChildren);
-        deleteOrphanChildren(con, deletedChildren);
+        deleteOrphanChildren(tx, deletedChildren);
     }
 
-    private void saveForType(IEntity entity, Class type, Connection con) throws DbGateException
+    private void saveForType(IEntity entity, Class type, ITransaction tx) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
         if (entityInfo == null)
@@ -138,14 +137,16 @@ public class PersistOperationLayer extends BaseOperationLayer
         if (entity.getStatus() == EntityStatus.UNMODIFIED)
         {
             //do nothing
-        } else if (entity.getStatus() == EntityStatus.NEW)
+        }
+        else if (entity.getStatus() == EntityStatus.NEW)
         {
-            insert(entity, fieldValues, type, con);
-        } else if (entity.getStatus() == EntityStatus.MODIFIED)
+            insert(entity, fieldValues, type, tx);
+        }
+        else if (entity.getStatus() == EntityStatus.MODIFIED)
         {
             if (config.isCheckVersion())
             {
-                if (!versionValidated(entity, type, con))
+                if (!versionValidated(entity, type, tx))
                 {
                     throw new DataUpdatedFromAnotherSourceException(String.format(
                             "The type %s updated from another transaction", type));
@@ -153,11 +154,13 @@ public class PersistOperationLayer extends BaseOperationLayer
                 OperationUtils.incrementVersion(fieldValues);
                 setValues(entity, fieldValues);
             }
-            update(entity, fieldValues, type, con);
-        } else if (entity.getStatus() == EntityStatus.DELETED)
+            update(entity, fieldValues, type, tx);
+        }
+        else if (entity.getStatus() == EntityStatus.DELETED)
         {
-            delete(fieldValues, type, con);
-        } else
+            delete(fieldValues, type, tx);
+        }
+        else
         {
             String message = String.format("In-corret status for class %s", type.getCanonicalName());
             throw new IncorrectStatusException(message);
@@ -197,7 +200,7 @@ public class PersistOperationLayer extends BaseOperationLayer
                     SessionUtils.transferSession(entity, fieldObject);
                     if (fieldObject.getStatus() != EntityStatus.DELETED) //deleted items are already deleted
                     {
-                        fieldObject.persist(con);
+                        fieldObject.persist(tx);
                         SessionUtils.addToSession(entity, childEntityKeyList);
                     }
                 }
@@ -205,7 +208,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void insert(IEntity entity, ITypeFieldValueList valueTypeList, Class type, Connection con)
+    private void insert(IEntity entity, ITypeFieldValueList valueTypeList, Class type, ITransaction tx)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
@@ -215,7 +218,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         PreparedStatement ps = null;
         try
         {
-            ps = con.prepareStatement(query);
+            ps = tx.getConnection().prepareStatement(query);
 
             boolean showQuery = config.isShowQueries();
             if (showQuery)
@@ -231,7 +234,7 @@ public class PersistOperationLayer extends BaseOperationLayer
                 if (dbColumn.isReadFromSequence()
                         && dbColumn.getSequenceGenerator() != null)
                 {
-                    columnValue = dbColumn.getSequenceGenerator().getNextSequenceValue(con);
+                    columnValue = dbColumn.getSequenceGenerator().getNextSequenceValue(tx);
 
                     Method keySetter = entityInfo.getSetter(dbColumn);
                     ReflectionUtils.setValue(keySetter, entity, columnValue);
@@ -265,7 +268,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void update(IEntity entity, ITypeFieldValueList valueTypeList, Class type, Connection con)
+    private void update(IEntity entity, ITypeFieldValueList valueTypeList, Class type, ITransaction tx)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
@@ -315,7 +318,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         PreparedStatement ps = null;
         try
         {
-            ps = con.prepareStatement(query);
+            ps = tx.getConnection().prepareStatement(query);
             int count = 0;
             for (EntityFieldValue fieldValue : values)
             {
@@ -357,7 +360,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void delete(ITypeFieldValueList valueTypeList, Class type, Connection con)
+    private void delete(ITypeFieldValueList valueTypeList, Class type, ITransaction tx)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
@@ -382,7 +385,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         PreparedStatement ps = null;
         try
         {
-            ps = con.prepareStatement(query);
+            ps = tx.getConnection().prepareStatement(query);
             for (int i = 0; i < keys.size(); i++)
             {
                 EntityFieldValue fieldValue = keys.get(i);
@@ -553,12 +556,12 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
     }
 
-    private boolean checkForModification(IEntity entity, Connection con, IEntityContext entityContext)
+    private boolean checkForModification(IEntity entity, ITransaction tx, IEntityContext entityContext)
     throws DbGateException
     {
         if (!entityContext.getChangeTracker().isValid())
         {
-            fillChangeTrackerValues(entity, con, entityContext);
+            fillChangeTrackerValues(entity, tx, entityContext);
         }
 
         EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
@@ -589,7 +592,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         return false;
     }
 
-    private void fillChangeTrackerValues(IEntity entity, Connection con, IEntityContext entityContext)
+    private void fillChangeTrackerValues(IEntity entity, ITransaction tx, IEntityContext entityContext)
     throws DbGateException
     {
         if (entity.getStatus() == EntityStatus.NEW
@@ -601,14 +604,14 @@ public class PersistOperationLayer extends BaseOperationLayer
         EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
         while (entityInfo != null)
         {
-            ITypeFieldValueList values = extractCurrentRowValues(entity, entityInfo.getEntityType(), con);
+            ITypeFieldValueList values = extractCurrentRowValues(entity, entityInfo.getEntityType(), tx);
             entityContext.getChangeTracker().addFields(values.getFieldValues());
 
             Collection<IRelation> dbRelations = entityInfo.getRelations();
             for (IRelation relation : dbRelations)
             {
                 Collection<IReadOnlyEntity> children = readRelationChildrenFromDb(entity, entityInfo.getEntityType(),
-                                                                                  con, relation);
+                                                                                  tx, relation);
                 for (IReadOnlyEntity childEntity : children)
                 {
                     ITypeFieldValueList valueTypeList = OperationUtils.extractRelationKeyValues(childEntity,
@@ -623,7 +626,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void deleteOrphanChildren(Connection con, Collection<ITypeFieldValueList> childrenToDelete)
+    private void deleteOrphanChildren(ITransaction tx, Collection<ITypeFieldValueList> childrenToDelete)
     throws DbGateException
     {
         for (ITypeFieldValueList relationKeyValueList : childrenToDelete)
@@ -644,7 +647,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             }
 
             boolean recordExists = false;
-            PreparedStatement ps = createRetrievalPreparedStatement(relationKeyValueList, con);
+            PreparedStatement ps = createRetrievalPreparedStatement(relationKeyValueList, tx);
             ResultSet rs = null;
             try
             {
@@ -667,12 +670,12 @@ public class PersistOperationLayer extends BaseOperationLayer
 
             if (recordExists)
             {
-                delete(relationKeyValueList, relationKeyValueList.getType(), con);
+                delete(relationKeyValueList, relationKeyValueList.getType(), tx);
             }
         }
     }
 
-    private boolean versionValidated(IReadOnlyEntity entity, Class type, Connection con)
+    private boolean versionValidated(IReadOnlyEntity entity, Class type, ITransaction tx)
     throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
@@ -681,7 +684,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         {
             if (typeColumn.getColumnType() == ColumnType.VERSION)
             {
-                Object classValue = extractCurrentVersionValue(entity, typeColumn, type, con);
+                Object classValue = extractCurrentVersionValue(entity, typeColumn, type, tx);
                 EntityFieldValue originalFieldValue = entity.getContext().getChangeTracker().getFieldValue(
                         typeColumn.getAttributeName());
                 return originalFieldValue != null && classValue == originalFieldValue.getValue()
@@ -700,7 +703,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             }
         }
 
-        ITypeFieldValueList fieldValueList = extractCurrentRowValues(entity, type, con);
+        ITypeFieldValueList fieldValueList = extractCurrentRowValues(entity, type, tx);
         if (fieldValueList == null)
         {
             return false;
@@ -749,13 +752,13 @@ public class PersistOperationLayer extends BaseOperationLayer
     }
 
     private Object extractCurrentVersionValue(IReadOnlyEntity entity, IColumn versionColumn, Class type,
-                                              Connection con)
+                                              ITransaction tx)
     throws DbGateException
     {
         Object versionValue = null;
 
         ITypeFieldValueList keyFieldValueList = OperationUtils.extractEntityTypeKeyValues(entity, type);
-        PreparedStatement ps = createRetrievalPreparedStatement(keyFieldValueList, con);
+        PreparedStatement ps = createRetrievalPreparedStatement(keyFieldValueList, tx);
         ResultSet rs = null;
         try
         {
@@ -777,13 +780,13 @@ public class PersistOperationLayer extends BaseOperationLayer
         return versionValue;
     }
 
-    private ITypeFieldValueList extractCurrentRowValues(IReadOnlyEntity entity, Class type, Connection con)
+    private ITypeFieldValueList extractCurrentRowValues(IReadOnlyEntity entity, Class type, ITransaction tx)
     throws DbGateException
     {
         ITypeFieldValueList fieldValueList = null;
 
         ITypeFieldValueList keyFieldValueList = OperationUtils.extractEntityTypeKeyValues(entity, type);
-        PreparedStatement ps = createRetrievalPreparedStatement(keyFieldValueList, con);
+        PreparedStatement ps = createRetrievalPreparedStatement(keyFieldValueList, tx);
         ResultSet rs = null;
         try
         {

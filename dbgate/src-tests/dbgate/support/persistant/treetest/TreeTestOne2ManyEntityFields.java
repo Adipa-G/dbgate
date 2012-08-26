@@ -1,7 +1,7 @@
 package dbgate.support.persistant.treetest;
 
-import dbgate.*;
 import dbgate.AbstractManagedEntity;
+import dbgate.ColumnType;
 import dbgate.DefaultColumn;
 import dbgate.IField;
 

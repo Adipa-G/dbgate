@@ -1,7 +1,5 @@
 package dbgate;
 
-import dbgate.ColumnType;
-
 import java.lang.annotation.*;
 
 /**

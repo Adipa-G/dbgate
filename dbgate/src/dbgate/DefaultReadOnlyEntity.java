@@ -3,9 +3,7 @@ package dbgate;
 import dbgate.context.IEntityContext;
 import dbgate.context.impl.EntityContext;
 import dbgate.exceptions.RetrievalException;
-import dbgate.ermanagement.ermapper.DbGate;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
@@ -23,9 +21,9 @@ public class DefaultReadOnlyEntity implements IReadOnlyEntity
         context = new EntityContext();
     }
 
-    public void retrieve(ResultSet rs, Connection con) throws RetrievalException
+    public void retrieve(ResultSet rs, ITransaction tx) throws RetrievalException
     {
-        DbGate.getSharedInstance().load(this,rs,con);
+        tx.getDbGate().load(this,rs,tx);
     }
 
     public IEntityContext getContext()

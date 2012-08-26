@@ -4,7 +4,6 @@ import dbgate.context.IEntityContext;
 import dbgate.exceptions.RetrievalException;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.ResultSet;
 
 /**
@@ -21,7 +20,7 @@ import java.sql.ResultSet;
 
 public interface IReadOnlyEntity extends IReadOnlyClientEntity, Serializable
 {
-    void retrieve(ResultSet rs, Connection con) throws RetrievalException;
+    void retrieve(ResultSet rs, ITransaction tx) throws RetrievalException;
 
     IEntityContext getContext();
 }

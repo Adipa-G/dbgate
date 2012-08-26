@@ -2,8 +2,8 @@ package dbgate.ermanagement.query.expr;
 
 import dbgate.ColumnType;
 import dbgate.ISelectionQuery;
-import dbgate.exceptions.ExpressionParsingException;
 import dbgate.ermanagement.query.expr.segments.*;
+import dbgate.exceptions.ExpressionParsingException;
 
 /**
  * Created by IntelliJ IDEA.

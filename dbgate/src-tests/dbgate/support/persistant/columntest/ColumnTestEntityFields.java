@@ -1,9 +1,6 @@
 package dbgate.support.persistant.columntest;
 
 import dbgate.*;
-import dbgate.AbstractManagedEntity;
-import dbgate.DefaultColumn;
-import dbgate.IField;
 
 import java.util.ArrayList;
 import java.util.Collection;

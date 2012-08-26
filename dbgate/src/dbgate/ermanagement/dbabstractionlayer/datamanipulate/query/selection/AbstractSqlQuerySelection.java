@@ -1,12 +1,12 @@
 package dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection;
 
-import dbgate.exceptions.ExpressionParsingException;
-import dbgate.exceptions.RetrievalException;
+import dbgate.ITransaction;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInfo;
 import dbgate.ermanagement.query.QuerySelectionExpressionType;
+import dbgate.exceptions.ExpressionParsingException;
+import dbgate.exceptions.RetrievalException;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +45,7 @@ public class AbstractSqlQuerySelection implements IAbstractSelection
         return sql;
     }
 
-    public Object retrieve(ResultSet rs,Connection con,QueryBuildInfo buildInfo) throws RetrievalException
+    public Object retrieve(ResultSet rs,ITransaction tx,QueryBuildInfo buildInfo) throws RetrievalException
     {
         try
         {

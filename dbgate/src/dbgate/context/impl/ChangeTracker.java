@@ -4,7 +4,6 @@ import dbgate.context.EntityFieldValue;
 import dbgate.context.IChangeTracker;
 import dbgate.context.ITypeFieldValueList;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;

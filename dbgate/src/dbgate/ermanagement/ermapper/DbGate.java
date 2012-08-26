@@ -1,16 +1,13 @@
 package dbgate.ermanagement.ermapper;
 
 import dbgate.*;
-import dbgate.DBConnector;
 import dbgate.caches.CacheManager;
+import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.dbabstractionlayer.LayerFactory;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
-import dbgate.exceptions.common.DBConnectorNotInitializedException;
-import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
-import dbgate.ermanagement.dbabstractionlayer.LayerFactory;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Collection;
 
@@ -22,20 +19,13 @@ import java.util.Collection;
  */
 public class DbGate implements IDbGate
 {
-    private static IDbGate erLayer;
-
     private PersistRetrievalLayer persistRetrievalLayer;
     private DataMigrationLayer dataMigrationLayer;
     private IDbGateConfig config;
     private IDbGateStatistics statistics;
 
-    private DbGate() throws DBConnectorNotInitializedException
+    public DbGate(int dbType)
     {
-        if (DBConnector.getSharedInstance() == null)
-        {
-            throw new DBConnectorNotInitializedException("The DBConnector is not initialized");
-        }
-        int dbType = DBConnector.getSharedInstance().getDbType();
         this.config = new DbGateConfig();
         this.statistics = new DbGateStatistics();
         initializeDefaults();
@@ -52,25 +42,25 @@ public class DbGate implements IDbGate
         config.setLoggerName("ER-LAYER");
     }
 
-    public void load(IReadOnlyEntity readOnlyEntity, ResultSet rs, Connection con) throws RetrievalException
+    public void load(IReadOnlyEntity readOnlyEntity, ResultSet rs, ITransaction tx) throws RetrievalException
     {
-        persistRetrievalLayer.load(readOnlyEntity, rs, con);
+        persistRetrievalLayer.load(readOnlyEntity, rs, tx);
     }
 
-    public void save(IEntity entity, Connection con) throws PersistException
+    public void save(IEntity entity, ITransaction tx) throws PersistException
     {
-        persistRetrievalLayer.save(entity, con);
+        persistRetrievalLayer.save(entity, tx);
     }
 
     @Override
-    public Collection select(ISelectionQuery query,Connection con ) throws RetrievalException
+    public Collection select(ISelectionQuery query,ITransaction tx ) throws RetrievalException
     {
-        return persistRetrievalLayer.select(query,con);
+        return persistRetrievalLayer.select(query,tx);
     }
 
-    public void patchDataBase(Connection con, Collection<Class> entityTypes, boolean dropAll) throws DBPatchingException
+    public void patchDataBase(ITransaction tx, Collection<Class> entityTypes, boolean dropAll) throws DBPatchingException
     {
-        dataMigrationLayer.patchDataBase(con, entityTypes, dropAll);
+        dataMigrationLayer.patchDataBase(tx, entityTypes, dropAll);
     }
 
     public void clearCache()
@@ -93,21 +83,5 @@ public class DbGate implements IDbGate
     public IDbGateStatistics getStatistics()
     {
         return statistics;
-    }
-
-    public static IDbGate getSharedInstance()
-    {
-        if (erLayer == null)
-        {
-            try
-            {
-                erLayer = new DbGate();
-            }
-            catch (DBConnectorNotInitializedException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return erLayer;
     }
 }

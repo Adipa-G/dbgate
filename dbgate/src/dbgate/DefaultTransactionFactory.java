@@ -1,5 +1,9 @@
 package dbgate;
 
+import dbgate.ermanagement.ermapper.DbGate;
+import dbgate.ermanagement.ermapper.Transaction;
+import dbgate.exceptions.common.TransactionCreationFailedException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,7 +16,7 @@ import java.util.logging.Level;
  * Time: 11:52:10 PM
  * ----------------------------------------
  */
-public class DBConnector
+public class DefaultTransactionFactory implements ITransactionFactory
 {
     public static final int DB_ORACLE = 1;
     public static final int DB_POSTGRE = 2;
@@ -21,21 +25,19 @@ public class DBConnector
     public static final int DB_DERBY = 5;
     public static final int DB_MYSQL = 6;
 
-    private static DBConnector staticInstance;
-    private int dbType;
-
     private String connectionString;
     private String className;
+    private IDbGate dbGate;
 
-    public DBConnector(String connectionString,String className,int dbType) throws SQLException
+    public DefaultTransactionFactory(String connectionString, String className, int dbType) throws SQLException
     {
         this.connectionString = connectionString;
         this.className = className;
-        this.dbType = dbType;
-        staticInstance = this;
+        this.dbGate = new DbGate(dbType);
     }
 
-    public Connection getConnection()
+    @Override
+    public ITransaction createTransaction() throws TransactionCreationFailedException
     {
         Connection conn = null;
         try
@@ -45,33 +47,23 @@ public class DBConnector
         }
         catch (Exception ex)
         {
-            GeneralLogger.getLogger().log(Level.SEVERE,ex.getMessage(),ex);
+            throw new TransactionCreationFailedException(String.format("Failed to create a transaction for connection string %s",connectionString),ex);
         }
-        return conn;
+        return new Transaction(this,conn);
     }
 
-    public static DBConnector getSharedInstance()
+    @Override
+    public IDbGate getDbGate()
     {
-        return staticInstance;
-    }
-
-    public int getDbType()
-    {
-        return dbType;
-    }
-
-    public void setDbType(int dbType)
-    {
-        this.dbType = dbType;
+        return dbGate;
     }
 
     public void finalize()
     {
-        GeneralLogger.getLogger().info("Finalizing Pool");
+        GeneralLogger.getLogger().info("Finalizing transaction factory");
         try
         {
             super.finalize();
-            staticInstance = null;
         }
         catch (Throwable ex)
         {
