@@ -17,59 +17,43 @@ import java.util.logging.Logger;
  * Date: Aug 29, 2010
  * Time: 6:40:58 PM
  */
-public class DbGateTreePersistTests
+public class DbGateTreePersistTests extends AbstractDbGateTestBase
 {
+    private static final String dbName = "unit-testing-tree-persist";
+
     public static final int TYPE_ANNOTATION = 1;
     public static final int TYPE_FIELD = 2;
     public static final int TYPE_EXTERNAL = 3;
 
-    private static DefaultTransactionFactory connector;
-
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGateTreePersistTests.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-tree-persist;create=true");
+        testClass = DbGateTreePersistTests.class;
+        beginInit(dbName);
 
-            String sql = "Create table tree_test_root (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.execute();
+        String sql = "Create table tree_test_root (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table tree_test_one2many (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tindex_no Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col,index_no))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table tree_test_one2many (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tindex_no Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col,index_no))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table tree_test_one2one (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table tree_test_one2one (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            con.commit();
-            con.close();
+        endInit(dbName);
 
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-tree-persist;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DefaultTransactionFactory.DB_DERBY);
-
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
-            connector.getDbGate().getConfig().setCheckVersion(false);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGateTreePersistTests.class.getName()).severe("Exception during database startup.");
-        }
+        connector.getDbGate().getConfig().setAutoTrackChanges(false);
+        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Before
@@ -589,49 +573,12 @@ public class DbGateTreePersistTests
     @After
     public void afterEach()
     {
-        try
-        {
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-tree-persist;create=true");
-
-            PreparedStatement ps = con.prepareStatement("DELETE FROM tree_test_root");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM tree_test_one2many");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM tree_test_one2one");
-            ps.execute();
-
-            con.commit();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        cleanupDb(dbName);
     }
 
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGateTreePersistTests.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-tree-persist;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-tree-persist").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }

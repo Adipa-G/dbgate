@@ -16,9 +16,9 @@ import java.util.logging.Logger;
  * Date: Aug 29, 2010
  * Time: 6:40:58 PM
  */
-public class DbGateIheritancePersistTests
+public class DbGateInheritancePersistTests extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "unit-testing-inheritance-persist";
 
     public static final int TYPE_ANNOTATION = 1;
     public static final int TYPE_FIELD = 2;
@@ -27,47 +27,31 @@ public class DbGateIheritancePersistTests
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGateIheritancePersistTests.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-inheritance-persist;create=true");
+        testClass = DbGateInheritancePersistTests.class;
+        beginInit(dbName);
 
-            String sql = "Create table inheritance_test_super (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.execute();
+        String sql = "Create table inheritance_test_super (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table inheritance_test_suba (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname_a Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table inheritance_test_suba (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname_a Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table inheritance_test_subb (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname_b Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table inheritance_test_subb (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname_b Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            con.commit();
-            con.close();
+        connector.getDbGate().getConfig().setAutoTrackChanges(false);
+        connector.getDbGate().getConfig().setCheckVersion(false);
 
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-inheritance-persist;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DefaultTransactionFactory.DB_DERBY);
-
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
-            connector.getDbGate().getConfig().setCheckVersion(false);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGateIheritancePersistTests.class.getName()).severe("Exception during database startup.");
-        }
+        endInit(dbName);
     }
 
     private void registerForExternal()
@@ -484,49 +468,12 @@ public class DbGateIheritancePersistTests
     @After
     public void afterEach()
     {
-        try
-        {
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-inheritance-persist;create=true");
-
-            PreparedStatement ps = con.prepareStatement("DELETE FROM inheritance_test_super");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM inheritance_test_suba");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM inheritance_test_subb");
-            ps.execute();
-
-            con.commit();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        cleanupDb(dbName);
     }
 
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGateIheritancePersistTests.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-inheritance-persist;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-inheritance-persist").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        endInit(dbName);
     }
 }

@@ -28,30 +28,20 @@ import java.util.logging.Logger;
  * Date: Aug 29, 2010
  * Time: 6:40:58 PM
  */
-public class DbGatePatchEmptyDBTests
+public class DbGatePatchEmptyDBTests extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "unit-testing-metadata-empty";
 
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGatePatchEmptyDBTests.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-empty;create=true");
+        testClass = DbGatePatchEmptyDBTests.class;
+        beginInit(dbName);
 
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-metadata-empty;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DefaultTransactionFactory.DB_DERBY);
+        endInit(dbName);
 
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
-            connector.getDbGate().getConfig().setCheckVersion(false);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGatePatchEmptyDBTests.class.getName()).severe("Exception during database startup.");
-        }
+        connector.getDbGate().getConfig().setAutoTrackChanges(false);
+        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Test
@@ -274,25 +264,6 @@ public class DbGatePatchEmptyDBTests
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGatePatchEmptyDBTests.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-empty;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-metadata-empty").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }

@@ -11,8 +11,6 @@ import java.util.Collection;
 
 public class StatusUtility
 {
-    private static final String fmt = "%24s: %s%n";
-
     public static void setStatus(IClientEntity dbClass, EntityStatus status)
     {
         Collection<IClientEntity> usedItems = new ArrayList<IClientEntity>();

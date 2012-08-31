@@ -102,7 +102,7 @@
           <test todir="${build.testreports}" name="dbgate.DbGatePatchEmptyDBTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.DbGatePatchTableDifferenceDBTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.DbGateTreePersistTests" fork="yes"/>
-          <test todir="${build.testreports}" name="dbgate.DbGateIheritancePersistTests" fork="yes"/>
+          <test todir="${build.testreports}" name="dbgate.DbGateInheritancePersistTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.DbGateChangeTrackerTest" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.DbGateConstraintValidationTest" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.DbGateCrossReferenceTest" fork="yes"/>

@@ -17,54 +17,37 @@ import java.util.logging.Logger;
  * Date: Mar 24, 2011
  * Time: 11:23:36 PM
  */
-public class DbGateLazyTest
+public class DbGateLazyTest extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "unit-testing-lazy";
 
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGateLazyTest.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-lazy;create=true");
+        testClass = DbGateLazyTest.class;
+        beginInit(dbName);
 
-            String sql = "Create table lazy_test_root (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.execute();
+        String sql = "Create table lazy_test_root (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table lazy_test_one2many (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tindex_no Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col,index_no))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table lazy_test_one2many (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tindex_no Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col,index_no))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table lazy_test_one2one (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table lazy_test_one2one (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
+        endInit(dbName);
 
-            con.commit();
-            con.close();
-
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-lazy;","org.apache.derby.jdbc.EmbeddedDriver",
-                                                      DefaultTransactionFactory.DB_DERBY);
-
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGateLazyTest.class.getName()).severe("Exception during database startup.");
-        }
+        connector.getDbGate().getConfig().setAutoTrackChanges(true);
     }
 
     @Before
@@ -287,49 +270,12 @@ public class DbGateLazyTest
     @After
     public void afterEach()
     {
-        try
-        {
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-lazy;create=true");
-
-            PreparedStatement ps = con.prepareStatement("DELETE FROM lazy_test_root");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM lazy_test_one2many");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM lazy_test_one2one");
-            ps.execute();
-
-            con.commit();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        cleanupDb(dbName);
     }
 
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGateLazyTest.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-lazy;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-lazy").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }
