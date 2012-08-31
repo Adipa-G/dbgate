@@ -26,10 +26,10 @@ import java.util.regex.Pattern;
  */
 public class AbstractDbGateTestBase
 {
-    private static final String driverName = "org.apache.derby.jdbc.EmbeddedDriver";
+    protected static final String driverName = "org.apache.derby.jdbc.EmbeddedDriver";
 
-    private static HashMap<String,Collection<String>> dbTableNameMap = new HashMap<>();
-    private static HashMap<String,Collection<Class>> dbEntityTypeMap = new HashMap<>();
+    private static final HashMap<String,Collection<String>> dbTableNameMap = new HashMap<>();
+    private static final HashMap<String,Collection<Class>> dbEntityTypeMap = new HashMap<>();
 
     protected static Class testClass = AbstractDbGateTestBase.class;
     protected static DefaultTransactionFactory connector;
@@ -43,8 +43,11 @@ public class AbstractDbGateTestBase
             Connection con = DriverManager.getConnection(String.format("jdbc:derby:memory:%s;create=true",dbName));
             con.close();
 
-            connector = new DefaultTransactionFactory(String.format("jdbc:derby:memory:%s;",dbName)
-                    ,driverName,DefaultTransactionFactory.DB_DERBY);
+            if (connector == null)
+            {
+                connector = new DefaultTransactionFactory(String.format("jdbc:derby:memory:%s;",dbName)
+                        ,driverName,DefaultTransactionFactory.DB_DERBY);
+            }
         }
         catch (Exception ex)
         {
@@ -182,6 +185,7 @@ public class AbstractDbGateTestBase
 
     protected static void finalizeDb(String dbName)
     {
+        connector = null;
         Logger.getLogger(DbGateChangeTrackerTest.class.getName()).info("Stopping in-memory database.");
         try
         {
