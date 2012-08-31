@@ -25,30 +25,20 @@ import java.util.logging.Logger;
  * Date: Aug 29, 2010
  * Time: 6:40:58 PM
  */
-public class DbGatePatchTableDifferenceDBTests
+public class DbGatePatchTableDifferenceDBTests extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "unit-testing-metadata-table-difference";
 
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGatePatchTableDifferenceDBTests.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-table-difference;create=true");
+        testClass = DbGatePatchTableDifferenceDBTests.class;
 
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-metadata-table-difference;","org.apache.derby.jdbc.EmbeddedDriver",
-                                        DefaultTransactionFactory.DB_DERBY);
+        beginInit(dbName);
+        endInit(dbName);
 
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
-            connector.getDbGate().getConfig().setCheckVersion(false);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGatePatchTableDifferenceDBTests.class.getName()).severe("Exception during database startup.");
-        }
+        connector.getDbGate().getConfig().setAutoTrackChanges(false);
+        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Test
@@ -222,25 +212,6 @@ public class DbGatePatchTableDifferenceDBTests
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGatePatchTableDifferenceDBTests.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-metadata-table-difference;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-metadata-table-difference").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }

@@ -19,53 +19,37 @@ import java.util.logging.Logger;
  * Date: Mar 24, 2011
  * Time: 11:23:36 PM
  */
-public class DbGateChangeTrackerTest
+public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "unit-testing-change-tracker";
 
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGateChangeTrackerTest.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-change-tracker;create=true");
+        testClass = DbGateChangeTrackerTest.class;
+        beginInit(dbName);
 
-            String sql = "Create table change_tracker_test_root (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.execute();
+        String sql = "Create table change_tracker_test_root (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table change_tracker_test_one2many (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tindex_no Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col,index_no))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table change_tracker_test_one2many (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tindex_no Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col,index_no))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table change_tracker_test_one2one (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table change_tracker_test_one2one (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            con.commit();
-            con.close();
-
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-change-tracker;","org.apache.derby.jdbc.EmbeddedDriver",
-                                                      DefaultTransactionFactory.DB_DERBY);
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGateChangeTrackerTest.class.getName()).severe("Exception during database startup.");
-        }
+        endInit(dbName);
+        connector.getDbGate().getConfig().setAutoTrackChanges(false);
     }
 
     @Before
@@ -588,49 +572,12 @@ public class DbGateChangeTrackerTest
     @After
     public void afterEach()
     {
-        try
-        {
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-change-tracker;create=true");
-
-            PreparedStatement ps = con.prepareStatement("DELETE FROM change_tracker_test_root");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM change_tracker_test_one2many");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM change_tracker_test_one2one");
-            ps.execute();
-
-            con.commit();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        cleanupDb(dbName);
     }
 
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGateChangeTrackerTest.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-change-tracker;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-change-tracker").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }

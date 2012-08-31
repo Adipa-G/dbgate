@@ -16,58 +16,42 @@ import java.util.logging.Logger;
  * Date: Aug 29, 2010
  * Time: 6:40:58 PM
  */
-public class DbGateColumnPersistTests
+public class DbGateColumnPersistTests extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "unit-testing-column-persist";
 
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGateColumnPersistTests.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-column-persist;create=true");
+        testClass = DbGateColumnPersistTests.class;
+        beginInit(dbName);
 
-            String sql = "Create table column_test_entity (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tlong_not_null Bigint NOT NULL,\n" +
-                        "\tlong_null Bigint,\n" +
-                        "\tboolean_not_null SmallInt NOT NULL,\n" +
-                        "\tboolean_null SmallInt,\n" +
-                        "\tchar_not_null Char(1) NOT NULL,\n" +
-                        "\tchar_null Char(1),\n" +
-                        "\tint_not_null Int NOT NULL,\n" +
-                        "\tint_null Int,\n" +
-                        "\tdate_not_null Date NOT NULL,\n" +
-                        "\tdate_null Date,\n" +
-                        "\tdouble_not_null Double NOT NULL,\n" +
-                        "\tdouble_null Double,\n" +
-                        "\tfloat_not_null Float NOT NULL,\n" +
-                        "\tfloat_null Float,\n" +
-                        "\ttimestamp_not_null Timestamp NOT NULL,\n" +
-                        "\ttimestamp_null Timestamp,\n" +
-                        "\tvarchar_not_null Varchar(20) NOT NULL,\n" +
-                        "\tvarchar_null Varchar(20),\n" +
-                        " Primary Key (id_col))";
+        String sql = "Create table column_test_entity (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tlong_not_null Bigint NOT NULL,\n" +
+                "\tlong_null Bigint,\n" +
+                "\tboolean_not_null SmallInt NOT NULL,\n" +
+                "\tboolean_null SmallInt,\n" +
+                "\tchar_not_null Char(1) NOT NULL,\n" +
+                "\tchar_null Char(1),\n" +
+                "\tint_not_null Int NOT NULL,\n" +
+                "\tint_null Int,\n" +
+                "\tdate_not_null Date NOT NULL,\n" +
+                "\tdate_null Date,\n" +
+                "\tdouble_not_null Double NOT NULL,\n" +
+                "\tdouble_null Double,\n" +
+                "\tfloat_not_null Float NOT NULL,\n" +
+                "\tfloat_null Float,\n" +
+                "\ttimestamp_not_null Timestamp NOT NULL,\n" +
+                "\ttimestamp_null Timestamp,\n" +
+                "\tvarchar_not_null Varchar(20) NOT NULL,\n" +
+                "\tvarchar_null Varchar(20),\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
+        endInit(dbName);
 
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.execute();
-
-            con.commit();
-            con.close();
-
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-column-persist;","org.apache.derby.jdbc.EmbeddedDriver",
-                                                      DefaultTransactionFactory.DB_DERBY);
-
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
-            connector.getDbGate().getConfig().setCheckVersion(false);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGateColumnPersistTests.class.getName()).severe("Exception during database startup.");
-        }
+        connector.getDbGate().getConfig().setAutoTrackChanges(false);
+        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Before
@@ -1018,43 +1002,12 @@ public class DbGateColumnPersistTests
     @After
     public void afterEach()
     {
-        try
-        {
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-column-persist;create=true");
-
-            PreparedStatement ps = con.prepareStatement("DELETE FROM COLUMN_TEST_ENTITY");
-            ps.execute();
-
-            con.commit();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        cleanupDb(dbName);
     }
 
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGateColumnPersistTests.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-column-persist;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-column-persist").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }

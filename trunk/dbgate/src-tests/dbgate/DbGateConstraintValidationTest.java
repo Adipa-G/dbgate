@@ -14,55 +14,39 @@ import java.util.logging.Logger;
  * Date: Mar 24, 2011
  * Time: 11:23:36 PM
  */
-public class DbGateConstraintValidationTest
+public class DbGateConstraintValidationTest extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "unit-testing-constraint";
 
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGateConstraintValidationTest.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-constraint;create=true");
+        testClass = DbGateConstraintValidationTest.class;
+        beginInit(dbName);
 
-            String sql = "Create table constraint_test_root (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.execute();
+        String sql = "Create table constraint_test_root (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table constraint_test_one2many (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tindex_no Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col,index_no))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table constraint_test_one2many (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tindex_no Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col,index_no))";
+        createTableFromSql(sql,dbName);
 
-            sql = "Create table constraint_test_one2one (\n" +
-                        "\tid_col Int NOT NULL,\n" +
-                        "\tname Varchar(20) NOT NULL,\n" +
-                        " Primary Key (id_col))";
-            ps = con.prepareStatement(sql);
-            ps.execute();
+        sql = "Create table constraint_test_one2one (\n" +
+                "\tid_col Int NOT NULL,\n" +
+                "\tname Varchar(20) NOT NULL,\n" +
+                " Primary Key (id_col))";
+        createTableFromSql(sql,dbName);
 
-            con.commit();
-            con.close();
+        endInit(dbName);
 
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-constraint;","org.apache.derby.jdbc.EmbeddedDriver",
-                                                      DefaultTransactionFactory.DB_DERBY);
-
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
-            connector.getDbGate().getConfig().setCheckVersion(false);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGateConstraintValidationTest.class.getName()).severe("Exception during database startup.");
-        }
+        connector.getDbGate().getConfig().setAutoTrackChanges(false);
+        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Before
@@ -585,49 +569,12 @@ public class DbGateConstraintValidationTest
     @After
     public void afterEach()
     {
-        try
-        {
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:unit-testing-constraint;create=true");
-
-            PreparedStatement ps = con.prepareStatement("DELETE FROM constraint_test_root");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM constraint_test_one2many");
-            ps.execute();
-
-            ps = con.prepareStatement("DELETE FROM constraint_test_one2one");
-            ps.execute();
-
-            con.commit();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        cleanupDb(dbName);
     }
 
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGateConstraintValidationTest.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:unit-testing-constraint;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("unit-testing-constraint").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }

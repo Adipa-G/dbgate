@@ -20,42 +20,24 @@ import java.util.logging.Logger;
  * Date: Mar 24, 2011
  * Time: 11:23:36 PM
  */
-public class DbGateFeatureIntegrationTest
+public class DbGateFeatureIntegrationTest extends AbstractDbGateTestBase
 {
-    private static DefaultTransactionFactory connector;
+    private static final String dbName = "testing-feature_integreation";
 
     @BeforeClass
     public static void before()
     {
-        try
-        {
-            Logger.getLogger(DbGateFeatureIntegrationTest.class.getName()).info("Starting in-memory database for unit tests");
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:testing-feature_integreation;create=true");
-            DBMgtUtility.close(con);
-            
-            connector = new DefaultTransactionFactory("jdbc:derby:memory:testing-feature_integreation;","org.apache.derby.jdbc.EmbeddedDriver"
-                    ,DefaultTransactionFactory.DB_DERBY);
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
-            connector.getDbGate().getConfig().setCheckVersion(true);
-            
-            ITransaction tx = connector.createTransaction();
+        testClass = DbGateFeatureIntegrationTest.class;
+        beginInit(dbName);
 
-            Collection<Class> dbClassList = new ArrayList<>();
-            dbClassList.add(ItemTransaction.class);
-            dbClassList.add(ItemTransactionCharge.class);
-            dbClassList.add(Transaction.class);
-            dbClassList.add(Product.class);
-            dbClassList.add(Service.class);
-            connector.getDbGate().patchDataBase(tx,dbClassList,true);
-            tx.commit();
-            tx.close();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Logger.getLogger(DbGateFeatureIntegrationTest.class.getName()).severe("Exception during database startup.");
-        }
+        registerClassForDbPatching(ItemTransaction.class,dbName);
+        registerClassForDbPatching(ItemTransactionCharge.class,dbName);
+        registerClassForDbPatching(Transaction.class,dbName);
+        registerClassForDbPatching(Product.class,dbName);
+        registerClassForDbPatching(Service.class,dbName);
+        registerClassForDbPatching(Service.class,dbName);
+
+        endInit(dbName);
     }
 
     @Before
@@ -204,30 +186,12 @@ public class DbGateFeatureIntegrationTest
     @After
     public void afterEach()
     {
+        cleanupDb(dbName);
     }
 
     @AfterClass
     public static void after()
     {
-        Logger.getLogger(DbGateFeatureIntegrationTest.class.getName()).info("Stopping in-memory database.");
-        try
-        {
-            DriverManager.getConnection("jdbc:derby:memory:testing-feature_integreation;shutdown=true").close();
-        }
-        catch (SQLException ex)
-        {
-            if (ex.getErrorCode() != 45000)
-            {
-                ex.printStackTrace();
-            }
-        }
-        try
-        {
-            VFMemoryStorageFactory.purgeDatabase(new File("testing-feature_integreation").getCanonicalPath());
-        }
-        catch (IOException iox)
-        {
-            iox.printStackTrace();
-        }
+        finalizeDb(dbName);
     }
 }
