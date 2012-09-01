@@ -7,6 +7,7 @@ basic features like persisting, retrieval, change tracking
 = Details =
 ===Create the entity===
 {{{
+
 @TableInfo(tableName = "simple_entity")
 public class SimpleEntity  extends DefaultEntity
 {
@@ -43,9 +44,11 @@ public class SimpleEntity  extends DefaultEntity
 
 ===Base class for examples===
 {{{
+
 public class ExampleBase
 {
-    protected DBConnector connector;
+    protected ITransactionFactory factory;
+    protected String dbName = "testdb";
 
     public void initializeConnector()
     {
@@ -53,8 +56,9 @@ public class ExampleBase
         {
             Logger.getLogger(getClass().getName()).info("Starting in-memory database for unit tests");
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:testdb;create=true");
-            connector = new DBConnector("jdbc:derby:memory:testdb;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            DriverManager.getConnection(String.format("jdbc:derby:memory:%s;create=true",dbName));
+
+            factory = new DefaultTransactionFactory(String.format("jdbc:derby:memory:%s;",dbName),"org.apache.derby.jdbc.EmbeddedDriver",DefaultTransactionFactory.DB_DERBY);
         }
         catch (Exception ex)
         {
@@ -67,7 +71,7 @@ public class ExampleBase
     {
         try
         {
-            DriverManager.getConnection("jdbc:derby:memory:testdb;shutdown=true").close();
+            DriverManager.getConnection(String.format("jdbc:derby:memory:%s;shutdown=true",dbName)).close();
         }
         catch (SQLException ex)
         {
@@ -78,23 +82,29 @@ public class ExampleBase
         }
         try
         {
-            VFMemoryStorageFactory.purgeDatabase(new File("testdb").getCanonicalPath());
+            VFMemoryStorageFactory.purgeDatabase(new File(dbName).getCanonicalPath());
         }
         catch (IOException iox)
         {
             iox.printStackTrace();
         }
-        connector.finalize();
-        connector = null;
+        ((DefaultTransactionFactory)factory).finalize();
+        factory = null;
     }
 }
 }}}
 
 ===Class to do the operation===
 {{{
+
 public class SimpleExample extends ExampleBase
 {
     private int id = 43;
+
+    public SimpleExample()
+    {
+        dbName = "simple_example";
+    }
 
     public SimpleEntity createEntity()
     {
@@ -105,50 +115,54 @@ public class SimpleExample extends ExampleBase
     }
 
     public void patch() throws DBPatchingException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         Collection<Class> entityTypes = new ArrayList<Class>();
         entityTypes.add(SimpleEntity.class);
-        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
-        con.commit();
-        DBMgtUtility.close(con);
+        factory.getDbGate().patchDataBase(tx,entityTypes,false);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public void persist(SimpleEntity entity) throws PersistException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
-        entity.persist(con);
-        con.commit();
-        DBMgtUtility.close(con);
+        ITransaction tx = factory.createTransaction();
+        entity.persist(tx);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public SimpleEntity retrieve() throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
-        PreparedStatement ps = con.prepareStatement("select * from simple_entity where id = ?");
+        ITransaction tx = factory.createTransaction();
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from simple_entity where id = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         SimpleEntity entity = null;
         if (rs.next())
         {
             entity = new SimpleEntity();
-            entity.retrieve(rs,con);
+            entity.retrieve(rs,tx);
         }
         DBMgtUtility.close(rs);
         DBMgtUtility.close(ps);
-        DBMgtUtility.close(con);
+        DBMgtUtility.close(tx);
         return entity;
     }
 
     public SimpleEntity retrieveWithQuery() throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         ISelectionQuery query = new SelectionQuery()
                 .from(QueryFrom.type(SimpleEntity.class))
                 .select(QuerySelection.type(SimpleEntity.class));
 
-        Collection entities = query.toList(con);
-        DBMgtUtility.close(con);
+        Collection entities = query.toList(tx);
+        DBMgtUtility.close(tx);
 
         return (SimpleEntity)entities.iterator().next();
     }
@@ -196,4 +210,4 @@ public class SimpleExample extends ExampleBase
         simpleExample.destroyConnector();
     }
 }
-}}}
+}}}￿
