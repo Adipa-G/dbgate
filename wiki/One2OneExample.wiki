@@ -7,6 +7,7 @@ This demonstrates one to one relationship capability of the library using 2 type
 = Details =
 ==Parent class==
 {{{
+
 @TableInfo(tableName = "parent_entity")
 public class One2OneParentEntity extends DefaultEntity
 {
@@ -67,6 +68,7 @@ public class One2OneParentEntity extends DefaultEntity
 
 ==Child Base Class==
 {{{
+
 public abstract class One2OneChildEntity extends DefaultEntity
 {
     public abstract String getName();
@@ -77,7 +79,7 @@ public abstract class One2OneChildEntity extends DefaultEntity
 
 ==Child Sub Class 1==
 {{{
-@TableInfo(tableName = "child_entity_a")
+
 public class One2OneChildEntityA extends One2OneChildEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
@@ -110,7 +112,7 @@ public class One2OneChildEntityA extends One2OneChildEntity
 
 ==Child Sub Class 2==
 {{{
-@TableInfo(tableName = "child_entity_b")
+
 public class One2OneChildEntityB extends One2OneChildEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
@@ -145,10 +147,16 @@ public class One2OneChildEntityB extends One2OneChildEntity
 get the source for ExampleBase from http://code.google.com/p/dbgate/wiki/SimpleEntityExample
 
 {{{
+
 public class One2OneExample extends ExampleBase
 {
     private static int idA = 43;
     private static int idB = 44;
+
+    public One2OneExample()
+    {
+        dbName = "one_2_one_example";
+    }
 
     public One2OneParentEntity createEntityWithChildA()
     {
@@ -175,50 +183,54 @@ public class One2OneExample extends ExampleBase
     }
 
     public void patch() throws DBPatchingException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         Collection<Class> entityTypes = new ArrayList<Class>();
         entityTypes.add(One2OneParentEntity.class);
         entityTypes.add(One2OneChildEntityA.class);
         entityTypes.add(One2OneChildEntityB.class);
-        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
-        con.commit();
-        DBMgtUtility.close(con);
+        factory.getDbGate().patchDataBase(tx, entityTypes, false);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public void persistWithA() throws PersistException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         One2OneParentEntity entity = createEntityWithChildA();
-        entity.persist(con);
-        con.commit();
-        DBMgtUtility.close(con);
+        entity.persist(tx);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public void persistWithB() throws PersistException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         One2OneParentEntity entity = createEntityWithChildB();
-        entity.persist(con);
-        con.commit();
-        DBMgtUtility.close(con);
+        entity.persist(tx);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public One2OneParentEntity retrieve(int id) throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
-        PreparedStatement ps = con.prepareStatement("select * from parent_entity where id = ?");
+        ITransaction tx = factory.createTransaction();
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from parent_entity where id = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         One2OneParentEntity entity = null;
         if (rs.next())
         {
             entity = new One2OneParentEntity();
-            entity.retrieve(rs,con);
+            entity.retrieve(rs,tx);
         }
         DBMgtUtility.close(rs);
         DBMgtUtility.close(ps);
-        DBMgtUtility.close(con);
+        DBMgtUtility.close(tx);
         return entity;
     }
 
@@ -260,4 +272,4 @@ public class One2OneExample extends ExampleBase
         inheritanceExample.destroyConnector();
     }
 }
-}}}
+}}}￿
