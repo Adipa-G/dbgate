@@ -1,6 +1,7 @@
 package dbgate.complexexample;
 
 import dbgate.ExampleBase;
+import dbgate.ITransaction;
 import dbgate.complexexample.entities.order.ItemTransaction;
 import dbgate.complexexample.entities.order.ItemTransactionCharge;
 import dbgate.complexexample.entities.order.Transaction;
@@ -10,8 +11,12 @@ import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
+import dbgate.exceptions.common.TransactionCommitFailedException;
+import dbgate.exceptions.common.TransactionCreationFailedException;
 import dbgate.utility.DBMgtUtility;
+import docgenerate.WikiCodeBlock;
 
+import java.lang.annotation.Documented;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,37 +28,46 @@ import java.util.Collection;
  * Date: Mar 30, 2011
  * Time: 12:06:04 AM
  */
+@WikiCodeBlock(id = "complex_example")
 public class ComplexExample extends ExampleBase
 {
     private static int productId = 321;
     private static int serviceId = 322;
     private static int transactionId = 43;
 
+    public ComplexExample()
+    {
+        dbName = "complex_example";
+    }
+
     public Product createDefaultProduct() throws PersistException
+            ,TransactionCreationFailedException
     {
         Product product = new Product();
         product.setItemId(productId);
         product.setName("Product");
         product.setUnitPrice(54D);
-        Connection con = connector.getConnection();
-        product.persist(con);
-        DBMgtUtility.close(con);
+        ITransaction tx = factory.createTransaction();
+        product.persist(tx);
+        DBMgtUtility.close(tx);
         return product;
     }
 
     public Service createDefaultService() throws PersistException
+            ,TransactionCreationFailedException
     {
         Service service = new Service();
         service.setItemId(serviceId);
         service.setName("Service");
         service.setHourlyRate(65D);
-        Connection con = connector.getConnection();
-        service.persist(con);
-        DBMgtUtility.close(con);
+        ITransaction tx = factory.createTransaction();
+        service.persist(tx);
+        DBMgtUtility.close(tx);
         return service;
     }
 
     public Transaction createDefaultTransaction() throws PersistException
+            ,TransactionCreationFailedException
     {
         Transaction transaction = new Transaction();
         transaction.setTransactionId(transactionId);
@@ -77,41 +91,44 @@ public class ComplexExample extends ExampleBase
         serviceTransactionCharge.setChargeCode("Service-Sell-Code");
         serviceTransaction.getItemTransactionCharges().add(serviceTransactionCharge);
 
-        Connection con = connector.getConnection();
-        transaction.persist(con);
-        DBMgtUtility.close(con);
+        ITransaction tx = factory.createTransaction();
+        transaction.persist(tx);
+        DBMgtUtility.close(tx);
         return transaction;
     }
 
     public void patch() throws DBPatchingException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         Collection<Class> entityTypes = new ArrayList<Class>();
         entityTypes.add(Transaction.class);
         entityTypes.add(ItemTransaction.class);
         entityTypes.add(ItemTransactionCharge.class);
         entityTypes.add(Product.class);
         entityTypes.add(Service.class);
-        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
-        con.commit();
-        DBMgtUtility.close(con);
+        factory.getDbGate().patchDataBase(tx, entityTypes, false);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public Transaction retrieve(int id) throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
-        PreparedStatement ps = con.prepareStatement("select * from order_transaction where transaction_Id = ?");
+        ITransaction tx = factory.createTransaction();
+        PreparedStatement ps = tx.getConnection().prepareStatement(
+                "select * from order_transaction where transaction_Id = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         Transaction entity = null;
         if (rs.next())
         {
             entity = new Transaction();
-            entity.retrieve(rs,con);
+            entity.retrieve(rs,tx);
         }
         DBMgtUtility.close(rs);
         DBMgtUtility.close(ps);
-        DBMgtUtility.close(con);
+        DBMgtUtility.close(tx);
         return entity;
     }
 

@@ -29,6 +29,7 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
+  <component name="RegexUtilComponent" text="===Base class for examples==={{{&lt;wiki_code_block&gt;example_base&lt;/wiki_code_block&gt;}}}" flags="0" regex="(&lt;wiki_code_block&gt;)([^&lt;]*)(&lt;/wiki_code_block&gt;)" mode="0" />
   <component name="SvnBranchConfigurationManager">
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>

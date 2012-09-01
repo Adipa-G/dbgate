@@ -3,12 +3,14 @@ package dbgate.simpleexample;
 import dbgate.*;
 import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.ermanagement.query.SelectionQuery;
-import dbgate.ermanagement.query.expr.ConditionExpr;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
+import dbgate.exceptions.common.TransactionCommitFailedException;
+import dbgate.exceptions.common.TransactionCreationFailedException;
 import dbgate.simpleexample.entities.SimpleEntity;
 import dbgate.utility.DBMgtUtility;
+import docgenerate.WikiCodeBlock;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,9 +23,15 @@ import java.util.Collection;
  * Date: Mar 30, 2011
  * Time: 12:06:04 AM
  */
+@WikiCodeBlock(id = "simple_example")
 public class SimpleExample extends ExampleBase
 {
     private int id = 43;
+
+    public SimpleExample()
+    {
+        dbName = "simple_example";
+    }
 
     public SimpleEntity createEntity()
     {
@@ -34,50 +42,54 @@ public class SimpleExample extends ExampleBase
     }
 
     public void patch() throws DBPatchingException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         Collection<Class> entityTypes = new ArrayList<Class>();
         entityTypes.add(SimpleEntity.class);
-        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
-        con.commit();
-        DBMgtUtility.close(con);
+        factory.getDbGate().patchDataBase(tx,entityTypes,false);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public void persist(SimpleEntity entity) throws PersistException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
-        entity.persist(con);
-        con.commit();
-        DBMgtUtility.close(con);
+        ITransaction tx = factory.createTransaction();
+        entity.persist(tx);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public SimpleEntity retrieve() throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
-        PreparedStatement ps = con.prepareStatement("select * from simple_entity where id = ?");
+        ITransaction tx = factory.createTransaction();
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from simple_entity where id = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         SimpleEntity entity = null;
         if (rs.next())
         {
             entity = new SimpleEntity();
-            entity.retrieve(rs,con);
+            entity.retrieve(rs,tx);
         }
         DBMgtUtility.close(rs);
         DBMgtUtility.close(ps);
-        DBMgtUtility.close(con);
+        DBMgtUtility.close(tx);
         return entity;
     }
 
     public SimpleEntity retrieveWithQuery() throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         ISelectionQuery query = new SelectionQuery()
                 .from(QueryFrom.type(SimpleEntity.class))
                 .select(QuerySelection.type(SimpleEntity.class));
 
-        Collection entities = query.toList(con);
-        DBMgtUtility.close(con);
+        Collection entities = query.toList(tx);
+        DBMgtUtility.close(tx);
 
         return (SimpleEntity)entities.iterator().next();
     }

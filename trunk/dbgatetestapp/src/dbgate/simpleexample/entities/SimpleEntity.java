@@ -4,11 +4,13 @@ import dbgate.ColumnInfo;
 import dbgate.ColumnType;
 import dbgate.DefaultEntity;
 import dbgate.TableInfo;
+import docgenerate.WikiCodeBlock;
 
 /**
  * Date: Mar 30, 2011
  * Time: 12:09:13 AM
  */
+@WikiCodeBlock(id = "simple_example_simple_entity")
 @TableInfo(tableName = "simple_entity")
 public class SimpleEntity  extends DefaultEntity
 {

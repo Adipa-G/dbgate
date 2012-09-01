@@ -1,14 +1,18 @@
 package dbgate.inheritanceexample;
 
 import dbgate.ExampleBase;
+import dbgate.ITransaction;
 import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
+import dbgate.exceptions.common.TransactionCommitFailedException;
+import dbgate.exceptions.common.TransactionCreationFailedException;
 import dbgate.inheritanceexample.entities.BottomEntity;
 import dbgate.inheritanceexample.entities.MiddleEntity;
 import dbgate.inheritanceexample.entities.TopEntity;
 import dbgate.utility.DBMgtUtility;
+import docgenerate.WikiCodeBlock;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,9 +25,15 @@ import java.util.Collection;
  * Date: Mar 30, 2011
  * Time: 12:06:04 AM
  */
+@WikiCodeBlock(id = "inheritance_example")
 public class InheritanceExample extends ExampleBase
 {
     private int id = 43;
+
+    public InheritanceExample()
+    {
+        dbName = "inheritance_example";
+    }
 
     public BottomEntity createEntity()
     {
@@ -36,41 +46,44 @@ public class InheritanceExample extends ExampleBase
     }
 
     public void patch() throws DBPatchingException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         Collection<Class> entityTypes = new ArrayList<Class>();
         entityTypes.add(TopEntity.class);
         entityTypes.add(BottomEntity.class);
         entityTypes.add(MiddleEntity.class);
-        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
-        con.commit();
-        DBMgtUtility.close(con);
+        factory.getDbGate().patchDataBase(tx, entityTypes, false);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public void persist() throws PersistException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         BottomEntity entity = createEntity();
-        entity.persist(con);
-        con.commit();
-        DBMgtUtility.close(con);
+        entity.persist(tx);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public BottomEntity retrieve() throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
-        PreparedStatement ps = con.prepareStatement("select * from sub_entity where id = ?");
+        ITransaction tx = factory.createTransaction();
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from bottom_entity where id = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         BottomEntity entity = null;
         if (rs.next())
         {
             entity = new BottomEntity();
-            entity.retrieve(rs,con);
+            entity.retrieve(rs,tx);
         }
         DBMgtUtility.close(rs);
         DBMgtUtility.close(ps);
-        DBMgtUtility.close(con);
+        DBMgtUtility.close(tx);
         return entity;
     }
 

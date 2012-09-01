@@ -1,11 +1,13 @@
 package dbgate.complexexample.entities.order;
 
 import dbgate.*;
+import docgenerate.WikiCodeBlock;
 
 /**
  * Date: Mar 31, 2011
  * Time: 9:59:13 PM
  */
+@WikiCodeBlock(id = "complex_example_order_item_transaction_charge")
 @TableInfo(tableName = "order_item_transaction_charge")
 public class ItemTransactionCharge  extends DefaultEntity
 {

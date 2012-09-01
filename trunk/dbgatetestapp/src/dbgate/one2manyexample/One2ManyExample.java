@@ -1,15 +1,19 @@
 package dbgate.one2manyexample;
 
 import dbgate.ExampleBase;
+import dbgate.ITransaction;
 import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
+import dbgate.exceptions.common.TransactionCommitFailedException;
+import dbgate.exceptions.common.TransactionCreationFailedException;
 import dbgate.one2manyexample.entities.One2ManyChildEntity;
 import dbgate.one2manyexample.entities.One2ManyChildEntityA;
 import dbgate.one2manyexample.entities.One2ManyChildEntityB;
 import dbgate.one2manyexample.entities.One2ManyParentEntity;
 import dbgate.utility.DBMgtUtility;
+import docgenerate.WikiCodeBlock;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,9 +26,15 @@ import java.util.Collection;
  * Date: Mar 30, 2011
  * Time: 12:06:04 AM
  */
+@WikiCodeBlock(id = "one_2_many_example")
 public class One2ManyExample extends ExampleBase
 {
     private static int id = 43;
+
+    public One2ManyExample()
+    {
+        dbName = "one_2_many_example";
+    }
 
     public One2ManyParentEntity createEntityWithChildern()
     {
@@ -44,41 +54,44 @@ public class One2ManyExample extends ExampleBase
     }
 
     public void patch() throws DBPatchingException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         Collection<Class> entityTypes = new ArrayList<Class>();
         entityTypes.add(One2ManyParentEntity.class);
         entityTypes.add(One2ManyChildEntityA.class);
         entityTypes.add(One2ManyChildEntityB.class);
-        DbGate.getSharedInstance().patchDataBase(con,entityTypes,false);
-        con.commit();
-        DBMgtUtility.close(con);
+        factory.getDbGate().patchDataBase(tx, entityTypes, false);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public void persist() throws PersistException, SQLException
+            ,TransactionCreationFailedException,TransactionCommitFailedException
     {
-        Connection con = connector.getConnection();
+        ITransaction tx = factory.createTransaction();
         One2ManyParentEntity entity = createEntityWithChildern();
-        entity.persist(con);
-        con.commit();
-        DBMgtUtility.close(con);
+        entity.persist(tx);
+        tx.commit();
+        DBMgtUtility.close(tx);
     }
 
     public One2ManyParentEntity retrieve(int id) throws SQLException,RetrievalException
+            ,TransactionCreationFailedException
     {
-        Connection con = connector.getConnection();
-        PreparedStatement ps = con.prepareStatement("select * from parent_entity where id = ?");
+        ITransaction tx = factory.createTransaction();
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from parent_entity where id = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         One2ManyParentEntity entity = null;
         if (rs.next())
         {
             entity = new One2ManyParentEntity();
-            entity.retrieve(rs,con);
+            entity.retrieve(rs,tx);
         }
         DBMgtUtility.close(rs);
         DBMgtUtility.close(ps);
-        DBMgtUtility.close(con);
+        DBMgtUtility.close(tx);
         return entity;
     }
 

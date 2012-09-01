@@ -1,10 +1,10 @@
 package dbgate;
 
+import docgenerate.WikiCodeBlock;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -13,9 +13,11 @@ import java.util.logging.Logger;
  * Date: Mar 29, 2011
  * Time: 11:24:27 PM
  */
+@WikiCodeBlock(id = "example_base")
 public class ExampleBase
 {
-    protected DBConnector connector;
+    protected ITransactionFactory factory;
+    protected String dbName = "testdb";
 
     public void initializeConnector()
     {
@@ -23,8 +25,9 @@ public class ExampleBase
         {
             Logger.getLogger(getClass().getName()).info("Starting in-memory database for unit tests");
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby:memory:testdb;create=true");
-            connector = new DBConnector("jdbc:derby:memory:testdb;","org.apache.derby.jdbc.EmbeddedDriver",DBConnector.DB_DERBY);
+            DriverManager.getConnection(String.format("jdbc:derby:memory:%s;create=true",dbName));
+
+            factory = new DefaultTransactionFactory(String.format("jdbc:derby:memory:%s;",dbName),"org.apache.derby.jdbc.EmbeddedDriver",DefaultTransactionFactory.DB_DERBY);
         }
         catch (Exception ex)
         {
@@ -37,7 +40,7 @@ public class ExampleBase
     {
         try
         {
-            DriverManager.getConnection("jdbc:derby:memory:testdb;shutdown=true").close();
+            DriverManager.getConnection(String.format("jdbc:derby:memory:%s;shutdown=true",dbName)).close();
         }
         catch (SQLException ex)
         {
@@ -48,13 +51,14 @@ public class ExampleBase
         }
         try
         {
-            VFMemoryStorageFactory.purgeDatabase(new File("testdb").getCanonicalPath());
+            VFMemoryStorageFactory.purgeDatabase(new File(dbName).getCanonicalPath());
         }
         catch (IOException iox)
         {
             iox.printStackTrace();
         }
-        connector.finalize();
-        connector = null;
+        ((DefaultTransactionFactory)factory).finalize();
+        factory = null;
     }
 }
+

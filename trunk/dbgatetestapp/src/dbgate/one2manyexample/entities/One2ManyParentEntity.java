@@ -1,6 +1,7 @@
 package dbgate.one2manyexample.entities;
 
 import dbgate.*;
+import docgenerate.WikiCodeBlock;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.Collection;
  * Date: Mar 30, 2011
  * Time: 8:46:20 PM
  */
+@WikiCodeBlock(id = "one_2_many_example_parent_entity")
 @TableInfo(tableName = "parent_entity")
 public class One2ManyParentEntity extends DefaultEntity
 {
