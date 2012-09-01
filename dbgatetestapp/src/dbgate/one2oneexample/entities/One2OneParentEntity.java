@@ -1,11 +1,13 @@
 package dbgate.one2oneexample.entities;
 
 import dbgate.*;
+import docgenerate.WikiCodeBlock;
 
 /**
  * Date: Mar 30, 2011
  * Time: 8:46:20 PM
  */
+@WikiCodeBlock(id = "one_2_one_example_parent_entity")
 @TableInfo(tableName = "parent_entity")
 public class One2OneParentEntity extends DefaultEntity
 {

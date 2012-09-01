@@ -2,10 +2,46 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="3efd4c13-b6c5-4bc2-b855-d0257639232c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/dbgate.xml" afterPath="$PROJECT_DIR$/.idea/libraries/dbgate.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/wikigen" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/RunAll.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/FeatureIntegrationExample.wiki.template" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/inheritanceexample/InheritanceExample.wiki.template" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.wiki.template" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/dbgate/simpleexample/SimpleEntityExample.wiki.template" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/docgenerate/CodeReader.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/docgenerate/Integrator.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/docgenerate/SourceScanner.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/docgenerate/TemplateProcessor.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/docgenerate/WikiCodeBlock.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/docgenerate/WikiCodeBlockInfo.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dbgatetestapp.iml" afterPath="$PROJECT_DIR$/dbgatetestapp.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/derby.log" afterPath="$PROJECT_DIR$/derby.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ExampleBase.java" afterPath="$PROJECT_DIR$/src/dbgate/ExampleBase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/complexexample/ComplexExample.java" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/ComplexExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransaction.java" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransaction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransactionCharge.java" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransactionCharge.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/complexexample/entities/order/Transaction.java" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/entities/order/Transaction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Item.java" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Item.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Product.java" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Product.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Service.java" afterPath="$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Service.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/inheritanceexample/InheritanceExample.java" afterPath="$PROJECT_DIR$/src/dbgate/inheritanceexample/InheritanceExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/BottomEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/BottomEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/MiddleEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/MiddleEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/TopEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/TopEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.java" afterPath="$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityA.java" afterPath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityA.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityB.java" afterPath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityB.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyParentEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyParentEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.java" afterPath="$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityA.java" afterPath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityA.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityB.java" afterPath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityB.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneParentEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneParentEntity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/simpleexample/SimpleExample.java" afterPath="$PROJECT_DIR$/src/dbgate/simpleexample/SimpleExample.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/simpleexample/entities/SimpleEntity.java" afterPath="$PROJECT_DIR$/src/dbgate/simpleexample/entities/SimpleEntity.java" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="ermanagementtestapp.iws" />
@@ -38,6 +74,19 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
       <breakpoint url="jar://$PROJECT_DIR$/../../build/v_2_0_0/dbgate-src_2_0_0.jar!/dbgate/ermanagement/dbabstractionlayer/datamanipulate/query/from/AbstractTypeFrom.java" line="50" class="dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.from.AbstractTypeFrom" package="dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.from">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/docgenerate/Integrator.java" line="26" class="docgenerate.Integrator" package="docgenerate">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -91,74 +140,89 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Service.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Service.java">
+      <file leaf-file-name="One2OneExample.wiki.template" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.wiki.template">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="13" selection-start="232" selection-end="232" vertical-scroll-proportion="0.0">
+            <state line="14" column="5" selection-start="306" selection-end="306" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Transaction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/order/Transaction.java">
+      <file leaf-file-name="One2OneExample.wiki" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/wikigen/One2OneExample.wiki">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="13" selection-start="230" selection-end="230" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-13.29375">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ItemTransaction.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransaction.java">
+      <file leaf-file-name="One2ManyExample.wiki.template" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.wiki.template">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="397" selection-end="397" vertical-scroll-proportion="0.0">
+            <state line="9" column="0" selection-start="208" selection-end="275" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ItemTransactionCharge.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransactionCharge.java">
+      <file leaf-file-name="One2ManyExample.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="184" selection-end="184" vertical-scroll-proportion="0.0">
+            <state line="28" column="0" selection-start="943" selection-end="984" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ComplexExample.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/ComplexExample.java">
+      <file leaf-file-name="One2OneExample.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="143" column="20" selection-start="4945" selection-end="4945" vertical-scroll-proportion="0.0">
+            <state line="27" column="38" selection-start="897" selection-end="914" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ExampleBase.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/ExampleBase.java">
+      <file leaf-file-name="One2OneChildEntity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0">
+            <state line="12" column="49" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="One2OneChildEntityB.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityB.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="53" selection-start="256" selection-end="256" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleExample.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/simpleexample/SimpleExample.java">
+      <file leaf-file-name="One2OneParentEntity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneParentEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="81" column="55" selection-start="2541" selection-end="2541" vertical-scroll-proportion="0.29325512">
-              <folding />
+            <state line="15" column="11" selection-start="386" selection-end="386" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MiddleEntity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/MiddleEntity.java">
+      <file leaf-file-name="One2ManyChildEntity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="1" selection-start="175" selection-end="555" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="11" column="52" selection-start="179" selection-end="210" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -177,22 +241,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/SuperEntity.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/TopEntity.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/SubEntity.java" />
         <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/BottomEntity.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/InheritanceExample.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntity.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/MiddleEntity.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/TopEntity.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/inheritanceexample/InheritanceExample.wiki.template" />
+        <option value="$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.java" />
         <option value="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntity.java" />
         <option value="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityA.java" />
         <option value="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityB.java" />
         <option value="$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyParentEntity.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityB.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.wiki.template" />
         <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntity.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityA.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityB.java" />
         <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneParentEntity.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/ExampleBase.java" />
-        <option value="$PROJECT_DIR$/src/dbgate/simpleexample/SimpleExample.java" />
+        <option value="$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.wiki.template" />
       </list>
     </option>
   </component>
@@ -238,7 +302,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -275,7 +338,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="dbgate" />
+              <option name="myItemId" value="docgenerate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -296,130 +359,133 @@
               <option name="myItemId" value="dbgate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="simpleexample" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.last.edited" value="Libraries" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
+    <property name="Downloaded.Files.Path" value="Y:\dev\java\community\dbgate\trunk\dbgatetestapp\lib" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="docgenerate" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="docgenerate" />
       <recent name="dbgate.complexexample.entities.order" />
       <recent name="dbgate.complexexample" />
       <recent name="dbgate.simpleexample" />
       <recent name="dbgate.one2manyexample.entities" />
-      <recent name="dbgate.one2manyexample" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="dbgate.complexexample.entities" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SimpleExample">
-    <configuration default="false" name="InheritanceExample" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="dbgate.inheritanceexample.InheritanceExample" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="dbgatetestapp" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="One2OneExample" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="dbgate.one2oneexample.One2OneExample" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="dbgatetestapp" />
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="50560" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="One2ManyExample" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="dbgate.one2manyexample.One2ManyExample" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="dbgatetestapp" />
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="60583" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="ComplexExample" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="dbgate.complexexample.ComplexExample" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="dbgatetestapp" />
-      <envs />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="64031" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Application.Integrator">
     <configuration default="false" name="SimpleExample" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="dbgate.simpleexample.SimpleExample" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="dbgatetestapp" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="RunAll" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="dbgate.RunAll" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="dbgatetestapp" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="CodeReader" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="docgenerate.CodeReader" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="dbgatetestapp" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="Debug" />
+      <method />
+    </configuration>
+    <configuration default="false" name="SourceScanner" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="docgenerate.SourceScanner" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="dbgatetestapp" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Integrator" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="docgenerate.Integrator" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -549,11 +615,11 @@
       </method>
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Application.InheritanceExample" />
-      <item index="1" class="java.lang.String" itemvalue="Application.One2OneExample" />
-      <item index="2" class="java.lang.String" itemvalue="Application.One2ManyExample" />
-      <item index="3" class="java.lang.String" itemvalue="Application.ComplexExample" />
-      <item index="4" class="java.lang.String" itemvalue="Application.SimpleExample" />
+      <item index="0" class="java.lang.String" itemvalue="Application.SimpleExample" />
+      <item index="1" class="java.lang.String" itemvalue="Application.RunAll" />
+      <item index="2" class="java.lang.String" itemvalue="Application.CodeReader" />
+      <item index="3" class="java.lang.String" itemvalue="Application.SourceScanner" />
+      <item index="4" class="java.lang.String" itemvalue="Application.Integrator" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -612,28 +678,29 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="3" y="1" width="1363" height="736" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32235703" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32235703" sideWeight="0.0" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24961479" sideWeight="0.6756303" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39514732" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32582322" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24961479" sideWeight="0.6756303" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3916811" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928944" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5389948" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32742682" sideWeight="0.26169845" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32742682" sideWeight="0.6759099" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32409012" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32742682" sideWeight="0.40381283" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32409012" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32582322" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32941177" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -671,7 +738,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed to use the latest db gate version" />
+    <option name="LAST_COMMIT_MESSAGE" value="added automated wiki doc generation instead of using troublesome copy and paste stuff" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -686,6 +753,7 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="added cglib as dependancy" />
     <MESSAGE value="changed to use the latest db gate version" />
+    <MESSAGE value="added automated wiki doc generation instead of using troublesome copy and paste stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -695,88 +763,113 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="2" selection-start="747" selection-end="3719" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/TopEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="254" selection-end="254" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/BottomEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="1" selection-start="175" selection-end="537" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dbgate/inheritanceexample/InheritanceExample.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="6" selection-start="672" selection-end="3253" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="22" selection-start="267" selection-end="267" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Product.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="232" selection-end="232" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/product/Service.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="232" selection-end="232" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/order/Transaction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="13" selection-start="230" selection-end="230" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransaction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="397" selection-end="397" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/entities/order/ItemTransactionCharge.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="184" selection-end="184" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/complexexample/ComplexExample.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="143" column="20" selection-start="4945" selection-end="4945" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/ExampleBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/inheritanceexample/entities/MiddleEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="1" selection-start="175" selection-end="555" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../build/v_2_0_0/dbgate-src_2_0_0.jar!/dbgate/ermanagement/dbabstractionlayer/datamanipulate/query/from/AbstractTypeFrom.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="0" selection-start="1196" selection-end="1196" vertical-scroll-proportion="0.0">
+        <state line="27" column="0" selection-start="868" selection-end="910" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../../build/v_2_0_0/dbgate-src_2_0_0.jar!/dbgate/ermanagement/ermapper/RetrievalOperationLayer.java">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/inheritanceexample/InheritanceExample.wiki.template">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="0" selection-start="2055" selection-end="2055" vertical-scroll-proportion="0.18446602">
+        <state line="9" column="68" selection-start="174" selection-end="239" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dbgate/simpleexample/SimpleExample.java">
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityA.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="55" selection-start="2541" selection-end="2541" vertical-scroll-proportion="0.29325512">
+        <state line="11" column="54" selection-start="225" selection-end="258" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyParentEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="53" selection-start="223" selection-end="255" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntityB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="274" selection-end="274" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/entities/One2ManyChildEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="52" selection-start="179" selection-end="210" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="53" selection-start="256" selection-end="256" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.wiki.template">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="0" selection-start="208" selection-end="275" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntityA.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="203" selection-end="258" vertical-scroll-proportion="0.26877472">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneChildEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="49" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2manyexample/One2ManyExample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="0" selection-start="943" selection-end="984" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/entities/One2OneParentEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="11" selection-start="386" selection-end="386" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="38" selection-start="897" selection-end="914" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/dbgate/one2oneexample/One2OneExample.wiki.template">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="5" selection-start="306" selection-end="306" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wikigen/One2OneExample.wiki">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-13.29375">
           <folding />
         </state>
       </provider>
@@ -848,7 +941,7 @@
       <state key="ProjectJDKs.UI" />
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>dbgate</last-edited>
+          <last-edited>Derby</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

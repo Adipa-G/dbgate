@@ -5,11 +5,13 @@ import dbgate.ColumnInfo;
 import dbgate.ColumnType;
 import dbgate.DefaultEntity;
 import dbgate.TableInfo;
+import docgenerate.WikiCodeBlock;
 
 /**
  * Date: Mar 30, 2011
  * Time: 12:09:13 AM
  */
+@WikiCodeBlock(id = "inheritance_example_top_entity")
 @TableInfo(tableName = "top_entity")
 public class TopEntity extends DefaultEntity
 {

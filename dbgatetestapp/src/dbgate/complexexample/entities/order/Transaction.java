@@ -1,6 +1,7 @@
 package dbgate.complexexample.entities.order;
 
 import dbgate.*;
+import docgenerate.WikiCodeBlock;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.Collection;
  * Date: Mar 31, 2011
  * Time: 9:55:15 PM
  */
+@WikiCodeBlock(id = "complex_example_order_transaction")
 @TableInfo(tableName = "order_transaction")
 public class Transaction extends DefaultEntity
 {
