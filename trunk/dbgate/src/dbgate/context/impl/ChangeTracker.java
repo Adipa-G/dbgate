@@ -24,12 +24,6 @@ public class ChangeTracker implements IChangeTracker
     }
 
     @Override
-    public Collection<EntityFieldValue> getFields()
-    {
-        return Collections.unmodifiableCollection(fields);
-    }
-
-    @Override
     public void addFields(Collection<EntityFieldValue> entityFieldValues)
     {
         for (EntityFieldValue field : entityFieldValues)

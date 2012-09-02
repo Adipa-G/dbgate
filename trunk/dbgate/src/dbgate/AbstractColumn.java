@@ -18,7 +18,7 @@ public abstract class AbstractColumn implements IColumn
     private boolean readFromSequence;
     private ISequenceGenerator sequenceGenerator;
 
-    private static String predictColumnName(String attributeName)
+    public static String predictColumnName(String attributeName)
     {
         boolean previousCaps = false;
         StringBuilder stringBuilder = new StringBuilder();
@@ -188,5 +188,19 @@ public abstract class AbstractColumn implements IColumn
     public void setSequenceGenerator(ISequenceGenerator sequenceGenerator)
     {
         this.sequenceGenerator = sequenceGenerator;
+    }
+
+    @Override
+    public IColumn clone()
+    {
+        try
+        {
+            return (IColumn) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

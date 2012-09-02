@@ -221,7 +221,7 @@ public class AbstractDataManipulate implements IDataManipulate
             {
                 sb.append(" AND ");
             }
-            sb.append(OperationUtils.findColumnByAttribute(entityInfo.getColumns(), mapping.getToField()).getColumnName());
+            sb.append(entityInfo.findColumnByAttribute(mapping.getToField()).getColumnName());
             sb.append("= ?");
         }
 

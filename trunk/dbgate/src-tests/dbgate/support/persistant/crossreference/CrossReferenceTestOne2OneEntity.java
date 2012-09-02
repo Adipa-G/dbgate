@@ -17,7 +17,7 @@ public class CrossReferenceTestOne2OneEntity extends DefaultEntity
     private String name;
     @ForeignKeyInfo(name = "fk_one2oneent2root"
             ,relatedObjectType = CrossReferenceTestRootEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private CrossReferenceTestRootEntity rootEntity;

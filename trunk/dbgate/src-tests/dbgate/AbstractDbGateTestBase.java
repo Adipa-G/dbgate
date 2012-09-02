@@ -196,9 +196,6 @@ public class AbstractDbGateTestBase
             if (ex.getErrorCode() != 45000)
             {
                 ex.printStackTrace();
-            }
-            else
-            {
                 Logger.getLogger(testClass.getName()).severe(String.format("Exception finalizing the database %s.",dbName));
             }
         }

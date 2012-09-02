@@ -21,14 +21,14 @@ public class ConstraintTestDeleteCascadeRootEntity extends DefaultEntity
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
             ,relatedObjectType = ConstraintTestOne2ManyEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private Collection<ConstraintTestOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
             ,relatedObjectType = ConstraintTestOne2OneEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private ConstraintTestOne2OneEntity one2OneEntity;

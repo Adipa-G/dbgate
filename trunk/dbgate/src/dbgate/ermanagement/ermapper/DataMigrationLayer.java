@@ -182,9 +182,8 @@ public class DataMigrationLayer
             foreignKey.setToTable(relatedEntityInfo.getTableName());
             for (RelationColumnMapping mapping : relation.getTableColumnMappings())
             {
-                String fromCol = OperationUtils.findColumnByAttribute(entityInfo.getColumns(), mapping.getFromField()).getColumnName();
-                String toCol = OperationUtils.findColumnByAttribute(relatedEntityInfo.getColumns(),
-                                                                    mapping.getToField()).getColumnName();
+                String fromCol = entityInfo.findColumnByAttribute(mapping.getFromField()).getColumnName();
+                String toCol = relatedEntityInfo.findColumnByAttribute(mapping.getToField()).getColumnName();
                 foreignKey.getColumnMappings().add(new MetaForeignKeyColumnMapping(fromCol,toCol));
             }
             foreignKey.setDeleteRule(relation.getDeleteRule());

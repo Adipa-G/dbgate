@@ -81,7 +81,7 @@ public class EntityInfoCache implements IEntityInfoCache
         {
             EntityInfo immediateSuperEntityInfo = cache.get(immediateSuper);
             subEntityInfo.setSuperEntityInfo(immediateSuperEntityInfo);
-            immediateSuperEntityInfo.getSubEntityInfo().add(subEntityInfo);
+            immediateSuperEntityInfo.addSubEntityInfo(subEntityInfo);
         }
 
         synchronized (cache)
@@ -127,7 +127,7 @@ public class EntityInfoCache implements IEntityInfoCache
             {
                 EntityInfo superEntityInfo = cache.get(regType);
                 subEntity.setSuperEntityInfo(superEntityInfo);
-                superEntityInfo.getSubEntityInfo().add(subEntity);
+                superEntityInfo.addSubEntityInfo(subEntity);
                 continue;
             }
 
@@ -142,7 +142,7 @@ public class EntityInfoCache implements IEntityInfoCache
                 if (subEntity != null)
                 {
                     subEntity.setSuperEntityInfo(entityInfo);
-                    entityInfo.getSubEntityInfo().add(subEntity);
+                    entityInfo.addSubEntityInfo(subEntity);
                 }
                 entityInfoMap.put(regType,entityInfo);
                 subEntity = entityInfo;
@@ -334,18 +334,18 @@ public class EntityInfoCache implements IEntityInfoCache
 
     private static IRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
     {
-        RelationColumnMapping[] objectMappings = new RelationColumnMapping[foreignKeyInfo.columnMappings().length];
-        ForeignKeyColumnMapping[] annotationMappings = foreignKeyInfo.columnMappings();
+        RelationColumnMapping[] objectMappings = new RelationColumnMapping[foreignKeyInfo.fieldMappings().length];
+        ForeignKeyFieldMapping[] annotationMappings = foreignKeyInfo.fieldMappings();
         for (int i = 0, columnMappingsLength = annotationMappings.length; i < columnMappingsLength; i++)
         {
-            ForeignKeyColumnMapping mapping = annotationMappings[i];
+            ForeignKeyFieldMapping mapping = annotationMappings[i];
             objectMappings[i] = new RelationColumnMapping(mapping.fromField(),mapping.toField());
         }
 
         IRelation relation = new DefaultRelation(dbClassField.getName(),foreignKeyInfo.name()
                 ,foreignKeyInfo.relatedObjectType(),objectMappings,foreignKeyInfo.updateRule()
                 ,foreignKeyInfo.deleteRule(),foreignKeyInfo.reverseRelation()
-                ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.lazy());
+                ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.lazy(),foreignKeyInfo.nullable());
 
         return relation;
     }

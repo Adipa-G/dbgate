@@ -23,14 +23,14 @@ public class VersionGeneralTestRootEntity extends DefaultEntity
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
             ,relatedObjectType = VersionGeneralTestOne2ManyEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private Collection<VersionGeneralTestOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
             ,relatedObjectType = VersionGeneralTestOne2OneEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private VersionGeneralTestOne2OneEntity one2OneEntity;

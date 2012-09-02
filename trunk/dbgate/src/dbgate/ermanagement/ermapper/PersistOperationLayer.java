@@ -126,8 +126,10 @@ public class PersistOperationLayer extends BaseOperationLayer
                 {
                     for (RelationColumnMapping mapping : relation.getTableColumnMappings())
                     {
-                        setParentRelationFieldsForNonIdentifyingRelations(entity, relation.getRelatedObjectType(),
-                                                                          childObjects, mapping);
+                        if (entityInfo.findRelationColumnInfo(mapping.getFromField()) == null)
+                        {
+                            setParentRelationFieldsForNonIdentifyingRelations(entity,childObjects, mapping);
+                        }
                     }
                 }
             }
@@ -422,10 +424,9 @@ public class PersistOperationLayer extends BaseOperationLayer
             , IRelation relation) throws DbGateException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
-        Collection<IColumn> columns = entityInfo.getColumns();
         for (RelationColumnMapping mapping : relation.getTableColumnMappings())
         {
-            IColumn matchColumn = OperationUtils.findColumnByAttribute(columns, mapping.getFromField());
+            IColumn matchColumn = entityInfo.findColumnByAttribute(mapping.getFromField());
             EntityFieldValue fieldValue = valueTypeList.getFieldValue(matchColumn.getAttributeName());
 
             if (fieldValue != null)
@@ -449,9 +450,7 @@ public class PersistOperationLayer extends BaseOperationLayer
 
         while (entityInfo != null)
         {
-            Collection<IColumn> subLevelColumns = entityInfo.getColumns();
-            IColumn subLevelMatchedColumn = OperationUtils.findColumnByAttribute(subLevelColumns,
-                                                                                 mapping.getToField());
+            IColumn subLevelMatchedColumn = entityInfo.findColumnByAttribute(mapping.getToField());
 
             if (subLevelMatchedColumn != null)
             {
@@ -473,7 +472,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
     }
 
-    private void setParentRelationFieldsForNonIdentifyingRelations(IEntity parentEntity, Class childType
+    private void setParentRelationFieldsForNonIdentifyingRelations(IEntity parentEntity
             , Collection<IEntity> childObjects, RelationColumnMapping mapping) throws DbGateException
     {
         IReadOnlyEntity firstObject = null;
@@ -493,9 +492,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         boolean foundOnce = false;
         while (parentInfo != null)
         {
-            Collection<IColumn> parentColumns = parentInfo.getColumns();
-            IColumn parentMatchedColumn = OperationUtils.findColumnByAttribute(parentColumns,
-                                                                               mapping.getFromField());
+            IColumn parentMatchedColumn = parentInfo.findColumnByAttribute(mapping.getFromField());
             if (parentMatchedColumn != null)
             {
                 foundOnce = true;
@@ -513,9 +510,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         foundOnce = false;
         while (childInfo != null)
         {
-            Collection<IColumn> subLevelColumns = childInfo.getColumns();
-            IColumn childMatchedColumn = OperationUtils.findColumnByAttribute(subLevelColumns,
-                                                                              mapping.getToField());
+            IColumn childMatchedColumn = childInfo.findColumnByAttribute(mapping.getToField());
 
             if (childMatchedColumn != null)
             {

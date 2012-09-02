@@ -53,6 +53,7 @@ public class DbGateLazyTest extends AbstractDbGateTestBase
     @Before
     public void beforeEach()
     {
+        connector.getDbGate().getStatistics().reset();
         connector.getDbGate().clearCache();
     }
 

@@ -20,7 +20,7 @@ public class Transaction extends DefaultEntity
                 ,relatedObjectType = ItemTransaction.class
                 ,updateRule = ReferentialRuleType.RESTRICT
                 ,deleteRule = ReferentialRuleType.CASCADE
-                ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "transactionId", toField = "transactionId")})
+                , fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId", toField = "transactionId")})
     private Collection<ItemTransaction> itemTransactions;
 
     public Transaction()

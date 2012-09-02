@@ -474,6 +474,6 @@ public class DbGateInheritancePersistTests extends AbstractDbGateTestBase
     @AfterClass
     public static void after()
     {
-        endInit(dbName);
+        finalizeDb(dbName);
     }
 }

@@ -20,13 +20,13 @@ public class ItemTransactionCharge  extends DefaultEntity
     @ForeignKeyInfo(name = "item_tx_charge2tx_rev"
                 ,relatedObjectType = Transaction.class
                 ,reverseRelation = true
-                ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "transactionId", toField = "transactionId")})
+                , fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId", toField = "transactionId")})
     private Transaction transaction;
     @ForeignKeyInfo(name = "item_tx_charge2tx_item_rev"
                 ,relatedObjectType = ItemTransaction.class
                 ,reverseRelation = true
-                ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "transactionId", toField = "transactionId")
-                    ,@ForeignKeyColumnMapping(fromField = "indexNo", toField = "indexNo")})
+                , fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId", toField = "transactionId")
+                    ,@ForeignKeyFieldMapping(fromField = "indexNo", toField = "indexNo")})
     private ItemTransaction itemTransaction;
 
     public ItemTransactionCharge()

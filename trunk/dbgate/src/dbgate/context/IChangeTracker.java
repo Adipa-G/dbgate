@@ -10,8 +10,6 @@ import java.util.Collection;
  */
 public interface IChangeTracker
 {
-    Collection<EntityFieldValue> getFields();
-
     void addFields(Collection<EntityFieldValue> fields);
 
     Collection<ITypeFieldValueList> getChildEntityKeys();

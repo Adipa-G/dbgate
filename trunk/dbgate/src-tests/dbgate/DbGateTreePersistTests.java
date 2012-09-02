@@ -164,6 +164,95 @@ public class DbGateTreePersistTests extends AbstractDbGateTestBase
     }
 
     @Test
+    public void treePersist_insert_withAnnotationsNullOneToOneChildren_shouldEqualWhenLoaded()
+    {
+        try
+        {
+            ITransaction tx = connector.createTransaction();
+
+            int id = 35;
+            ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_ANNOTATION);
+            rootEntity.setOne2OneEntity(null);
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
+
+            tx = connector.createTransaction();
+            ITreeTestRootEntity loadedEntity = new TreeTestRootEntityAnnotations();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
+
+            boolean compareResult = compareEntities(rootEntity,loadedEntity);
+            Assert.assertTrue(compareResult);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void treePersist_insert_withFieldsNullOneToOneChildren_shouldEqualWhenLoaded()
+    {
+        try
+        {
+            ITransaction tx = connector.createTransaction();
+
+            int id = 35;
+            ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_FIELD);
+            rootEntity.setOne2OneEntity(null);
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
+
+            tx = connector.createTransaction();
+            ITreeTestRootEntity loadedEntity = new TreeTestRootEntityFields();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
+
+            boolean compareResult = compareEntities(rootEntity,loadedEntity);
+            Assert.assertTrue(compareResult);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void treePersist_insert_withExtsNullOneToOneChildren_shouldEqualWhenLoaded()
+    {
+        try
+        {
+            ITransaction tx = connector.createTransaction();
+
+            registerForExternal();
+
+            int id = 35;
+            ITreeTestRootEntity rootEntity = createFullObjectTree(id,TYPE_EXTERNAL);
+            rootEntity.setOne2OneEntity(null);
+            rootEntity.persist(tx);
+            tx.commit();
+            tx.close();
+
+            tx = connector.createTransaction();
+            ITreeTestRootEntity loadedEntity = new TreeTestRootEntityExt();
+            loadEntityWithId(tx,loadedEntity,id);
+            tx.close();
+
+            boolean compareResult = compareEntities(rootEntity,loadedEntity);
+            Assert.assertTrue(compareResult);
+        }
+        catch (Exception e)
+        {
+            Assert.fail(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void treePersist_update_withAnnotationsDifferentTypeOfChildren_shouldEqualWhenLoaded()
     {
         try

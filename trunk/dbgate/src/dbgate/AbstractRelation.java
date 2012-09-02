@@ -17,19 +17,21 @@ public abstract class AbstractRelation implements IRelation
     private boolean reverseRelationship;
     private boolean nonIdentifyingRelation;
     private boolean lazy;
+    private boolean nullable;
 
     protected AbstractRelation(String attributeName, String relationshipName
             , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings)
     {
         this(attributeName,relationshipName,relatedObjectType
                 ,tableColumnMappings,ReferentialRuleType.RESTRICT
-                ,ReferentialRuleType.CASCADE,false,false,false);
+                ,ReferentialRuleType.CASCADE,false,false,false,false);
     }
 
     protected AbstractRelation(String attributeName, String relationshipName
             , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings
             , ReferentialRuleType updateRule, ReferentialRuleType deleteRule
-            , boolean reverseRelationship, boolean nonIdentifyingRelation, boolean lazy)
+            , boolean reverseRelationship, boolean nonIdentifyingRelation, boolean lazy
+            , boolean nullable)
     {
         this.attributeName = attributeName;
         this.relationshipName = relationshipName;
@@ -40,6 +42,7 @@ public abstract class AbstractRelation implements IRelation
         this.reverseRelationship = reverseRelationship;
         this.nonIdentifyingRelation = nonIdentifyingRelation;
         this.lazy = lazy;
+        this.nullable = nullable;
     }
 
     @Override
@@ -148,6 +151,18 @@ public abstract class AbstractRelation implements IRelation
     public void setLazy(boolean lazy)
     {
         this.lazy = lazy;
+    }
+
+    @Override
+    public boolean isNullable()
+    {
+        return this.nullable;
+    }
+
+    @Override
+    public void setNullable(boolean nullable)
+    {
+        this.nullable = nullable;
     }
 
     @Override

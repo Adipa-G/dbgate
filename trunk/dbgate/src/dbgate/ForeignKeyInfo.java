@@ -15,10 +15,11 @@ import java.lang.annotation.*;
 public @interface ForeignKeyInfo
 {
     String name();
-    ForeignKeyColumnMapping[] columnMappings();
+    ForeignKeyFieldMapping[] fieldMappings();
     ReferentialRuleType updateRule() default ReferentialRuleType.RESTRICT;
     ReferentialRuleType deleteRule() default ReferentialRuleType.CASCADE;
     Class relatedObjectType() default Object.class;
+    boolean nullable() default false;
     boolean reverseRelation() default false;
     boolean nonIdentifyingRelation() default false;
     boolean lazy() default false;
