@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ForeignKeyColumnMapping
+public @interface ForeignKeyFieldMapping
 {
     String fromField();
     String toField();

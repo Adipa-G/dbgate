@@ -21,14 +21,14 @@ public class ChangeTrackerTestRootEntity extends DefaultEntity
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
             ,relatedObjectType = ChangeTrackerTestOne2ManyEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private Collection<ChangeTrackerTestOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
             ,relatedObjectType = ChangeTrackerTestOne2OneEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private ChangeTrackerTestOne2OneEntity one2OneEntity;

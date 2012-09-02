@@ -21,14 +21,14 @@ public class CrossReferenceTestRootEntity extends DefaultEntity
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
             ,relatedObjectType = CrossReferenceTestOne2ManyEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private Collection<CrossReferenceTestOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
             ,relatedObjectType = CrossReferenceTestOne2OneEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private CrossReferenceTestOne2OneEntity one2OneEntity;

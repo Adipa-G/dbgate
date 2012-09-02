@@ -21,7 +21,7 @@ public class ConstraintTestReverseRootEntity extends DefaultEntity
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
             ,relatedObjectType = ConstraintTestOne2ManyEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE
             ,reverseRelation = true)
@@ -29,7 +29,7 @@ public class ConstraintTestReverseRootEntity extends DefaultEntity
     
     @ForeignKeyInfo(name = "fk_root2one2oneent"
             ,relatedObjectType = ConstraintTestOne2OneEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE
             ,reverseRelation = true)

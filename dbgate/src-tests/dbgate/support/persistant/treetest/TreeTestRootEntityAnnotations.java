@@ -20,14 +20,14 @@ public class TreeTestRootEntityAnnotations extends DefaultEntity implements ITre
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
             ,relatedObjectType = TreeTestOne2ManyEntityAnnotations.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            ,fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private Collection<ITreeTestOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
             ,relatedObjectType = TreeTestOne2OneEntityAnnotations.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            ,fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private ITreeTestOne2OneEntity one2OneEntity;

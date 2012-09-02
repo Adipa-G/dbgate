@@ -3,6 +3,7 @@ package dbgate.ermanagement.ermapper.utils;
 import dbgate.*;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
+import dbgate.caches.impl.EntityRelationColumnInfo;
 import dbgate.context.EntityFieldValue;
 import dbgate.context.IEntityFieldValueList;
 import dbgate.context.IFieldValueList;
@@ -121,10 +122,32 @@ public class OperationUtils
                     {
                         continue;
                     }
-                    Method getter = parentEntityInfo.getGetter(subLevelColumn.getAttributeName());
-                    Object value = ReflectionUtils.getValue(getter,entity);
 
-                    entityFieldValues.add(new EntityFieldValue(value,subLevelColumn));
+                    EntityRelationColumnInfo relationColumnInfo = entityInfo.findRelationColumnInfo(subLevelColumn.getAttributeName());
+                    if (relationColumnInfo != null)
+                    {
+                        Collection<IEntity> relationEntities = getRelationEntities(entity,relationColumnInfo.getRelation());
+                        if (relationEntities.size() > 0)
+                        {
+                            for (IEntity relationEntity : relationEntities)
+                            {
+                                IEntityFieldValueList keyValueList = extractEntityKeyValues(relationEntity);
+                                EntityFieldValue fieldValue = keyValueList.getFieldValue(relationColumnInfo.getMapping().getToField());
+                                entityFieldValues.add(new EntityFieldValue(fieldValue.getValue(),subLevelColumn));
+                            }
+                        }
+                        else
+                        {
+                            entityFieldValues.add(new EntityFieldValue(null,subLevelColumn));
+                        }
+                    }
+                    else
+                    {
+                        Method getter = parentEntityInfo.getGetter(subLevelColumn.getAttributeName());
+                        Object value = ReflectionUtils.getValue(getter,entity);
+
+                        entityFieldValues.add(new EntityFieldValue(value,subLevelColumn));
+                    }
                 }
             }
             entityInfo = entityInfo.getSuperEntityInfo();
@@ -203,18 +226,6 @@ public class OperationUtils
             }
         }
         return true;
-    }
-
-    public static IColumn findColumnByAttribute(Collection<IColumn> columns,String attribute)
-    {
-        for (IColumn column : columns)
-        {
-            if (column.getAttributeName().equalsIgnoreCase(attribute))
-            {
-                return column;
-            }
-        }
-        return null;
     }
 
     public static void incrementVersion(ITypeFieldValueList fieldValues)

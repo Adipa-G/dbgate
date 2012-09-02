@@ -39,11 +39,11 @@ public class RootEntity extends AbstractManagedEntity
     {
         @ForeignKeyInfo(name = "fk_root2leafa"
             ,relatedObjectType = LeafEntitySubA.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
         ),
         @ForeignKeyInfo(name = "fk_root2leafb"
             ,relatedObjectType = LeafEntitySubB.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
         )
     })
     private Collection<LeafEntity> leafEntities;

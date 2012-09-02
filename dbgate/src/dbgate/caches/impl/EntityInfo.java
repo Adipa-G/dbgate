@@ -1,14 +1,13 @@
 package dbgate.caches.impl;
 
 import dbgate.*;
+import dbgate.caches.CacheManager;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.exceptions.common.MethodNotFoundException;
 import dbgate.exceptions.query.QueryBuildingException;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +18,7 @@ import java.util.HashMap;
  */
 public class EntityInfo
 {
+    private boolean relationColumnsPopulated;
     private Class entityType;
     private String tableName;
     private EntityInfo superEntityInfo;
@@ -27,14 +27,17 @@ public class EntityInfo
     private final HashMap<String,Method> methodMap;
     private final Collection<IColumn> columns;
     private final Collection<IRelation> relations;
+    private final Collection<EntityRelationColumnInfo> relationColumnInfoList;
     private final HashMap<String,String> queries;
 
     public EntityInfo(Class entityType)
     {
+        this.relationColumnsPopulated = false;
         this.entityType = entityType;
         this.subEntityInfo = new ArrayList<>();
         this.columns = new ArrayList<>();
         this.relations = new ArrayList<>();
+        this.relationColumnInfoList = new ArrayList<>();
         this.methodMap = new HashMap<>();
         this.queries = new HashMap<>();
     }
@@ -66,17 +69,52 @@ public class EntityInfo
 
     public Collection<EntityInfo> getSubEntityInfo()
     {
-        return subEntityInfo;
+        return Collections.unmodifiableCollection(subEntityInfo);
+    }
+
+    public void addSubEntityInfo(EntityInfo subInfo)
+    {
+        subEntityInfo.add(subInfo);
     }
 
     public Collection<IColumn> getColumns()
     {
-        return columns;
+        populateRelationColumns();
+        return Collections.unmodifiableCollection(columns);
     }
 
     public Collection<IRelation> getRelations()
     {
-        return relations;
+        return Collections.unmodifiableCollection(relations);
+    }
+
+    public Collection<EntityRelationColumnInfo> getRelationColumnInfoList()
+    {
+        return Collections.unmodifiableCollection(relationColumnInfoList);
+    }
+
+    public EntityRelationColumnInfo findRelationColumnInfo(String attributeName)
+    {
+        for (EntityRelationColumnInfo relationColumnInfo : relationColumnInfoList)
+        {
+            if (relationColumnInfo.getColumn().getAttributeName().equals(attributeName))
+            {
+                return relationColumnInfo;
+            }
+        }
+        return null;
+    }
+
+    public IColumn findColumnByAttribute(String attributeName)
+    {
+        for (IColumn column : columns)
+        {
+            if (column.getAttributeName().equals(attributeName))
+            {
+                return column;
+            }
+        }
+        return null;
     }
 
     public Collection<IColumn> getKeys()
@@ -92,9 +130,9 @@ public class EntityInfo
         return keys;
     }
 
-    public HashMap<String, String> getQueries()
+    public Map<String, String> getQueries()
     {
-        return queries;
+        return Collections.unmodifiableMap(queries);
     }
 
     public void setFields(Collection<IField> fields)
@@ -112,6 +150,74 @@ public class EntityInfo
             }
         }
     }
+    
+    private void populateRelationColumns()
+    {
+        if (relationColumnsPopulated)
+            return;
+
+        for (IRelation relation : relations)
+        {
+            boolean found = hasManualRelationColumnsDefined(relation);
+
+            if (!found)
+            {
+                createRelationColumns(relation);
+            }
+        }
+    }
+
+    private boolean hasManualRelationColumnsDefined(IRelation relation)
+    {
+        boolean found = false;
+        for (RelationColumnMapping mapping : relation.getTableColumnMappings())
+        {
+            for (IColumn column : columns)
+            {
+                if (column.getAttributeName().equals(mapping.getFromField()))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+                break;
+        }
+        return found;
+    }
+
+    private void createRelationColumns(IRelation relation)
+    {
+        EntityInfo relationInfo = CacheManager.getEntityInfo(relation.getRelatedObjectType());
+        while (relationInfo != null)
+        {
+            Collection<IColumn> relationKeys = relationInfo.getKeys();
+            for (IColumn relationKey : relationKeys)
+            {
+                RelationColumnMapping matchingMapping = null;
+                for (RelationColumnMapping mapping : relation.getTableColumnMappings())
+                {
+                    if (mapping.getToField().equals(relationKey.getAttributeName()))
+                    {
+                        matchingMapping = mapping;
+                        break;
+                    }
+                }
+
+                IColumn cloned = relationKey.clone();
+                cloned.setKey(false);
+                if (matchingMapping != null)
+                {
+                    cloned.setAttributeName(matchingMapping.getFromField());
+                    cloned.setColumnName(AbstractColumn.predictColumnName(matchingMapping.getFromField()));
+                }
+                cloned.setNullable(relation.isNullable());
+                columns.add(cloned);
+                relationColumnInfoList.add(new EntityRelationColumnInfo(cloned,relation,matchingMapping));
+            }
+            relationInfo = relationInfo.getSuperEntityInfo();
+        }
+    }
 
     public String getLoadQuery(IDBLayer dbLayer) throws QueryBuildingException
     {
@@ -119,6 +225,7 @@ public class EntityInfo
         String query = getQuery(queryId);
         if (query == null)
         {
+            populateRelationColumns();
             query = dbLayer.getDataManipulate().createLoadQuery(tableName,columns);
             setQuery(queryId,query);
         }
@@ -135,6 +242,7 @@ public class EntityInfo
         String query = getQuery(queryId);
         if (query == null)
         {
+            populateRelationColumns();
             query = dbLayer.getDataManipulate().createInsertQuery(tableName,columns);
             setQuery(queryId,query);
         }
@@ -151,6 +259,7 @@ public class EntityInfo
         String query = getQuery(queryId);
         if (query == null)
         {
+            populateRelationColumns();
             query = dbLayer.getDataManipulate().createUpdateQuery(tableName, columns);
             setQuery(queryId,query);
         }
@@ -167,6 +276,7 @@ public class EntityInfo
         String query = getQuery(queryId);
         if (query == null)
         {
+            populateRelationColumns();
             query = dbLayer.getDataManipulate().createDeleteQuery(tableName, columns);
             setQuery(queryId,query);
         }

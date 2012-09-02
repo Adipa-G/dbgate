@@ -112,6 +112,7 @@
           <test todir="${build.testreports}" name="dbgate.DbGateQueryBasicTest" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.DbGateSuperEntityRefTest" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.DbGateMultiDbTest" fork="yes"/>
+          <test todir="${build.testreports}" name="dbgate.DbGateNonIdentifyingRelationWithoutColumnTests" fork="yes"/>
           <test todir="${build.testreports}" name="dbgate.utility.StatusUtilityTests" fork="yes"/>
         </junit>
     </target>

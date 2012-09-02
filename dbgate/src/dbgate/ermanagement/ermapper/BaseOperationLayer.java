@@ -3,6 +3,7 @@ package dbgate.ermanagement.ermapper;
 import dbgate.*;
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
+import dbgate.caches.impl.EntityRelationColumnInfo;
 import dbgate.context.EntityFieldValue;
 import dbgate.context.IEntityFieldValueList;
 import dbgate.context.ITypeFieldValueList;
@@ -113,8 +114,11 @@ public abstract class BaseOperationLayer
         {
             for (EntityFieldValue fieldValue : values.getFieldValues())
             {
-                Method setter = entityInfo.getSetter(fieldValue.getDbColumn());
-                setter.invoke(roEntity,fieldValue.getValue());
+                if (entityInfo.findRelationColumnInfo(fieldValue.getAttributeName()) == null)
+                {
+                    Method setter = entityInfo.getSetter(fieldValue.getDbColumn());
+                    setter.invoke(roEntity,fieldValue.getValue());
+                }
             }
         }
         catch (Exception ex)
@@ -253,28 +257,33 @@ public abstract class BaseOperationLayer
             {
                 logSb.append(query);
             }
-            Collection<IColumn> dbColumns = entityInfo.getColumns();
             for (int i = 0; i < fields.size(); i++)
             {
                 String field = fields.get(i);
-                IColumn matchColumn = OperationUtils.findColumnByAttribute(dbColumns, field);
+                Object fieldValue = null;
 
-                if (matchColumn != null)
+                IColumn matchColumn = entityInfo.findColumnByAttribute(field);
+                EntityRelationColumnInfo entityRelationColumnInfo = entityInfo.findRelationColumnInfo(matchColumn != null ? matchColumn.getAttributeName() : "");
+                if (entityRelationColumnInfo != null)
+                {
+                    EntityFieldValue entityFieldValue =  entity.getContext().getChangeTracker().getFieldValue(matchColumn.getAttributeName());
+                    fieldValue = entityFieldValue.getValue();
+                }
+                else if (matchColumn != null)
                 {
                     Method getter = entityInfo.getGetter(matchColumn.getAttributeName());
-                    Object fieldValue = ReflectionUtils.getValue(getter,entity);
-
-                    if (showQuery)
-                    {
-                        logSb.append(" ,").append(matchColumn.getColumnName()).append("=").append(fieldValue);
-                    }
-                    dbLayer.getDataManipulate().setToPreparedStatement(ps,fieldValue,i+1,matchColumn);
+                    fieldValue = ReflectionUtils.getValue(getter,entity);
                 }
                 else
                 {
                     String message = String.format("The field %s does not have a matching field in the object %s", field,entity.getClass().getName());
                     throw new NoMatchingColumnFoundException(message);
                 }
+                if (showQuery)
+                {
+                    logSb.append(" ,").append(matchColumn.getColumnName()).append("=").append(fieldValue);
+                }
+                dbLayer.getDataManipulate().setToPreparedStatement(ps,fieldValue,i+1,matchColumn);
             }
             if (showQuery)
             {

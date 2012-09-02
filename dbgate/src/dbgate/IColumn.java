@@ -40,4 +40,7 @@ public interface IColumn extends IField
     ISequenceGenerator getSequenceGenerator();
 
     void setSequenceGenerator(ISequenceGenerator generator);
+
+    @Override
+    IColumn clone();
 }

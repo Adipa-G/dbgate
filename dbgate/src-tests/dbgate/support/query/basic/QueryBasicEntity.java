@@ -17,8 +17,8 @@ public class QueryBasicEntity extends DefaultEntity
     private String name;
     @ForeignKeyInfo(name = "fk_basic2join"
             ,relatedObjectType = QueryBasicJoinEntity.class
-            ,columnMappings = {@ForeignKeyColumnMapping(fromField = "idCol", toField = "idCol")
-                               ,@ForeignKeyColumnMapping(fromField = "name", toField = "name")}
+            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")
+                               ,@ForeignKeyFieldMapping(fromField = "name", toField = "name")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
     private QueryBasicJoinEntity joinEntity;
