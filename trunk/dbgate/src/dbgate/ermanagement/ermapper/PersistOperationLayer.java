@@ -110,29 +110,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             return;
         }
 
-        Collection<IRelation> dbRelations = entityInfo.getRelations();
-        for (IRelation relation : dbRelations)
-        {
-            if (relation.isReverseRelationship())
-            {
-                continue;
-            }
-            if (isProxyObject(entity, relation)) continue;
-            Collection<IEntity> childObjects = OperationUtils.getRelationEntities(entity, relation);
-            if (childObjects != null)
-            {
-                if (relation.isNonIdentifyingRelation())
-                {
-                    for (RelationColumnMapping mapping : relation.getTableColumnMappings())
-                    {
-                        if (entityInfo.findRelationColumnInfo(mapping.getFromField()) == null)
-                        {
-                            setParentRelationFieldsForNonIdentifyingRelations(entity,childObjects, mapping);
-                        }
-                    }
-                }
-            }
-        }
+        processNonIdentifyingRelations(entity, entityInfo);
 
         ITypeFieldValueList fieldValues = OperationUtils.extractEntityTypeFieldValues(entity, type);
         if (entity.getStatus() == EntityStatus.UNMODIFIED)
@@ -175,6 +153,13 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
         entity.getContext().addToCurrentObjectGraphIndex(entity);
 
+        processIdentifyingRelations(entity, type, tx, entityInfo, fieldValues);
+    }
+
+    private void processIdentifyingRelations(IEntity entity, Class type, ITransaction tx, EntityInfo entityInfo,
+                                             ITypeFieldValueList fieldValues) throws DbGateException
+    {
+        Collection<IRelation> dbRelations = entityInfo.getRelations();
         for (IRelation relation : dbRelations)
         {
             if (relation.isReverseRelationship()
@@ -201,6 +186,34 @@ public class PersistOperationLayer extends BaseOperationLayer
                     {
                         fieldObject.persist(tx);
                         entity.getContext().addToCurrentObjectGraphIndex(fieldObject);
+                    }
+                }
+            }
+        }
+    }
+
+    private void processNonIdentifyingRelations(IEntity entity, EntityInfo entityInfo)
+        throws DbGateException
+    {
+        Collection<IRelation> dbRelations = entityInfo.getRelations();
+        for (IRelation relation : dbRelations)
+        {
+            if (relation.isReverseRelationship())
+            {
+                continue;
+            }
+            if (isProxyObject(entity, relation)) continue;
+            Collection<IEntity> childObjects = OperationUtils.getRelationEntities(entity, relation);
+            if (childObjects != null)
+            {
+                if (relation.isNonIdentifyingRelation())
+                {
+                    for (RelationColumnMapping mapping : relation.getTableColumnMappings())
+                    {
+                        if (entityInfo.findRelationColumnInfo(mapping.getFromField()) == null)
+                        {
+                            setParentRelationFieldsForNonIdentifyingRelations(entity,childObjects, mapping);
+                        }
                     }
                 }
             }
