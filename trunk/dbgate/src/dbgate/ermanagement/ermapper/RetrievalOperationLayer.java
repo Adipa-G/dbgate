@@ -12,7 +12,6 @@ import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.QueryBuildInf
 import dbgate.ermanagement.dbabstractionlayer.datamanipulate.query.selection.IAbstractSelection;
 import dbgate.ermanagement.ermapper.utils.OperationUtils;
 import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
-import dbgate.ermanagement.ermapper.utils.SessionUtils;
 import dbgate.ermanagement.query.IQuerySelection;
 import dbgate.exceptions.RetrievalException;
 import dbgate.exceptions.common.ReadFromResultSetException;
@@ -109,9 +108,8 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         }
         try
         {
-            SessionUtils.initSession(roEntity);
             loadFromDb(roEntity, rs, tx);
-            SessionUtils.destroySession(roEntity);
+            roEntity.getContext().destroyReferenceStore();
         }
         catch (Exception e)
         {
@@ -173,7 +171,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         IEntityContext entityContext = entity.getContext();
         ITypeFieldValueList valueTypeList = readValues(type,rs);
         setValues(entity, valueTypeList);
-        SessionUtils.addToSession(entity, OperationUtils.extractEntityKeyValues(entity));
+        entity.getContext().addToCurrentObjectGraphIndex(entity);
 
         if (entityContext != null)
         {

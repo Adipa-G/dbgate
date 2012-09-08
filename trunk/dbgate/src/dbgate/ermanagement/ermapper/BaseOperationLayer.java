@@ -5,13 +5,11 @@ import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.caches.impl.EntityRelationColumnInfo;
 import dbgate.context.EntityFieldValue;
-import dbgate.context.IEntityFieldValueList;
 import dbgate.context.ITypeFieldValueList;
 import dbgate.context.impl.EntityTypeFieldValueList;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.ermapper.utils.OperationUtils;
 import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
-import dbgate.ermanagement.ermapper.utils.SessionUtils;
 import dbgate.exceptions.common.MethodInvocationException;
 import dbgate.exceptions.common.NoMatchingColumnFoundException;
 import dbgate.exceptions.common.ReadFromResultSetException;
@@ -353,19 +351,18 @@ public abstract class BaseOperationLayer
                     Object value = dbLayer.getDataManipulate().readFromResultSet(rs,childKey);
                     childTypeKeyList.getFieldValues().add(new EntityFieldValue(value,childKey));
                 }
-                if (SessionUtils.existsInSession(entity, childTypeKeyList))
+                if (entity.getContext().alreadyInCurrentObjectGraph(childTypeKeyList))
                 {
-                    data.add(SessionUtils.getFromSession(entity, childTypeKeyList));
+                    data.add(entity.getContext().getFromCurrentObjectGraph(childTypeKeyList));
                     continue;
                 }
 
                 IReadOnlyEntity rodbClass = (IReadOnlyEntity) ReflectionUtils.createInstance(childType);
-                SessionUtils.transferSession(entity, rodbClass);
+                rodbClass.getContext().copyReferenceStoreFrom(entity);
                 rodbClass.retrieve(rs,tx);
                 data.add(rodbClass);
 
-                IEntityFieldValueList childEntityKeyList = OperationUtils.extractEntityKeyValues(rodbClass);
-                SessionUtils.addToSession(entity, childEntityKeyList);
+                entity.getContext().addToCurrentObjectGraphIndex(rodbClass);
             }
         }
         catch (SQLException ex)

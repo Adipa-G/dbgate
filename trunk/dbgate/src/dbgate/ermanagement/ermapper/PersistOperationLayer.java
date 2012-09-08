@@ -12,7 +12,6 @@ import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.ermapper.utils.MiscUtils;
 import dbgate.ermanagement.ermapper.utils.OperationUtils;
 import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
-import dbgate.ermanagement.ermapper.utils.SessionUtils;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.common.NoMatchingColumnFoundException;
 import dbgate.exceptions.common.StatementExecutionException;
@@ -49,7 +48,6 @@ public class PersistOperationLayer extends BaseOperationLayer
     {
         try
         {
-            SessionUtils.initSession(entity);
             trackAndCommitChanges(entity, tx);
 
             Stack<EntityInfo> entityInfoStack = new Stack<>();
@@ -67,7 +65,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             }
 
             entity.setStatus(EntityStatus.UNMODIFIED);
-            SessionUtils.destroySession(entity);
+            entity.getContext().destroyReferenceStore();
         } catch (Exception e)
         {
             Logger.getLogger(config.getLoggerName()).log(Level.SEVERE, e.getMessage(), e);
@@ -90,7 +88,8 @@ public class PersistOperationLayer extends BaseOperationLayer
                 }
             }
             originalChildren = entityContext.getChangeTracker().getChildEntityKeys();
-        } else
+        }
+        else
         {
             originalChildren = getChildEntityValueListIncludingDeletedStatusItems(entity);
         }
@@ -174,9 +173,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         {
             entityContext.getChangeTracker().addFields(fieldValues.getFieldValues());
         }
-
-        SessionUtils.addToSession(entity, OperationUtils.extractEntityKeyValues(entity));
-
+        entity.getContext().addToCurrentObjectGraphIndex(entity);
 
         for (IRelation relation : dbRelations)
         {
@@ -195,15 +192,15 @@ public class PersistOperationLayer extends BaseOperationLayer
                 for (IEntity fieldObject : childObjects)
                 {
                     IEntityFieldValueList childEntityKeyList = OperationUtils.extractEntityKeyValues(fieldObject);
-                    if (SessionUtils.existsInSession(entity, childEntityKeyList))
+                    if (entity.getContext().alreadyInCurrentObjectGraph(childEntityKeyList))
                     {
                         continue;
                     }
-                    SessionUtils.transferSession(entity, fieldObject);
+                    fieldObject.getContext().copyReferenceStoreFrom(entity);
                     if (fieldObject.getStatus() != EntityStatus.DELETED) //deleted items are already deleted
                     {
                         fieldObject.persist(tx);
-                        SessionUtils.addToSession(entity, childEntityKeyList);
+                        entity.getContext().addToCurrentObjectGraphIndex(fieldObject);
                     }
                 }
             }
