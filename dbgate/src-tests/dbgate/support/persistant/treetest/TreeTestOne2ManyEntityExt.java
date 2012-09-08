@@ -3,6 +3,7 @@ package dbgate.support.persistant.treetest;
 import dbgate.EntityStatus;
 import dbgate.ITransaction;
 import dbgate.context.IEntityContext;
+import dbgate.context.impl.EntityContext;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
 
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
  */
 public class TreeTestOne2ManyEntityExt implements ITreeTestOne2ManyEntity
 {
+    private EntityContext context;
     private EntityStatus status;
     private int idCol;
     private int indexNo;
@@ -23,6 +25,7 @@ public class TreeTestOne2ManyEntityExt implements ITreeTestOne2ManyEntity
 
     public TreeTestOne2ManyEntityExt()
     {
+        context = new EntityContext();
         status = EntityStatus.NEW;
     }
 
@@ -78,6 +81,6 @@ public class TreeTestOne2ManyEntityExt implements ITreeTestOne2ManyEntity
 
     public IEntityContext getContext()
     {
-        return null;
+        return context;
     }
 }

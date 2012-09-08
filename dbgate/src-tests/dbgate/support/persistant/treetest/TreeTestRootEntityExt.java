@@ -3,6 +3,7 @@ package dbgate.support.persistant.treetest;
 import dbgate.EntityStatus;
 import dbgate.ITransaction;
 import dbgate.context.IEntityContext;
+import dbgate.context.impl.EntityContext;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
 
@@ -17,6 +18,7 @@ import java.util.Collection;
  */
 public class TreeTestRootEntityExt implements ITreeTestRootEntity
 {
+    private EntityContext context;
     private EntityStatus status;
     private int idCol;
     private String name;
@@ -25,6 +27,7 @@ public class TreeTestRootEntityExt implements ITreeTestRootEntity
 
     public TreeTestRootEntityExt()
     {
+        context = new EntityContext();
         status = EntityStatus.NEW;
     }
 
@@ -90,6 +93,6 @@ public class TreeTestRootEntityExt implements ITreeTestRootEntity
 
     public IEntityContext getContext()
     {
-        return null;
+        return context;
     }
 }

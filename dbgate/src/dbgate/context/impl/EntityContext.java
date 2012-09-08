@@ -1,8 +1,8 @@
 package dbgate.context.impl;
 
-import dbgate.context.IChangeTracker;
-import dbgate.context.IERSession;
-import dbgate.context.IEntityContext;
+import dbgate.DbGateException;
+import dbgate.IReadOnlyEntity;
+import dbgate.context.*;
 
 /**
  * Date: Mar 23, 2011
@@ -11,7 +11,7 @@ import dbgate.context.IEntityContext;
 public class EntityContext implements IEntityContext
 {
     private IChangeTracker changeTracker;
-    private IERSession erSession;
+    private IReferenceStore referenceStore;
 
     public EntityContext()
     {
@@ -25,14 +25,50 @@ public class EntityContext implements IEntityContext
     }
 
     @Override
-    public IERSession getERSession()
+    public IReferenceStore getReferenceStore()
     {
-        return erSession;
+        initReferenceStore();
+        return referenceStore;
     }
 
     @Override
-    public void setERSession(IERSession erSession)
+    public void destroyReferenceStore()
     {
-        this.erSession = erSession;
+        referenceStore = null;
+    }
+
+    @Override
+    public void copyReferenceStoreFrom(IReadOnlyEntity entity)
+    {
+        initReferenceStore();
+        if (entity.getContext() != null)
+            referenceStore = entity.getContext().getReferenceStore();
+    }
+
+    @Override
+    public boolean alreadyInCurrentObjectGraph(ITypeFieldValueList keys)
+    {
+        return referenceStore != null && referenceStore.alreadyInCurrentObjectGraph(keys);
+    }
+
+    @Override
+    public IReadOnlyEntity getFromCurrentObjectGraph(ITypeFieldValueList keys)
+    {
+        if (referenceStore == null)
+            return null;
+        return referenceStore.getFromCurrentObjectGraph(keys);
+    }
+
+    @Override
+    public void addToCurrentObjectGraphIndex(IReadOnlyEntity refEntity) throws DbGateException
+    {
+        initReferenceStore();
+        referenceStore.addToCurrentObjectGraphIndex(refEntity);
+    }
+
+    private void initReferenceStore()
+    {
+        if (referenceStore == null)
+            referenceStore = new ReferenceStore();
     }
 }

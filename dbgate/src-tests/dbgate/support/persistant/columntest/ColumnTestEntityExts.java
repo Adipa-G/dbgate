@@ -5,6 +5,7 @@ import dbgate.EntityStatus;
 import dbgate.ITransaction;
 import dbgate.TimeStampWrapper;
 import dbgate.context.IEntityContext;
+import dbgate.context.impl.EntityContext;
 import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
 
@@ -19,6 +20,7 @@ import java.sql.ResultSet;
  */
 public class ColumnTestEntityExts implements IColumnTestEntity
 {
+    private EntityContext context;
     private EntityStatus status;
     private int idCol;
     private long longNotNull;
@@ -42,6 +44,7 @@ public class ColumnTestEntityExts implements IColumnTestEntity
 
     public ColumnTestEntityExts()
     {
+        context = new EntityContext();
         status = EntityStatus.NEW;
     }
 
@@ -257,6 +260,6 @@ public class ColumnTestEntityExts implements IColumnTestEntity
 
     public IEntityContext getContext()
     {
-        return null;
+        return context;
     }
 }

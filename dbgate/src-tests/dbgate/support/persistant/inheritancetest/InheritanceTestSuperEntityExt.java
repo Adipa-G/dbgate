@@ -2,6 +2,7 @@ package dbgate.support.persistant.inheritancetest;
 
 import dbgate.EntityStatus;
 import dbgate.context.IEntityContext;
+import dbgate.context.impl.EntityContext;
 import dbgate.support.persistant.treetest.ITreeTestOne2OneEntity;
 
 /**
@@ -12,12 +13,14 @@ import dbgate.support.persistant.treetest.ITreeTestOne2OneEntity;
  */
 public abstract class InheritanceTestSuperEntityExt implements ITreeTestOne2OneEntity
 {
+    private EntityContext context;
     private EntityStatus status;
     private int idCol;
     private String name;
 
     public InheritanceTestSuperEntityExt()
     {
+        context = new EntityContext();
         status = EntityStatus.NEW;
     }
 
@@ -53,6 +56,6 @@ public abstract class InheritanceTestSuperEntityExt implements ITreeTestOne2OneE
 
     public IEntityContext getContext()
     {
-        return null;  
+        return context;
     }
 }
