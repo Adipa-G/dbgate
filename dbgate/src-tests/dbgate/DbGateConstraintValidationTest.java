@@ -44,15 +44,14 @@ public class DbGateConstraintValidationTest extends AbstractDbGateTestBase
         createTableFromSql(sql,dbName);
 
         endInit(dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Before
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.DO_NOT_VERIFY);
     }
 
     @Test
@@ -60,7 +59,7 @@ public class DbGateConstraintValidationTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
@@ -334,7 +333,7 @@ public class DbGateConstraintValidationTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
@@ -422,7 +421,7 @@ public class DbGateConstraintValidationTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;

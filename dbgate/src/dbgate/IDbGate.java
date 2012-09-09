@@ -25,7 +25,7 @@ public interface IDbGate
 
     void clearCache();
 
-    void registerEntity(Class type,String tableName,Collection<IField> fields);
+    void registerEntity(Class type,ITable tableInfo,Collection<IField> fields);
 
     IDbGateConfig getConfig();
 

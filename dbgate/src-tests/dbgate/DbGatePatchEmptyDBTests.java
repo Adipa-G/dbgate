@@ -40,8 +40,8 @@ public class DbGatePatchEmptyDBTests extends AbstractDbGateTestBase
 
         endInit(dbName);
 
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        connector.getDbGate().getConfig().setCheckVersion(false);
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.DO_NOT_VERIFY);
     }
 
     @Test

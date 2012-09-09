@@ -1,9 +1,6 @@
 package dbgate.support.persistant.treetest;
 
-import dbgate.AbstractManagedEntity;
-import dbgate.ColumnType;
-import dbgate.DefaultColumn;
-import dbgate.IField;
+import dbgate.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,10 +38,10 @@ public class TreeTestOne2OneEntityFields extends AbstractManagedEntity implement
         this.name = name;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = new HashMap<Class, String>();
-        map.put(this.getClass(),"tree_test_one2one");
+        Map<Class,ITable> map = new HashMap<>();
+        map.put(this.getClass(),new DefaultTable("tree_test_one2one"));
         return map;
     }
 

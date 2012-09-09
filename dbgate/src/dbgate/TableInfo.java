@@ -14,4 +14,7 @@ import java.lang.annotation.*;
 public @interface TableInfo
 {
     String tableName();
+    UpdateStrategy updateStrategy() default UpdateStrategy.DEFAULT;
+    VerifyOnWriteStrategy verifyOnWriteStrategy() default VerifyOnWriteStrategy.DEFAULT;
+    DirtyCheckStrategy dirtyCheckStrategy() default DirtyCheckStrategy.DEFAULT;
 }

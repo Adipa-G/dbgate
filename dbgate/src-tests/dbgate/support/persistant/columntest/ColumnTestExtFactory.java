@@ -1,8 +1,6 @@
 package dbgate.support.persistant.columntest;
 
-import dbgate.ColumnType;
-import dbgate.DefaultColumn;
-import dbgate.IField;
+import dbgate.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,13 +44,13 @@ public class ColumnTestExtFactory
         return dbColumns;
     }
 
-    public static String getTableNames(Class type)
+    public static ITable getTableInfo(Class type)
     {
-        String tableName = null;
+        ITable tableInfo = null;
         if (type == ColumnTestEntityExts.class)
         {
-            tableName = "column_test_entity";
+            tableInfo = new DefaultTable("column_test_entity");
         }
-        return tableName;
+        return tableInfo;
     }
 }

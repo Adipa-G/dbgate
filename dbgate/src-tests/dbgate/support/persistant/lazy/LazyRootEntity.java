@@ -24,7 +24,7 @@ public class LazyRootEntity extends DefaultEntity
             , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE
-            ,lazy = true)
+            , fetchStrategy = FetchStrategy.LAZY)
     private Collection<LazyOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
@@ -32,7 +32,7 @@ public class LazyRootEntity extends DefaultEntity
             , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE
-            ,lazy = true)
+            ,fetchStrategy = FetchStrategy.LAZY)
     private LazyOne2OneEntity one2OneEntity;
 
     public LazyRootEntity()

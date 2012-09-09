@@ -2,13 +2,9 @@ package dbgate;
 
 import dbgate.support.persistant.inheritancetest.*;
 import junit.framework.Assert;
-import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.*;
-import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -47,33 +43,31 @@ public class DbGateInheritancePersistTests extends AbstractDbGateTestBase
                 "\tname_b Varchar(20) NOT NULL,\n" +
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        connector.getDbGate().getConfig().setCheckVersion(false);
-
         endInit(dbName);
     }
 
     private void registerForExternal()
     {
         Class objType = InheritanceTestSuperEntityExt.class;
-        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableInfo(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityAExt.class;
-        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableInfo(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
 
         objType = InheritanceTestSubEntityBExt.class;
-        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType,InheritanceTestExtFactory.getTableInfo(objType)
                 ,InheritanceTestExtFactory.getFieldInfo(objType));
     }
 
     @Before
     public void beforeEach()
     {
-
         connector.getDbGate().clearCache();
+
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.DO_NOT_VERIFY);
     }
 
     @Test

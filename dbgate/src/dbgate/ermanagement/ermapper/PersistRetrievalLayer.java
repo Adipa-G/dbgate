@@ -46,8 +46,8 @@ public class PersistRetrievalLayer
         CacheManager.clear();
     }
 
-    public void registerEntity(Class type, String tableName, Collection<IField> fields)
+    public void registerEntity(Class type, ITable tableInfo, Collection<IField> fields)
     {
-        CacheManager.register(type, tableName, fields);
+        CacheManager.register(type, tableInfo, fields);
     }
 }

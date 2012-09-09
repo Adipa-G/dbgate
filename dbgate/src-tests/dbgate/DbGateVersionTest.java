@@ -45,16 +45,15 @@ public class DbGateVersionTest extends AbstractDbGateTestBase
                 "\tname Varchar(20) NOT NULL,\n" +
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(true);
-        connector.getDbGate().getConfig().setCheckVersion(true);
     }
 
     @Before
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
-        connector.getDbGate().getConfig().setUpdateChangedColumnsOnly(false);
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.VERIFY);
+        connector.getDbGate().getConfig().setDefaultUpdateStrategy(UpdateStrategy.All_COLUMNS);
     }
 
     @Test
@@ -146,7 +145,7 @@ public class DbGateVersionTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setUpdateChangedColumnsOnly(true);
+            connector.getDbGate().getConfig().setDefaultUpdateStrategy(UpdateStrategy.CHANGED_COLUMNS);
             ITransaction tx = connector.createTransaction();
 
             int id = 95;

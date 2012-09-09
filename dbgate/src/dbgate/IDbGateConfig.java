@@ -6,27 +6,31 @@ package dbgate;
  */
 public interface IDbGateConfig
 {
-    boolean isAutoTrackChanges();
-
-    void setAutoTrackChanges(boolean autoTrackChanges);
-
-    String getLoggerName();
-
-    void setLoggerName(String loggerName);
-
     boolean isShowQueries();
 
     void setShowQueries(boolean showQueries);
-
-    boolean isCheckVersion();
-
-    void setCheckVersion(boolean checkVersion);
 
     boolean isEnableStatistics();
 
     void setEnableStatistics(boolean enableStatistics);
 
-    boolean isUpdateChangedColumnsOnly();
+    String getLoggerName();
 
-    void setUpdateChangedColumnsOnly(boolean updateChangedColumnsOnly);
+    void setLoggerName(String loggerName);
+
+    DirtyCheckStrategy getDefaultDirtyCheckStrategy();
+
+    void setDefaultDirtyCheckStrategy(DirtyCheckStrategy strategy);
+
+    VerifyOnWriteStrategy getDefaultVerifyOnWriteStrategy();
+
+    void setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy strategy);
+
+    UpdateStrategy getDefaultUpdateStrategy();
+
+    void setDefaultUpdateStrategy(UpdateStrategy strategy);
+
+    FetchStrategy getDefaultFetchStrategy();
+
+    void setDefaultFetchStrategy(FetchStrategy strategy);
 }

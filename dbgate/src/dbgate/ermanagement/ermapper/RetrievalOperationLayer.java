@@ -123,7 +123,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         EntityInfo entityInfo = CacheManager.getEntityInfo(roEntity);
         while (entityInfo != null)
         {
-            String tableName = entityInfo.getTableName();
+            String tableName = entityInfo.getTableInfo().getTableName();
             if (entityInfo.getEntityType() == roEntity.getClass() || tableName == null) //if i==0 that means it's base class and can use existing result set
             {
                 loadForType(roEntity, entityInfo.getEntityType(), rs, tx);
@@ -192,7 +192,7 @@ public class RetrievalOperationLayer extends BaseOperationLayer
         Method getter = entityInfo.getGetter(relation.getAttributeName());
         Method setter = entityInfo.getSetter(relation.getAttributeName(),new Class[]{getter.getReturnType()});
 
-        if (!lazy && relation.isLazy())
+        if (!lazy && relation.getFetchStrategy() == FetchStrategy.LAZY)
         {
             Class proxyType = getter.getReturnType();
             if (getter.getReturnType().isInterface())
@@ -249,6 +249,11 @@ public class RetrievalOperationLayer extends BaseOperationLayer
                     throw new NoSetterFoundToSetChildObjectListException(message);
                 }
             }
+        }
+
+        if (lazy)
+        {
+            parentRoEntity.getContext().destroyReferenceStore();
         }
     }
 }

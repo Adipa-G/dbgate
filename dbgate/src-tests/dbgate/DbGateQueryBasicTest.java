@@ -62,13 +62,13 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
         createTableFromSql(sql,dbName);
 
         endInit(dbName);
-        connector.getDbGate().getConfig().setAutoTrackChanges(true);
     }
 
     @Before
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
     }
 
     @Test

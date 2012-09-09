@@ -161,7 +161,7 @@ public class DataMigrationLayer
     {
         MetaTable table = new MetaTable();
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
-        table.setName(entityInfo.getTableName());
+        table.setName(entityInfo.getTableInfo().getTableName());
 
         for (IColumn dbColumn : dbColumns)
         {
@@ -179,7 +179,7 @@ public class DataMigrationLayer
 
             MetaForeignKey foreignKey = new MetaForeignKey();
             foreignKey.setName(relation.getRelationshipName());
-            foreignKey.setToTable(relatedEntityInfo.getTableName());
+            foreignKey.setToTable(relatedEntityInfo.getTableInfo().getTableName());
             for (RelationColumnMapping mapping : relation.getTableColumnMappings())
             {
                 String fromCol = entityInfo.findColumnByAttribute(mapping.getFromField()).getColumnName();

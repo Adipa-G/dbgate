@@ -187,7 +187,7 @@ public abstract class BaseOperationLayer
 
     protected static boolean isProxyObject(IEntity entity, IRelation relation) throws DbGateException
     {
-        if (relation.isLazy())
+        if (relation.getFetchStrategy() == FetchStrategy.LAZY)
         {
             EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
             Object value;

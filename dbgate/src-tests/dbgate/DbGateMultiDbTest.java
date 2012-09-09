@@ -54,7 +54,7 @@ public class DbGateMultiDbTest extends AbstractDbGateTestBase
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
-        connector.getDbGate().getConfig().setUpdateChangedColumnsOnly(false);
+        connector.getDbGate().getConfig().setDefaultUpdateStrategy(UpdateStrategy.All_COLUMNS);
     }
 
     @Test

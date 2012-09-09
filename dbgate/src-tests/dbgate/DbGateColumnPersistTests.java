@@ -49,15 +49,15 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
         endInit(dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Before
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
+
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.DO_NOT_VERIFY);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
             ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableInfo(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
@@ -188,7 +188,7 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
             ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableInfo(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
@@ -291,7 +291,7 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
             ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableInfo(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
@@ -418,7 +418,7 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
             ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableInfo(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
@@ -545,7 +545,7 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
             ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableInfo(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
@@ -672,7 +672,7 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
             ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableInfo(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);
@@ -797,7 +797,7 @@ public class DbGateColumnPersistTests extends AbstractDbGateTestBase
             ITransaction tx = connector.createTransaction();
 
             Class type = ColumnTestEntityExts.class;
-            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableNames(type)
+            connector.getDbGate().registerEntity(type,ColumnTestExtFactory.getTableInfo(type)
                     ,ColumnTestExtFactory.getFieldInfo(type));
 
             int id = (Integer)new PrimaryKeyGenerator().getNextSequenceValue(tx);

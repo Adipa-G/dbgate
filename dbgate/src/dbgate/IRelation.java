@@ -36,9 +36,9 @@ public interface IRelation extends IField
 
     void setNonIdentifyingRelation(boolean nonIdentifying);
 
-    boolean isLazy();
+    FetchStrategy getFetchStrategy();
 
-    void setLazy(boolean lazy);
+    void setFetchStrategy(FetchStrategy strategy);
 
     boolean isNullable();
 

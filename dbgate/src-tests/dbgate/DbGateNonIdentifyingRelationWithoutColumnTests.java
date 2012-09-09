@@ -29,16 +29,14 @@ public class DbGateNonIdentifyingRelationWithoutColumnTests extends AbstractDbGa
         registerClassForDbPatching(Currency.class,dbName);
 
         endInit(dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Before
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
-        connector.getDbGate().getConfig().setAutoTrackChanges(true);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.DO_NOT_VERIFY);
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
     }
 
     @Test

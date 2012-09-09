@@ -2,6 +2,7 @@ package dbgate.caches;
 
 import dbgate.IField;
 import dbgate.IReadOnlyClientEntity;
+import dbgate.ITable;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.exceptions.SequenceGeneratorInitializationException;
 import dbgate.exceptions.common.EntityRegistrationException;
@@ -20,7 +21,7 @@ public interface IEntityInfoCache
 
     EntityInfo getEntityInfo(IReadOnlyClientEntity entity);
 
-    void register(Class type,String tableName,Collection<IField> fields);
+    void register(Class type,ITable tableInfo,Collection<IField> fields);
 
     public void register(Class type) throws SequenceGeneratorInitializationException, EntityRegistrationException;
 

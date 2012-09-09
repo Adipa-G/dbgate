@@ -2,14 +2,10 @@ package dbgate;
 
 import dbgate.support.persistant.treetest.*;
 import junit.framework.Assert;
-import org.apache.derby.impl.io.VFMemoryStorageFactory;
 import org.junit.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -51,29 +47,28 @@ public class DbGateTreePersistTests extends AbstractDbGateTestBase
         createTableFromSql(sql,dbName);
 
         endInit(dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        connector.getDbGate().getConfig().setCheckVersion(false);
     }
 
     @Before
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.DO_NOT_VERIFY);
     }
 
     private void registerForExternal()
     {
         Class objType = TreeTestRootEntityExt.class;
-        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableInfo(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2OneEntityExt.class;
-        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableInfo(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
 
         objType = TreeTestOne2ManyEntityExt.class;
-        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableNames(objType)
+        connector.getDbGate().registerEntity(objType, TreeTestExtFactory.getTableInfo(objType)
                 , TreeTestExtFactory.getFieldInfo(objType));
     }
 

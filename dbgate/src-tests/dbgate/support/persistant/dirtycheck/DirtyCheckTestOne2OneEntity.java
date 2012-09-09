@@ -1,4 +1,4 @@
-package dbgate.support.persistant.changetracker;
+package dbgate.support.persistant.dirtycheck;
 
 import dbgate.ColumnInfo;
 import dbgate.ColumnType;
@@ -11,15 +11,15 @@ import dbgate.TableInfo;
  * Date: Sep 26, 2010
  * Time: 12:23:11 PM
  */
-@TableInfo(tableName = "change_tracker_test_one2one")
-public class ChangeTrackerTestOne2OneEntity extends DefaultEntity
+@TableInfo(tableName = "dirty_check_test_one2one")
+public class DirtyCheckTestOne2OneEntity extends DefaultEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
-    public ChangeTrackerTestOne2OneEntity()
+    public DirtyCheckTestOne2OneEntity()
     {
     }
 

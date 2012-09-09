@@ -42,21 +42,21 @@ public class TreeTestExtFactory
         return fields;
     }
 
-    public static String getTableNames(Class type)
+    public static ITable getTableInfo(Class type)
     {
-        String tableName = null;
+        ITable tableInfo = null;
         if (type == TreeTestRootEntityExt.class)
         {
-            tableName =  "tree_test_root";
+            tableInfo =  new DefaultTable("tree_test_root");
         }
         else if (type == TreeTestOne2ManyEntityExt.class)
         {
-            tableName =  "tree_test_one2many";
+            tableInfo =  new DefaultTable("tree_test_one2many");
         }
         else if (type == TreeTestOne2OneEntityExt.class)
         {
-            tableName =  "tree_test_one2one";
+            tableInfo =  new DefaultTable("tree_test_one2one");
         }
-        return tableName;
+        return tableInfo;
     }
 }

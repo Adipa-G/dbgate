@@ -16,7 +16,7 @@ public abstract class AbstractRelation implements IRelation
     private ReferentialRuleType deleteRule;
     private boolean reverseRelationship;
     private boolean nonIdentifyingRelation;
-    private boolean lazy;
+    private FetchStrategy fetchStrategy;
     private boolean nullable;
 
     protected AbstractRelation(String attributeName, String relationshipName
@@ -24,13 +24,13 @@ public abstract class AbstractRelation implements IRelation
     {
         this(attributeName,relationshipName,relatedObjectType
                 ,tableColumnMappings,ReferentialRuleType.RESTRICT
-                ,ReferentialRuleType.CASCADE,false,false,false,false);
+                ,ReferentialRuleType.CASCADE,false,false,FetchStrategy.DEFAULT,false);
     }
 
     protected AbstractRelation(String attributeName, String relationshipName
             , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings
             , ReferentialRuleType updateRule, ReferentialRuleType deleteRule
-            , boolean reverseRelationship, boolean nonIdentifyingRelation, boolean lazy
+            , boolean reverseRelationship, boolean nonIdentifyingRelation, FetchStrategy fetchStrategy
             , boolean nullable)
     {
         this.attributeName = attributeName;
@@ -41,7 +41,7 @@ public abstract class AbstractRelation implements IRelation
         this.deleteRule = deleteRule;
         this.reverseRelationship = reverseRelationship;
         this.nonIdentifyingRelation = nonIdentifyingRelation;
-        this.lazy = lazy;
+        this.fetchStrategy = fetchStrategy;
         this.nullable = nullable;
     }
 
@@ -142,15 +142,15 @@ public abstract class AbstractRelation implements IRelation
     }
 
     @Override
-    public boolean isLazy()
+    public FetchStrategy getFetchStrategy()
     {
-        return lazy;
+        return fetchStrategy;
     }
 
     @Override
-    public void setLazy(boolean lazy)
+    public void setFetchStrategy(FetchStrategy strategy)
     {
-        this.lazy = lazy;
+        this.fetchStrategy = strategy;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package dbgate.ermanagement.ermapper;
 
-import dbgate.IDbGateConfig;
+import dbgate.*;
 
 /**
  * Date: Mar 22, 2011
@@ -8,32 +8,24 @@ import dbgate.IDbGateConfig;
  */
 public class DbGateConfig implements IDbGateConfig
 {
-    private boolean autoTrackChanges;
-    private boolean showQueries;
-    private boolean checkVersion;
-    private boolean enableStatistics;
-    private boolean updateChangedColumnsOnly;
     private String loggerName;
+    private boolean showQueries;
+    private boolean enableStatistics;
+
+    private DirtyCheckStrategy dirtyCheckStrategy;
+    private VerifyOnWriteStrategy verifyOnWriteStrategy;
+    private UpdateStrategy updateStrategy;
+    private FetchStrategy fetchStrategy;
 
     public DbGateConfig()
     {
-        autoTrackChanges = true;
-        showQueries = true;
-        checkVersion = true;
         enableStatistics = false;
-        updateChangedColumnsOnly = false;
-    }
+        showQueries = true;
 
-    @Override
-    public boolean isAutoTrackChanges()
-    {
-        return autoTrackChanges;
-    }
-
-    @Override
-    public void setAutoTrackChanges(boolean autoTrackChanges)
-    {
-        this.autoTrackChanges = autoTrackChanges;
+        dirtyCheckStrategy = DirtyCheckStrategy.AUTOMATIC;
+        verifyOnWriteStrategy = VerifyOnWriteStrategy.VERIFY;
+        updateStrategy = UpdateStrategy.CHANGED_COLUMNS;
+        fetchStrategy = FetchStrategy.EAGER;
     }
 
     @Override
@@ -49,6 +41,18 @@ public class DbGateConfig implements IDbGateConfig
     }
 
     @Override
+    public boolean isEnableStatistics()
+    {
+        return enableStatistics;
+    }
+
+    @Override
+    public void setEnableStatistics(boolean enableStatistics)
+    {
+        this.enableStatistics = enableStatistics;
+    }
+
+    @Override
     public boolean isShowQueries()
     {
         return showQueries;
@@ -61,36 +65,58 @@ public class DbGateConfig implements IDbGateConfig
     }
 
     @Override
-    public boolean isCheckVersion()
+    public DirtyCheckStrategy getDefaultDirtyCheckStrategy()
     {
-        return checkVersion;
+        return dirtyCheckStrategy;
     }
 
     @Override
-    public void setCheckVersion(boolean checkVersion)
+    public void setDefaultDirtyCheckStrategy(DirtyCheckStrategy strategy)
     {
-        this.checkVersion = checkVersion;
+        if (strategy != DirtyCheckStrategy.DEFAULT){
+            dirtyCheckStrategy = strategy;
+        }
     }
 
     @Override
-    public boolean isEnableStatistics()
+    public VerifyOnWriteStrategy getDefaultVerifyOnWriteStrategy()
     {
-        return enableStatistics;
+        return verifyOnWriteStrategy;
     }
 
     @Override
-    public void setEnableStatistics(boolean enableStatistics)
+    public void setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy strategy)
     {
-        this.enableStatistics = enableStatistics;
+        if (strategy != VerifyOnWriteStrategy.DEFAULT){
+            verifyOnWriteStrategy = strategy;
+        }
     }
 
-    public boolean isUpdateChangedColumnsOnly()
+    @Override
+    public UpdateStrategy getDefaultUpdateStrategy()
     {
-        return updateChangedColumnsOnly;
+        return updateStrategy;
     }
 
-    public void setUpdateChangedColumnsOnly(boolean updateChangedColumnsOnly)
+    @Override
+    public void setDefaultUpdateStrategy(UpdateStrategy strategy)
     {
-        this.updateChangedColumnsOnly = updateChangedColumnsOnly;
+        if (strategy != UpdateStrategy.DEFAULT){
+            updateStrategy = strategy;
+        }
+    }
+
+    @Override
+    public FetchStrategy getDefaultFetchStrategy()
+    {
+        return fetchStrategy;
+    }
+
+    @Override
+    public void setDefaultFetchStrategy(FetchStrategy strategy)
+    {
+        if (strategy != FetchStrategy.DEFAULT){
+            this.fetchStrategy = strategy;
+        }
     }
 }

@@ -38,7 +38,7 @@ public class DbGate implements IDbGate
 
     private void initializeDefaults()
     {
-        config.setAutoTrackChanges(true);
+        config.setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
         config.setLoggerName("ER-LAYER");
     }
 
@@ -69,9 +69,9 @@ public class DbGate implements IDbGate
     }
 
     @Override
-    public void registerEntity(Class type, String tableName, Collection<IField> fields)
+    public void registerEntity(Class type, ITable tableInfo, Collection<IField> fields)
     {
-        persistRetrievalLayer.registerEntity(type, tableName, fields);
+        persistRetrievalLayer.registerEntity(type, tableInfo, fields);
     }
 
     public IDbGateConfig getConfig()

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class DbGateLazyTest extends AbstractDbGateTestBase
 {
-    private static final String dbName = "unit-testing-lazy";
+    private static final String dbName = "unit-testing-fetchStrategy";
 
     @BeforeClass
     public static void before()
@@ -46,8 +46,6 @@ public class DbGateLazyTest extends AbstractDbGateTestBase
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
         endInit(dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(true);
     }
 
     @Before
@@ -55,6 +53,9 @@ public class DbGateLazyTest extends AbstractDbGateTestBase
     {
         connector.getDbGate().getStatistics().reset();
         connector.getDbGate().clearCache();
+
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
+
     }
 
     @Test

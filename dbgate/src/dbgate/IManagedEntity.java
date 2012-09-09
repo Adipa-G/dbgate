@@ -10,5 +10,5 @@ import java.util.Map;
  */
 public interface IManagedEntity extends IManagedReadOnlyEntity, IEntity
 {
-    Map<Class,String> getTableNames();
+    Map<Class,ITable> getTableInfo();
 }

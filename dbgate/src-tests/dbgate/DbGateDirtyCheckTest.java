@@ -2,54 +2,50 @@ package dbgate;
 
 import dbgate.context.impl.ChangeTracker;
 import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
-import dbgate.support.persistant.changetracker.ChangeTrackerTestOne2ManyEntity;
-import dbgate.support.persistant.changetracker.ChangeTrackerTestOne2OneEntity;
-import dbgate.support.persistant.changetracker.ChangeTrackerTestRootEntity;
-import org.apache.derby.impl.io.VFMemoryStorageFactory;
+import dbgate.support.persistant.dirtycheck.DirtyCheckTestOne2ManyEntity;
+import dbgate.support.persistant.dirtycheck.DirtyCheckTestOne2OneEntity;
+import dbgate.support.persistant.dirtycheck.DirtyCheckTestRootEntity;
 import org.junit.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.Collection;
-import java.util.logging.Logger;
 
 /**
  * Date: Mar 24, 2011
  * Time: 11:23:36 PM
  */
-public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
+public class DbGateDirtyCheckTest extends AbstractDbGateTestBase
 {
-    private static final String dbName = "unit-testing-change-tracker";
+    private static final String dbName = "unit-testing-dirty-check";
 
     @BeforeClass
     public static void before()
     {
-        testClass = DbGateChangeTrackerTest.class;
+        testClass = DbGateDirtyCheckTest.class;
         beginInit(dbName);
 
-        String sql = "Create table change_tracker_test_root (\n" +
+        String sql = "Create table dirty_check_test_root (\n" +
                 "\tid_col Int NOT NULL,\n" +
                 "\tname Varchar(20) NOT NULL,\n" +
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
 
-        sql = "Create table change_tracker_test_one2many (\n" +
+        sql = "Create table dirty_check_test_one2many (\n" +
                 "\tid_col Int NOT NULL,\n" +
                 "\tindex_no Int NOT NULL,\n" +
                 "\tname Varchar(20) NOT NULL,\n" +
                 " Primary Key (id_col,index_no))";
         createTableFromSql(sql,dbName);
 
-        sql = "Create table change_tracker_test_one2one (\n" +
+        sql = "Create table dirty_check_test_one2one (\n" +
                 "\tid_col Int NOT NULL,\n" +
                 "\tname Varchar(20) NOT NULL,\n" +
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
 
         endInit(dbName);
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
     }
 
     @Before
@@ -63,11 +59,11 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
             entity.persist(tx);
@@ -75,7 +71,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setName("Changed-Name");
             loadedEntity.persist(tx);
@@ -83,7 +79,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity reloadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, reloadedEntity, id);
             tx.close();
 
@@ -101,11 +97,11 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
             entity.persist(tx);
@@ -113,7 +109,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx,loadedEntity,id);
 
             Field fieldsField = ChangeTracker.class.getDeclaredField("fields");
@@ -130,7 +126,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity reloadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, reloadedEntity, id);
             tx.close();
 
@@ -148,11 +144,11 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
             entity.persist(tx);
@@ -160,7 +156,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setName("Changed-Name");
             loadedEntity.persist(tx);
@@ -168,7 +164,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity reloadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, reloadedEntity, id);
             tx.close();
 
@@ -186,21 +182,21 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
+            entity.setOne2OneEntity(new DirtyCheckTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
             entity.persist(tx);
             tx.commit();
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setOne2OneEntity(null);
             loadedEntity.persist(tx);
@@ -225,21 +221,21 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
+            entity.setOne2OneEntity(new DirtyCheckTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
             entity.persist(tx);
             tx.commit();
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, loadedEntity,id);
             loadedEntity.setOne2OneEntity(null);
             loadedEntity.persist(tx);
@@ -264,21 +260,21 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
+            entity.setOne2OneEntity(new DirtyCheckTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
             entity.persist(tx);
             tx.commit();
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx,loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Child-Upd-Name");
             loadedEntity.persist(tx);
@@ -286,7 +282,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity reLoadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity reLoadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, reLoadedEntity, id);
             tx.close();
 
@@ -304,21 +300,21 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
-            entity.setOne2OneEntity(new ChangeTrackerTestOne2OneEntity());
+            entity.setOne2OneEntity(new DirtyCheckTestOne2OneEntity());
             entity.getOne2OneEntity().setName("Child-Org-Name");
             entity.persist(tx);
             tx.commit();
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx,loadedEntity, id);
             loadedEntity.getOne2OneEntity().setName("Child-Upd-Name");
             loadedEntity.persist(tx);
@@ -326,7 +322,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity reLoadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity reLoadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, reLoadedEntity, id);
             tx.close();
 
@@ -344,15 +340,15 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
 
-            ChangeTrackerTestOne2ManyEntity one2ManyEntity = new ChangeTrackerTestOne2ManyEntity();
+            DirtyCheckTestOne2ManyEntity one2ManyEntity = new DirtyCheckTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
@@ -362,7 +358,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx,loadedEntity,id);
             loadedEntity.getOne2ManyEntities().clear();
             loadedEntity.persist(tx);
@@ -387,15 +383,15 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
 
-            ChangeTrackerTestOne2ManyEntity one2ManyEntity = new ChangeTrackerTestOne2ManyEntity();
+            DirtyCheckTestOne2ManyEntity one2ManyEntity = new DirtyCheckTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
@@ -405,7 +401,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx,loadedEntity,id);
             loadedEntity.getOne2ManyEntities().clear();
             loadedEntity.persist(tx);
@@ -430,15 +426,15 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
 
-            ChangeTrackerTestOne2ManyEntity one2ManyEntity = new ChangeTrackerTestOne2ManyEntity();
+            DirtyCheckTestOne2ManyEntity one2ManyEntity = new DirtyCheckTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
@@ -448,18 +444,18 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx,loadedEntity,id);
-            ChangeTrackerTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
+            DirtyCheckTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Child-Upd-Name");
             loadedEntity.persist(tx);
             tx.commit();
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity reloadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, reloadedEntity, id);
-            ChangeTrackerTestOne2ManyEntity reloadedOne2ManyEntity = reloadedEntity.getOne2ManyEntities().iterator().next();
+            DirtyCheckTestOne2ManyEntity reloadedOne2ManyEntity = reloadedEntity.getOne2ManyEntities().iterator().next();
             tx.close();
 
             Assert.assertEquals(reloadedOne2ManyEntity.getName(),loadedOne2ManyEntity.getName());
@@ -476,15 +472,15 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(false);
+            connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
             ITransaction tx = connector.createTransaction();
 
             int id = 45;
-            ChangeTrackerTestRootEntity entity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity entity = new DirtyCheckTestRootEntity();
             entity.setIdCol(id);
             entity.setName("Org-Name");
 
-            ChangeTrackerTestOne2ManyEntity one2ManyEntity = new ChangeTrackerTestOne2ManyEntity();
+            DirtyCheckTestOne2ManyEntity one2ManyEntity = new DirtyCheckTestOne2ManyEntity();
             one2ManyEntity.setIdCol(id);
             one2ManyEntity.setIndexNo(1);
             one2ManyEntity.setName("Child-Org-Name");
@@ -494,18 +490,18 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity loadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity loadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx,loadedEntity,id);
-            ChangeTrackerTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
+            DirtyCheckTestOne2ManyEntity loadedOne2ManyEntity = loadedEntity.getOne2ManyEntities().iterator().next();
             loadedOne2ManyEntity.setName("Child-Upd-Name");
             loadedEntity.persist(tx);
             tx.commit();
             tx.close();
 
             tx = connector.createTransaction();
-            ChangeTrackerTestRootEntity reloadedEntity = new ChangeTrackerTestRootEntity();
+            DirtyCheckTestRootEntity reloadedEntity = new DirtyCheckTestRootEntity();
             loadEntityWithId(tx, reloadedEntity, id);
-            ChangeTrackerTestOne2ManyEntity reloadedOne2ManyEntity = reloadedEntity.getOne2ManyEntities().iterator().next();
+            DirtyCheckTestOne2ManyEntity reloadedOne2ManyEntity = reloadedEntity.getOne2ManyEntities().iterator().next();
             tx.close();
 
             Assert.assertEquals(reloadedOne2ManyEntity.getName(),one2ManyEntity.getName());
@@ -517,11 +513,11 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
         }
     }
 
-    private boolean loadEntityWithId(ITransaction tx, ChangeTrackerTestRootEntity loadEntity,int id) throws Exception
+    private boolean loadEntityWithId(ITransaction tx, DirtyCheckTestRootEntity loadEntity,int id) throws Exception
     {
         boolean loaded = false;
 
-        PreparedStatement ps = tx.getConnection().prepareStatement("select * from change_tracker_test_root where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from dirty_check_test_root where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -539,7 +535,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         boolean exists = false;
 
-        PreparedStatement ps = tx.getConnection().prepareStatement("select * from change_tracker_test_one2one where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from dirty_check_test_one2one where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
@@ -556,7 +552,7 @@ public class DbGateChangeTrackerTest extends AbstractDbGateTestBase
     {
         boolean exists = false;
 
-        PreparedStatement ps = tx.getConnection().prepareStatement("select * from change_tracker_test_one2many where id_col = ?");
+        PreparedStatement ps = tx.getConnection().prepareStatement("select * from dirty_check_test_one2many where id_col = ?");
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next())
