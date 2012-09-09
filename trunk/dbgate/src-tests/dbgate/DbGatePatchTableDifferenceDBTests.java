@@ -37,8 +37,8 @@ public class DbGatePatchTableDifferenceDBTests extends AbstractDbGateTestBase
         beginInit(dbName);
         endInit(dbName);
 
-        connector.getDbGate().getConfig().setAutoTrackChanges(false);
-        connector.getDbGate().getConfig().setCheckVersion(false);
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.MANUAL);
+        connector.getDbGate().getConfig().setDefaultVerifyOnWriteStrategy(VerifyOnWriteStrategy.DO_NOT_VERIFY);
     }
 
     @Test

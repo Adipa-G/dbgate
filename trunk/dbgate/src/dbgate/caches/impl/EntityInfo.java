@@ -20,7 +20,7 @@ public class EntityInfo
 {
     private boolean relationColumnsPopulated;
     private Class entityType;
-    private String tableName;
+    private ITable tableInfo;
     private EntityInfo superEntityInfo;
     private Collection<EntityInfo> subEntityInfo;
 
@@ -47,14 +47,14 @@ public class EntityInfo
         return entityType;
     }
 
-    public String getTableName()
+    public ITable getTableInfo()
     {
-        return tableName;
+        return tableInfo;
     }
 
-    public void setTableName(String tableName)
+    public void setTableInfo(ITable tableInfo)
     {
-        this.tableName = tableName;
+        this.tableInfo = tableInfo;
     }
 
     public EntityInfo getSuperEntityInfo()
@@ -226,12 +226,12 @@ public class EntityInfo
         if (query == null)
         {
             populateRelationColumns();
-            query = dbLayer.getDataManipulate().createLoadQuery(tableName,columns);
+            query = dbLayer.getDataManipulate().createLoadQuery(tableInfo.getTableName(),columns);
             setQuery(queryId,query);
         }
         if (query == null)
         {
-            throw new QueryBuildingException(String.format("Load Query building failed for table %s class %s",tableName,entityType.getCanonicalName()));
+            throw new QueryBuildingException(String.format("Load Query building failed for table %s class %s",tableInfo,entityType.getCanonicalName()));
         }
         return query;
     }
@@ -243,12 +243,12 @@ public class EntityInfo
         if (query == null)
         {
             populateRelationColumns();
-            query = dbLayer.getDataManipulate().createInsertQuery(tableName,columns);
+            query = dbLayer.getDataManipulate().createInsertQuery(tableInfo.getTableName(),columns);
             setQuery(queryId,query);
         }
         if (query == null)
         {
-            throw new QueryBuildingException(String.format("Insert Query building failed for table %s class %s",tableName,entityType.getCanonicalName()));
+            throw new QueryBuildingException(String.format("Insert Query building failed for table %s class %s",tableInfo,entityType.getCanonicalName()));
         }
         return query;
     }
@@ -260,12 +260,12 @@ public class EntityInfo
         if (query == null)
         {
             populateRelationColumns();
-            query = dbLayer.getDataManipulate().createUpdateQuery(tableName, columns);
+            query = dbLayer.getDataManipulate().createUpdateQuery(tableInfo.getTableName(), columns);
             setQuery(queryId,query);
         }
         if (query == null)
         {
-            throw new QueryBuildingException(String.format("Update Query building failed for table %s class %s",tableName,entityType.getCanonicalName()));
+            throw new QueryBuildingException(String.format("Update Query building failed for table %s class %s",tableInfo,entityType.getCanonicalName()));
         }
         return query;
     }
@@ -277,12 +277,12 @@ public class EntityInfo
         if (query == null)
         {
             populateRelationColumns();
-            query = dbLayer.getDataManipulate().createDeleteQuery(tableName, columns);
+            query = dbLayer.getDataManipulate().createDeleteQuery(tableInfo.getTableName(), columns);
             setQuery(queryId,query);
         }
         if (query == null)
         {
-            throw new QueryBuildingException(String.format("Delete Query building failed for table %s class %s",tableName,entityType.getCanonicalName()));
+            throw new QueryBuildingException(String.format("Delete Query building failed for table %s class %s",tableInfo,entityType.getCanonicalName()));
         }
         return query;
     }
@@ -299,7 +299,7 @@ public class EntityInfo
         }
         if (query == null)
         {
-            throw new QueryBuildingException(String.format("Child loading Query building failed for table %s class %s child object type %s",tableName,entityType.getCanonicalName(),relation.getRelatedObjectType().getCanonicalName()));
+            throw new QueryBuildingException(String.format("Child loading Query building failed for table %s class %s child object type %s",tableInfo,entityType.getCanonicalName(),relation.getRelatedObjectType().getCanonicalName()));
         }
         return query;
     }

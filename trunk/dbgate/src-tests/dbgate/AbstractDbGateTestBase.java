@@ -133,7 +133,7 @@ public class AbstractDbGateTestBase
         EntityInfo entityInfo = CacheManager.getEntityInfo(entityType);
         while (entityInfo != null)
         {
-            addTableName(entityInfo.getTableName(),dbName);
+            addTableName(entityInfo.getTableInfo().getTableName(),dbName);
             entityInfo = entityInfo.getSuperEntityInfo();
         }
     }
@@ -186,7 +186,7 @@ public class AbstractDbGateTestBase
     protected static void finalizeDb(String dbName)
     {
         connector = null;
-        Logger.getLogger(DbGateChangeTrackerTest.class.getName()).info("Stopping in-memory database.");
+        Logger.getLogger(DbGateDirtyCheckTest.class.getName()).info("Stopping in-memory database.");
         try
         {
             DriverManager.getConnection(String.format("jdbc:derby:memory:%s;shutdown=true",dbName)).close();

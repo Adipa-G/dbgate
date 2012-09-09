@@ -1,9 +1,6 @@
 package dbgate.support.persistant.inheritancetest;
 
-import dbgate.AbstractManagedEntity;
-import dbgate.ColumnType;
-import dbgate.DefaultColumn;
-import dbgate.IField;
+import dbgate.*;
 import dbgate.support.persistant.treetest.ITreeTestOne2OneEntity;
 
 import java.util.ArrayList;
@@ -42,10 +39,10 @@ public class InheritanceTestSuperEntityFields extends AbstractManagedEntity impl
         this.name = name;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = new HashMap<Class, String>();
-        map.put(InheritanceTestSuperEntityFields.class,"inheritance_test_super");
+        Map<Class,ITable> map = new HashMap<>();
+        map.put(InheritanceTestSuperEntityFields.class, new DefaultTable("inheritance_test_super"));
         return map;
     }
 

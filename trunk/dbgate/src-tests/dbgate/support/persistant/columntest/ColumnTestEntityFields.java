@@ -230,10 +230,10 @@ public class ColumnTestEntityFields extends AbstractManagedEntity implements ICo
         this.varcharNull = varcharNull;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = new HashMap<Class, String>();
-        map.put(this.getClass(),"column_test_entity");
+        Map<Class,ITable> map = new HashMap<>();
+        map.put(this.getClass(),new DefaultTable("column_test_entity"));
         return map;
     }
 

@@ -66,7 +66,8 @@ public class PersistOperationLayer extends BaseOperationLayer
 
             entity.setStatus(EntityStatus.UNMODIFIED);
             entity.getContext().destroyReferenceStore();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Logger.getLogger(config.getLoggerName()).log(Level.SEVERE, e.getMessage(), e);
             throw new PersistException(e.getMessage(), e);
@@ -75,18 +76,22 @@ public class PersistOperationLayer extends BaseOperationLayer
 
     private void trackAndCommitChanges(IEntity entity, ITransaction tx) throws DbGateException
     {
+        EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
         IEntityContext entityContext = entity.getContext();
         Collection<ITypeFieldValueList> originalChildren;
 
-        if (entityContext != null)
+        if (entityInfo.getTableInfo().getDirtyCheckStrategy() == DirtyCheckStrategy.AUTOMATIC)
         {
-            if (config.isAutoTrackChanges())
+            if (checkForModification(entity, tx, entityContext))
             {
-                if (checkForModification(entity, tx, entityContext))
-                {
-                    MiscUtils.modify(entity);
-                }
+                MiscUtils.modify(entity);
             }
+        }
+
+        if (entityContext != null
+                && entityContext.getChangeTracker() != null
+                && entityContext.getChangeTracker().isValid())
+        {
             originalChildren = entityContext.getChangeTracker().getChildEntityKeys();
         }
         else
@@ -123,7 +128,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         }
         else if (entity.getStatus() == EntityStatus.MODIFIED)
         {
-            if (config.isCheckVersion())
+            if (entityInfo.getTableInfo().getVerifyOnWriteStrategy() == VerifyOnWriteStrategy.VERIFY)
             {
                 if (!versionValidated(entity, type, tx))
                 {
@@ -289,7 +294,7 @@ public class PersistOperationLayer extends BaseOperationLayer
         String query;
         StringBuilder logSb = new StringBuilder();
 
-        if (config.isUpdateChangedColumnsOnly())
+        if (entityInfo.getTableInfo().getUpdateStrategy() == UpdateStrategy.CHANGED_COLUMNS)
         {
             values = getModifiedFieldValues(entity, type);
             if (values.size() == 0)
@@ -305,7 +310,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             {
                 keysAndModified.add(fieldValue.getDbColumn());
             }
-            query = dbLayer.getDataManipulate().createUpdateQuery(entityInfo.getTableName(), keysAndModified);
+            query = dbLayer.getDataManipulate().createUpdateQuery(entityInfo.getTableInfo().getTableName(), keysAndModified);
         } else
         {
             query = entityInfo.getUpdateQuery(dbLayer);
@@ -698,7 +703,7 @@ public class PersistOperationLayer extends BaseOperationLayer
             }
         }
 
-        if (config.isUpdateChangedColumnsOnly())
+        if (entityInfo.getTableInfo().getUpdateStrategy() == UpdateStrategy.CHANGED_COLUMNS)
         {
             Collection<EntityFieldValue> modified = getModifiedFieldValues(entity, type);
             typeColumns = new ArrayList<IColumn>();

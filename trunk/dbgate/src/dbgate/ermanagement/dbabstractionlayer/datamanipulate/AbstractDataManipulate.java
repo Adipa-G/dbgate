@@ -211,7 +211,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ");
-        sb.append(entityInfo.getTableName());
+        sb.append(entityInfo.getTableInfo().getTableName());
         sb.append(" WHERE ");
 
         for (int i = 0; i < relation.getTableColumnMappings().length; i++)

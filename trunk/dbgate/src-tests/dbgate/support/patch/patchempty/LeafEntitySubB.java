@@ -1,8 +1,6 @@
 package dbgate.support.patch.patchempty;
 
-import dbgate.ColumnType;
-import dbgate.DefaultColumn;
-import dbgate.IField;
+import dbgate.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,10 +28,10 @@ public class LeafEntitySubB extends LeafEntity
         this.someTextB = someTextB;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = super.getTableNames();
-        map.put(LeafEntitySubB.class,"leaf_entity_b");
+        Map<Class,ITable> map = super.getTableInfo();
+        map.put(LeafEntitySubB.class,new DefaultTable("leaf_entity_b"));
         return map;
     }
 

@@ -60,10 +60,10 @@ public class TreeTestRootEntityFields extends AbstractManagedEntity implements I
         this.one2OneEntity = one2OneEntity;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = new HashMap<Class, String>();
-        map.put(this.getClass(),"tree_test_root");
+        Map<Class,ITable> map = new HashMap<>();
+        map.put(this.getClass(),new DefaultTable("tree_test_root"));
         return map;
     }
 

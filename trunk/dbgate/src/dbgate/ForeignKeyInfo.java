@@ -22,5 +22,5 @@ public @interface ForeignKeyInfo
     boolean nullable() default false;
     boolean reverseRelation() default false;
     boolean nonIdentifyingRelation() default false;
-    boolean lazy() default false;
+    FetchStrategy fetchStrategy() default FetchStrategy.DEFAULT;
 }

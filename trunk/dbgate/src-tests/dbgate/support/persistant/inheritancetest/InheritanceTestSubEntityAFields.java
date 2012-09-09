@@ -1,8 +1,6 @@
 package dbgate.support.persistant.inheritancetest;
 
-import dbgate.ColumnType;
-import dbgate.DefaultColumn;
-import dbgate.IField;
+import dbgate.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,10 +26,10 @@ public class InheritanceTestSubEntityAFields extends InheritanceTestSuperEntityF
         this.nameA = nameA;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = super.getTableNames();
-        map.put(InheritanceTestSubEntityAFields.class,"inheritance_test_suba");
+        Map<Class,ITable> map = super.getTableInfo();
+        map.put(InheritanceTestSubEntityAFields.class,new DefaultTable("inheritance_test_suba"));
         return map;
     }
 

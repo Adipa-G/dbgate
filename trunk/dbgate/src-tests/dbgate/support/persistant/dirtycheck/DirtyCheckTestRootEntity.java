@@ -1,4 +1,4 @@
-package dbgate.support.persistant.changetracker;
+package dbgate.support.persistant.dirtycheck;
 
 import dbgate.*;
 
@@ -11,8 +11,8 @@ import java.util.Collection;
  * Date: Sep 26, 2010
  * Time: 11:47:59 AM
  */
-@TableInfo(tableName = "change_tracker_test_root")
-public class ChangeTrackerTestRootEntity extends DefaultEntity
+@TableInfo(tableName = "dirty_check_test_root")
+public class DirtyCheckTestRootEntity extends DefaultEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int idCol;
@@ -20,22 +20,22 @@ public class ChangeTrackerTestRootEntity extends DefaultEntity
     private String name;
 
     @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = ChangeTrackerTestOne2ManyEntity.class
+            ,relatedObjectType = DirtyCheckTestOne2ManyEntity.class
             , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
-    private Collection<ChangeTrackerTestOne2ManyEntity> one2ManyEntities;
+    private Collection<DirtyCheckTestOne2ManyEntity> one2ManyEntities;
 
     @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = ChangeTrackerTestOne2OneEntity.class
+            ,relatedObjectType = DirtyCheckTestOne2OneEntity.class
             , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
             ,updateRule = ReferentialRuleType.RESTRICT
             ,deleteRule = ReferentialRuleType.CASCADE)
-    private ChangeTrackerTestOne2OneEntity one2OneEntity;
+    private DirtyCheckTestOne2OneEntity one2OneEntity;
 
-    public ChangeTrackerTestRootEntity()
+    public DirtyCheckTestRootEntity()
     {
-        one2ManyEntities = new ArrayList<ChangeTrackerTestOne2ManyEntity>();
+        one2ManyEntities = new ArrayList<DirtyCheckTestOne2ManyEntity>();
     }
 
     public int getIdCol()
@@ -58,22 +58,22 @@ public class ChangeTrackerTestRootEntity extends DefaultEntity
         this.name = name;
     }
 
-    public Collection<ChangeTrackerTestOne2ManyEntity> getOne2ManyEntities()
+    public Collection<DirtyCheckTestOne2ManyEntity> getOne2ManyEntities()
     {
         return one2ManyEntities;
     }
 
-    public void setOne2ManyEntities(Collection<ChangeTrackerTestOne2ManyEntity> one2ManyEntities)
+    public void setOne2ManyEntities(Collection<DirtyCheckTestOne2ManyEntity> one2ManyEntities)
     {
         this.one2ManyEntities = one2ManyEntities;
     }
 
-    public ChangeTrackerTestOne2OneEntity getOne2OneEntity()
+    public DirtyCheckTestOne2OneEntity getOne2OneEntity()
     {
         return one2OneEntity;
     }
 
-    public void setOne2OneEntity(ChangeTrackerTestOne2OneEntity one2OneEntity)
+    public void setOne2OneEntity(DirtyCheckTestOne2OneEntity one2OneEntity)
     {
         this.one2OneEntity = one2OneEntity;
     }

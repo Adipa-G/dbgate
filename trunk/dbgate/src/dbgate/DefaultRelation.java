@@ -18,10 +18,10 @@ public class DefaultRelation extends AbstractRelation
     public DefaultRelation(String attributeName, String relationshipName
             , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings
             , ReferentialRuleType updateRule, ReferentialRuleType deleteRule
-            , boolean reverseRelationship, boolean nonIdentifyingRelation, boolean lazy,boolean nullable)
+            , boolean reverseRelationship, boolean nonIdentifyingRelation, FetchStrategy strategy,boolean nullable)
     {
         super(attributeName, relationshipName, relatedObjectType
                 , tableColumnMappings, updateRule, deleteRule
-                , reverseRelationship,nonIdentifyingRelation,lazy,nullable);
+                , reverseRelationship,nonIdentifyingRelation,strategy,nullable);
     }
 }

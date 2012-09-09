@@ -67,14 +67,14 @@ public class EntityInfoCache implements IEntityInfoCache
     }
 
     @Override
-    public void register(Class subType, String tableName, Collection<IField> fields)
+    public void register(Class subType, ITable tableInfo, Collection<IField> fields)
     {
         Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{IReadOnlyEntity.class});
         Class immediateSuper = typeList.length > 1 ? typeList[1] : null;
 
         EntityInfo subEntityInfo = new EntityInfo(subType);
         subEntityInfo.setFields(fields);
-        subEntityInfo.setTableName(tableName);
+        subEntityInfo.setTableInfo(tableInfo);
 
         if (immediateSuper != null
                 && cache.containsKey(immediateSuper))
@@ -131,14 +131,14 @@ public class EntityInfoCache implements IEntityInfoCache
                 continue;
             }
 
-            String tableName = getTableName(regType, subType);
+            ITable tableInfo = getTableInfo(regType, subType);
             Collection<IField> fields = getAllFields(regType, subType);
 
-            if (tableName != null || fields.size() > 0)
+            if (tableInfo != null || fields.size() > 0)
             {
                 EntityInfo entityInfo = new EntityInfo(regType);
                 entityInfo.setFields(fields);
-                entityInfo.setTableName(tableName);
+                entityInfo.setTableInfo(tableInfo);
                 if (subEntity != null)
                 {
                     subEntity.setSuperEntityInfo(entityInfo);
@@ -151,33 +151,48 @@ public class EntityInfoCache implements IEntityInfoCache
         return entityInfoMap;
     }
 
-    private static String getTableName(Class regType,Class subType) throws EntityRegistrationException
+    private ITable getTableInfo(Class regType, Class subType) throws EntityRegistrationException
     {
-        String tableName = getTableNameIfManagedClass(regType,subType);
-        if (tableName == null)
+        ITable tableInfo = getTableInfoIfManagedClass(regType, subType);
+        if (tableInfo == null)
         {
             Annotation[] annotations = regType.getAnnotations();
             for (Annotation annotation : annotations)
             {
                 if (annotation instanceof TableInfo)
                 {
-                    TableInfo tableInfo = (TableInfo) annotation;
-                    tableName = tableInfo.tableName();
+                    TableInfo annotatedTableInfo = (TableInfo) annotation;
+                    tableInfo = new DefaultTable(annotatedTableInfo.tableName()
+                            ,annotatedTableInfo.updateStrategy()
+                            ,annotatedTableInfo.verifyOnWriteStrategy()
+                            ,annotatedTableInfo.dirtyCheckStrategy());
                     break;
                 }
             }
         }
-        return tableName;
+
+        if (tableInfo != null)
+        {
+            if (tableInfo.getDirtyCheckStrategy() == DirtyCheckStrategy.DEFAULT)
+                tableInfo.setDirtyCheckStrategy(config.getDefaultDirtyCheckStrategy());
+
+            if (tableInfo.getUpdateStrategy() == UpdateStrategy.DEFAULT)
+                tableInfo.setUpdateStrategy(config.getDefaultUpdateStrategy());
+
+            if (tableInfo.getVerifyOnWriteStrategy() == VerifyOnWriteStrategy.DEFAULT)
+                tableInfo.setVerifyOnWriteStrategy(config.getDefaultVerifyOnWriteStrategy());
+        }
+        return tableInfo;
     }
 
-    private static String getTableNameIfManagedClass(Class regType,Class subType) throws EntityRegistrationException
+    private static ITable getTableInfoIfManagedClass(Class regType, Class subType) throws EntityRegistrationException
     {
         if (ReflectionUtils.isImplementInterface(regType, IManagedEntity.class))
         {
             try
             {
                 IManagedEntity managedEntity = (IManagedEntity)subType.newInstance();
-                return managedEntity.getTableNames().get(regType);
+                return managedEntity.getTableInfo().get(regType);
             }
             catch (Exception e)
             {
@@ -187,7 +202,7 @@ public class EntityInfoCache implements IEntityInfoCache
         return null;
     }
 
-    private static Collection<IField> getAllFields(Class regType,Class subType) throws EntityRegistrationException,SequenceGeneratorInitializationException
+    private Collection<IField> getAllFields(Class regType,Class subType) throws EntityRegistrationException,SequenceGeneratorInitializationException
     {
         Collection<IField> fields = getFieldsIfManagedClass(regType,subType);
         Class[] superTypes = ReflectionUtils.getSuperTypesWithInterfacesImplemented(regType,new Class[]{IReadOnlyEntity.class});
@@ -196,6 +211,17 @@ public class EntityInfoCache implements IEntityInfoCache
         {
             Class superType = superTypes[i];
             fields.addAll(getAllFields(superType,i > 0));
+        }
+
+        for (IField field : fields)
+        {
+            if (field instanceof IRelation)
+            {
+                IRelation relation = (IRelation) field;
+
+                if (relation.getFetchStrategy() == FetchStrategy.DEFAULT)
+                    relation.setFetchStrategy(config.getDefaultFetchStrategy());
+            }
         }
 
         return fields;
@@ -249,7 +275,7 @@ public class EntityInfoCache implements IEntityInfoCache
         return fields;
     }
 
-    private static Collection<IField> getAllFields(Class type,boolean superClass) throws SequenceGeneratorInitializationException
+    private Collection<IField> getAllFields(Class type,boolean superClass) throws SequenceGeneratorInitializationException
     {
         Collection<IField> fields = new ArrayList<IField>();
 
@@ -332,7 +358,7 @@ public class EntityInfoCache implements IEntityInfoCache
         return column;
     }
 
-    private static IRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
+    private IRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
     {
         RelationColumnMapping[] objectMappings = new RelationColumnMapping[foreignKeyInfo.fieldMappings().length];
         ForeignKeyFieldMapping[] annotationMappings = foreignKeyInfo.fieldMappings();
@@ -345,7 +371,7 @@ public class EntityInfoCache implements IEntityInfoCache
         IRelation relation = new DefaultRelation(dbClassField.getName(),foreignKeyInfo.name()
                 ,foreignKeyInfo.relatedObjectType(),objectMappings,foreignKeyInfo.updateRule()
                 ,foreignKeyInfo.deleteRule(),foreignKeyInfo.reverseRelation()
-                ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.lazy(),foreignKeyInfo.nullable());
+                ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.fetchStrategy(),foreignKeyInfo.nullable());
 
         return relation;
     }

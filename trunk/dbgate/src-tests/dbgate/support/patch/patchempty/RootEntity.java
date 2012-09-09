@@ -253,10 +253,10 @@ public class RootEntity extends AbstractManagedEntity
         this.leafEntities = leafEntities;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = new HashMap<Class, String>();
-        map.put(this.getClass(),"root_entity");
+        Map<Class,ITable> map = new HashMap<>();
+        map.put(this.getClass(),new DefaultTable("root_entity"));
         return map;
     }
 

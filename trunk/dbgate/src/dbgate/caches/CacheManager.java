@@ -3,6 +3,7 @@ package dbgate.caches;
 import dbgate.IDbGateConfig;
 import dbgate.IField;
 import dbgate.IReadOnlyClientEntity;
+import dbgate.ITable;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.caches.impl.EntityInfoCache;
 import dbgate.exceptions.SequenceGeneratorInitializationException;
@@ -38,9 +39,9 @@ public class CacheManager
         entityInfoCache.register(type);
     }
 
-    public static void register(Class type,String tableName,Collection<IField> fields)
+    public static void register(Class type,ITable tableInfo,Collection<IField> fields)
     {
-        entityInfoCache.register(type,tableName,fields);
+        entityInfoCache.register(type,tableInfo,fields);
     }
 
     public static void clear()

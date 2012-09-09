@@ -49,7 +49,7 @@ public class AbstractTypeFrom implements IAbstractFrom
     public String createSql(IDBLayer dbLayer, QueryBuildInfo buildInfo) throws ExpressionParsingException
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(type);
-        String sql = entityInfo.getTableName();
+        String sql = entityInfo.getTableInfo().getTableName();
 
         if (alias != null && alias.length() > 0)
         {

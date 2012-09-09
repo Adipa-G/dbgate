@@ -51,10 +51,10 @@ public class LeafEntity  extends AbstractManagedEntity
         this.someText = someText;
     }
 
-    public Map<Class,String> getTableNames()
+    public Map<Class,ITable> getTableInfo()
     {
-        Map<Class,String> map = new HashMap<Class, String>();
-        map.put(LeafEntity.class,"leaf_entity");
+        Map<Class,ITable> map = new HashMap<>();
+        map.put(LeafEntity.class,new DefaultTable("leaf_entity"));
         return map;
     }
 

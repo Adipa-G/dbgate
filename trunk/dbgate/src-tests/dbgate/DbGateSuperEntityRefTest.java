@@ -69,14 +69,13 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
         endInit(dbName);
-
-        connector.getDbGate().getConfig().setAutoTrackChanges(true);
     }
 
     @Before
     public void beforeEach()
     {
         connector.getDbGate().clearCache();
+        connector.getDbGate().getConfig().setDefaultDirtyCheckStrategy(DirtyCheckStrategy.AUTOMATIC);
     }
 
     @Test
@@ -84,7 +83,6 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
             ITransaction tx = connector.createTransaction();
 
             int id = 35;
@@ -113,7 +111,6 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
             ITransaction tx = connector.createTransaction();
 
             int id = 35;
@@ -142,7 +139,6 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
             ITransaction tx = connector.createTransaction();
 
             int id = 35;
@@ -171,7 +167,6 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
             ITransaction tx = connector.createTransaction();
 
             int id = 35;
@@ -200,7 +195,6 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
             ITransaction tx = connector.createTransaction();
 
             int id = 35;
@@ -229,7 +223,6 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
     {
         try
         {
-            connector.getDbGate().getConfig().setAutoTrackChanges(true);
             ITransaction tx = connector.createTransaction();
 
             int id = 35;
@@ -294,8 +287,8 @@ public class DbGateSuperEntityRefTest extends AbstractDbGateTestBase
         }
         else
         {
-            Assert.assertEquals(one2OneEntity.getClass(),loadedOne2OneEntity.getClass());
             Assert.assertEquals(one2OneEntity.getName(),loadedOne2OneEntity.getName());
+            loadedOne2OneEntity = loadedRootEntity.getOne2OneEntity(); //in case of lazy loading
             if (one2OneEntity instanceof SuperEntityRefOne2OneEntityA)
             {
                 SuperEntityRefOne2OneEntityA one2OneEntityA = (SuperEntityRefOne2OneEntityA) one2OneEntity;

@@ -1,8 +1,6 @@
 package dbgate.support.persistant.inheritancetest;
 
-import dbgate.ColumnType;
-import dbgate.DefaultColumn;
-import dbgate.IField;
+import dbgate.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,21 +42,21 @@ public class InheritanceTestExtFactory
         return fields;
     }
 
-    public static String getTableNames(Class type)
+    public static ITable getTableInfo(Class type)
     {
-        String tableName = null;
+        ITable tableInfo = null;
         if (type == InheritanceTestSuperEntityExt.class)
         {
-            tableName =  "inheritance_test_super";
+            tableInfo =  new DefaultTable("inheritance_test_super");
         }
         else if (type == InheritanceTestSubEntityAExt.class)
         {
-            tableName =  "inheritance_test_suba";
+            tableInfo =  new DefaultTable("inheritance_test_suba");
         }
         else if (type == InheritanceTestSubEntityBExt.class)
         {
-            tableName =  "inheritance_test_subb";
+            tableInfo =  new DefaultTable("inheritance_test_subb");
         }
-        return tableName;
+        return tableInfo;
     }
 }
