@@ -23,13 +23,13 @@ public class One2ManyParentEntity extends DefaultEntity
                     ,relatedObjectType = One2ManyChildEntityA.class
                     ,updateRule = ReferentialRuleType.RESTRICT
                     ,deleteRule = ReferentialRuleType.CASCADE
-                    ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "id",toField = "parentId")})
+                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
         ,
         @ForeignKeyInfo(name = "parent2childB"
                     ,relatedObjectType = One2ManyChildEntityB.class
                     ,updateRule = ReferentialRuleType.RESTRICT
                     ,deleteRule = ReferentialRuleType.CASCADE
-                    ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "id",toField = "parentId")})
+                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
     })
     private Collection<One2ManyChildEntity> childEntities;
 
