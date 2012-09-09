@@ -18,13 +18,13 @@ public class A extends DefaultEntity
                     ,relatedObjectType = B.class
                     ,updateRule = ReferentialRuleType.RESTRICT
                     ,deleteRule = ReferentialRuleType.CASCADE
-                    ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "id",toField = "parentId")})
+                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
         ,
         @ForeignKeyInfo(name = "a2c"
                     ,relatedObjectType = C.class
                     ,updateRule = ReferentialRuleType.RESTRICT
                     ,deleteRule = ReferentialRuleType.CASCADE
-                    ,columnMappings =  {@ForeignKeyColumnMapping(fromField = "id",toField = "parentId")})
+                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
     })
     private Collection<Object> childEntities;
 
@@ -54,6 +54,9 @@ public class C extends DefaultEntity
 This one defines the relationship with table to the entity class
  ===properties==
   * tableName -> name of the table this class is related with
+  * updateStrategy -> sets if all columns or only changed columns would be updated
+  * verifyOnWriteStrategy -> sets if it needs to verify current values in db in order to fail if another transaction changed the values already
+  * dirtyCheckStrategy -> determines if it automatically find dirty fields or to use manual mode (change the status field of entity manually)
 
 ==2. {{{@ColumnInfo}}}==
 Links a property of a class with the database table column
@@ -76,7 +79,7 @@ Defines a list of foreign keys to a single field.
 Defines a relationship between two tables
  ===properties===
   * name -> name of the foreign key
-  * columnMappings -> which fields of the entities are related (this use list of {{{ForeignKeyColumnMapping}}}, where each defines relationship between two fields of two classes, fromField -> defines the related field of the parent entity, toField -> defines the related field of child entity )
+  * fieldMappings -> which fields of the entities are related (this use list of {{{ForeignKeyFieldMapping}}}, where each defines relationship between two fields of two classes, fromField -> defines the related field of the parent entity, toField -> defines the related field of child entity )
   * updateRule -> this is used to generate database metadata, and used this as the update rule when key of the parent changed (default value is {{{ReferentialRuleType.RESTRICT}}})
   * deleteRule -> defines the behaviour of the database when the parent object deleted (default value is {{{ReferentialRuleType.CASCADE}}})
   * relatedObjectType -> defines the type of the related entity;
