@@ -320,66 +320,71 @@ public class EntityInfo
     public Method getGetter(String attributeName) throws MethodNotFoundException
     {
         String cacheKey = createCacheKey(true,attributeName);
-        if (methodMap.containsKey(cacheKey))
-        {
-            return methodMap.get(cacheKey);
-        }
+        Method method = getFromMapIfExists(cacheKey);
 
-        String getterName = "get" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-        try
+        if (method == null)
         {
-            return getGetterByNameAndRegisterInCache(cacheKey,getterName);
+            String getterName = "get" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
+            try
+            {
+                method = getGetterByNameAndRegisterInCache(cacheKey,getterName);
+            }
+            catch (MethodNotFoundException e)
+            {
+                getterName = "is" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
+                method = getGetterByNameAndRegisterInCache(cacheKey,getterName);
+            }
         }
-        catch (MethodNotFoundException e)
-        {
-            getterName = "is" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-            return getGetterByNameAndRegisterInCache(cacheKey,getterName);
-        }
+        return method;
     }
 
     private Method getGetterByNameAndRegisterInCache(String cacheKey,String getterName) throws MethodNotFoundException
     {
-        Method method;
-        try
-        {
-            method = entityType.getMethod(getterName);
-        }
-        catch (Exception ex)
-        {
-            String message = String.format("Could not find method %s of class %s",getterName,entityType.getCanonicalName());
-            throw new MethodNotFoundException(message,ex);
-        }
-        synchronized (methodMap)
-        {
-            methodMap.put(cacheKey,method);
-        }
+        Method method = getMethod(getterName,new Class[]{});
+        addToMap(cacheKey, method);
         return method;
     }
 
     public Method getSetter(String attributeName, Class[] params) throws MethodNotFoundException
     {
         String cacheKey = createCacheKey(false,attributeName);
-        if (methodMap.containsKey(cacheKey))
+        Method method = getFromMapIfExists(cacheKey);
+        if (method == null)
         {
-            return methodMap.get(cacheKey);
+            String setterName = "set" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
+            method = getMethod(setterName,params);
+            addToMap(cacheKey, method);
         }
+        return method;
+    }
 
-        String setterName = "set" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-        Method method;
-        try
-        {
-            method = entityType.getMethod(setterName,params);
-        }
-        catch (Exception ex)
-        {
-            String message = String.format("Could not find method %s of class %s",setterName,entityType.getCanonicalName());
-            throw new MethodNotFoundException(message,ex);
-        }
+    private Method getFromMapIfExists(String cacheKey)
+    {
+        if (methodMap.containsKey(cacheKey))
+            return methodMap.get(cacheKey);
+
+        return null;
+    }
+
+    private void addToMap(String cacheKey, Method method)
+    {
         synchronized (methodMap)
         {
             methodMap.put(cacheKey,method);
         }
-        return method;
+    }
+
+    private Method getMethod(String name,Class[] params) throws MethodNotFoundException
+    {
+        try
+        {
+            return entityType.getMethod(name, params);
+        }
+        catch (Exception ex)
+        {
+            String message = String.format("Could not find method %s of class %s",name,entityType.getCanonicalName());
+            throw new MethodNotFoundException(message,ex);
+        }
     }
 
     public Method getSetter(IColumn dbColumn) throws MethodNotFoundException

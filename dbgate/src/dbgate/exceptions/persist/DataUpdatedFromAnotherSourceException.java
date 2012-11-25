@@ -8,22 +8,8 @@ import dbgate.DbGateException;
  */
 public class DataUpdatedFromAnotherSourceException extends DbGateException
 {
-    public DataUpdatedFromAnotherSourceException()
-    {
-    }
-
     public DataUpdatedFromAnotherSourceException(String s)
     {
         super(s);
-    }
-
-    public DataUpdatedFromAnotherSourceException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
-
-    public DataUpdatedFromAnotherSourceException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

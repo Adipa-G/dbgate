@@ -11,22 +11,8 @@ import dbgate.DbGateException;
  */
 public class TransactionCreationFailedException extends DbGateException
 {
-    public TransactionCreationFailedException()
-    {
-    }
-
-    public TransactionCreationFailedException(String s)
-    {
-        super(s);
-    }
-
     public TransactionCreationFailedException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public TransactionCreationFailedException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

@@ -11,22 +11,8 @@ import dbgate.DbGateException;
  */
 public class FieldValueExtractionException extends DbGateException
 {
-    public FieldValueExtractionException()
-    {
-    }
-
-    public FieldValueExtractionException(String s)
-    {
-        super(s);
-    }
-
     public FieldValueExtractionException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public FieldValueExtractionException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

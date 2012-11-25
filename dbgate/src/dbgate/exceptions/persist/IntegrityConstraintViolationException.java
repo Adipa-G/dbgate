@@ -10,22 +10,8 @@ import dbgate.DbGateException;
  */
 public class IntegrityConstraintViolationException extends DbGateException
 {
-    public IntegrityConstraintViolationException()
-    {
-    }
-
     public IntegrityConstraintViolationException(String s)
     {
         super(s);
-    }
-
-    public IntegrityConstraintViolationException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
-
-    public IntegrityConstraintViolationException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

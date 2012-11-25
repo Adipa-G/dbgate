@@ -11,22 +11,8 @@ import dbgate.DbGateException;
  */
 public class MethodNotFoundException extends DbGateException
 {
-    public MethodNotFoundException()
-    {
-    }
-
-    public MethodNotFoundException(String s)
-    {
-        super(s);
-    }
-
     public MethodNotFoundException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public MethodNotFoundException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

@@ -10,22 +10,8 @@ import dbgate.DbGateException;
  */
 public class NoMatchingColumnFoundException extends DbGateException
 {
-    public NoMatchingColumnFoundException()
-    {
-    }
-
     public NoMatchingColumnFoundException(String s)
     {
         super(s);
-    }
-
-    public NoMatchingColumnFoundException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
-
-    public NoMatchingColumnFoundException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

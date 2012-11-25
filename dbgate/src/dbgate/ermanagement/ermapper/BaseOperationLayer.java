@@ -108,21 +108,13 @@ public abstract class BaseOperationLayer
     {
         EntityInfo entityInfo = CacheManager.getEntityInfo(roEntity);
 
-        try
+        for (EntityFieldValue fieldValue : values.getFieldValues())
         {
-            for (EntityFieldValue fieldValue : values.getFieldValues())
+            if (entityInfo.findRelationColumnInfo(fieldValue.getAttributeName()) == null)
             {
-                if (entityInfo.findRelationColumnInfo(fieldValue.getAttributeName()) == null)
-                {
-                    Method setter = entityInfo.getSetter(fieldValue.getDbColumn());
-                    setter.invoke(roEntity,fieldValue.getValue());
-                }
+                Method setter = entityInfo.getSetter(fieldValue.getDbColumn());
+                ReflectionUtils.setValue(setter,roEntity,fieldValue.getValue());
             }
-        }
-        catch (Exception ex)
-        {
-            String message = String.format("Exception while trying to invoking setters of entity %s",entityInfo.getEntityType().getCanonicalName());
-            throw new MethodInvocationException(message,ex);
         }
     }
 
@@ -190,17 +182,8 @@ public abstract class BaseOperationLayer
         if (relation.getFetchStrategy() == FetchStrategy.LAZY)
         {
             EntityInfo entityInfo = CacheManager.getEntityInfo(entity);
-            Object value;
-            try
-            {
-                Method getter = entityInfo.getGetter(relation.getAttributeName());
-                value = getter.invoke(entity);
-            }
-            catch (Exception ex)
-            {
-                String message = String.format("Exception while trying to invoking setters of entity %s",entity.getClass().getCanonicalName());
-                throw new MethodInvocationException(message,ex);
-            }
+            Method getter = entityInfo.getGetter(relation.getAttributeName());
+            Object value = ReflectionUtils.getValue(getter,entity);
 
             if (value == null)
             {

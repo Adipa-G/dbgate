@@ -67,12 +67,12 @@ public class EntityInfoCache implements IEntityInfoCache
     }
 
     @Override
-    public void register(Class subType, ITable tableInfo, Collection<IField> fields)
+    public void register(Class type, ITable tableInfo, Collection<IField> fields)
     {
-        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(subType,new Class[]{IReadOnlyEntity.class});
+        Class[] typeList = ReflectionUtils.getSuperTypesWithInterfacesImplemented(type,new Class[]{IReadOnlyEntity.class});
         Class immediateSuper = typeList.length > 1 ? typeList[1] : null;
 
-        EntityInfo subEntityInfo = new EntityInfo(subType);
+        EntityInfo subEntityInfo = new EntityInfo(type);
         subEntityInfo.setFields(fields);
         subEntityInfo.setTableInfo(tableInfo);
 
@@ -86,7 +86,7 @@ public class EntityInfoCache implements IEntityInfoCache
 
         synchronized (cache)
         {
-            cache.put(subType,subEntityInfo);
+            cache.put(type,subEntityInfo);
         }
     }
 

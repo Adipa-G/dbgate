@@ -10,22 +10,8 @@ import dbgate.DbGateException;
  */
 public class NoMatchingRecordFoundForSuperClassException extends DbGateException
 {
-    public NoMatchingRecordFoundForSuperClassException()
-    {
-    }
-
     public NoMatchingRecordFoundForSuperClassException(String s)
     {
         super(s);
-    }
-
-    public NoMatchingRecordFoundForSuperClassException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
-
-    public NoMatchingRecordFoundForSuperClassException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

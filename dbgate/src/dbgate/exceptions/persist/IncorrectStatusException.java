@@ -10,22 +10,8 @@ import dbgate.DbGateException;
  */
 public class IncorrectStatusException extends DbGateException
 {
-    public IncorrectStatusException()
-    {
-    }
-
     public IncorrectStatusException(String s)
     {
         super(s);
-    }
-
-    public IncorrectStatusException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
-
-    public IncorrectStatusException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

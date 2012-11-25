@@ -10,22 +10,8 @@ import dbgate.DbGateException;
  */
 public class QueryBuildingException extends DbGateException
 {
-    public QueryBuildingException()
-    {
-    }
-
     public QueryBuildingException(String s)
     {
         super(s);
-    }
-
-    public QueryBuildingException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
-
-    public QueryBuildingException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

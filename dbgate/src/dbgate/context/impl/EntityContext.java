@@ -40,7 +40,6 @@ public class EntityContext implements IEntityContext
     @Override
     public void copyReferenceStoreFrom(IReadOnlyEntity entity)
     {
-        initReferenceStore();
         if (entity.getContext() != null)
             referenceStore = entity.getContext().getReferenceStore();
     }
@@ -48,14 +47,14 @@ public class EntityContext implements IEntityContext
     @Override
     public boolean alreadyInCurrentObjectGraph(ITypeFieldValueList keys)
     {
-        return referenceStore != null && referenceStore.alreadyInCurrentObjectGraph(keys);
+        initReferenceStore();
+        return referenceStore.alreadyInCurrentObjectGraph(keys);
     }
 
     @Override
     public IReadOnlyEntity getFromCurrentObjectGraph(ITypeFieldValueList keys)
     {
-        if (referenceStore == null)
-            return null;
+        initReferenceStore();
         return referenceStore.getFromCurrentObjectGraph(keys);
     }
 
