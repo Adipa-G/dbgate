@@ -2,36 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="deba5122-0dda-46ca-971c-4bc58543f01b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/exception" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/DbGateExceptionTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src-tests/dbgate/support/exception/EntityWithNoDefaultConstructor.java" />
-      <change type="DELETED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\dbgate.properties" afterPath="" />
-      <change type="DELETED" beforePath="Y:\dev\java\community\dbgate\trunk\dbgate\dbgate.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/caches/impl/EntityInfo.java" afterPath="$PROJECT_DIR$/src/dbgate/caches/impl/EntityInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/caches/impl/EntityInfoCache.java" afterPath="$PROJECT_DIR$/src/dbgate/caches/impl/EntityInfoCache.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/context/impl/EntityContext.java" afterPath="$PROJECT_DIR$/src/dbgate/context/impl/EntityContext.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/ermanagement/ermapper/BaseOperationLayer.java" afterPath="$PROJECT_DIR$/src/dbgate/ermanagement/ermapper/BaseOperationLayer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/DBPatchingException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/DBPatchingException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/SequenceGeneratorInitializationException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/SequenceGeneratorInitializationException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/EntityInstantiationException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/EntityInstantiationException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/EntityRegistrationException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/EntityRegistrationException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/FieldValueExtractionException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/FieldValueExtractionException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/MethodInvocationException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/MethodInvocationException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/MethodNotFoundException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/MethodNotFoundException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/NoMatchingColumnFoundException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/NoMatchingColumnFoundException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/StatementExecutionException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/StatementExecutionException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionCloseFailedException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionCloseFailedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionCommitFailedException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionCommitFailedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionCreationFailedException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionCreationFailedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionRollbackFailedException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/common/TransactionRollbackFailedException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/persist/DataUpdatedFromAnotherSourceException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/persist/DataUpdatedFromAnotherSourceException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/persist/IncorrectStatusException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/persist/IncorrectStatusException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/persist/IntegrityConstraintViolationException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/persist/IntegrityConstraintViolationException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/query/QueryBuildingException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/query/QueryBuildingException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/retrival/NoMatchingRecordFoundForSuperClassException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/retrival/NoMatchingRecordFoundForSuperClassException.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dbgate/exceptions/retrival/NoSetterFoundToSetChildObjectListException.java" afterPath="$PROJECT_DIR$/src/dbgate/exceptions/retrival/NoSetterFoundToSetChildObjectListException.java" />
     </list>
     <ignored path="dbgate.iws" />
     <ignored path="build/" />
@@ -788,7 +759,11 @@
       <created>1334297651783</created>
       <updated>1344753589437</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added code coverage reports, increasing the coverage">
+      <created>1353833512143</created>
+      <updated>1353833512143</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
