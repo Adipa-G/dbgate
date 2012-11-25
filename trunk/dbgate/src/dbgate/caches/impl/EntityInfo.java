@@ -130,11 +130,6 @@ public class EntityInfo
         return keys;
     }
 
-    public Map<String, String> getQueries()
-    {
-        return Collections.unmodifiableMap(queries);
-    }
-
     public void setFields(Collection<IField> fields)
     {
         for (IField field : fields)
