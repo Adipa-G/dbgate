@@ -54,9 +54,9 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
             ResultSet resultSet = metaData.getTypeInfo();
             while (resultSet.next())
             {
-                ColumnTypeMapItem mapItem = new ColumnTypeMapItem();
-                mapItem.setName(resultSet.getString("TYPE_NAME"));
-                mapItem._setTypeFromSqlType(resultSet.getShort("DATA_TYPE"));
+                String typeName = resultSet.getString("TYPE_NAME");
+                short sqlType = resultSet.getShort("DATA_TYPE");
+                ColumnTypeMapItem mapItem = new ColumnTypeMapItem(typeName,ColumnType.getColumnType(sqlType));
                 columnTypeMapItems.add(mapItem);
             }
             DBMgtUtility.close(resultSet);

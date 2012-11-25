@@ -3,6 +3,7 @@ package dbgate.caches.impl;
 import dbgate.*;
 import dbgate.caches.CacheManager;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
+import dbgate.ermanagement.ermapper.utils.ReflectionUtils;
 import dbgate.exceptions.common.MethodNotFoundException;
 import dbgate.exceptions.query.QueryBuildingException;
 
@@ -394,83 +395,16 @@ public class EntityInfo
 
     private static Class[] getParameters(IColumn dbColumn)
     {
-        Class[] params;
-        switch (dbColumn.getColumnType())
+        if (dbColumn.isNullable())
         {
-            case BOOLEAN:
-                if (!dbColumn.isNullable())
-                {
-                    params = new Class[]{Boolean.TYPE};
-                }
-                else
-                {
-                    params = new Class[]{Boolean.class};
-                }
-                break;
-            case CHAR:
-                if (!dbColumn.isNullable())
-                {
-                    params = new Class[]{Character.TYPE};
-                }
-                else
-                {
-                    params = new Class[]{Character.class};
-                }
-                break;
-            case DATE:
-                params = new Class[]{DateWrapper.class};
-                break;
-            case DOUBLE:
-                if (!dbColumn.isNullable())
-                {
-                    params = new Class[]{Double.TYPE};
-                }
-                else
-                {
-                    params = new Class[]{Double.class};
-                }
-                break;
-            case FLOAT:
-                if (!dbColumn.isNullable())
-                {
-                    params = new Class[]{Float.TYPE};
-                }
-                else
-                {
-                    params = new Class[]{Float.class};
-                }
-                break;
-            case INTEGER:
-            case VERSION:
-                if (!dbColumn.isNullable())
-                {
-                    params = new Class[]{Integer.TYPE};
-                }
-                else
-                {
-                    params = new Class[]{Integer.class};
-                }
-                break;
-            case LONG:
-                if (!dbColumn.isNullable())
-                {
-                    params = new Class[]{Long.TYPE};
-                }
-                else
-                {
-                    params = new Class[]{Long.class};
-                }
-                break;
-            case TIMESTAMP:
-                params = new Class[]{TimeStampWrapper.class};
-                break;
-            case VARCHAR:
-                params = new Class[]{String.class};
-                break;
-            default:
-                params = null;
+            Class javaType = ColumnType.getJavaType(dbColumn.getColumnType());
+            return new Class[]{javaType};
         }
-        return params;
+        else
+        {
+            Class primitiveType = ColumnType.getJavaPrimitiveType(dbColumn.getColumnType());
+            return new Class[]{ primitiveType };
+        }
     }
 
     private String createCacheKey(boolean getter,String field)

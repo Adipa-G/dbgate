@@ -24,28 +24,31 @@ public enum ColumnType
     VERSION;
     
     private static HashMap<Class,ColumnType> javaType2ColumnType;
-    private static HashMap<ColumnType,Class> columnType2javaType;
+    private static HashMap<ColumnType,Class> columnType2JavaType;
+    private static HashMap<ColumnType,Class> columnType2JavaPrimitiveType;
     private static HashMap<ColumnType,Integer> columnType2sqlType;
-    
+    private static HashMap<Integer,ColumnType> sqlType2ColumnType;
+
     static 
     {
         synchronized (ColumnType.class)
         {
             javaType2ColumnType = new HashMap<>();
-            columnType2javaType = new HashMap<>();
+            columnType2JavaType = new HashMap<>();
+            columnType2JavaPrimitiveType = new HashMap<>();
             columnType2sqlType = new HashMap<>();
+            sqlType2ColumnType = new HashMap<>();
 
-            addJavaTypeAndColumnTypeRelation(Long.class,LONG);
-            addJavaTypeAndColumnTypeRelation(Boolean.class,BOOLEAN);
-            addJavaTypeAndColumnTypeRelation(Character.class,CHAR);
-            addJavaTypeAndColumnTypeRelation(Integer.class,INTEGER);
-            addJavaTypeAndColumnTypeRelation(Date.class,DATE);
-            addJavaTypeAndColumnTypeRelation(DateWrapper.class,DATE);
-            addJavaTypeAndColumnTypeRelation(Double.class,DOUBLE);
-            addJavaTypeAndColumnTypeRelation(Float.class,FLOAT);
-            addJavaTypeAndColumnTypeRelation(TimeStampWrapper.class,TIMESTAMP);
-            addJavaTypeAndColumnTypeRelation(String.class,VARCHAR);
-            addJavaTypeAndColumnTypeRelation(Integer.class,VERSION);
+            addJavaTypeAndColumnTypeRelation(Long.class,Long.TYPE,LONG);
+            addJavaTypeAndColumnTypeRelation(Boolean.class,Boolean.TYPE,BOOLEAN);
+            addJavaTypeAndColumnTypeRelation(Character.class,Character.TYPE,CHAR);
+            addJavaTypeAndColumnTypeRelation(Integer.class,Integer.TYPE,INTEGER);
+            addJavaTypeAndColumnTypeRelation(DateWrapper.class,null,DATE);
+            addJavaTypeAndColumnTypeRelation(Double.class,Double.TYPE,DOUBLE);
+            addJavaTypeAndColumnTypeRelation(Float.class,Float.TYPE,FLOAT);
+            addJavaTypeAndColumnTypeRelation(TimeStampWrapper.class,null,TIMESTAMP);
+            addJavaTypeAndColumnTypeRelation(String.class,null,VARCHAR);
+            addJavaTypeAndColumnTypeRelation(Integer.class,Integer.TYPE,VERSION);
 
             addSqlTypeAndColumnTypeRelation(Types.BIGINT,LONG);
             addSqlTypeAndColumnTypeRelation(Types.BOOLEAN,BOOLEAN);
@@ -60,18 +63,30 @@ public enum ColumnType
         }
     }
 
-    private static void addJavaTypeAndColumnTypeRelation(Class type,ColumnType columnType)
+    private static void addJavaTypeAndColumnTypeRelation(Class type,Class primitiveType,ColumnType columnType)
     {
         if (!javaType2ColumnType.containsKey(type))
             javaType2ColumnType.put(type,columnType);
-        if (!columnType2javaType.containsKey(columnType))
-            columnType2javaType.put(columnType,type);
+
+        if (primitiveType != null
+                && !javaType2ColumnType.containsKey(primitiveType))
+            javaType2ColumnType.put(primitiveType,columnType);
+
+        if (!columnType2JavaType.containsKey(columnType))
+            columnType2JavaType.put(columnType,type);
+
+        if (primitiveType != null
+                && !columnType2JavaPrimitiveType.containsKey(columnType))
+            columnType2JavaPrimitiveType.put(columnType,primitiveType);
     }
 
     private static void addSqlTypeAndColumnTypeRelation(int sqlType,ColumnType columnType)
     {
         if (!columnType2sqlType.containsKey(columnType))
             columnType2sqlType.put(columnType, sqlType);
+
+        if (!sqlType2ColumnType.containsKey(sqlType))
+            sqlType2ColumnType.put(sqlType, columnType);
     }
 
     public static ColumnType getColumnType(Class type)
@@ -81,7 +96,19 @@ public enum ColumnType
 
     public static Class getJavaType(ColumnType columnType)
     {
-        return columnType2javaType.get(columnType);
+        return columnType2JavaType.get(columnType);
+    }
+
+    public static Class getJavaPrimitiveType(ColumnType columnType)
+    {
+        if (columnType2JavaPrimitiveType.containsKey(columnType))
+            return columnType2JavaPrimitiveType.get(columnType);
+        return getJavaType(columnType);
+    }
+
+    public static ColumnType getColumnType(int sqlType)
+    {
+        return sqlType2ColumnType.get(sqlType);
     }
 
     public static int getSqlType(ColumnType columnType)
