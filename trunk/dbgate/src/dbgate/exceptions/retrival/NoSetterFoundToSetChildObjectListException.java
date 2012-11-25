@@ -10,22 +10,8 @@ import dbgate.DbGateException;
  */
 public class NoSetterFoundToSetChildObjectListException extends DbGateException
 {
-    public NoSetterFoundToSetChildObjectListException()
-    {
-    }
-
     public NoSetterFoundToSetChildObjectListException(String s)
     {
         super(s);
-    }
-
-    public NoSetterFoundToSetChildObjectListException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
-
-    public NoSetterFoundToSetChildObjectListException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

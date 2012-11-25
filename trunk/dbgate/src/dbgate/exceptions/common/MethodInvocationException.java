@@ -11,22 +11,8 @@ import dbgate.DbGateException;
  */
 public class MethodInvocationException extends DbGateException
 {
-    public MethodInvocationException()
-    {
-    }
-
-    public MethodInvocationException(String s)
-    {
-        super(s);
-    }
-
     public MethodInvocationException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public MethodInvocationException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

@@ -11,22 +11,8 @@ import dbgate.DbGateException;
  */
 public class EntityInstantiationException extends DbGateException
 {
-    public EntityInstantiationException()
-    {
-    }
-
-    public EntityInstantiationException(String s)
-    {
-        super(s);
-    }
-
     public EntityInstantiationException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public EntityInstantiationException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

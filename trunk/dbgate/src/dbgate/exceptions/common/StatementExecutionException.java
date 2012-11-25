@@ -11,22 +11,8 @@ import dbgate.DbGateException;
  */
 public class StatementExecutionException extends DbGateException
 {
-    public StatementExecutionException()
-    {
-    }
-
-    public StatementExecutionException(String s)
-    {
-        super(s);
-    }
-
     public StatementExecutionException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public StatementExecutionException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

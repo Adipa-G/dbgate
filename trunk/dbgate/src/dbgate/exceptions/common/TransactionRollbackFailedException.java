@@ -11,22 +11,8 @@ import dbgate.DbGateException;
  */
 public class TransactionRollbackFailedException extends DbGateException
 {
-    public TransactionRollbackFailedException()
-    {
-    }
-
-    public TransactionRollbackFailedException(String s)
-    {
-        super(s);
-    }
-
     public TransactionRollbackFailedException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public TransactionRollbackFailedException(Throwable throwable)
-    {
-        super(throwable);
     }
 }

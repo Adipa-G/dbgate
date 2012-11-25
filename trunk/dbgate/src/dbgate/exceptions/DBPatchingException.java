@@ -10,22 +10,8 @@ import dbgate.DbGateException;
  */
 public class DBPatchingException extends DbGateException
 {
-    public DBPatchingException()
-    {
-    }
-
-    public DBPatchingException(String s)
-    {
-        super(s);
-    }
-
     public DBPatchingException(String s, Throwable throwable)
     {
         super(s, throwable);
-    }
-
-    public DBPatchingException(Throwable throwable)
-    {
-        super(throwable);
     }
 }
