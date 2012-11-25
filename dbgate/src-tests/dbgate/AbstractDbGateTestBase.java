@@ -2,6 +2,7 @@ package dbgate;
 
 import dbgate.caches.CacheManager;
 import dbgate.caches.impl.EntityInfo;
+import dbgate.persist.DbGateDirtyCheckTest;
 import org.apache.derby.impl.io.VFMemoryStorageFactory;
 
 import java.io.File;

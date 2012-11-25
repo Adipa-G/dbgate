@@ -52,18 +52,7 @@ public class EntityInfoCache implements IEntityInfoCache
     public EntityInfo getEntityInfo(IReadOnlyClientEntity entity)
     {
         Class type = entity.getClass();
-        try
-        {
-            if (!cache.containsKey(type))
-            {
-                register(type);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.getLogger(config.getLoggerName()).log(Level.SEVERE,ex.getMessage(),ex);
-        }
-        return cache.get(type);
+        return getEntityInfo(type);
     }
 
     @Override
@@ -170,7 +159,12 @@ public class EntityInfoCache implements IEntityInfoCache
                 }
             }
         }
+        updateToDefaultStrategiesIfNoneDefined(tableInfo);
+        return tableInfo;
+    }
 
+    private void updateToDefaultStrategiesIfNoneDefined(ITable tableInfo)
+    {
         if (tableInfo != null)
         {
             if (tableInfo.getDirtyCheckStrategy() == DirtyCheckStrategy.DEFAULT)
@@ -182,7 +176,6 @@ public class EntityInfoCache implements IEntityInfoCache
             if (tableInfo.getVerifyOnWriteStrategy() == VerifyOnWriteStrategy.DEFAULT)
                 tableInfo.setVerifyOnWriteStrategy(config.getDefaultVerifyOnWriteStrategy());
         }
-        return tableInfo;
     }
 
     private static ITable getTableInfoIfManagedClass(Class regType, Class subType) throws EntityRegistrationException
@@ -288,40 +281,30 @@ public class EntityInfoCache implements IEntityInfoCache
                 if (annotation instanceof ColumnInfo)
                 {
                     ColumnInfo columnInfo = (ColumnInfo) annotation;
+                    if (superClass && !columnInfo.subClassCommonColumn())
+                    {
+                        continue;
+                    }
                     IColumn column = createColumnMapping(dbClassField, columnInfo);
-                    if (superClass)
-                    {
-                        if (column.isSubClassCommonColumn())
-                        {
-                            fields.add(column);
-                        }
-                    }
-                    else
-                    {
-                        fields.add(column);
-                    }
+                    fields.add(column);
                 }
-                else if (annotation instanceof ForeignKeyInfo)
+                else
                 {
-                    if (superClass)
+                    if (superClass) continue;
+                    if (annotation instanceof ForeignKeyInfo)
                     {
-                        continue;
-                    }
-                    ForeignKeyInfo foreignKeyInfo = (ForeignKeyInfo) annotation;
-                    IRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
-                    fields.add(relation);
-                }
-                else if (annotation instanceof ForeignKeyInfoList)
-                {
-                    if (superClass)
-                    {
-                        continue;
-                    }
-                    ForeignKeyInfoList foreignKeyInfoList = (ForeignKeyInfoList) annotation;
-                    for (ForeignKeyInfo foreignKeyInfo : foreignKeyInfoList.infoList())
-                    {
+                        ForeignKeyInfo foreignKeyInfo = (ForeignKeyInfo) annotation;
                         IRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
                         fields.add(relation);
+                    }
+                    if (annotation instanceof ForeignKeyInfoList)
+                    {
+                        ForeignKeyInfoList foreignKeyInfoList = (ForeignKeyInfoList) annotation;
+                        for (ForeignKeyInfo foreignKeyInfo : foreignKeyInfoList.infoList())
+                        {
+                            IRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
+                            fields.add(relation);
+                        }
                     }
                 }
             }
@@ -342,37 +325,50 @@ public class EntityInfoCache implements IEntityInfoCache
         column.setSize(columnInfo.size());
         column.setSubClassCommonColumn(columnInfo.subClassCommonColumn());
         column.setReadFromSequence(columnInfo.readFromSequence());
+        column.setSequenceGenerator(createSequenceGenerator(columnInfo, column));
+        return column;
+    }
+
+    private static ISequenceGenerator createSequenceGenerator(ColumnInfo columnInfo, IColumn column)
+            throws SequenceGeneratorInitializationException
+    {
         if (column.isReadFromSequence())
         {
             try
             {
-                column.setSequenceGenerator((ISequenceGenerator) Class.forName(columnInfo.sequenceGeneratorClassName()).newInstance());
+                Class generatorClass = Class.forName(columnInfo.sequenceGeneratorClassName());
+                return (ISequenceGenerator)ReflectionUtils.createInstance(generatorClass);
             }
             catch (Exception e)
             {
-
                 throw new SequenceGeneratorInitializationException(String.format("Could not initialize sequence generator %s",
                                                                                  columnInfo.sequenceGeneratorClassName()),e);
             }
         }
-        return column;
+        return null;
     }
 
     private IRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
     {
-        RelationColumnMapping[] objectMappings = new RelationColumnMapping[foreignKeyInfo.fieldMappings().length];
-        ForeignKeyFieldMapping[] annotationMappings = foreignKeyInfo.fieldMappings();
-        for (int i = 0, columnMappingsLength = annotationMappings.length; i < columnMappingsLength; i++)
-        {
-            ForeignKeyFieldMapping mapping = annotationMappings[i];
-            objectMappings[i] = new RelationColumnMapping(mapping.fromField(),mapping.toField());
-        }
+        RelationColumnMapping[] columnMappings = createForeignKeyColumnMappings(foreignKeyInfo);
 
         IRelation relation = new DefaultRelation(dbClassField.getName(),foreignKeyInfo.name()
-                ,foreignKeyInfo.relatedObjectType(),objectMappings,foreignKeyInfo.updateRule()
+                ,foreignKeyInfo.relatedObjectType(),columnMappings,foreignKeyInfo.updateRule()
                 ,foreignKeyInfo.deleteRule(),foreignKeyInfo.reverseRelation()
                 ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.fetchStrategy(),foreignKeyInfo.nullable());
 
         return relation;
+    }
+
+    private RelationColumnMapping[] createForeignKeyColumnMappings(ForeignKeyInfo foreignKeyInfo)
+    {
+        RelationColumnMapping[] columnMappings = new RelationColumnMapping[foreignKeyInfo.fieldMappings().length];
+        ForeignKeyFieldMapping[] annotationMappings = foreignKeyInfo.fieldMappings();
+        for (int i = 0, columnMappingsLength = annotationMappings.length; i < columnMappingsLength; i++)
+        {
+            ForeignKeyFieldMapping mapping = annotationMappings[i];
+            columnMappings[i] = new RelationColumnMapping(mapping.fromField(),mapping.toField());
+        }
+        return columnMappings;
     }
 }
