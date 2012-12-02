@@ -1,11 +1,15 @@
 package dbgate.utility;
 
 import dbgate.EntityStatus;
+import dbgate.ITransaction;
 import dbgate.utility.support.statusutility.LeafEntity;
 import dbgate.utility.support.statusutility.RootEntity;
 import junit.framework.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Collection;
 
 /**
