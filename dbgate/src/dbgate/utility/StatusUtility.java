@@ -87,7 +87,7 @@ public class StatusUtility
                 modified = isModified(alreadyChecked, o );
                 if ( modified )
                 {
-                    return modified;
+                    return true;
                 }
             }
 
@@ -106,7 +106,7 @@ public class StatusUtility
                     || dbClass.getStatus() == EntityStatus.MODIFIED;
             if ( modified )
             {
-                return modified;
+	            return true;
             }
 
             Class objectClass = dbClass.getClass();
@@ -127,9 +127,9 @@ public class StatusUtility
                                 for (Object o : collection)
                                 {
                                     modified = isModified(alreadyChecked,o);
-                                    if (modified)
+	                                if (modified)
                                     {
-                                        return modified;
+                                        return true;
                                     }
                                 }
                             }

@@ -13,14 +13,12 @@
     <property name="build.test" location="${ci}/build-test"/>
     <property name="reports" location="${ci}/reports"/>
     <property name="coverage" location="${ci}/coverage" />
-    <property name="instr" location="${ci}/instr" />
     <property name="jar" location="${ci}/jar" />
     <property name="lib" location="${basedir}/../lib" />
-    <property name="emma.dir" value="${lib}/emma.2.0.5" />
+    <property name="jacoco.dir" value="${lib}/jacoco.0.7.1" />
 
-    <!-- Set emma.lib to refer to the list of EMMA jar files -->
-    <path id="emma.lib">
-        <fileset dir="${emma.dir}">
+    <path id="jacoco.lib">
+        <fileset dir="${jacoco.dir}">
             <include name="*.jar" />
         </fileset>
     </path>
@@ -31,7 +29,7 @@
 
     <path id="build.classpath">
         <pathelement path="${build}"/>
-        <files includes="${lib}/**/*.jar" excludes="${lib}/*emma*/*.jar"/>
+        <files includes="${lib}/**/*.jar" excludes="${lib}/jacoco*/*.jar"/>
     </path>
 
     <path id="run.classpath">
@@ -39,28 +37,13 @@
         <files includes="${lib}/**/*.jar"/>
     </path>
 
-    <taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
+    <taskdef name="jacoco_coverage" classname="org.jacoco.ant.CoverageTask">
+        <classpath refid="jacoco.lib"/>
+    </taskdef>
 
-    <target name="with.emma">
-        <mkdir dir="${coverage}" />
-        <property name="emma.enabled" value="true"/>
-        <property name="out.instr.dir" value="${instr}" />
-        <path id="run.classpath">
-            <pathelement location="${out.instr.dir}" />
-            <path refid="build.classpath"/>
-        </path>
-    </target>
-
-    <target name="create-report" >
-        <emma>
-            <report sourcepath="${src},${src.test}" >
-                <fileset dir="${coverage}" >
-                    <include name="*.emma" />
-                </fileset>
-                <html outfile="${coverage}/coverage.html" />
-            </report>
-        </emma>
-    </target>
+    <taskdef name="jacoco_report" classname="org.jacoco.ant.ReportTask">
+        <classpath refid="jacoco.lib"/>
+    </taskdef>
 
     <!-- Creates Destination directory and compiles files in source directory-->
     <target name="compile-code" >
@@ -77,39 +60,42 @@
         </javac>
     </target>
 
-    <!-- Instrument the code -->
-    <target name="instr" >
-        <mkdir dir="${instr}" />
-        <emma>
-            <instr instrpathref="prodcode.classpath"
-                   destdir="${instr}"
-                   metadatafile="${coverage}/metadata.emma"
-                   merge="true"
-                    />
-        </emma>
-    </target>
-
     <!-- runs the tests -->
     <target name="run-test" description="runs the examples" >
         <mkdir dir="${reports}" />
-        <junit printsummary="yes" fork="yes"
-               haltonfailure="yes" >
-            <classpath>
-                <path path="${instr}"/>
-                <path path="${build.test}"/>
-                <path  refid="run.classpath"/>
-            </classpath>
-            <jvmarg value="-Demma.coverage.out.file=${coverage}/coverage.emma" />
-            <jvmarg value="-Demma.coverage.out.merge=true" />
-            <jvmarg value="-XX:-UseSplitVerifier" />
-            <formatter type="plain"/>
-            <formatter type="xml" />
-            <batchtest todir="${reports}">
-                <fileset dir="${src.test}" >
-                    <include name="**/*Test.java" />
-                </fileset>
-            </batchtest>
-        </junit>
+        <jacoco_coverage destfile="${reports}/coverage.jacoco" append="true">
+            <junit printsummary="yes" fork="yes" haltonfailure="yes" >
+                <classpath>
+                    <path path="${build.test}"/>
+                    <path  refid="run.classpath"/>
+                </classpath>
+                <formatter type="plain"/>
+                <formatter type="xml" />
+                <batchtest todir="${reports}">
+                    <fileset dir="${src.test}" >
+                        <include name="**/*Test.java" />
+                    </fileset>
+                </batchtest>
+            </junit>
+        </jacoco_coverage>
+    </target>
+
+    <!-- create reports -->
+    <target name="create-report" description="create report" >
+        <jacoco_report>
+            <executiondata>
+                <file file="${reports}/coverage.jacoco"/>
+            </executiondata>
+            <structure name="DbGate">
+                <classfiles>
+                    <fileset dir="${build}"/>
+                </classfiles>
+                <sourcefiles encoding="UTF-8">
+                    <fileset dir="${src}"/>
+                </sourcefiles>
+            </structure>
+            <html destdir="${coverage}"/>
+        </jacoco_report>
     </target>
 
     <target name="create-jar">
@@ -131,8 +117,6 @@
         <antcall target="clean"/>
         <antcall target="compile-code"/>
         <antcall target="compile-test"/>
-        <antcall target="with.emma"/>
-        <antcall target="instr"/>
         <antcall target="run-test"/>
         <antcall target="create-report"/>
         <antcall target="create-jar"/>
