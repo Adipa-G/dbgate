@@ -64,20 +64,17 @@ public class MetaQueryHolder implements Comparable<MetaQueryHolder>
 
     public int compareTo(MetaQueryHolder metaQueryHolder)
     {
-        if (queryType != metaQueryHolder.getQueryType())
-        {
-            return new Integer(this.queryType).compareTo(metaQueryHolder.getQueryType());
-        }
-        else
-        {
-            if (queryType == OPERATION_TYPE_DELETE)
-            {
-                return -1 * new Integer(this.itemType).compareTo(metaQueryHolder.getItemType());
-            }
-            else
-            {
-                return new Integer(this.itemType).compareTo(metaQueryHolder.getItemType());
-            }
-        }
+	    if (itemType != metaQueryHolder.getItemType())
+	    {
+		    return new Integer(this.itemType).compareTo(metaQueryHolder.getItemType());
+	    }
+	    else
+	    {
+		    if (queryType == OPERATION_TYPE_ADD)
+			    return 1;
+		    if (queryType == OPERATION_TYPE_DELETE)
+			    return -1;
+		    return 0;
+	    }
     }
 }

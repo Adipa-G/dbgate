@@ -45,6 +45,7 @@ public class MetaComparisonForeignKeyGroup extends AbstractMetaComparisonGroup
     @Override
     public boolean _shouldAlterInDB()
     {
-        return false;
+        return existingItem != null && requiredItem != null
+		        && !existingItem.equals(requiredItem);
     }
 }

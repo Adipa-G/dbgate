@@ -1,11 +1,16 @@
 package dbgate.ermanagement.dbabstractionlayer.metamanipulate.dbmm.mysqlmm;
 
 import dbgate.ColumnType;
+import dbgate.ITransaction;
+import dbgate.ReferentialRuleType;
 import dbgate.ermanagement.dbabstractionlayer.IDBLayer;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.MetaComparisonColumnGroup;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.MetaComparisonForeignKeyGroup;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.MetaComparisonPrimaryKeyGroup;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.compare.MetaComparisonTableGroup;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.datastructures.*;
 import dbgate.ermanagement.dbabstractionlayer.metamanipulate.dbmm.defaultmm.DefaultMetaManipulate;
+import dbgate.ermanagement.dbabstractionlayer.metamanipulate.mappings.ReferentialRuleTypeMapItem;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,6 +25,12 @@ public class MySqlMetaManipulate extends DefaultMetaManipulate
     {
         super(dbLayer);
     }
+
+	protected void fillReferentialRuleMappings(ITransaction tx)
+	{
+		referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.CASCADE, "0"));
+		referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.RESTRICT, "3"));
+	}
 
     @Override
     protected String createAlterColumnQuery(MetaComparisonTableGroup tableGroup, MetaComparisonColumnGroup columnGroup)
@@ -66,6 +77,33 @@ public class MySqlMetaManipulate extends DefaultMetaManipulate
 
         return sb.toString();
     }
+
+	@Override
+	protected String createDropPrimaryKeyQuery(MetaComparisonTableGroup tableGroup, MetaComparisonPrimaryKeyGroup primaryKeyGroup)
+	{
+		MetaTable requiredTable = tableGroup.getExistingItem();
+		MetaPrimaryKey primaryKey = primaryKeyGroup.getExistingItem();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("ALTER TABLE ");
+		sb.append(requiredTable.getName());
+		sb.append(" DROP PRIMARY KEY");
+		return sb.toString();
+	}
+
+	@Override
+	protected String createDropForeignKeyQuery(MetaComparisonTableGroup tableGroup,MetaComparisonForeignKeyGroup foreignKeyGroup)
+	{
+		MetaTable requiredTable = tableGroup.getExistingItem();
+		MetaForeignKey metaForeignKey = foreignKeyGroup.getRequiredItem();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("ALTER TABLE ");
+		sb.append(requiredTable.getName());
+		sb.append(" DROP FOREIGN KEY ");
+		sb.append(metaForeignKey.getName());
+		return sb.toString();
+	}
 
     @Override
     public boolean Equals(IMetaItem iMetaItemA, IMetaItem iMetaItemB)
