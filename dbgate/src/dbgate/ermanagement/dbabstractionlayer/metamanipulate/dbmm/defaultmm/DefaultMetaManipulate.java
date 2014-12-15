@@ -94,7 +94,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     @Override
     protected void extractForeignKeyData(DatabaseMetaData metaData, MetaTable table) throws SQLException
     {
-        ResultSet foreignKeyResultSet = metaData.getImportedKeys(null,null,table.getName());
+        ResultSet foreignKeyResultSet = metaData.getExportedKeys(null,null,table.getName());
         HashMap<String, MetaForeignKey> foreignKeyMap = new HashMap<String, MetaForeignKey>();
 
         HashMap<String,HashMap<Integer,String>> fromTableColMap = new HashMap<String, HashMap<Integer, String>>();
