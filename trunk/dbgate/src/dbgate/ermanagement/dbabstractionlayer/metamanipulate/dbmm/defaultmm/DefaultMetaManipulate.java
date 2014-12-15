@@ -94,7 +94,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     @Override
     protected void extractForeignKeyData(DatabaseMetaData metaData, MetaTable table) throws SQLException
     {
-        ResultSet foreignKeyResultSet = metaData.getExportedKeys(null,null,table.getName());
+        ResultSet foreignKeyResultSet = metaData.getImportedKeys(null,null,table.getName());
         HashMap<String, MetaForeignKey> foreignKeyMap = new HashMap<String, MetaForeignKey>();
 
         HashMap<String,HashMap<Integer,String>> fromTableColMap = new HashMap<String, HashMap<Integer, String>>();
@@ -398,12 +398,12 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     protected String createDropForeignKeyQuery(MetaComparisonTableGroup tableGroup,
                                                MetaComparisonForeignKeyGroup foreignKeyGroup)
     {
-        MetaTable requiredTable = tableGroup.getExistingItem();
-        MetaForeignKey metaForeignKey = foreignKeyGroup.getExistingItem();
+	    MetaTable requiredTable = tableGroup.getRequiredItem();
+	    MetaForeignKey metaForeignKey = foreignKeyGroup.getRequiredItem();
 
         StringBuilder sb = new StringBuilder();
         sb.append("ALTER TABLE ");
-        sb.append(requiredTable.getName());
+        sb.append(metaForeignKey.getToTable());
         sb.append(" DROP CONSTRAINT ");
         sb.append(metaForeignKey.getName());
         return sb.toString();

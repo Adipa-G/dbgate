@@ -20,6 +20,8 @@ public class LayerFactory
                 return new OracleDBLayer();
             case DefaultTransactionFactory.DB_MYSQL:
                 return new MySqlDBLayer();
+	        case DefaultTransactionFactory.DB_DERBY:
+		        return new DerbyDBLayer();
             default:
                 return new DefaultDBLayer();
         }

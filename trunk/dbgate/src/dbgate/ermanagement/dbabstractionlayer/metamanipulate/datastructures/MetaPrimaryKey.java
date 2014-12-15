@@ -34,9 +34,16 @@ public class MetaPrimaryKey extends AbstractMetaItem
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
-        MetaPrimaryKey that = (MetaPrimaryKey) o;
+	    if (this == o) return true;
+	    if (!(o instanceof AbstractMetaItem)) return false;
+
+	    MetaPrimaryKey that = (MetaPrimaryKey) o;
+
+	    if (itemType != that.itemType) return false;
+	    if (!"PRIMARY".equalsIgnoreCase(name)
+	        && !"PRIMARY".equalsIgnoreCase(that.getName())
+	        && !name.equalsIgnoreCase(that.name)) return false;
 
         boolean foundMatch = false;
         for (String thisColumn : columnNames)
