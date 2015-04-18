@@ -13,7 +13,7 @@ import java.util.Collection;
 public class Integrator
 {
     public static final String WIKI_TEMPLATE_EXTENSION = "wiki.template";
-    public static final String WIKI_EXTENSION = "wiki";
+    public static final String WIKI_EXTENSION = "md";
     public static final String JAVA_SOURCE_EXTENSION = "java";
     
     private static void doProcess(String srcRoot,String srcOut)
@@ -50,6 +50,6 @@ public class Integrator
     
     public static void main(String[] args)
     {
-        doProcess("Y:\\dev\\java\\community\\dbgate\\trunk\\dbgatetestapp\\src","Y:\\dev\\java\\community\\dbgate\\trunk\\dbgatetestapp\\wikigen");
+        doProcess("Y:\\dev\\community\\github\\dbgate\\dbgatetestapp\\src","Y:\\dev\\community\\github\\dbgate\\dbgatetestapp\\wikigen");
     }
 }
