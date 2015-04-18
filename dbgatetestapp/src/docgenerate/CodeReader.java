@@ -74,7 +74,7 @@ public class CodeReader
                 break;
             }
         }
-        return block.toString();
+        return block.toString().replaceAll("\r\n","\r\n\t");
     }
     
     protected static String readFile(File source)
