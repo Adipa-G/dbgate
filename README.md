@@ -126,3 +126,6 @@ The editor used is Intellij IDEA Community Edition. An ant script is included to
 * Conventions to automatically configure the mappings
 * Add support for more data types such as clob/blob
 * Library currently supports limited no of database types at sql generation level (specially queries for db meta data), so that part need to be expanded for more databases.
+
+###License
+GNU GPL V3
