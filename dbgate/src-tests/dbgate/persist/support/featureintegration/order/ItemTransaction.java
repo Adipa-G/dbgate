@@ -22,15 +22,8 @@ public class ItemTransaction  extends DefaultEntity
     @ColumnInfo(columnType = ColumnType.INTEGER)
     private int itemId;
     @ForeignKeyInfoList(infoList = {
-    @ForeignKeyInfo(name = "item_tx2product"
-                ,relatedObjectType = Product.class
-                ,updateRule = ReferentialRuleType.RESTRICT
-                ,deleteRule = ReferentialRuleType.CASCADE
-                ,nonIdentifyingRelation = true
-                , fieldMappings =  {@ForeignKeyFieldMapping(fromField = "itemId", toField = "itemId")})
-     ,
-    @ForeignKeyInfo(name = "item_tx2service"
-                ,relatedObjectType = Service.class
+    @ForeignKeyInfo(name = "item_tx2item"
+                ,relatedObjectType = Item.class
                 ,updateRule = ReferentialRuleType.RESTRICT
                 ,deleteRule = ReferentialRuleType.CASCADE
                 ,nonIdentifyingRelation = true

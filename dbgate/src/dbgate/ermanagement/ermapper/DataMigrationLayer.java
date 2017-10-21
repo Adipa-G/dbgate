@@ -144,8 +144,8 @@ public class DataMigrationLayer
 
             for (IRelation relation : dbRelations)
             {
-                if (!relation.isReverseRelationship()
-                        && !relation.isNonIdentifyingRelation())
+                if (relation.isReverseRelationship()
+                        || relation.isNonIdentifyingRelation())
                 {
                     filteredRelations.add(relation);
                 }

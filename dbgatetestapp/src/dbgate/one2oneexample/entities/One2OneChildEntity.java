@@ -1,7 +1,10 @@
 package dbgate.one2oneexample.entities;
 
 
+import dbgate.ColumnInfo;
+import dbgate.ColumnType;
 import dbgate.DefaultEntity;
+import dbgate.TableInfo;
 import docgenerate.WikiCodeBlock;
 
 /**

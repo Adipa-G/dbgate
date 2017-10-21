@@ -8,6 +8,7 @@ import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
 import dbgate.exceptions.common.TransactionCommitFailedException;
 import dbgate.exceptions.common.TransactionCreationFailedException;
+import dbgate.one2oneexample.entities.One2OneChildEntity;
 import dbgate.one2oneexample.entities.One2OneChildEntityA;
 import dbgate.one2oneexample.entities.One2OneChildEntityB;
 import dbgate.one2oneexample.entities.One2OneParentEntity;

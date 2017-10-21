@@ -10,13 +10,14 @@ import docgenerate.WikiCodeBlock;
  * Time: 8:47:46 PM
  */
 @WikiCodeBlock(id = "one_2_one_example_child_entity_b")
+@TableInfo(tableName = "child_entity_b")
 public class One2OneChildEntityB extends One2OneChildEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int parentId;
+
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
-
 
     public int getParentId()
     {

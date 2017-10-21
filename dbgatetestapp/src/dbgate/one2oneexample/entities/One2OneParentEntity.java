@@ -16,17 +16,16 @@ public class One2OneParentEntity extends DefaultEntity
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
     @ForeignKeyInfoList(infoList = {
-        @ForeignKeyInfo(name = "parent2childA"
+        @ForeignKeyInfo(name = "parent2child_a"
                     ,relatedObjectType = One2OneChildEntityA.class
                     ,updateRule = ReferentialRuleType.RESTRICT
                     ,deleteRule = ReferentialRuleType.CASCADE
-                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
-        ,
-        @ForeignKeyInfo(name = "parent2childB"
-                    ,relatedObjectType = One2OneChildEntityB.class
-                    ,updateRule = ReferentialRuleType.RESTRICT
-                    ,deleteRule = ReferentialRuleType.CASCADE
-                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
+                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")}),
+        @ForeignKeyInfo(name = "parent2child_b"
+                ,relatedObjectType = One2OneChildEntityB.class
+                ,updateRule = ReferentialRuleType.RESTRICT
+                ,deleteRule = ReferentialRuleType.CASCADE
+                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
     })
     private One2OneChildEntity childEntity;
 

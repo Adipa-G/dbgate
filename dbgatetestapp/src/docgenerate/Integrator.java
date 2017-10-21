@@ -50,6 +50,6 @@ public class Integrator
     
     public static void main(String[] args)
     {
-        doProcess("Y:\\dev\\community\\github\\dbgate\\dbgatetestapp\\src","Y:\\dev\\community\\github\\dbgate\\dbgatetestapp\\wikigen");
+        doProcess("Z:\\dev\\community\\github\\dbgate\\dbgatetestapp\\src","Z:\\dev\\community\\github\\dbgate\\dbgatetestapp\\wikigen");
     }
 }

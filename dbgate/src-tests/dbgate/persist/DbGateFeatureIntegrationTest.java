@@ -6,6 +6,7 @@ import dbgate.ITransaction;
 import dbgate.persist.support.featureintegration.order.ItemTransaction;
 import dbgate.persist.support.featureintegration.order.ItemTransactionCharge;
 import dbgate.persist.support.featureintegration.order.Transaction;
+import dbgate.persist.support.featureintegration.product.Item;
 import dbgate.persist.support.featureintegration.product.Product;
 import dbgate.persist.support.featureintegration.product.Service;
 import dbgate.utility.DBMgtUtility;
@@ -81,8 +82,12 @@ public class DbGateFeatureIntegrationTest extends AbstractDbGateTestBase
                 if (orgItemTransaction.getIndexNo() == loadedItemTransaction.getIndexNo())
                 {
                     foundItem = true;
-                    Assert.assertEquals(orgItemTransaction.getItem().getName(),loadedItemTransaction.getItem().getName());
-                    Assert.assertEquals(orgItemTransaction.getItem().getItemId(),loadedItemTransaction.getItem().getItemId());
+                    Item orgItem = orgItemTransaction.getItem();
+                    Item loadedItem = loadedItemTransaction.getItem();
+
+                    Assert.assertEquals(orgItem.getClass(),loadedItem.getClass());
+                    Assert.assertEquals(orgItem.getName(),loadedItem.getName());
+                    Assert.assertEquals(orgItem.getItemId(),loadedItem.getItemId());
                     Assert.assertSame(loadedItemTransaction.getTransaction(),loadedTransaction);
 
                     for (ItemTransactionCharge orgTransactionCharge : orgItemTransaction.getItemTransactionCharges())
