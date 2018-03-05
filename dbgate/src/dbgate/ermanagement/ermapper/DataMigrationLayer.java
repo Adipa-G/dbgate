@@ -15,9 +15,7 @@ import dbgate.exceptions.SequenceGeneratorInitializationException;
 import dbgate.utility.DBMgtUtility;
 
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -150,6 +148,32 @@ public class DataMigrationLayer
                     filteredRelations.add(relation);
                 }
             }
+            Collection<IRelation> oneSideReverse = CacheManager.GetReversedRelationships(subType);
+            for (IRelation relation : oneSideReverse)
+            {
+                boolean found = false;
+                for (IRelation filteredRelation : filteredRelations) {
+                    if (filteredRelation.getRelationshipName() == relation.getRelationshipName()){
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found){
+                    IRelation reversed = relation.clone();
+                    reversed.setRelatedObjectType(relation.getSourceObjectType());
+
+                    RelationColumnMapping[] orgMappings = reversed.getTableColumnMappings();
+                    for (int i = 0; i < orgMappings.length; i++) {
+                        RelationColumnMapping mapping = orgMappings[i];
+                        orgMappings[i] = new RelationColumnMapping(mapping.getToField(),mapping.getFromField());
+                    }
+
+                    reversed.setTableColumnMappings(orgMappings);
+                    filteredRelations.add(reversed);
+                }
+            }
+
             retItems.add(createTable(entityInfo.getEntityType(),dbColumns,filteredRelations));
 
             entityInfo = entityInfo.getSuperEntityInfo();

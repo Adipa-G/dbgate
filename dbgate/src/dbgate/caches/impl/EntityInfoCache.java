@@ -7,10 +7,10 @@ import dbgate.exceptions.SequenceGeneratorInitializationException;
 import dbgate.exceptions.common.EntityRegistrationException;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.lang.reflect.Type;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,6 +53,29 @@ public class EntityInfoCache implements IEntityInfoCache
     {
         Class type = entity.getClass();
         return getEntityInfo(type);
+    }
+
+    @Override
+    public Collection<IRelation> GetReversedRelationships(Class entityType)
+    {
+        Collection<IRelation> results = new ArrayList<>();
+
+        Class[] typeArray = ReflectionUtils.getSuperTypesWithInterfacesImplemented(
+                entityType,new Class[]{IReadOnlyEntity.class});
+        List<Class> typeList = Arrays.asList(typeArray);
+
+        for (EntityInfo entityInfo : cache.values()) {
+            for (IRelation relation : entityInfo.getRelations()) {
+                if (!relation.isReverseRelationship() &&
+                    !relation.isNonIdentifyingRelation() &&
+                    typeList.contains(relation.getRelatedObjectType())){
+
+                    results.add(relation);
+                }
+            }
+        }
+
+        return results;
     }
 
     @Override
@@ -294,7 +317,7 @@ public class EntityInfoCache implements IEntityInfoCache
                     if (annotation instanceof ForeignKeyInfo)
                     {
                         ForeignKeyInfo foreignKeyInfo = (ForeignKeyInfo) annotation;
-                        IRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
+                        IRelation relation = createForeignKeyMapping(type,dbClassField, foreignKeyInfo);
                         fields.add(relation);
                     }
                     if (annotation instanceof ForeignKeyInfoList)
@@ -302,7 +325,7 @@ public class EntityInfoCache implements IEntityInfoCache
                         ForeignKeyInfoList foreignKeyInfoList = (ForeignKeyInfoList) annotation;
                         for (ForeignKeyInfo foreignKeyInfo : foreignKeyInfoList.infoList())
                         {
-                            IRelation relation = createForeignKeyMapping(dbClassField, foreignKeyInfo);
+                            IRelation relation = createForeignKeyMapping(type,dbClassField, foreignKeyInfo);
                             fields.add(relation);
                         }
                     }
@@ -348,16 +371,21 @@ public class EntityInfoCache implements IEntityInfoCache
         return null;
     }
 
-    private IRelation createForeignKeyMapping(Field dbClassField, ForeignKeyInfo foreignKeyInfo)
+    private IRelation createForeignKeyMapping(Class entityType,Field dbClassField, ForeignKeyInfo foreignKeyInfo)
     {
         RelationColumnMapping[] columnMappings = createForeignKeyColumnMappings(foreignKeyInfo);
 
-        IRelation relation = new DefaultRelation(dbClassField.getName(),foreignKeyInfo.name()
-                ,foreignKeyInfo.relatedObjectType(),columnMappings,foreignKeyInfo.updateRule()
-                ,foreignKeyInfo.deleteRule(),foreignKeyInfo.reverseRelation()
-                ,foreignKeyInfo.nonIdentifyingRelation(),foreignKeyInfo.fetchStrategy(),foreignKeyInfo.nullable());
-
-        return relation;
+        return new DefaultRelation(dbClassField.getName(),
+                                   foreignKeyInfo.name(),
+                                   entityType,
+                                   foreignKeyInfo.relatedObjectType(),
+                                   columnMappings,
+                                   foreignKeyInfo.updateRule(),
+                                   foreignKeyInfo.deleteRule(),
+                                   foreignKeyInfo.reverseRelation(),
+                                   foreignKeyInfo.nonIdentifyingRelation(),
+                                   foreignKeyInfo.fetchStrategy(),
+                                   foreignKeyInfo.nullable());
     }
 
     private RelationColumnMapping[] createForeignKeyColumnMappings(ForeignKeyInfo foreignKeyInfo)

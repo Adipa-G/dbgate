@@ -12,6 +12,10 @@ public interface IRelation extends IField
 
     void setRelationshipName(String relationshipName);
 
+    Class getSourceObjectType();
+
+    void setSourceObjectType(Class sourceObjectType);
+
     Class getRelatedObjectType();
 
     void setRelatedObjectType(Class relatedObjectType);

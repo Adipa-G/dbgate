@@ -7,6 +7,8 @@ import dbgate.exceptions.common.TransactionCreationFailedException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 
 /**
@@ -25,31 +27,28 @@ public class DefaultTransactionFactory implements ITransactionFactory
     public static final int DB_DERBY = 5;
     public static final int DB_MYSQL = 6;
 
-    private String connectionString;
-    private String className;
+    private Supplier<Connection> connectionFactory;
     private IDbGate dbGate;
 
-    public DefaultTransactionFactory(String connectionString, String className, int dbType) throws SQLException
+    public DefaultTransactionFactory(Supplier<Connection> connectionFactory,
+                                     int dbType) throws SQLException
     {
-        this.connectionString = connectionString;
-        this.className = className;
+        this.connectionFactory = connectionFactory;
         this.dbGate = new DbGate(dbType);
     }
 
     @Override
     public ITransaction createTransaction() throws TransactionCreationFailedException
     {
-        Connection conn = null;
         try
         {
-            Class.forName(className);
-            conn = DriverManager.getConnection(connectionString);
+            Connection conn = this.connectionFactory.get();
+            return new Transaction(this,conn);
         }
         catch (Exception ex)
         {
-            throw new TransactionCreationFailedException(String.format("Failed to create a transaction for connection string %s",connectionString),ex);
+            throw new TransactionCreationFailedException("Failed to create a transaction",ex);
         }
-        return new Transaction(this,conn);
     }
 
     @Override

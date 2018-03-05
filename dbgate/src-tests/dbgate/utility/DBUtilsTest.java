@@ -39,8 +39,16 @@ public class DBUtilsTest
             con.commit();
             con.close();
 
-            transactionFactory = new DefaultTransactionFactory("jdbc:derby:memory:unit-testing-dbutility;","org.apache.derby.jdbc.EmbeddedDriver",
-                                                                                DefaultTransactionFactory.DB_DERBY);
+            transactionFactory = new DefaultTransactionFactory(() -> {
+                try {
+                    Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+                    return DriverManager.getConnection("jdbc:derby:memory:unit-testing-dbutility;");
+                }
+                catch (Exception ex){
+                    Logger.getLogger(DBUtilsTest.class.getName()).severe("Exception during database unit-testing-dbutility startup.");
+                    return null;
+                }
+            },DefaultTransactionFactory.DB_DERBY);
         }
         catch (Exception ex)
         {

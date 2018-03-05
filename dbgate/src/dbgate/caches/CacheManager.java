@@ -1,15 +1,13 @@
 package dbgate.caches;
 
-import dbgate.IDbGateConfig;
-import dbgate.IField;
-import dbgate.IReadOnlyClientEntity;
-import dbgate.ITable;
+import dbgate.*;
 import dbgate.caches.impl.EntityInfo;
 import dbgate.caches.impl.EntityInfoCache;
 import dbgate.exceptions.SequenceGeneratorInitializationException;
 import dbgate.exceptions.common.EntityRegistrationException;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Date: Mar 24, 2011
@@ -32,6 +30,11 @@ public class CacheManager
     public static EntityInfo getEntityInfo(IReadOnlyClientEntity entity)
     {
         return entityInfoCache.getEntityInfo(entity);
+    }
+
+    public static Collection<IRelation> GetReversedRelationships(Class entityType)
+    {
+        return entityInfoCache.GetReversedRelationships(entityType);
     }
 
     public static void register(Class type) throws SequenceGeneratorInitializationException, EntityRegistrationException

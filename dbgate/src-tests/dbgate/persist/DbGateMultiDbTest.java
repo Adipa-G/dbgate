@@ -7,6 +7,7 @@ import dbgate.UpdateStrategy;
 import dbgate.persist.support.multidb.MultiDbEntity;
 import org.junit.*;
 
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,8 +33,16 @@ public class DbGateMultiDbTest extends AbstractDbGateTestBase
 
         try
         {
-            connector2 = new DefaultTransactionFactory(String.format("jdbc:derby:memory:%s;",db2Name)
-                    ,driverName,DefaultTransactionFactory.DB_DERBY);
+            connector2 = new DefaultTransactionFactory(() -> {
+                try {
+                    Class.forName(driverName);
+                    return DriverManager.getConnection(String.format("jdbc:derby:memory:%s;", db2Name));
+                }
+                catch (Exception ex){
+                    Logger.getLogger(testClass.getName()).severe(String.format("Exception during database %s startup.",db2Name));
+                    return null;
+                }
+            },DefaultTransactionFactory.DB_DERBY);
         }
         catch (SQLException ex)
         {

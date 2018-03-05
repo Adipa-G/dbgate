@@ -10,6 +10,7 @@ public abstract class AbstractRelation implements IRelation
 {
     private String attributeName;
     private String relationshipName;
+    private Class sourceObjectType;
     private Class relatedObjectType;
     private RelationColumnMapping[] tableColumnMappings;
     private ReferentialRuleType updateRule;
@@ -19,22 +20,39 @@ public abstract class AbstractRelation implements IRelation
     private FetchStrategy fetchStrategy;
     private boolean nullable;
 
-    protected AbstractRelation(String attributeName, String relationshipName
-            , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings)
+    protected AbstractRelation(String attributeName,
+                               String relationshipName,
+                               Class sourceObjectType,
+                               Class relatedObjectType,
+                               RelationColumnMapping[] tableColumnMappings)
     {
-        this(attributeName,relationshipName,relatedObjectType
-                ,tableColumnMappings,ReferentialRuleType.RESTRICT
-                ,ReferentialRuleType.CASCADE,false,false,FetchStrategy.DEFAULT,false);
+        this(attributeName,
+             relationshipName,
+             sourceObjectType,
+             relatedObjectType,
+             tableColumnMappings,ReferentialRuleType.RESTRICT,
+             ReferentialRuleType.CASCADE,
+             false,
+             false,
+             FetchStrategy.DEFAULT,
+             false);
     }
 
-    protected AbstractRelation(String attributeName, String relationshipName
-            , Class relatedObjectType, RelationColumnMapping[] tableColumnMappings
-            , ReferentialRuleType updateRule, ReferentialRuleType deleteRule
-            , boolean reverseRelationship, boolean nonIdentifyingRelation, FetchStrategy fetchStrategy
-            , boolean nullable)
+    protected AbstractRelation(String attributeName,
+                               String relationshipName,
+                               Class sourceObjectType,
+                               Class relatedObjectType,
+                               RelationColumnMapping[] tableColumnMappings,
+                               ReferentialRuleType updateRule,
+                               ReferentialRuleType deleteRule,
+                               boolean reverseRelationship,
+                               boolean nonIdentifyingRelation,
+                               FetchStrategy fetchStrategy,
+                               boolean nullable)
     {
         this.attributeName = attributeName;
         this.relationshipName = relationshipName;
+        this.sourceObjectType = sourceObjectType;
         this.relatedObjectType = relatedObjectType;
         this.tableColumnMappings = tableColumnMappings;
         this.updateRule = updateRule;
@@ -67,6 +85,18 @@ public abstract class AbstractRelation implements IRelation
     public void setRelationshipName(String relationshipName)
     {
         this.relationshipName = relationshipName;
+    }
+
+    @Override
+    public Class getSourceObjectType()
+    {
+        return sourceObjectType;
+    }
+
+    @Override
+    public void setSourceObjectType(Class sourceObjectType)
+    {
+        this.sourceObjectType = sourceObjectType;
     }
 
     @Override

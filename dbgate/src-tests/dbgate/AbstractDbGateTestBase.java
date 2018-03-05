@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,8 +47,16 @@ public class AbstractDbGateTestBase
 
             if (connector == null)
             {
-                connector = new DefaultTransactionFactory(String.format("jdbc:derby:memory:%s;",dbName)
-                        ,driverName,DefaultTransactionFactory.DB_DERBY);
+                connector = new DefaultTransactionFactory(() -> {
+                    try {
+                        Class.forName(driverName);
+                        return DriverManager.getConnection(String.format("jdbc:derby:memory:%s;", dbName));
+                    }
+                    catch (Exception ex){
+                        Logger.getLogger(testClass.getName()).severe(String.format("Exception during database %s startup.",dbName));
+                        return null;
+                    }
+                }, DefaultTransactionFactory.DB_DERBY);
             }
         }
         catch (Exception ex)

@@ -22,10 +22,18 @@ public class TreeTestExtFactory
         {
             fields.add(new DefaultColumn("idCol",true,false, ColumnType.INTEGER));
             fields.add(new DefaultColumn("name", ColumnType.VARCHAR));
-            fields.add(new DefaultRelation("one2ManyEntities","fk_root2one2manyent"
-                    , TreeTestOne2ManyEntityExt.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
-            fields.add(new DefaultRelation("one2OneEntity","fk_root2one2oneent"
-                    , TreeTestOne2OneEntityExt.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
+
+            fields.add(new DefaultRelation("one2ManyEntities",
+                                           "fk_root2one2manyent",
+                                           TreeTestRootEntityExt.class,
+                                           TreeTestOne2ManyEntityExt.class,
+                                           new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
+
+            fields.add(new DefaultRelation("one2OneEntity",
+                                           "fk_root2one2oneent",
+                                           TreeTestRootEntityExt.class,
+                                           TreeTestOne2OneEntityExt.class,
+                                           new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
 
         }
         else if (type == TreeTestOne2ManyEntityExt.class)

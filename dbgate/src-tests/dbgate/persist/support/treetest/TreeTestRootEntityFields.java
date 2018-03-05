@@ -74,10 +74,17 @@ public class TreeTestRootEntityFields extends AbstractManagedEntity implements I
 
         dbColumns.add(new DefaultColumn("idCol",true,false, ColumnType.INTEGER));
         dbColumns.add(new DefaultColumn("name", ColumnType.VARCHAR));
-        dbColumns.add(new DefaultRelation("one2ManyEntities","fk_root2one2manyent"
-                , TreeTestOne2ManyEntityFields.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
-        dbColumns.add(new DefaultRelation("one2OneEntity","fk_root2one2oneent"
-                , TreeTestOne2OneEntityFields.class,new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
+        dbColumns.add(new DefaultRelation("one2ManyEntities",
+                                          "fk_root2one2manyent",
+                                          TreeTestRootEntityFields.class,
+                                          TreeTestOne2ManyEntityFields.class,
+                                          new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
+
+        dbColumns.add(new DefaultRelation("one2OneEntity",
+                                          "fk_root2one2oneent",
+                                          TreeTestRootEntityFields.class,
+                                          TreeTestOne2OneEntityFields.class,
+                                          new RelationColumnMapping[]{new RelationColumnMapping("idCol","idCol")}));
 
         map.put(this.getClass(),dbColumns);
         return map;
