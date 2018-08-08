@@ -120,7 +120,7 @@ public class DbGatePatchTableDifferenceDBTest extends AbstractDbGateTestBase
         try
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 220; i++)
+            for (int i = 0; i < 499; i++)
             {
                 sb.append("a");
             }

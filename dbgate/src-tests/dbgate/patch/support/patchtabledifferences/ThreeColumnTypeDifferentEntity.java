@@ -18,7 +18,7 @@ public class ThreeColumnTypeDifferentEntity extends DefaultEntity
     private int idCol;
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)
     private int indexNo;
-    @ColumnInfo(columnType = ColumnType.VARCHAR,size = 255)
+    @ColumnInfo(columnType = ColumnType.VARCHAR,size = 500)
     private String name;
 
     public int getIdCol()
