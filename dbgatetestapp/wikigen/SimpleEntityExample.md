@@ -51,11 +51,17 @@ basic features like persisting, retrieval, change tracking
 	    {
 	        try
 	        {
-	            Logger.getLogger(getClass().getName()).info("Starting in-memory database for unit tests");
-	            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-	            DriverManager.getConnection(String.format("jdbc:derby:memory:%s;create=true",dbName));
-	
-	            factory = new DefaultTransactionFactory(String.format("jdbc:derby:memory:%s;",dbName),"org.apache.derby.jdbc.EmbeddedDriver",DefaultTransactionFactory.DB_DERBY);
+	            factory = new DefaultTransactionFactory(() -> {
+	                try {
+	                    Logger.getLogger(getClass().getName()).info("Starting in-memory database for unit tests");
+	                    Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+	                    return DriverManager.getConnection(String.format("jdbc:derby:memory:%s;create=true", dbName));
+	                }
+	                catch (Exception ex){
+	                    Logger.getLogger(getClass().getName()).severe(String.format("Exception during database %s startup.",dbName));
+	                    return null;
+	                }
+	            }, DefaultTransactionFactory.DB_DERBY);
 	        }
 	        catch (Exception ex)
 	        {

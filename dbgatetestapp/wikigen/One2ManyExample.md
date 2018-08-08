@@ -14,17 +14,17 @@ This demonstrates one to many relationship capability of the library using 2 typ
 	    @ColumnInfo(columnType = ColumnType.VARCHAR)
 	    private String name;
 	    @ForeignKeyInfoList(infoList = {
-	        @ForeignKeyInfo(name = "parent2childA"
-	                    ,relatedObjectType = One2ManyChildEntityA.class
-	                    ,updateRule = ReferentialRuleType.RESTRICT
-	                    ,deleteRule = ReferentialRuleType.CASCADE
-	                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
+	        @ForeignKeyInfo(name = "parent2childA",
+	                relatedObjectType = One2ManyChildEntityA.class,
+	                updateRule = ReferentialRuleType.RESTRICT,
+	                deleteRule = ReferentialRuleType.CASCADE,
+	                fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
 	        ,
-	        @ForeignKeyInfo(name = "parent2childB"
-	                    ,relatedObjectType = One2ManyChildEntityB.class
-	                    ,updateRule = ReferentialRuleType.RESTRICT
-	                    ,deleteRule = ReferentialRuleType.CASCADE
-	                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
+	        @ForeignKeyInfo(name = "parent2childB",
+	                relatedObjectType = One2ManyChildEntityB.class,
+	                updateRule = ReferentialRuleType.RESTRICT,
+	                deleteRule = ReferentialRuleType.CASCADE,
+	                fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
 	    })
 	    private Collection<One2ManyChildEntity> childEntities;
 	

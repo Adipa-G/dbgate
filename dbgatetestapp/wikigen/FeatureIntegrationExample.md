@@ -101,11 +101,11 @@ This demonstrates no of features working together, with reverse relationships an
 	    private int transactionId;
 	    @ColumnInfo(columnType = ColumnType.VARCHAR)
 	    private String name;
-	    @ForeignKeyInfo(name = "tx2item_tx"
-	                ,relatedObjectType = ItemTransaction.class
-	                ,updateRule = ReferentialRuleType.RESTRICT
-	                ,deleteRule = ReferentialRuleType.CASCADE
-	                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
+	    @ForeignKeyInfo(name = "tx2item_tx",
+	            relatedObjectType = ItemTransaction.class,
+	            updateRule = ReferentialRuleType.RESTRICT,
+	            deleteRule = ReferentialRuleType.CASCADE,
+	            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
 	    private Collection<ItemTransaction> itemTransactions;
 	
 	    public Transaction()
@@ -157,25 +157,25 @@ This demonstrates no of features working together, with reverse relationships an
 	    @ColumnInfo(columnType = ColumnType.INTEGER)
 	    private int itemId;
 	    @ForeignKeyInfoList(infoList = {
-	    @ForeignKeyInfo(name = "item_tx2item"
-	                ,relatedObjectType = Item.class
-	                ,updateRule = ReferentialRuleType.RESTRICT
-	                ,deleteRule = ReferentialRuleType.CASCADE
-	                ,nonIdentifyingRelation = true
-	                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "itemId",toField = "itemId")})
+	    @ForeignKeyInfo(name = "item_tx2item",
+	            relatedObjectType = Item.class,
+	            updateRule = ReferentialRuleType.RESTRICT,
+	            deleteRule = ReferentialRuleType.CASCADE,
+	            nonIdentifyingRelation = true,
+	            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "itemId",toField = "itemId")})
 	    })
 	    private Item item;
-	    @ForeignKeyInfo(name = "item_tx2tx_rev"
-	                ,relatedObjectType = Transaction.class
-	                ,reverseRelation = true
-	                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
+	    @ForeignKeyInfo(name = "item_tx2tx_rev",
+	            relatedObjectType = Transaction.class,
+	            reverseRelation = true,
+	            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
 	    private Transaction transaction;
-	    @ForeignKeyInfo(name = "tx2item_tx_charge"
-	                ,relatedObjectType = ItemTransactionCharge.class
-	                ,updateRule = ReferentialRuleType.RESTRICT
-	                ,deleteRule = ReferentialRuleType.CASCADE
-	                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")
-	                                    ,@ForeignKeyFieldMapping(fromField = "indexNo",toField = "indexNo")})
+	    @ForeignKeyInfo(name = "tx2item_tx_charge",
+	            relatedObjectType = ItemTransactionCharge.class,
+	            updateRule = ReferentialRuleType.RESTRICT,
+	            deleteRule = ReferentialRuleType.CASCADE,
+	            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId"),
+	                              @ForeignKeyFieldMapping(fromField = "indexNo",toField = "indexNo")})
 	    private Collection<ItemTransactionCharge> itemTransactionCharges;
 	
 	    public ItemTransaction()
@@ -263,16 +263,16 @@ This demonstrates no of features working together, with reverse relationships an
 	    private int chargeIndex;
 	    @ColumnInfo(columnType = ColumnType.VARCHAR)
 	    private String chargeCode;
-	    @ForeignKeyInfo(name = "item_tx_charge2tx_rev"
-	                ,relatedObjectType = Transaction.class
-	                ,reverseRelation = true
-	                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
+	    @ForeignKeyInfo(name = "item_tx_charge2tx_rev",
+	            relatedObjectType = Transaction.class,
+	            reverseRelation = true,
+	            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
 	    private Transaction transaction;
-	    @ForeignKeyInfo(name = "item_tx_charge2tx_item_rev"
-	                ,relatedObjectType = ItemTransaction.class
-	                ,reverseRelation = true
-	                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")
-	                    ,@ForeignKeyFieldMapping(fromField = "indexNo",toField = "indexNo")})
+	    @ForeignKeyInfo(name = "item_tx_charge2tx_item_rev",
+	            relatedObjectType = ItemTransaction.class,
+	            reverseRelation = true,
+	            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId"),
+	                              @ForeignKeyFieldMapping(fromField = "indexNo",toField = "indexNo")})
 	    private ItemTransaction itemTransaction;
 	
 	    public ItemTransactionCharge()

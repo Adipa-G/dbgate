@@ -200,7 +200,18 @@ public abstract class AbstractRelation implements IRelation
     {
         try
         {
-            return (IRelation) super.clone();
+            IRelation relation = (IRelation) super.clone();
+            RelationColumnMapping[] sourceColumnMappings = relation.getTableColumnMappings();
+            RelationColumnMapping[] destColumnMappings = new RelationColumnMapping[sourceColumnMappings.length];
+
+            for (int i = 0; i < sourceColumnMappings.length; i++)
+            {
+                RelationColumnMapping columnMapping = sourceColumnMappings[i];
+                destColumnMappings[i] = columnMapping.clone();
+            }
+
+            relation.setTableColumnMappings(destColumnMappings);
+            return relation;
         }
         catch (CloneNotSupportedException e)
         {

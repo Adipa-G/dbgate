@@ -18,18 +18,18 @@ public class TreeTestRootEntityAnnotations extends DefaultEntity implements ITre
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
-    @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = TreeTestOne2ManyEntityAnnotations.class
-            ,fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2manyent",
+            relatedObjectType = TreeTestOne2ManyEntityAnnotations.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private Collection<ITreeTestOne2ManyEntity> one2ManyEntities;
 
-    @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = TreeTestOne2OneEntityAnnotations.class
-            ,fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2oneent",
+            relatedObjectType = TreeTestOne2OneEntityAnnotations.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private ITreeTestOne2OneEntity one2OneEntity;
 
     public TreeTestRootEntityAnnotations()

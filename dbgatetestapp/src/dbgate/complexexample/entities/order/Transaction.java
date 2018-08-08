@@ -18,11 +18,11 @@ public class Transaction extends DefaultEntity
     private int transactionId;
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
-    @ForeignKeyInfo(name = "tx2item_tx"
-                ,relatedObjectType = ItemTransaction.class
-                ,updateRule = ReferentialRuleType.RESTRICT
-                ,deleteRule = ReferentialRuleType.CASCADE
-                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
+    @ForeignKeyInfo(name = "tx2item_tx",
+            relatedObjectType = ItemTransaction.class,
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE,
+            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
     private Collection<ItemTransaction> itemTransactions;
 
     public Transaction()

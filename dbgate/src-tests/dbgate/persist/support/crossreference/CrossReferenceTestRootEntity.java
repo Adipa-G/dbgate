@@ -19,18 +19,18 @@ public class CrossReferenceTestRootEntity extends DefaultEntity
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
-    @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = CrossReferenceTestOne2ManyEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2manyent",
+            relatedObjectType = CrossReferenceTestOne2ManyEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private Collection<CrossReferenceTestOne2ManyEntity> one2ManyEntities;
 
-    @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = CrossReferenceTestOne2OneEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2oneent",
+            relatedObjectType = CrossReferenceTestOne2OneEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private CrossReferenceTestOne2OneEntity one2OneEntity;
 
     public CrossReferenceTestRootEntity()

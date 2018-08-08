@@ -19,7 +19,7 @@ public @interface ColumnInfo
     boolean key() default false;
     boolean nullable() default false;
     boolean subClassCommonColumn() default false;
-    int size() default 20;
+    int size() default 255;
     boolean readFromSequence() default false;
     String sequenceGeneratorClassName() default "";
 }

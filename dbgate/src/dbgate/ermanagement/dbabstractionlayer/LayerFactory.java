@@ -22,6 +22,8 @@ public class LayerFactory
                 return new MySqlDBLayer();
 	        case DefaultTransactionFactory.DB_DERBY:
 		        return new DerbyDBLayer();
+            case DefaultTransactionFactory.DB_SQLSERVER:
+                return new SqlServerDBLayer();
             default:
                 return new DefaultDBLayer();
         }

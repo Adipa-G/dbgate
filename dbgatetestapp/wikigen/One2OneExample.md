@@ -14,16 +14,16 @@ This demonstrates one to one relationship capability of the library using 2 type
 	    @ColumnInfo(columnType = ColumnType.VARCHAR)
 	    private String name;
 	    @ForeignKeyInfoList(infoList = {
-	        @ForeignKeyInfo(name = "parent2child_a"
-	                    ,relatedObjectType = One2OneChildEntityA.class
-	                    ,updateRule = ReferentialRuleType.RESTRICT
-	                    ,deleteRule = ReferentialRuleType.CASCADE
-	                    ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")}),
-	        @ForeignKeyInfo(name = "parent2child_b"
-	                ,relatedObjectType = One2OneChildEntityB.class
-	                ,updateRule = ReferentialRuleType.RESTRICT
-	                ,deleteRule = ReferentialRuleType.CASCADE
-	                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
+	        @ForeignKeyInfo(name = "parent2child_a",
+	                relatedObjectType = One2OneChildEntityA.class,
+	                updateRule = ReferentialRuleType.RESTRICT,
+	                deleteRule = ReferentialRuleType.CASCADE,
+	                fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")}),
+	        @ForeignKeyInfo(name = "parent2child_b",
+	                relatedObjectType = One2OneChildEntityB.class,
+	                updateRule = ReferentialRuleType.RESTRICT,
+	                deleteRule = ReferentialRuleType.CASCADE,
+	                fieldMappings =  {@ForeignKeyFieldMapping(fromField = "id",toField = "parentId")})
 	    })
 	    private One2OneChildEntity childEntity;
 	

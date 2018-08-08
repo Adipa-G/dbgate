@@ -21,18 +21,18 @@ public class VersionColumnTestRootEntity extends DefaultEntity
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
-    @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = VersionColumnTestOne2ManyEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2manyent",
+            relatedObjectType = VersionColumnTestOne2ManyEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private Collection<VersionColumnTestOne2ManyEntity> one2ManyEntities;
 
-    @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = VersionColumnTestOne2OneEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2oneent",
+            relatedObjectType = VersionColumnTestOne2OneEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private VersionColumnTestOne2OneEntity one2OneEntity;
 
     public VersionColumnTestRootEntity()

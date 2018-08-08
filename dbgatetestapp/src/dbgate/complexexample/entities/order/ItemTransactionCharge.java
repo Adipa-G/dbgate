@@ -19,16 +19,16 @@ public class ItemTransactionCharge  extends DefaultEntity
     private int chargeIndex;
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String chargeCode;
-    @ForeignKeyInfo(name = "item_tx_charge2tx_rev"
-                ,relatedObjectType = Transaction.class
-                ,reverseRelation = true
-                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
+    @ForeignKeyInfo(name = "item_tx_charge2tx_rev",
+            relatedObjectType = Transaction.class,
+            reverseRelation = true,
+            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")})
     private Transaction transaction;
-    @ForeignKeyInfo(name = "item_tx_charge2tx_item_rev"
-                ,relatedObjectType = ItemTransaction.class
-                ,reverseRelation = true
-                ,fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId")
-                    ,@ForeignKeyFieldMapping(fromField = "indexNo",toField = "indexNo")})
+    @ForeignKeyInfo(name = "item_tx_charge2tx_item_rev",
+            relatedObjectType = ItemTransaction.class,
+            reverseRelation = true,
+            fieldMappings =  {@ForeignKeyFieldMapping(fromField = "transactionId",toField = "transactionId"),
+                              @ForeignKeyFieldMapping(fromField = "indexNo",toField = "indexNo")})
     private ItemTransaction itemTransaction;
 
     public ItemTransactionCharge()

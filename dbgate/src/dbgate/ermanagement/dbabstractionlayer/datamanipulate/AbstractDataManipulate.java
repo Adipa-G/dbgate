@@ -35,14 +35,19 @@ import java.util.*;
  * Date: Sep 22, 2010
  * Time: 6:47:44 PM
  */
-public class AbstractDataManipulate implements IDataManipulate
+public abstract class AbstractDataManipulate implements IDataManipulate
 {
     private IDBLayer dbLayer;
 
-    public AbstractDataManipulate(IDBLayer dbLayer)
+    protected AbstractDataManipulate(IDBLayer dbLayer)
     {
         this.dbLayer = dbLayer;
         initialize();
+    }
+
+    protected String fixUpQuery(String query)
+    {
+        return query;
     }
 
     protected void initialize()
@@ -85,7 +90,7 @@ public class AbstractDataManipulate implements IDataManipulate
             sb.append("= ?");
         }
 
-        return sb.toString();
+        return fixUpQuery(sb.toString());
     }
 
     @Override
@@ -120,7 +125,7 @@ public class AbstractDataManipulate implements IDataManipulate
 
         sb.append(" )");
 
-        return sb.toString();
+        return fixUpQuery(sb.toString());
     }
 
     @Override
@@ -169,7 +174,7 @@ public class AbstractDataManipulate implements IDataManipulate
             sb.append("= ?");
         }
 
-        return sb.toString();
+        return fixUpQuery(sb.toString());
     }
 
     @Override
@@ -201,7 +206,7 @@ public class AbstractDataManipulate implements IDataManipulate
             sb.append("= ?");
         }
 
-        return sb.toString();
+        return fixUpQuery(sb.toString());
     }
 
     @Override
@@ -225,7 +230,7 @@ public class AbstractDataManipulate implements IDataManipulate
             sb.append("= ?");
         }
 
-        return sb.toString();
+        return fixUpQuery(sb.toString());
     }
 
     @Override

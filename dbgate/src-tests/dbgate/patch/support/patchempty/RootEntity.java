@@ -37,13 +37,13 @@ public class RootEntity extends AbstractManagedEntity
     private String varcharNull;
     @ForeignKeyInfoList(infoList =
     {
-        @ForeignKeyInfo(name = "fk_root2leafa"
-            ,relatedObjectType = LeafEntitySubA.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
+        @ForeignKeyInfo(name = "fk_root2leafa",
+                relatedObjectType = LeafEntitySubA.class,
+                fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
         ),
-        @ForeignKeyInfo(name = "fk_root2leafb"
-            ,relatedObjectType = LeafEntitySubB.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
+        @ForeignKeyInfo(name = "fk_root2leafb",
+                relatedObjectType = LeafEntitySubB.class,
+                fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
         )
     })
     private Collection<LeafEntity> leafEntities;

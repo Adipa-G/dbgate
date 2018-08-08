@@ -11,6 +11,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class EntityInfoCache implements IEntityInfoCache
 {
-    private final static HashMap<Class,EntityInfo> cache = new HashMap<>();
+    private final static ConcurrentHashMap<Class,EntityInfo> cache = new ConcurrentHashMap <>();
     private IDbGateConfig config;
 
     public EntityInfoCache(IDbGateConfig config)
@@ -38,7 +39,13 @@ public class EntityInfoCache implements IEntityInfoCache
         {
             if (!cache.containsKey(type))
             {
-                register(type);
+                synchronized (cache)
+                {
+                    if (!cache.containsKey(type))
+                    {
+                        register(type);
+                    }
+                }
             }
         }
         catch (Exception ex)
@@ -96,10 +103,7 @@ public class EntityInfoCache implements IEntityInfoCache
             immediateSuperEntityInfo.addSubEntityInfo(subEntityInfo);
         }
 
-        synchronized (cache)
-        {
-            cache.put(type,subEntityInfo);
-        }
+        cache.put(type,subEntityInfo);
     }
 
     public void register(Class type) throws SequenceGeneratorInitializationException, EntityRegistrationException
@@ -109,12 +113,10 @@ public class EntityInfoCache implements IEntityInfoCache
             return;
         }
         HashMap<Class,EntityInfo> extracted = extractTableAndFieldInfo(type);
-        synchronized (cache)
+
+        for (Class regType : extracted.keySet())
         {
-            for (Class regType : extracted.keySet())
-            {
-                cache.put(regType,extracted.get(regType));
-            }
+            cache.put(regType,extracted.get(regType));
         }
     }
 

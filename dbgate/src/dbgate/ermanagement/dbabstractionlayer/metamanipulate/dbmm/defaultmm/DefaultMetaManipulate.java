@@ -16,10 +16,7 @@ import dbgate.utility.DBMgtUtility;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -49,9 +46,27 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     }
 
     @Override
-    protected void extractColumnData(DatabaseMetaData metaData, MetaTable table) throws SQLException
+    protected Collection<MetaTable> extractTableData(ITransaction tx) throws SQLException
     {
-        ResultSet columnResultSet = metaData.getColumns(null,null,table.getName(),null);
+        List<MetaTable> tables = new ArrayList<>();
+
+        DatabaseMetaData metaData = tx.getConnection().getMetaData();
+        ResultSet tableResultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
+        while (tableResultSet.next())
+        {
+            MetaTable table = new MetaTable();
+            table.setName(tableResultSet.getString("TABLE_NAME"));
+            tables.add(table);
+        }
+        DBMgtUtility.close(tableResultSet);
+
+        return tables;
+    }
+
+    @Override
+    protected void extractColumnData(ITransaction tx, MetaTable table) throws SQLException
+    {
+        ResultSet columnResultSet = tx.getConnection().getMetaData().getColumns(null,null,table.getName(),null);
         while (columnResultSet.next())
         {
             MetaColumn column = new MetaColumn();
@@ -65,9 +80,9 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     }
 
     @Override
-    protected void extractPrimaryKeyData(DatabaseMetaData metaData, MetaTable table) throws SQLException
+    protected void extractPrimaryKeyData(ITransaction tx, MetaTable table) throws SQLException
     {
-        ResultSet primaryKeyResultSet = metaData.getPrimaryKeys(null,null,table.getName());
+        ResultSet primaryKeyResultSet = tx.getConnection().getMetaData().getPrimaryKeys(null,null,table.getName());
         HashMap<Integer,String> keyColMap = new HashMap<Integer, String>();
         while (primaryKeyResultSet.next())
         {
@@ -92,9 +107,9 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     }
 
     @Override
-    protected void extractForeignKeyData(DatabaseMetaData metaData, MetaTable table) throws SQLException
+    protected void extractForeignKeyData(ITransaction tx, MetaTable table) throws SQLException
     {
-        ResultSet foreignKeyResultSet = metaData.getExportedKeys(null,null,table.getName());
+        ResultSet foreignKeyResultSet = tx.getConnection().getMetaData().getExportedKeys(null,null,table.getName());
         HashMap<String, MetaForeignKey> foreignKeyMap = new HashMap<String, MetaForeignKey>();
 
         HashMap<String,HashMap<Integer,String>> fromTableColMap = new HashMap<String, HashMap<Integer, String>>();

@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,11 +74,13 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
         referentialRuleTypeMapItems.add(new ReferentialRuleTypeMapItem(ReferentialRuleType.RESTRICT, "1"));
     }
 
-    protected abstract void extractColumnData(DatabaseMetaData metaData, MetaTable table) throws SQLException;
+    protected abstract Collection<MetaTable> extractTableData(ITransaction tx) throws SQLException;
 
-    protected abstract void extractForeignKeyData(DatabaseMetaData metaData, MetaTable table) throws SQLException;
+    protected abstract void extractColumnData(ITransaction tx, MetaTable table) throws SQLException;
 
-    protected abstract void extractPrimaryKeyData(DatabaseMetaData metaData, MetaTable table) throws SQLException;
+    protected abstract void extractForeignKeyData(ITransaction tx, MetaTable table) throws SQLException;
+
+    protected abstract void extractPrimaryKeyData(ITransaction tx, MetaTable table) throws SQLException;
 
     protected abstract String createCreateTableQuery(MetaComparisonTableGroup tableGroup);
 
@@ -161,31 +164,28 @@ public abstract class AbstractMetaManipulate implements IMetaManipulate
     @Override
     public Collection<IMetaItem> getMetaData(ITransaction tx) throws MetaDataException
     {
-        Collection<IMetaItem> metaItems = new ArrayList<>();
+        Collection<IMetaItem> items = new ArrayList<>();
         try
         {
-            DatabaseMetaData metaData = tx.getConnection().getMetaData();
-            ResultSet tableResultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
-            while (tableResultSet.next())
+            Collection<MetaTable> tables = extractTableData(tx);
+
+            for (MetaTable table : tables)
             {
-                //table
-                MetaTable table = new MetaTable();
-                metaItems.add(table);
-                table.setName(tableResultSet.getString("TABLE_NAME"));
+                items.add(table);
 
-                extractColumnData(metaData, table);
+                extractColumnData(tx, table);
 
-                extractPrimaryKeyData(metaData, table);
+                extractPrimaryKeyData(tx, table);
 
-                extractForeignKeyData(metaData, table);
+                extractForeignKeyData(tx, table);
             }
-            DBMgtUtility.close(tableResultSet);
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             e.printStackTrace();
             throw new MetaDataException(e.getMessage(), e);
         }
-        return metaItems;
+        return items;
     }
 
     @Override

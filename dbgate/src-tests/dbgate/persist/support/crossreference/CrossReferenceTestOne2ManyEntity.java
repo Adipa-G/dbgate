@@ -17,11 +17,11 @@ public class CrossReferenceTestOne2ManyEntity extends DefaultEntity
     private int indexNo;
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
-    @ForeignKeyInfo(name = "fk_one2manyent2root"
-            ,relatedObjectType = CrossReferenceTestRootEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_one2manyent2root",
+            relatedObjectType = CrossReferenceTestRootEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private CrossReferenceTestRootEntity rootEntity;
 
     public CrossReferenceTestOne2ManyEntity()

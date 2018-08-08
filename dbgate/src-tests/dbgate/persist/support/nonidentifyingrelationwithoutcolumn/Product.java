@@ -16,13 +16,13 @@ public class Product extends DefaultEntity
     private int productId;
     @ColumnInfo(columnType = ColumnType.DOUBLE)
     private double price;
-    @ForeignKeyInfo(name = "product2currency"
-        ,relatedObjectType = Currency.class
-        ,updateRule = ReferentialRuleType.RESTRICT
-        ,deleteRule = ReferentialRuleType.CASCADE
-        ,nonIdentifyingRelation = true
-        ,nullable = true
-        ,fieldMappings = {@ForeignKeyFieldMapping(fromField = "productCurrencyId", toField = "currencyId")})
+    @ForeignKeyInfo(name = "product2currency",
+            relatedObjectType = Currency.class,
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE,
+            nonIdentifyingRelation = true,
+            nullable = true,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "productCurrencyId", toField = "currencyId")})
     private Currency currency;
 
     public int getProductId()

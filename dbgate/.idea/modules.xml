@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dbgate.iml" filepath="$PROJECT_DIR$/dbgate.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../dbgatetestapp/dbgatetestapp.iml" filepath="$PROJECT_DIR$/../dbgatetestapp/dbgatetestapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../performancetest/performancetest.iml" filepath="$PROJECT_DIR$/../performancetest/performancetest.iml" />
     </modules>
   </component>
 </project>
-

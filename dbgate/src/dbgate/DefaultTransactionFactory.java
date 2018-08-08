@@ -26,6 +26,7 @@ public class DefaultTransactionFactory implements ITransactionFactory
     public static final int DB_SQLLITE = 4;
     public static final int DB_DERBY = 5;
     public static final int DB_MYSQL = 6;
+    public static final int DB_SQLSERVER = 7;
 
     private Supplier<Connection> connectionFactory;
     private IDbGate dbGate;

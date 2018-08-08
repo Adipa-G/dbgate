@@ -6,10 +6,8 @@
       <root url="jar://$PROJECT_DIR$/../lib/derby.10.6.1.0/derbynet.jar!/" />
       <root url="jar://$PROJECT_DIR$/../lib/derby.10.6.1.0/derbyrun.jar!/" />
       <root url="jar://$PROJECT_DIR$/../lib/derby.10.6.1.0/derbytools.jar!/" />
-      <root url="file://$PROJECT_DIR$/../lib/emma.2.0.5" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://$PROJECT_DIR$/../lib/emma.2.0.5" recursive="false" />
   </library>
 </component>

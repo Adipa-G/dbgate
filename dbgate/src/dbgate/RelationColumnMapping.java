@@ -6,7 +6,7 @@ package dbgate;
  * Date: Sep 26, 2010
  * Time: 5:19:58 PM
  */
-public class RelationColumnMapping
+public class RelationColumnMapping implements Cloneable
 {
     private String fromField;
     private String toField;
@@ -35,5 +35,18 @@ public class RelationColumnMapping
     public void setToField(String toField)
     {
         this.toField = toField;
+    }
+
+    public RelationColumnMapping clone()
+    {
+        try
+        {
+            return  (RelationColumnMapping) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

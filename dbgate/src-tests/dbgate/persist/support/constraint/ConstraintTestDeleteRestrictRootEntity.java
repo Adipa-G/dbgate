@@ -19,18 +19,18 @@ public class ConstraintTestDeleteRestrictRootEntity extends DefaultEntity
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
-    @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = ConstraintTestOne2ManyEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.RESTRICT)
+    @ForeignKeyInfo(name = "fk_root2one2manyent",
+            relatedObjectType = ConstraintTestOne2ManyEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.RESTRICT)
     private Collection<ConstraintTestOne2ManyEntity> one2ManyEntities;
 
-    @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = ConstraintTestOne2OneEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.RESTRICT)
+    @ForeignKeyInfo(name = "fk_root2one2oneent",
+            relatedObjectType = ConstraintTestOne2OneEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.RESTRICT)
     private ConstraintTestOne2OneEntity one2OneEntity;
 
     public ConstraintTestDeleteRestrictRootEntity()

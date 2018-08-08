@@ -19,18 +19,18 @@ public class ConstraintTestDeleteCascadeRootEntity extends DefaultEntity
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
-    @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = ConstraintTestOne2ManyEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2manyent",
+            relatedObjectType = ConstraintTestOne2ManyEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private Collection<ConstraintTestOne2ManyEntity> one2ManyEntities;
 
-    @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = ConstraintTestOne2OneEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_root2one2oneent",
+            relatedObjectType = ConstraintTestOne2OneEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private ConstraintTestOne2OneEntity one2OneEntity;
 
     public ConstraintTestDeleteCascadeRootEntity()

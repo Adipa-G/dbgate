@@ -19,20 +19,20 @@ public class LazyRootEntity extends DefaultEntity
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
 
-    @ForeignKeyInfo(name = "fk_root2one2manyent"
-            ,relatedObjectType = LazyOne2ManyEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE
-            , fetchStrategy = FetchStrategy.LAZY)
+    @ForeignKeyInfo(name = "fk_root2one2manyent",
+            relatedObjectType = LazyOne2ManyEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE,
+            fetchStrategy = FetchStrategy.LAZY)
     private Collection<LazyOne2ManyEntity> one2ManyEntities;
 
-    @ForeignKeyInfo(name = "fk_root2one2oneent"
-            ,relatedObjectType = LazyOne2OneEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE
-            ,fetchStrategy = FetchStrategy.LAZY)
+    @ForeignKeyInfo(name = "fk_root2one2oneent",
+            relatedObjectType = LazyOne2OneEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE,
+            fetchStrategy = FetchStrategy.LAZY)
     private LazyOne2OneEntity one2OneEntity;
 
     public LazyRootEntity()

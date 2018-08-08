@@ -318,19 +318,23 @@ public class EntityInfo
         String cacheKey = createCacheKey(true,attributeName);
         Method method = getFromMapIfExists(cacheKey);
 
-        if (method == null)
+        synchronized (methodMap)
         {
-            String getterName = "get" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-            try
-            {
-                method = getGetterByNameAndRegisterInCache(cacheKey,getterName);
-            }
-            catch (MethodNotFoundException e)
-            {
-                getterName = "is" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-                method = getGetterByNameAndRegisterInCache(cacheKey,getterName);
-            }
+	        if (method == null)
+	        {
+		        String getterName = "get" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+		        try
+		        {
+			        method = getGetterByNameAndRegisterInCache(cacheKey, getterName);
+		        }
+		        catch (MethodNotFoundException e)
+		        {
+			        getterName = "is" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+			        method = getGetterByNameAndRegisterInCache(cacheKey, getterName);
+		        }
+	        }
         }
+
         return method;
     }
 
@@ -345,11 +349,14 @@ public class EntityInfo
     {
         String cacheKey = createCacheKey(false,attributeName);
         Method method = getFromMapIfExists(cacheKey);
-        if (method == null)
+        synchronized (methodMap)
         {
-            String setterName = "set" + attributeName.substring(0,1).toUpperCase() + attributeName.substring(1);
-            method = getMethod(setterName,params);
-            addToMap(cacheKey, method);
+            if (method == null)
+            {
+                String setterName = "set" + attributeName.substring(0, 1).toUpperCase() + attributeName.substring(1);
+                method = getMethod(setterName, params);
+                addToMap(cacheKey, method);
+            }
         }
         return method;
     }
@@ -364,10 +371,7 @@ public class EntityInfo
 
     private void addToMap(String cacheKey, Method method)
     {
-        synchronized (methodMap)
-        {
-            methodMap.put(cacheKey,method);
-        }
+        methodMap.put(cacheKey, method);
     }
 
     private Method getMethod(String name,Class[] params) throws MethodNotFoundException

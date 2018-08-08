@@ -15,12 +15,12 @@ public class QueryBasicEntity extends DefaultEntity
     private int idCol;
     @ColumnInfo(columnType = ColumnType.VARCHAR)
     private String name;
-    @ForeignKeyInfo(name = "fk_basic2join"
-            ,relatedObjectType = QueryBasicJoinEntity.class
-            , fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol")
-                               ,@ForeignKeyFieldMapping(fromField = "name", toField = "name")}
-            ,updateRule = ReferentialRuleType.RESTRICT
-            ,deleteRule = ReferentialRuleType.CASCADE)
+    @ForeignKeyInfo(name = "fk_basic2join",
+            relatedObjectType = QueryBasicJoinEntity.class,
+            fieldMappings = {@ForeignKeyFieldMapping(fromField = "idCol", toField = "idCol"),
+                             @ForeignKeyFieldMapping(fromField = "name", toField = "name")},
+            updateRule = ReferentialRuleType.RESTRICT,
+            deleteRule = ReferentialRuleType.CASCADE)
     private QueryBasicJoinEntity joinEntity;
 
     public QueryBasicEntity()
