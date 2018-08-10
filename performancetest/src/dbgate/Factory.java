@@ -16,9 +16,9 @@ import java.util.Random;
  */
 public class Factory
 {
-	private Random random = new Random();
+	private final Random random = new Random();
 
-	public List<IEntity> Generate(int seed,int txCount,int productsOrServicesPerTx)
+	public List<IEntity> generate(int seed, int txCount, int productsOrServicesPerTx)
 	{
 		List<IEntity> list = new ArrayList<IEntity>();
 		List<Integer> productIds = new ArrayList<Integer>();
@@ -94,5 +94,46 @@ public class Factory
 			list.add(transaction);
 		}
 		return list;
+	}
+
+	public void update(List<IEntity> entities)
+	{
+		for (IEntity entity : entities)
+		{
+			if (entity instanceof Product)
+			{
+				Product product = (Product)entity;
+				product.setName("Upd " + product.getName());
+				product.setUnitPrice(product.getUnitPrice() + 5);
+				product.setBulkUnitPrice(product.getBulkUnitPrice() + 2);
+			}
+			else if (entity instanceof Service)
+			{
+				Service service = (Service )entity;
+				service.setName("Upd " + service.getName());
+				service.setHourlyRate(service.getHourlyRate() + 2);
+			}
+			else if (entity instanceof Transaction)
+			{
+				Transaction transaction = (Transaction)entity;
+				transaction.setName("Upd " + transaction.getName());
+
+				ItemTransaction prev = null;
+				for (ItemTransaction itemTransaction : transaction.getItemTransactions())
+				{
+					if (prev != null)
+					{
+						itemTransaction.setItem(prev.getItem());
+					}
+
+					for (ItemTransactionCharge charge : itemTransaction.getItemTransactionCharges())
+					{
+						charge.setChargeCode("Upd " + charge.getChargeCode());
+					}
+
+					prev = itemTransaction;
+				}
+			}
+		}
 	}
 }

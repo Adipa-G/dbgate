@@ -8,7 +8,7 @@ import dbgate.TableInfo;
  * Date: Mar 31, 2011
  * Time: 9:46:42 PM
  */
-@TableInfo(tableName = "product_service")
+@TableInfo(tableName = "dbgate_product_service")
 public class Service extends Item
 {
     @ColumnInfo(columnType = ColumnType.DOUBLE)

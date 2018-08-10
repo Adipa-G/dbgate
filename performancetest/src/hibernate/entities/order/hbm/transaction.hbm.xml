@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "hibernate.entities.order.Transaction" table = "hibernate_order_transaction">
+        <id name = "transactionId" type = "int" column = "transactionId"/>
+        <property name = "name" column = "name" type = "string"/>
+
+        <set name="itemTransactions"
+             table="hibernate_order_item_transaction"
+             inverse="true"
+             lazy="true"
+             fetch="select">
+            <key>
+                <column name="transactionId" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.entities.order.ItemTransaction" />
+        </set>
+    </class>
+</hibernate-mapping>

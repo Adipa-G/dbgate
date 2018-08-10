@@ -9,7 +9,7 @@ import dbgate.TableInfo;
  * Date: Mar 31, 2011
  * Time: 9:45:55 PM
  */
-@TableInfo(tableName = "product_item")
+@TableInfo(tableName = "dbgate_product_item")
 public abstract class Item extends DefaultEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true,subClassCommonColumn = true)

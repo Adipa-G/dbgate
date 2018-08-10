@@ -45,11 +45,6 @@ public abstract class AbstractDataManipulate implements IDataManipulate
         initialize();
     }
 
-    protected String fixUpQuery(String query)
-    {
-        return query;
-    }
-
     protected void initialize()
     {
         QuerySelection.setFactory(new AbstractSelectionFactory());
@@ -59,6 +54,11 @@ public abstract class AbstractDataManipulate implements IDataManipulate
         QueryGroup.setFactory(new AbstractGroupFactory());
         QueryGroupCondition.setFactory(new AbstractGroupConditionFactory());
         QueryOrderBy.setFactory(new AbstractOrderByFactory());
+    }
+
+    protected String fixUpQuery(String query)
+    {
+        return query;
     }
 
     @Override

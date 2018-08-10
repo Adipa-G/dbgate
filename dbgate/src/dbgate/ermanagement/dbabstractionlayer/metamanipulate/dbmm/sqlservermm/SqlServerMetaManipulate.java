@@ -54,7 +54,7 @@ public class SqlServerMetaManipulate extends DefaultMetaManipulate
         columnTypeMapItems.add(new ColumnTypeMapItem("FLOAT", ColumnType.FLOAT, "0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("CHAR", ColumnType.CHAR, "' '"));
         columnTypeMapItems.add(new ColumnTypeMapItem("DATE", ColumnType.DATE, "1981/10/12"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("DECIMAL", ColumnType.DOUBLE, "0"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("FLOAT", ColumnType.DOUBLE, "0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("BIGINT", ColumnType.LONG, "0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("TIMESTAMP", ColumnType.TIMESTAMP, "1961/11/17"));
         columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR", ColumnType.VARCHAR, "''"));

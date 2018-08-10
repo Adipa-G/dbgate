@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "hibernate.entities.order.ItemTransactionCharge" table = "hibernate_order_item_transaction_charge">
+        <composite-id>
+            <key-property name="transactionId" column="transactionId" type="int"/>
+            <key-property name="indexNo" column="indexNo" type="int"/>
+            <key-property name="chargeIndex" column="chargeIndex" type="int"/>
+        </composite-id>
+
+        <property name = "chargeCode" column = "chargeCode" type = "string"/>
+
+        <many-to-one name="itemTransaction"
+                     class="hibernate.entities.order.ItemTransaction"
+                     not-null="true"
+                     insert="false"
+                     update="false">
+            <column name="transactionId"/>
+            <column name="indexNo"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

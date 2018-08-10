@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="org.hibernate:hibernate-core:5.2.12.Final" type="repository">
+    <properties maven-id="org.hibernate:hibernate-core:5.2.12.Final" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/hibernate-core-5.2.12.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/jboss-logging-3.3.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/hibernate-jpa-2.1-api-1.0.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/javassist-3.20.0-GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/antlr-2.7.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/jboss-transaction-api_1.2_spec-1.0.1.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/jandex-2.0.3.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/classmate-1.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/dom4j-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/xml-apis-1.0.b2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lib/hibernate.5.2.12/hibernate-commons-annotations-5.0.1.Final.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

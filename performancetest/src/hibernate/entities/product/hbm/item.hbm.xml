@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "hibernate.entities.product.Item" abstract="true">
+        <id name = "itemId" type = "int" column = "itemId"/>
+        <property name = "name" column = "name" type = "string"/>
+
+        <union-subclass name="hibernate.entities.product.Product" table="hibernate_product_product">
+            <property name = "unitPrice" column = "unitPrice" type = "double"/>
+            <property name = "bulkUnitPrice" column = "bulkUnitPrice" type = "double"/>
+        </union-subclass>
+
+        <union-subclass name="hibernate.entities.product.Service" table="hibernate_product_service">
+            <property name = "hourlyRate" column = "hourlyRate" type = "double"/>
+        </union-subclass>
+    </class>
+</hibernate-mapping>

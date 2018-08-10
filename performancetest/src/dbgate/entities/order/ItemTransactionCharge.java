@@ -6,7 +6,7 @@ import dbgate.*;
  * Date: Mar 31, 2011
  * Time: 9:59:13 PM
  */
-@TableInfo(tableName = "order_item_transaction_charge")
+@TableInfo(tableName = "dbgate_order_item_transaction_charge")
 public class ItemTransactionCharge extends DefaultEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)

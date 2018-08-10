@@ -9,7 +9,7 @@ import java.util.Collection;
  * Date: Mar 31, 2011
  * Time: 9:55:15 PM
  */
-@TableInfo(tableName = "order_transaction")
+@TableInfo(tableName = "dbgate_order_transaction")
 public class Transaction extends DefaultEntity
 {
     @ColumnInfo(columnType = ColumnType.INTEGER,key = true)

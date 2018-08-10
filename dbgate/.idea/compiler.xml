@@ -15,7 +15,7 @@
       <entry name="?*.html" />
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
-      <entry name="?*.ftl" />
+      <entry name="?*.ftl,*.xml" />
     </wildcardResourcePatterns>
     <bytecodeTargetLevel target="1.8" />
   </component>

@@ -12,21 +12,4 @@ public class SqlServerDataManipulate extends AbstractDataManipulate
 	{
 		super(dbLayer);
 	}
-
-//	@Override
-//	protected String fixUpQuery(String query)
-//	{
-//		StringBuilder sb = new StringBuilder();
-//		String[] tokens = query.split("\\?");
-//		for (int i = 0; i < tokens.length; i++)
-//		{
-//			String token = tokens[i];
-//			if (i > 0)
-//			{
-//				sb.append("@{").append(i).append("}");
-//			}
-//			sb.append(token);
-//		}
-//		return sb.toString();
-//	}
 }
