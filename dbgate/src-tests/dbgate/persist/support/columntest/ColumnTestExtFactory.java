@@ -39,6 +39,8 @@ public class ColumnTestExtFactory
             dbColumns.add(new DefaultColumn("timestampNull", ColumnType.TIMESTAMP,true));
             dbColumns.add(new DefaultColumn("varcharNotNull", ColumnType.VARCHAR));
             dbColumns.add(new DefaultColumn("varcharNull", ColumnType.VARCHAR,true));
+            dbColumns.add(new DefaultColumn("guidNotNull", ColumnType.GUID));
+            dbColumns.add(new DefaultColumn("guidNull", ColumnType.GUID,true));
         }
 
         return dbColumns;

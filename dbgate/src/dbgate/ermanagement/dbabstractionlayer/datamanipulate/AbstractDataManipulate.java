@@ -367,6 +367,20 @@ public abstract class AbstractDataManipulate implements IDataManipulate
                     {
                         return rs.getString(dbColumn.getColumnName());
                     }
+                case GUID:
+                    if (dbColumn.isNullable())
+                    {
+                        Object obj = rs.getObject(dbColumn.getColumnName());
+                        if (obj != null)
+                        {
+                            return UUID.fromString(rs.getString(dbColumn.getColumnName()));
+                        }
+                        return null;
+                    }
+                    else
+                    {
+                        return UUID.fromString(rs.getString(dbColumn.getColumnName()));
+                    }
                 default:
                     return null;
             }
@@ -401,6 +415,9 @@ public abstract class AbstractDataManipulate implements IDataManipulate
                     break;
                 case TIMESTAMP:
                     objToSet = obj != null ? ((TimeStampWrapper)obj)._getSQLTimeStamp() : null;
+                    break;
+                case GUID:
+                    objToSet = obj != null ? obj.toString() : null;
                     break;
             }
             int sqlType = ColumnType.getSqlType(columnType);

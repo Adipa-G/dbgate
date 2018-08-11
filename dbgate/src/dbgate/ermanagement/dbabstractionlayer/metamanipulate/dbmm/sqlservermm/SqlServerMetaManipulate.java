@@ -59,6 +59,7 @@ public class SqlServerMetaManipulate extends DefaultMetaManipulate
         columnTypeMapItems.add(new ColumnTypeMapItem("TIMESTAMP", ColumnType.TIMESTAMP, "1961/11/17"));
         columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR", ColumnType.VARCHAR, "''"));
         columnTypeMapItems.add(new ColumnTypeMapItem("NVARCHAR", ColumnType.VARCHAR, "''"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("UNIQUEIDENTIFIER", ColumnType.GUID, "00000000-0000-0000-0000-000000000000"));
     }
 
     @Override

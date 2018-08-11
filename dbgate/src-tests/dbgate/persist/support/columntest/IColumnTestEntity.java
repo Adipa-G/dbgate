@@ -4,6 +4,8 @@ import dbgate.DateWrapper;
 import dbgate.IEntity;
 import dbgate.TimeStampWrapper;
 
+import java.util.UUID;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -88,5 +90,11 @@ public interface IColumnTestEntity extends IEntity
 
     void setVarcharNull(String varcharNull);
 
-    
+    UUID getGuidNotNull();
+
+    void setGuidNotNull(UUID guidNotNull);
+
+    UUID getGuidNull();
+
+    void setGuidNull(UUID guidNull);
 }

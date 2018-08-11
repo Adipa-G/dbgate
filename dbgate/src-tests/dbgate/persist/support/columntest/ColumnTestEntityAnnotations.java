@@ -2,6 +2,8 @@ package dbgate.persist.support.columntest;
 
 import dbgate.*;
 
+import java.util.UUID;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Adipa
@@ -50,6 +52,10 @@ public class ColumnTestEntityAnnotations extends DefaultEntity implements IColum
     private String varcharNotNull;
     @ColumnInfo(columnType = ColumnType.VARCHAR,nullable = true)
     private String varcharNull;
+    @ColumnInfo(columnType = ColumnType.GUID)
+    private UUID guidNotNull;
+    @ColumnInfo(columnType = ColumnType.GUID,nullable = true)
+    private UUID guidNull;
 
     public int getIdCol()
     {
@@ -239,5 +245,25 @@ public class ColumnTestEntityAnnotations extends DefaultEntity implements IColum
     public void setVarcharNull(String varcharNull)
     {
         this.varcharNull = varcharNull;
+    }
+
+    public UUID getGuidNotNull()
+    {
+        return guidNotNull;
+    }
+
+    public void setGuidNotNull(UUID guidNotNull)
+    {
+        this.guidNotNull = guidNotNull;
+    }
+
+    public UUID getGuidNull()
+    {
+        return guidNull;
+    }
+
+    public void setGuidNull(UUID guidNull)
+    {
+        this.guidNull = guidNull;
     }
 }

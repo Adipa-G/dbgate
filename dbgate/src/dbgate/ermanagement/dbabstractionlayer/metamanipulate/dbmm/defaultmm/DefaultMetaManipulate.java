@@ -34,6 +34,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
     @Override
     protected void fillDataMappings(ITransaction tx) throws MetaDataException
     {
+        columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR", ColumnType.GUID,"0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("INTEGER", ColumnType.INTEGER,"0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("CHAR", ColumnType.BOOLEAN,"true"));
         columnTypeMapItems.add(new ColumnTypeMapItem("FLOAT", ColumnType.FLOAT,"0"));
@@ -42,7 +43,7 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
         columnTypeMapItems.add(new ColumnTypeMapItem("DOUBLE", ColumnType.DOUBLE,"0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("BIGINT", ColumnType.LONG,"0"));
         columnTypeMapItems.add(new ColumnTypeMapItem("TIMESTAMP", ColumnType.TIMESTAMP,"1981/10/12"));
-        columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR", ColumnType.VARCHAR,"''"));
+        columnTypeMapItems.add(new ColumnTypeMapItem("VARCHAR", ColumnType.VARCHAR,"'00000000-0000-0000-0000-000000000000'"));
     }
 
     @Override
@@ -191,6 +192,11 @@ public class DefaultMetaManipulate extends AbstractMetaManipulate
                 sb.append("(");
                 sb.append(metaColumn.getSize());
                 sb.append(")");
+            }
+            else if (metaColumn.getColumnType() == ColumnType.GUID)
+            {
+                sb.append(mapColumnTypeToTypeName(metaColumn.getColumnType()));
+                sb.append("(36)");
             }
             else
             {

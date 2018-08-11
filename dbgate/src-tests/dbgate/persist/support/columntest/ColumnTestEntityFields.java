@@ -2,10 +2,7 @@ package dbgate.persist.support.columntest;
 
 import dbgate.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -35,6 +32,8 @@ public class ColumnTestEntityFields extends AbstractManagedEntity implements ICo
     private TimeStampWrapper timestampNull;
     private String varcharNotNull;
     private String varcharNull;
+    private UUID guidNotNull;
+    private UUID guidNull;
 
     public ColumnTestEntityFields()
     {
@@ -230,6 +229,26 @@ public class ColumnTestEntityFields extends AbstractManagedEntity implements ICo
         this.varcharNull = varcharNull;
     }
 
+    public UUID getGuidNotNull()
+    {
+        return guidNotNull;
+    }
+
+    public void setGuidNotNull(UUID guidNotNull)
+    {
+        this.guidNotNull = guidNotNull;
+    }
+
+    public UUID getGuidNull()
+    {
+        return guidNull;
+    }
+
+    public void setGuidNull(UUID guidNull)
+    {
+        this.guidNull = guidNull;
+    }
+
     public Map<Class,ITable> getTableInfo()
     {
         Map<Class,ITable> map = new HashMap<>();
@@ -261,6 +280,8 @@ public class ColumnTestEntityFields extends AbstractManagedEntity implements ICo
         dbColumns.add(new DefaultColumn("timestampNull", ColumnType.TIMESTAMP,true));
         dbColumns.add(new DefaultColumn("varcharNotNull", ColumnType.VARCHAR));
         dbColumns.add(new DefaultColumn("varcharNull", ColumnType.VARCHAR,true));
+        dbColumns.add(new DefaultColumn("guidNotNull", ColumnType.GUID));
+        dbColumns.add(new DefaultColumn("guidNull", ColumnType.GUID,true));
 
         map.put(this.getClass(),dbColumns);
         return map;

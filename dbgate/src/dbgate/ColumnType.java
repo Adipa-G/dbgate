@@ -3,6 +3,7 @@ package dbgate;
 import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,6 +13,7 @@ import java.util.HashMap;
  */
 public enum ColumnType
 {
+    GUID,
     LONG,
     BOOLEAN,
     CHAR,
@@ -39,6 +41,7 @@ public enum ColumnType
             columnType2sqlType = new HashMap<>();
             sqlType2ColumnType = new HashMap<>();
 
+            addJavaTypeAndColumnTypeRelation(UUID.class, null, GUID);
             addJavaTypeAndColumnTypeRelation(Long.class,Long.TYPE,LONG);
             addJavaTypeAndColumnTypeRelation(Boolean.class,Boolean.TYPE,BOOLEAN);
             addJavaTypeAndColumnTypeRelation(Character.class,Character.TYPE,CHAR);
@@ -50,6 +53,7 @@ public enum ColumnType
             addJavaTypeAndColumnTypeRelation(String.class,null,VARCHAR);
             addJavaTypeAndColumnTypeRelation(Integer.class,Integer.TYPE,VERSION);
 
+            addSqlTypeAndColumnTypeRelation(Types.VARCHAR,GUID);
             addSqlTypeAndColumnTypeRelation(Types.BIGINT,LONG);
             addSqlTypeAndColumnTypeRelation(Types.BOOLEAN,BOOLEAN);
             addSqlTypeAndColumnTypeRelation(Types.VARCHAR,CHAR);

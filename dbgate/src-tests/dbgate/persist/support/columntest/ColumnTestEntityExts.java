@@ -10,6 +10,7 @@ import dbgate.exceptions.PersistException;
 import dbgate.exceptions.RetrievalException;
 
 import java.sql.ResultSet;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,6 +42,8 @@ public class ColumnTestEntityExts implements IColumnTestEntity
     private TimeStampWrapper timestampNull;
     private String varcharNotNull;
     private String varcharNull;
+    private UUID guidNotNull;
+    private UUID guidNull;
 
     public ColumnTestEntityExts()
     {
@@ -236,6 +239,26 @@ public class ColumnTestEntityExts implements IColumnTestEntity
     public void setVarcharNull(String varcharNull)
     {
         this.varcharNull = varcharNull;
+    }
+
+    public UUID getGuidNotNull()
+    {
+        return guidNotNull;
+    }
+
+    public void setGuidNotNull(UUID guidNotNull)
+    {
+        this.guidNotNull = guidNotNull;
+    }
+
+    public UUID getGuidNull()
+    {
+        return guidNull;
+    }
+
+    public void setGuidNull(UUID guidNull)
+    {
+        this.guidNull = guidNull;
     }
 
     public EntityStatus getStatus()

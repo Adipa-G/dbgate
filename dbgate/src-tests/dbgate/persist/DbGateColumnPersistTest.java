@@ -6,6 +6,7 @@ import junit.framework.Assert;
 import org.junit.*;
 
 import java.sql.*;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,6 +44,8 @@ public class DbGateColumnPersistTest extends AbstractDbGateTestBase
                 "\ttimestamp_null Timestamp,\n" +
                 "\tvarchar_not_null Varchar(20) NOT NULL,\n" +
                 "\tvarchar_null Varchar(20),\n" +
+                "\tguid_not_null Varchar(36) NOT NULL,\n" +
+                "\tguid_null Varchar(36),\n" +
                 " Primary Key (id_col))";
         createTableFromSql(sql,dbName);
         endInit(dbName);
@@ -906,6 +909,8 @@ public class DbGateColumnPersistTest extends AbstractDbGateTestBase
         entity.setTimestampNull(new TimeStampWrapper());
         entity.setVarcharNotNull("notNull");
         entity.setVarcharNull("null");
+        entity.setGuidNotNull(UUID.fromString("ef44f8d8-f5cf-4ec8-bd0b-dd308cd1b13a"));
+        entity.setGuidNull(UUID.fromString("5b368e46-3ec9-4cef-929e-a3e7c0c2ab73"));
     }
 
     private void createEntityWithNullValues(IColumnTestEntity entity)
@@ -928,6 +933,8 @@ public class DbGateColumnPersistTest extends AbstractDbGateTestBase
         entity.setTimestampNull(null);
         entity.setVarcharNotNull("notNull");
         entity.setVarcharNull(null);
+        entity.setGuidNotNull(UUID.fromString("ef44f8d8-f5cf-4ec8-bd0b-dd308cd1b13a"));
+        entity.setGuidNull(null);
     }
 
     private void updateEntityWithNonNullValues(IColumnTestEntity entity)
@@ -950,6 +957,8 @@ public class DbGateColumnPersistTest extends AbstractDbGateTestBase
         entity.setTimestampNull(new TimeStampWrapper(new DateWrapper(2010,6,5)));
         entity.setVarcharNotNull("notNull string");
         entity.setVarcharNull("null string");
+        entity.setGuidNotNull(UUID.fromString("db482017-52a6-466e-956c-97debeeb7ab8"));
+        entity.setGuidNull(UUID.fromString("89048524-a570-4c5f-b191-166cc8c89d66"));
     }
 
     private void updateEntityWithNullValues(IColumnTestEntity entity)
@@ -972,6 +981,8 @@ public class DbGateColumnPersistTest extends AbstractDbGateTestBase
         entity.setTimestampNull(null);
         entity.setVarcharNotNull("notNull string");
         entity.setVarcharNull(null);
+        entity.setGuidNotNull(UUID.fromString("586b4528-81cc-4121-8f4e-0ce455d8bfa0"));
+        entity.setGuidNull(null);
     }
 
     private void assertTwoEntitiesEquals(IColumnTestEntity entityA, IColumnTestEntity entityB)
@@ -994,6 +1005,8 @@ public class DbGateColumnPersistTest extends AbstractDbGateTestBase
         Assert.assertEquals(entityA.getTimestampNull(),entityB.getTimestampNull());
         Assert.assertEquals(entityA.getVarcharNotNull(),entityB.getVarcharNotNull());
         Assert.assertEquals(entityA.getVarcharNull(),entityB.getVarcharNull());
+        Assert.assertEquals(entityA.getGuidNotNull(),entityB.getGuidNotNull());
+        Assert.assertEquals(entityA.getGuidNull(),entityB.getGuidNull());
     }
 
     @After

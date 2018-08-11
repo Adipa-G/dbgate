@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -161,6 +162,8 @@ public class DbGatePatchEmptyDBTest extends AbstractDbGateTestBase
         Assert.assertEquals(entityA.getTimestampNull(),entityB.getTimestampNull());
         Assert.assertEquals(entityA.getVarcharNotNull(),entityB.getVarcharNotNull());
         Assert.assertEquals(entityA.getVarcharNull(),entityB.getVarcharNull());
+        Assert.assertEquals(entityA.getGuidNotNull(),entityB.getGuidNotNull());
+        Assert.assertEquals(entityA.getGuidNull(),entityB.getGuidNull());
         Assert.assertEquals(entityA.getLeafEntities().size(),entityB.getLeafEntities().size());
 
         Iterator<LeafEntity> iteratorA = entityA.getLeafEntities().iterator();
@@ -252,6 +255,8 @@ public class DbGatePatchEmptyDBTest extends AbstractDbGateTestBase
         entity.setTimestampNull(new TimeStampWrapper());
         entity.setVarcharNotNull("notNull");
         entity.setVarcharNull("null");
+        entity.setGuidNotNull(UUID.fromString("cfed31bc-c1f4-452a-8434-0e662ae27238"));
+        entity.setGuidNull(UUID.fromString("d03c1148-c5a6-4ebc-ba07-1ff2e271a525"));
 
         return entity;
     }
