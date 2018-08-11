@@ -27,12 +27,12 @@ public class QueryFrom
         return queryFrom;
     }
 
-    public static IQueryFrom type(Class type)
+    public static IQueryFrom entityType(Class type)
     {
-        return type(type,null);
+        return entityType(type, null);
     }
 
-    public static IQueryFrom type(Class type,String alias)
+    public static IQueryFrom entityType(Class type, String alias)
     {
         AbstractTypeFrom from = (AbstractTypeFrom) factory.createFrom(QueryFromExpressionType.TYPE);
         from.setType(type);

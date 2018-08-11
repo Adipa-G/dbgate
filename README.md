@@ -380,7 +380,7 @@ Inserting/ Quering/ Updating/ Deleting 5000 `Transaction` entities using Hiberna
 	Insertion :	711
 	Querying :	630
 	Update : 484
-	Delete : 807 
+	Delete : 807
 
 ### License
 GNU GPL V3

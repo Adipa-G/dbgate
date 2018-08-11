@@ -33,7 +33,7 @@ public class QuerySelection
         return querySelection;
     }
 
-    public static IQuerySelection type(Class type)
+    public static IQuerySelection entityType(Class type)
     {
         AbstractTypeSelection selection = (AbstractTypeSelection) factory.createSelection(
                 QuerySelectionExpressionType.TYPE);

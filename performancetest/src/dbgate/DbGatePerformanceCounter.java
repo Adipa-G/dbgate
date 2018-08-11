@@ -7,7 +7,6 @@ import dbgate.entities.product.Product;
 import dbgate.entities.product.Service;
 import dbgate.ermanagement.query.SelectionQuery;
 import dbgate.ermanagement.query.expr.ConditionExpr;
-import org.hibernate.sql.QuerySelect;
 
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -149,30 +148,30 @@ public class DbGatePerformanceCounter
 			{
 				Product product = (Product)entity;
 				loaded = new SelectionQuery()
-						.from(QueryFrom.type(Product.class))
+						.from(QueryFrom.entityType(Product.class))
 						.where(QueryCondition.expression(ConditionExpr.build()
                               .field(Product.class,"itemId").eq().value(product.getItemId())))
-						.select(QuerySelection.type(Product.class))
+						.select(QuerySelection.entityType(Product.class))
 						.toList(transaction);
 			}
 			else if (entityType == Service.class)
 			{
 				Service service = (Service)entity;
 				loaded = new SelectionQuery()
-						.from(QueryFrom.type(Service.class))
+						.from(QueryFrom.entityType(Service.class))
 						.where(QueryCondition.expression(ConditionExpr.build()
                               .field(Service.class,"itemId").eq().value(service.getItemId())))
-						.select(QuerySelection.type(Service.class))
+						.select(QuerySelection.entityType(Service.class))
 						.toList(transaction);
 			}
 			else if (entityType == Transaction.class)
 			{
 				Transaction service = (Transaction)entity;
 				loaded = new SelectionQuery()
-						.from(QueryFrom.type(Transaction.class))
+						.from(QueryFrom.entityType(Transaction.class))
 						.where(QueryCondition.expression(ConditionExpr.build()
                               .field(Transaction.class,"transactionId").eq().value(service.getTransactionId())))
-						.select(QuerySelection.type(Transaction.class))
+						.select(QuerySelection.entityType(Transaction.class))
 						.toList(transaction);
 			}
 

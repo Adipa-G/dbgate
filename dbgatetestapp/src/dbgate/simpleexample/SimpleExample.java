@@ -1,7 +1,6 @@
 package dbgate.simpleexample;
 
 import dbgate.*;
-import dbgate.ermanagement.ermapper.DbGate;
 import dbgate.ermanagement.query.SelectionQuery;
 import dbgate.exceptions.DBPatchingException;
 import dbgate.exceptions.PersistException;
@@ -12,7 +11,6 @@ import dbgate.simpleexample.entities.SimpleEntity;
 import dbgate.utility.DBMgtUtility;
 import docgenerate.WikiCodeBlock;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -85,8 +83,8 @@ public class SimpleExample extends ExampleBase
     {
         ITransaction tx = factory.createTransaction();
         ISelectionQuery query = new SelectionQuery()
-                .from(QueryFrom.type(SimpleEntity.class))
-                .select(QuerySelection.type(SimpleEntity.class));
+                .from(QueryFrom.entityType(SimpleEntity.class))
+                .select(QuerySelection.entityType(SimpleEntity.class));
 
         Collection entities = query.toList(tx);
         DBMgtUtility.close(tx);

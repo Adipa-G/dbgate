@@ -152,7 +152,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
-                    .select(QuerySelection.type(QueryBasicEntity.class))
+                    .select(QuerySelection.entityType(QueryBasicEntity.class))
                     .skip(1);
 
             Collection results = query.toList(tx);
@@ -178,7 +178,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
-                    .select(QuerySelection.type(QueryBasicEntity.class))
+                    .select(QuerySelection.entityType(QueryBasicEntity.class))
                     .fetch(2);
 
             Collection results = query.toList(tx);
@@ -204,7 +204,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
-                    .select(QuerySelection.type(QueryBasicEntity.class))
+                    .select(QuerySelection.entityType(QueryBasicEntity.class))
                     .skip(1).fetch(2);
 
             Collection results = query.toList(tx);
@@ -230,7 +230,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.rawSql("query_basic qb1"))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
@@ -262,13 +262,13 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery descriptionQuery = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
+                    .from(QueryFrom.entityType(QueryBasicDetailsEntity.class, "qbd1"))
                     .where(QueryCondition.rawSql("qbd1.name = qb1.name"))
                     .select(QuerySelection.rawSql("qbd1.description")).fetch(1);
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
-                    .select(QuerySelection.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
+                    .select(QuerySelection.entityType(QueryBasicEntity.class))
                     .select(QuerySelection.query(descriptionQuery,"description"));
 
             Collection results = query.toList(tx);
@@ -303,7 +303,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "name", "name1"));
 
             Collection results = query.toList(tx);
@@ -336,7 +336,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class, "qb1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.field("name","name1"));
 
             Collection results = query.toList(tx);
@@ -369,7 +369,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.sum(QueryBasicEntity.class, "idCol", "id_sum"));
 
             Collection results = query.toList(tx);
@@ -405,7 +405,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.count(QueryBasicEntity.class, "idCol", "id_count"));
 
             Collection results = query.toList(tx);
@@ -436,7 +436,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.custFunction("Count",QueryBasicEntity.class, "idCol", "id_count"));
 
             Collection results = query.toList(tx);
@@ -466,8 +466,8 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results,basicEntityIds);
@@ -492,11 +492,11 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery from = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class));
+                    .from(QueryFrom.entityType(QueryBasicEntity.class));
 
             ISelectionQuery query = new SelectionQuery()
                     .from(QueryFrom.query(from,"qb1"))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results,basicEntityIds);
@@ -521,11 +521,11 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery fromBasic = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .select(QuerySelection.rawSql("name as name1"));
 
             ISelectionQuery fromDetails = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicDetailsEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicDetailsEntity.class))
                     .select(QuerySelection.rawSql("name as name1"));
 
             ISelectionQuery query = new SelectionQuery()
@@ -597,10 +597,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").eq().value(ColumnType.INTEGER,35)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35);
@@ -624,10 +624,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").eq().value(35)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35);
@@ -651,10 +651,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").neq().value(ColumnType.INTEGER,35)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results,45,55,65);
@@ -678,10 +678,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").gt().value(ColumnType.INTEGER,45)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 55, 65);
@@ -705,10 +705,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").ge().value(ColumnType.INTEGER,45)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 45, 55, 65);
@@ -732,10 +732,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").lt().value(ColumnType.INTEGER,45)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results,35);
@@ -759,10 +759,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").le().value(ColumnType.INTEGER,45)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35, 45);
@@ -786,10 +786,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "name").like().value(ColumnType.VARCHAR,"Org-NameA")))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
@@ -813,10 +813,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicDetailsEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicDetailsEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicDetailsEntity.class, "name").neq().field(QueryBasicDetailsEntity.class, "description")))
-                    .select(QuerySelection.type(QueryBasicDetailsEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicDetailsEntity.class));
 
             Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 2);
@@ -841,15 +841,15 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class, "qbd1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qbd1"))
                     .orderBy(QueryOrderBy.rawSql("id_col"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "idCol", "id_col")).fetch(1);
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").gt().query(subQuery)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, Arrays.copyOfRange(basicEntityIds, 1, 4));
@@ -873,10 +873,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").between().values(ColumnType.INTEGER,35,55)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
@@ -900,10 +900,10 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").in().values(35,55)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35, 55);
@@ -928,14 +928,14 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class,"idCol").in().query(subQuery)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results,basicEntityIds);
@@ -960,16 +960,16 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
+                    .from(QueryFrom.entityType(QueryBasicDetailsEntity.class, "qbd1"))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicDetailsEntity.class,"qbd1","name").eq().field(QueryBasicEntity.class,"qb1","name")))
-                    .select(QuerySelection.type(QueryBasicDetailsEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicDetailsEntity.class));
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .query(subQuery).exists()))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, basicEntityIds);
@@ -994,16 +994,16 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
             tx = connector.createTransaction();
 
             ISelectionQuery subQuery = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicDetailsEntity.class,"qbd1"))
+                    .from(QueryFrom.entityType(QueryBasicDetailsEntity.class, "qbd1"))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicDetailsEntity.class,"qbd1","name").eq().field(QueryBasicEntity.class,"qb1","name")))
-                    .select(QuerySelection.type(QueryBasicDetailsEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicDetailsEntity.class));
 
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .query(subQuery).notExists()))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 0);
@@ -1027,11 +1027,11 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,35,55)
                         .and().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,45,55)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 55);
@@ -1055,12 +1055,12 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,35,55)
                         .or().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,55)
                         .or().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,45,55)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
@@ -1084,12 +1084,12 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,35,55)
                         .or().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,55)
                         .and().field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER,45,55)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results,35,55);
@@ -1113,14 +1113,14 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .and(ConditionExpr.build()
                                      .field(QueryBasicEntity.class, "idCol").in().values(ColumnType.INTEGER, 35, 55)
                                 , ConditionExpr.build()
                                 .field(QueryBasicEntity.class, "idCol").eq().value(ColumnType.INTEGER, 55))
                         .or().field(QueryBasicEntity.class, "idCol").eq().value(ColumnType.INTEGER,45)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 45, 55);
@@ -1144,14 +1144,14 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class))
                     .where(QueryCondition.expression(ConditionExpr.build()
                         .or(ConditionExpr.build()
                             .field(QueryBasicEntity.class,"idCol").in().values(ColumnType.INTEGER,35,55)
                             ,ConditionExpr.build()
                             .field(QueryBasicEntity.class,"idCol").eq().value(ColumnType.INTEGER,55))
                         .or().field(QueryBasicEntity.class,"idCol").eq().value(ColumnType.INTEGER,45)))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, 35, 45, 55);
@@ -1178,7 +1178,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .join(QueryJoin.rawSql("inner join query_basic_details qbd1 on qb1.name = qbd1.name"))
                     .orderBy(QueryOrderBy.rawSql("qb1.name"))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             hasIds(results, basicEntityIds);
@@ -1202,8 +1202,8 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
-                    .join(QueryJoin.type(QueryBasicEntity.class,QueryBasicJoinEntity.class,"qbj1"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
+                    .join(QueryJoin.entityType(QueryBasicEntity.class, QueryBasicJoinEntity.class, "qbj1"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
             Collection results = query.toList(tx);
@@ -1228,8 +1228,8 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicJoinEntity.class,"qbj1"))
-                    .join(QueryJoin.type(QueryBasicJoinEntity.class,QueryBasicEntity.class,"qb1"))
+                    .from(QueryFrom.entityType(QueryBasicJoinEntity.class, "qbj1"))
+                    .join(QueryJoin.entityType(QueryBasicJoinEntity.class, QueryBasicEntity.class, "qb1"))
                     .select(QuerySelection.field(QueryBasicJoinEntity.class, "idCol", null));
 
             Collection results = query.toList(tx);
@@ -1254,9 +1254,9 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
-                    .join(QueryJoin.type(QueryBasicEntity.class, QueryBasicJoinEntity.class, "qbj1",
-                                         QueryJoinType.LEFT))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
+                    .join(QueryJoin.entityType(QueryBasicEntity.class, QueryBasicJoinEntity.class, "qbj1",
+                                               QueryJoinType.LEFT))
                     .select(QuerySelection.field(QueryBasicEntity.class, "idCol", null));
 
             Collection results = query.toList(tx);
@@ -1281,8 +1281,8 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class,"qb1"))
-                    .join(QueryJoin.type(QueryBasicEntity.class
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb1"))
+                    .join(QueryJoin.entityType(QueryBasicEntity.class
                             , QueryBasicDetailsEntity.class
                             , JoinExpr.build()
                                 .field(QueryBasicEntity.class,"name").eq().field(QueryBasicDetailsEntity.class,"name")
@@ -1337,7 +1337,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class, "qb"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb"))
                     .groupBy(QueryGroup.field(QueryBasicEntity.class, "name"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "name", null));
 
@@ -1390,7 +1390,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
 
             tx = connector.createTransaction();
             ISelectionQuery query = new SelectionQuery()
-                    .from(QueryFrom.type(QueryBasicEntity.class, "qb"))
+                    .from(QueryFrom.entityType(QueryBasicEntity.class, "qb"))
                     .select(QuerySelection.field(QueryBasicEntity.class, "name", null))
                     .groupBy(QueryGroup.field(QueryBasicEntity.class, "name"))
                     .having(QueryGroupCondition.expression(
@@ -1449,7 +1449,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "name"))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class,"idCol"))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);
@@ -1476,7 +1476,7 @@ public class DbGateQueryBasicTest extends AbstractDbGateTestBase
                     .from(QueryFrom.rawSql("query_basic qb1"))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "name", QueryOrderType.DESCEND))
                     .orderBy(QueryOrderBy.field(QueryBasicEntity.class, "idCol", QueryOrderType.DESCEND))
-                    .select(QuerySelection.type(QueryBasicEntity.class));
+                    .select(QuerySelection.entityType(QueryBasicEntity.class));
 
             Collection results = query.toList(tx);
             Assert.assertTrue(results.size() == 4);

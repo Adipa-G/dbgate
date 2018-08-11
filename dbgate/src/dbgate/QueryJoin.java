@@ -30,37 +30,37 @@ public class QueryJoin
         return queryJoin;
     }
     
-    public static IQueryJoin type(Class from,Class to)
+    public static IQueryJoin entityType(Class from, Class to)
     {
-        return type(from,to,null,null,null);
+        return entityType(from, to, null, null, null);
     }
 
-    public static IQueryJoin type(Class from,Class to,QueryJoinType joinType)
+    public static IQueryJoin entityType(Class from, Class to, QueryJoinType joinType)
     {
-        return type(from,to,null,joinType,null);
+        return entityType(from, to, null, joinType, null);
     }
 
-    public static IQueryJoin type(Class from,Class to,String alias)
+    public static IQueryJoin entityType(Class from, Class to, String alias)
     {
-        return type(from,to,null,null,alias);
+        return entityType(from, to, null, null, alias);
     }
 
-    public static IQueryJoin type(Class from,Class to,String alias,QueryJoinType joinType)
+    public static IQueryJoin entityType(Class from, Class to, String alias, QueryJoinType joinType)
     {
-        return type(from,to,null,joinType,alias);
+        return entityType(from, to, null, joinType, alias);
     }
 
-    public static IQueryJoin type(Class from,Class to,JoinExpr expr)
+    public static IQueryJoin entityType(Class from, Class to, JoinExpr expr)
     {
-        return type(from,to,expr,null,null);
+        return entityType(from, to, expr, null, null);
     }
 
-    public static IQueryJoin type(Class from,Class to,JoinExpr expr,String alias)
+    public static IQueryJoin entityType(Class from, Class to, JoinExpr expr, String alias)
     {
-        return type(from,to,expr,null,alias);
+        return entityType(from, to, expr, null, alias);
     }
 
-    public static IQueryJoin type(Class from,Class to,JoinExpr expr,QueryJoinType joinType,String alias)
+    public static IQueryJoin entityType(Class from, Class to, JoinExpr expr, QueryJoinType joinType, String alias)
     {
         AbstractTypeJoin typeJoin = (AbstractTypeJoin) factory.createOrderBy(QueryJoinExpressionType.TYPE);
         typeJoin.setTypeFrom(from);
