@@ -95,7 +95,7 @@ public class DbGatePerformanceCounter
 
 		try
 		{
-			List<IEntity> entities = factory.generate(seed, perThread, 10);
+			List<IEntity> entities = factory.generate(seed, perThread, 2);
 			insertTet(entities);
 			queryTet(entities);
 
@@ -118,7 +118,8 @@ public class DbGatePerformanceCounter
 		{
 			IEntity entity = entities.get(i);
 			entity.persist(transaction);
-			if (i % 100 == 0){
+			if (i % 100 == 0)
+			{
 				transaction.commit();
 				transaction.close();
 				transaction = transactionFactory.createTransaction();
@@ -199,7 +200,8 @@ public class DbGatePerformanceCounter
 			IEntity entity = entities.get(i);
 			entity.setStatus(EntityStatus.MODIFIED);
 			entity.persist(transaction);
-			if (i % 100 == 0){
+			if (i % 100 == 0)
+			{
 				transaction.commit();
 				transaction.close();
 				transaction = transactionFactory.createTransaction();
@@ -219,16 +221,19 @@ public class DbGatePerformanceCounter
 		long start = new Date().getTime();
 		ITransaction transaction = transactionFactory.createTransaction();
 
-		for (int i = 0; i < entities.size(); i++)
+		IEntity prevEntity = null;
+		for (int i = entities.size() - 1 ; i >= 0; i--)
 		{
 			IEntity entity = entities.get(i);
 			entity.setStatus(EntityStatus.DELETED);
 			entity.persist(transaction);
-			if (i % 100 == 0){
+			if (i % 100 == 0 || (prevEntity != null && entity.getClass() != prevEntity.getClass()))
+			{
 				transaction.commit();
 				transaction.close();
 				transaction = transactionFactory.createTransaction();
 			}
+			prevEntity = entity;
 		}
 		transaction.commit();
 		transaction.close();

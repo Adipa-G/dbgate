@@ -115,17 +115,272 @@ Fastest way to setup the system is to
 #### Compile From Sources
 The editor used is Intellij IDEA Community Edition. An ant script is included to run the unit tests. Compilation ant script needed to be re-generated from the editor to run the build. Required libraries are included in the lib folder.
 
-#### Things to be done
-* Basic performance tests
-* Support for batching
-* Fluent interface for manual entity registration
-* Ability to switch between fields/methods to set values to objects (instead of calling  setter, setting value directly to the field)
-* Get rid of requirement of super class (support for POJO entities)
-* Ability to add events
-* Ability to use a discriminator column to determine the sub class type when loading entities form different tables
-* Conventions to automatically configure the mappings
-* Add support for more data types such as clob/blob
-* Library currently supports limited no of database types at sql generation level (specially queries for db meta data), so that part need to be expanded for more databases.
+### Performance
+#### Test entities
+
+	public abstract class Item
+    {
+        private int itemId;
+        private String name;
+
+        public int getItemId()
+        {
+            return itemId;
+        }
+
+        public void setItemId(int itemId)
+        {
+            this.itemId = itemId;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+
+        public void setName(String name)
+        {
+            this.name = name;
+        }
+    }
+
+	public class Product extends Item
+    {
+        private double unitPrice;
+        private Double bulkUnitPrice;
+
+        public double getUnitPrice()
+        {
+            return unitPrice;
+        }
+
+        public void setUnitPrice(double unitPrice)
+        {
+            this.unitPrice = unitPrice;
+        }
+
+        public Double getBulkUnitPrice()
+        {
+            return bulkUnitPrice;
+        }
+
+        public void setBulkUnitPrice(Double bulkUnitPrice)
+        {
+            this.bulkUnitPrice = bulkUnitPrice;
+        }
+    }
+
+	public class Service extends Item
+    {
+        private double hourlyRate;
+
+        public double getHourlyRate()
+        {
+            return hourlyRate;
+        }
+
+        public void setHourlyRate(double hourlyRate)
+        {
+            this.hourlyRate = hourlyRate;
+        }
+    }
+
+	public class Transaction
+    {
+    	private int transactionId;
+    	private String name;
+    	private Set<ItemTransaction> itemTransactions;
+
+    	public Transaction()
+    	{
+    		this.itemTransactions = new HashSet<>();
+    	}
+
+    	public int getTransactionId()
+    	{
+    		return transactionId;
+    	}
+
+    	public void setTransactionId(int transactionId)
+    	{
+    		this.transactionId = transactionId;
+    	}
+
+    	public String getName()
+    	{
+    		return name;
+    	}
+
+    	public void setName(String name)
+    	{
+    		this.name = name;
+    	}
+
+    	public Collection<ItemTransaction> getItemTransactions()
+    	{
+    		return itemTransactions;
+    	}
+
+    	public void setItemTransactions(Set<ItemTransaction> itemTransactions)
+    	{
+    		this.itemTransactions = itemTransactions;
+    	}
+    }
+
+	public class ItemTransaction implements Serializable
+    {
+        private int transactionId;
+        private int indexNo;
+        private Item item;
+        private Transaction transaction;
+        private Set<ItemTransactionCharge> itemTransactionCharges;
+
+        public ItemTransaction()
+        {
+        }
+
+        public ItemTransaction(Transaction transaction)
+        {
+            this.transaction = transaction;
+            itemTransactionCharges = new HashSet<ItemTransactionCharge>();
+        }
+
+        public int getTransactionId()
+        {
+            return transactionId;
+        }
+
+        public void setTransactionId(int transactionId)
+        {
+            this.transactionId = transactionId;
+        }
+
+        public int getIndexNo()
+        {
+            return indexNo;
+        }
+
+        public void setIndexNo(int indexNo)
+        {
+            this.indexNo = indexNo;
+        }
+
+        public Item getItem()
+        {
+            return item;
+        }
+
+        public void setItem(Item item)
+        {
+            this.item = item;
+        }
+
+        public Transaction getTransaction()
+        {
+            return transaction;
+        }
+
+        public void setTransaction(Transaction transaction)
+        {
+            this.transaction = transaction;
+        }
+
+        public Collection<ItemTransactionCharge> getItemTransactionCharges()
+        {
+            return itemTransactionCharges;
+        }
+
+        public void setItemTransactionCharges(Set<ItemTransactionCharge> itemTransactionCharges)
+        {
+            this.itemTransactionCharges = itemTransactionCharges;
+        }
+    }
+
+	public class ItemTransactionCharge implements Serializable
+    {
+        private int transactionId;
+        private int indexNo;
+        private int chargeIndex;
+        private String chargeCode;
+        private ItemTransaction itemTransaction;
+
+        public ItemTransactionCharge()
+        {
+        }
+
+        public ItemTransactionCharge(ItemTransaction itemTransaction)
+        {
+            this.itemTransaction = itemTransaction;
+        }
+
+        public int getTransactionId()
+        {
+            return transactionId;
+        }
+
+        public void setTransactionId(int transactionId)
+        {
+            this.transactionId = transactionId;
+        }
+
+        public int getIndexNo()
+        {
+            return indexNo;
+        }
+
+        public void setIndexNo(int indexNo)
+        {
+            this.indexNo = indexNo;
+        }
+
+        public int getChargeIndex()
+        {
+            return chargeIndex;
+        }
+
+        public void setChargeIndex(int chargeIndex)
+        {
+            this.chargeIndex = chargeIndex;
+        }
+
+        public String getChargeCode()
+        {
+            return chargeCode;
+        }
+
+        public void setChargeCode(String chargeCode)
+        {
+            this.chargeCode = chargeCode;
+        }
+
+        public ItemTransaction getItemTransaction()
+        {
+            return itemTransaction;
+        }
+
+        public void setItemTransaction(ItemTransaction itemTransaction)
+        {
+            this.itemTransaction = itemTransaction;
+        }
+    }
+
+#### Test
+
+Inserting/ Quering/ Updating/ Deleting 5000 `Transaction` entities using Hibernate (5.2.12) and DbGate. Test project is in the Repo.
+
+#### Results (entities per second)
+
+##### Hibernate
+	Insertion :	897
+	Querying :  995
+	Update : 1550
+	Delete	: 906
+
+#### NDbGate
+	Insertion :	711
+	Querying :	630
+	Update : 484
+	Delete : 807 
 
 ### License
 GNU GPL V3

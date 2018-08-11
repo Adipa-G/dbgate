@@ -34,7 +34,10 @@ public class Factory
 			product.setBulkUnitPrice(104d + i);
 			productIds.add(product.getItemId());
 			list.add(product);
+		}
 
+		for (int i = 0; i < productOrServiceCount; i++)
+		{
 			Service service = new Service();
 			service.setItemId(seed + 2 * i + 1);
 			service.setName("Service - " + i + "");

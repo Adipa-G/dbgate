@@ -21,7 +21,7 @@ public class MainProgram
 			h.setLevel(Level.WARNING);
 		}
 
-		new DbGatePerformanceCounter(100).start(1);
-		new HibernatePerformanceCounter(100).start(1);
+		new DbGatePerformanceCounter(50).start(1);
+		new HibernatePerformanceCounter(5000).start(1);
 	}
 }

@@ -66,7 +66,7 @@ public class HibernatePerformanceCounter
 
 		try
 		{
-			List<Object> entities = factory.generate(seed, perThread, 10);
+			List<Object> entities = factory.generate(seed, perThread, 2);
 			insertTest(entities);
 			queryTest(entities);
 
@@ -91,7 +91,8 @@ public class HibernatePerformanceCounter
 			Object entity = entities.get(i);
 			session.save(entity);
 
-			if (i % 100 == 0){
+			if (i % 100 == 0)
+			{
 				session.flush();
 				transaction.commit();
 				session.close();
@@ -148,7 +149,8 @@ public class HibernatePerformanceCounter
 				Transaction loadedTx = (Transaction)query.uniqueResult();
 			}
 
-			if (i % 100 == 0){
+			if (i % 100 == 0)
+			{
 				session.flush();
 				transaction.commit();
 				session.close();
@@ -179,7 +181,8 @@ public class HibernatePerformanceCounter
 			Object entity = entities.get(i);
 			session.update(entity);
 
-			if (i % 100 == 0){
+			if (i % 100 == 0)
+			{
 				session.flush();
 				transaction.commit();
 				session.close();
@@ -210,7 +213,8 @@ public class HibernatePerformanceCounter
 			Object entity = entities.get(i);
 			session.delete(entity);
 
-			if (i % 100 == 0){
+			if (i % 100 == 0 || (i > 0 && entities.get(i).getClass() != entities.get(i - 1).getClass()))
+			{
 				session.flush();
 				transaction.commit();
 				session.close();
