@@ -1,11 +1,14 @@
 package hibernate;
 
-import dbgate.entities.order.Transaction;
+import hibernate.entities.order.Transaction;
+import hibernate.entities.product.Product;
+import hibernate.entities.product.Service;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
-import javax.persistence.criteria.CriteriaQuery;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -64,12 +67,12 @@ public class HibernatePerformanceCounter
 		try
 		{
 			List<Object> entities = factory.generate(seed, perThread, 10);
-			insertTet(entities);
-			//queryTet(entities);
+			insertTest(entities);
+			queryTest(entities);
 
 			factory.update(entities);
-			updateTet(entities);
-			deleteTet(entities);
+			updateTest(entities);
+			deleteTest(entities);
 		}
 		catch (Exception ex)
 		{
@@ -77,7 +80,7 @@ public class HibernatePerformanceCounter
 		}
 	}
 
-	private void insertTet(List<Object> entities) throws Exception
+	private void insertTest(List<Object> entities) throws Exception
 	{
 		long start = new Date().getTime();
 		Session session = factory.openSession();
@@ -106,10 +109,66 @@ public class HibernatePerformanceCounter
 		long end = new Date().getTime();
 		long speed = entities.size() * 1000 / (end - start);
 
-		Logger.getLogger(getClass().getName()).warning(String.format("DBGate thread insert speed %s entities/second", speed));
+		Logger.getLogger(getClass().getName()).warning(String.format("Hibernate thread insert speed %s entities/second", speed));
 	}
 
-	private void updateTet(List<Object> entities) throws Exception
+	private void queryTest(List<Object> entities) throws Exception
+	{
+		long start = new Date().getTime();
+		Session session = factory.openSession();
+		org.hibernate.Transaction transaction = session.beginTransaction();
+
+		for (int i = 0; i < entities.size(); i++)
+		{
+			Object entity = entities.get(i);
+			Class entityType = entity.getClass();
+
+			if (entityType == Product.class)
+			{
+				Product product = (Product)entity;
+				Query query = session.createQuery("FROM Product WHERE itemId = :itemId");
+				query.setParameter("itemId",product.getItemId());
+
+				Product loadedPrd = (Product)query.uniqueResult();
+			}
+			else if (entityType == Service.class)
+			{
+				Service service = (Service)entity;
+				Query query = session.createQuery("FROM Service WHERE itemId = :itemId");
+				query.setParameter("itemId",service.getItemId());
+
+				Service loadedSrv = (Service)query.uniqueResult();
+			}
+			else if (entityType == Transaction.class)
+			{
+				Transaction tx = (Transaction)entity;
+				Query query = session.createQuery("FROM Transaction WHERE transactionId = :transactionId");
+				query.setParameter("transactionId",tx.getTransactionId());
+
+				Transaction loadedTx = (Transaction)query.uniqueResult();
+			}
+
+			if (i % 100 == 0){
+				session.flush();
+				transaction.commit();
+				session.close();
+
+				session = factory.openSession();
+				transaction = session.beginTransaction();
+			}
+		}
+
+		session.flush();
+		transaction.commit();
+		session.close();
+
+		long end = new Date().getTime();
+		long speed = entities.size() * 1000 / (end - start);
+
+		Logger.getLogger(getClass().getName()).warning(String.format("Hibernate thread query speed %s entities/second", speed));
+	}
+
+	private void updateTest(List<Object> entities) throws Exception
 	{
 		long start = new Date().getTime();
 		Session session = factory.openSession();
@@ -137,16 +196,16 @@ public class HibernatePerformanceCounter
 		long end = new Date().getTime();
 		long speed = entities.size() * 1000 / (end - start);
 
-		Logger.getLogger(getClass().getName()).warning(String.format("DBGate thread update speed %s entities/second", speed));
+		Logger.getLogger(getClass().getName()).warning(String.format("Hibernate thread update speed %s entities/second", speed));
 	}
 
-	private void deleteTet(List<Object> entities) throws Exception
+	private void deleteTest(List<Object> entities) throws Exception
 	{
 		long start = new Date().getTime();
 		Session session = factory.openSession();
 		org.hibernate.Transaction transaction = session.beginTransaction();
 
-		for (int i = 0; i < entities.size(); i++)
+		for (int i = entities.size() - 1 ; i >= 0; i--)
 		{
 			Object entity = entities.get(i);
 			session.delete(entity);
@@ -168,6 +227,6 @@ public class HibernatePerformanceCounter
 		long end = new Date().getTime();
 		long speed = entities.size() * 1000 / (end - start);
 
-		Logger.getLogger(getClass().getName()).warning(String.format("DBGate thread delete speed %s entities/second", speed));
+		Logger.getLogger(getClass().getName()).warning(String.format("Hibernate thread delete speed %s entities/second", speed));
 	}
 }

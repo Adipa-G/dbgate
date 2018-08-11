@@ -6,10 +6,12 @@ import dbgate.entities.order.Transaction;
 import dbgate.entities.product.Product;
 import dbgate.entities.product.Service;
 import dbgate.ermanagement.query.SelectionQuery;
+import dbgate.ermanagement.query.expr.ConditionExpr;
 import org.hibernate.sql.QuerySelect;
 
 import java.sql.DriverManager;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -95,7 +97,7 @@ public class DbGatePerformanceCounter
 		{
 			List<IEntity> entities = factory.generate(seed, perThread, 10);
 			insertTet(entities);
-			//queryTet(entities);
+			queryTet(entities);
 
 			factory.update(entities);
 			updateTet(entities);
@@ -131,6 +133,62 @@ public class DbGatePerformanceCounter
 		Logger.getLogger(getClass().getName()).warning(String.format("DBGate thread insert speed %s entities/second", speed));
 	}
 
+	private void queryTet(List<IEntity> entities) throws Exception
+	{
+		long start = new Date().getTime();
+		ITransaction transaction = transactionFactory.createTransaction();
+
+		for (int i = 0; i < entities.size(); i++)
+		{
+			IEntity entity = entities.get(i);
+			Class entityType = entity.getClass();
+			Collection loaded = null;
+
+			if (entityType == Product.class)
+			{
+				Product product = (Product)entity;
+				loaded = new SelectionQuery()
+						.from(QueryFrom.type(Product.class))
+						.where(QueryCondition.expression(ConditionExpr.build()
+                              .field(Product.class,"itemId").eq().value(product.getItemId())))
+						.select(QuerySelection.type(Product.class))
+						.toList(transaction);
+			}
+			else if (entityType == Service.class)
+			{
+				Service service = (Service)entity;
+				loaded = new SelectionQuery()
+						.from(QueryFrom.type(Service.class))
+						.where(QueryCondition.expression(ConditionExpr.build()
+                              .field(Service.class,"itemId").eq().value(service.getItemId())))
+						.select(QuerySelection.type(Service.class))
+						.toList(transaction);
+			}
+			else if (entityType == Transaction.class)
+			{
+				Transaction service = (Transaction)entity;
+				loaded = new SelectionQuery()
+						.from(QueryFrom.type(Transaction.class))
+						.where(QueryCondition.expression(ConditionExpr.build()
+                              .field(Transaction.class,"transactionId").eq().value(service.getTransactionId())))
+						.select(QuerySelection.type(Transaction.class))
+						.toList(transaction);
+			}
+
+			if (i % 100 == 0)
+			{
+				transaction.close();
+				transaction = transactionFactory.createTransaction();
+			}
+		}
+		transaction.close();
+
+		long end = new Date().getTime();
+		long speed = entities.size() * 1000 / (end - start);
+
+		Logger.getLogger(getClass().getName()).warning(String.format("DBGate thread query speed %s entities/second", speed));
+	}
+
 	private void updateTet(List<IEntity> entities) throws Exception
 	{
 		long start = new Date().getTime();
@@ -154,32 +212,6 @@ public class DbGatePerformanceCounter
 		long speed = entities.size() * 1000 / (end - start);
 
 		Logger.getLogger(getClass().getName()).warning(String.format("DBGate thread update speed %s entities/second", speed));
-	}
-
-	private void queryTet(List<IEntity> entities) throws Exception
-	{
-		long start = new Date().getTime();
-		ITransaction transaction = transactionFactory.createTransaction();
-
-		for (int i = 0; i < entities.size(); i++)
-		{
-			IEntity entity = entities.get(i);
-			Object loaded = new SelectionQuery()
-					.from(QueryFrom.type(entity.getClass()))
-					.select(QuerySelection.type(entity.getClass()))
-					.toList(transaction).iterator().next();
-
-			if (i % 100 == 0){
-				transaction.close();
-				transaction = transactionFactory.createTransaction();
-			}
-		}
-		transaction.close();
-
-		long end = new Date().getTime();
-		long speed = entities.size() * 1000 / (end - start);
-
-		Logger.getLogger(getClass().getName()).warning(String.format("DBGate thread query speed %s entities/second", speed));
 	}
 
 	private void deleteTet(List<IEntity> entities) throws Exception

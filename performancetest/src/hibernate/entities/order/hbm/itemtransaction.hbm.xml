@@ -13,7 +13,8 @@
         <many-to-one name="item"
                      class="hibernate.entities.product.Item"
                      column="itemId"
-                     not-null="true"/>
+                     not-null="true"
+                     lazy="false"/>
 
         <many-to-one name="transaction"
                      class="hibernate.entities.order.Transaction"
@@ -25,8 +26,9 @@
         <set name="itemTransactionCharges"
              table="hibernate_order_item_transaction_charge"
              inverse="true"
-             lazy="true"
-             fetch="select">
+             lazy="false"
+             fetch="select"
+             cascade="all-delete-orphan">
             <key>
                 <column name="transactionId" not-null="true" />
                 <column name="indexNo" not-null="true" />

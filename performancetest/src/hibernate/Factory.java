@@ -60,12 +60,18 @@ public class Factory
 						product = (Product)entity;
 					}
 				}
+
 				ItemTransaction productTransaction = new ItemTransaction(transaction);
+				productTransaction.setTransactionId(transaction.getTransactionId());
 				productTransaction.setIndexNo(j);
 				productTransaction.setItem(product);
 				transaction.getItemTransactions().add(productTransaction);
 
 				ItemTransactionCharge productTransactionCharge = new ItemTransactionCharge(productTransaction);
+				productTransactionCharge.setTransactionId(transaction.getTransactionId());
+				productTransactionCharge.setIndexNo(productTransaction.getIndexNo());
+				productTransactionCharge.setChargeIndex(0);
+
 				productTransactionCharge.setChargeCode("Product-Sell-Code "+ i+" " + j);
 				productTransaction.getItemTransactionCharges().add(productTransactionCharge);
 			}
@@ -83,11 +89,16 @@ public class Factory
 				}
 
 				ItemTransaction serviceTransaction = new ItemTransaction(transaction);
+				serviceTransaction.setTransactionId(transaction.getTransactionId());
 				serviceTransaction.setIndexNo(productsCount + j + 1);
 				serviceTransaction.setItem(service);
 				transaction.getItemTransactions().add(serviceTransaction);
 
 				ItemTransactionCharge serviceTransactionCharge = new ItemTransactionCharge(serviceTransaction);
+				serviceTransactionCharge.setTransactionId(transaction.getTransactionId());
+				serviceTransactionCharge.setIndexNo(serviceTransaction.getIndexNo());
+				serviceTransactionCharge.setChargeIndex(0);
+
 				serviceTransactionCharge.setChargeCode("Service-Sell-Code " + i + " " + j);
 				serviceTransaction.getItemTransactionCharges().add(serviceTransactionCharge);
 			}

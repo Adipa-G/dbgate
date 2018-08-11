@@ -505,7 +505,7 @@ public abstract class AbstractDataManipulate implements IDataManipulate
         addPagingClause(sb,buildInfo, structure);
         processSelection(sb, buildInfo, structure);
 
-        buildInfo.getExecInfo().setSql(sb.toString());
+        buildInfo.getExecInfo().setSql(fixUpQuery(sb.toString()));
         return buildInfo;
     }
 
