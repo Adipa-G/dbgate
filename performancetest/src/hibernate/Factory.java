@@ -23,9 +23,9 @@ public class Factory
 		List<Object> list = new ArrayList<Object>();
 		List<Integer> productIds = new ArrayList<Integer>();
 		List<Integer> serviceIds = new ArrayList<Integer>();
-		int productOrCount = txCount * productsOrServicesPerTx;
+		int productOrServiceCount = txCount * productsOrServicesPerTx;
 
-		for (int i = 0; i < productOrCount; i++)
+		for (int i = 0; i < productOrServiceCount; i++)
 		{
 			Product product = new Product();
 			product.setItemId(seed + 2 * i);
