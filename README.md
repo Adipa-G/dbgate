@@ -98,8 +98,8 @@ Data migration pretty easy
 Strong queries have support for many complex scenarios like sub queries, unions and group conditions. However for simplicity only a basic example is listed below
 
 	ISelectionQuery query = new SelectionQuery()
-					.from(QueryFrom.type(SimpleEntity.class))
-					.select(QuerySelection.type(SimpleEntity.class));
+					.from(QueryFrom.entityType(SimpleEntity.class))
+					.select(QuerySelection.entityType(SimpleEntity.class));
 	Collection entities = query.toList(tx);
 
 More examples can be found in the wiki. Also there is a sample project using the library available in the sources named ermanagementtestapp.
