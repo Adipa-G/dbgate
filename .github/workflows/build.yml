@@ -11,4 +11,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Build with Ant
-        run: ant -noinput -buildfile dbgate\build.xml
+        run: |
+          cd dbgate
+          ant -noinput -buildfile build.xml
