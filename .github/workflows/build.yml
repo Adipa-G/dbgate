@@ -16,12 +16,10 @@ jobs:
           ant -noinput -buildfile build.xml
       - name: Build dbgatetestapp with Ant
         run: |
-          cd ..
           cd dbgatetestapp
           ant -noinput -buildfile build.xml
       - name: Build performancetest with Ant
         run: |
-          cd ..
           cd performancetest
           ant -noinput -buildfile build.xml
       - name: Test Report
