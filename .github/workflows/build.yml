@@ -28,4 +28,12 @@ jobs:
         with:
           name: JUnit Tests           
           path: dbgate/ci/reports/*.xml   
-          reporter: jest-junit  
+          reporter: java-junit  
+      - uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: dbgate/ci/jar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: dbgate/ci/coverage
