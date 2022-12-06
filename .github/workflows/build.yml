@@ -10,7 +10,24 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - name: Build with Ant
+      - name: Build dbgate with Ant
         run: |
           cd dbgate
           ant -noinput -buildfile build.xml
+      - name: Build dbgatetestapp with Ant
+        run: |
+          cd ..
+          cd dbgatetestapp
+          ant -noinput -buildfile build.xml
+      - name: Build performancetest with Ant
+        run: |
+          cd ..
+          cd performancetest
+          ant -noinput -buildfile build.xml
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()   
+        with:
+          name: JUnit Tests           
+          path: dbgate/ci/reports/*.xml   
+          reporter: jest-junit  

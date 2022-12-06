@@ -1,2 +1,4 @@
 **/out/**/*.*
 dbgate/ci/*
+/dbgatetestapp/**/*.class
+/performancetest/**/*.class
