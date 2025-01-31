@@ -30,12 +30,12 @@ jobs:
           path: dbgate/ci/reports/*.xml   
           reporter: java-junit  
       - name: Publish packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: package
           path: dbgate/ci/jar
       - name: Publish code coverage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage
           path: dbgate/ci/coverage
